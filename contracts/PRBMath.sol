@@ -9,44 +9,50 @@ import "hardhat/console.sol";
 /// @notice Smart contract library for mathematical functions. It operates with int256 numbers
 /// considered to have 18 decimals, which are called 59.18 decimal numbers.
 library PRBMath {
-    /// @notice Number of bits that fit in the UNIT number.
-    int256 public constant BITS_IN_UNIT = 59;
+    /// @dev Number of bits that fit in the UNIT number.
+    int256 internal constant BITS_IN_UNIT = 59;
 
-    /// @notice Half the UNIT number.
-    int256 public constant HALF_UNIT = 5e17;
+    /// @dev Half the UNIT number.
+    int256 internal constant HALF_UNIT = 5e17;
 
-    /// @notice Twice the UNI number.
-    int256 public constant TWICE_UNIT = 2e18;
+    /// @dev The maximum value a signed 59.18 decimal fixed point number can have.
+    int256 internal constant MAX_59x18 = type(int256).max;
 
-    /// @notice 2 raised to the power of 1.
-    int256 public constant TWO_POW_1 = 2**1;
+    /// @dev The minimum value a signed 59.18 decimal fixed point number can have.
+    int256 internal constant MIN_59x18 = type(int256).min;
 
-    /// @notice 2 raised to the power of 2.
-    int256 public constant TWO_POW_2 = 2**2;
+    /// @dev Twice the UNI number.
+    int256 internal constant TWICE_UNIT = 2e18;
 
-    /// @notice 2 raised to the power of 4.
-    int256 public constant TWO_POW_4 = 2**4;
+    /// @dev 2 raised to the power of 1.
+    int256 internal constant TWO_POW_1 = 2**1;
 
-    /// @notice 2 raised to the power of 8.
-    int256 public constant TWO_POW_8 = 2**8;
+    /// @dev 2 raised to the power of 2.
+    int256 internal constant TWO_POW_2 = 2**2;
 
-    /// @notice 2 raised to the power of 16.
-    int256 public constant TWO_POW_16 = 2**16;
+    /// @dev 2 raised to the power of 4.
+    int256 internal constant TWO_POW_4 = 2**4;
 
-    /// @notice 2 raised to the power of 32.
-    int256 public constant TWO_POW_32 = 2**32;
+    /// @dev 2 raised to the power of 8.
+    int256 internal constant TWO_POW_8 = 2**8;
 
-    /// @notice 2 raised to the power of 63.
-    int256 public constant TWO_POW_63 = 2**63;
+    /// @dev 2 raised to the power of 16.
+    int256 internal constant TWO_POW_16 = 2**16;
 
-    /// @notice 2 raised to the power of 64.
-    int256 public constant TWO_POW_64 = 2**64;
+    /// @dev 2 raised to the power of 32.
+    int256 internal constant TWO_POW_32 = 2**32;
 
-    /// @notice 2 raised to the power of 128.
-    int256 public constant TWO_POW_128 = 2**128;
+    /// @dev 2 raised to the power of 63.
+    int256 internal constant TWO_POW_63 = 2**63;
 
-    /// @notice Constant that determines how many decimals can be represented.
-    int256 public constant UNIT = 1e18;
+    /// @dev 2 raised to the power of 64.
+    int256 internal constant TWO_POW_64 = 2**64;
+
+    /// @dev 2 raised to the power of 128.
+    int256 internal constant TWO_POW_128 = 2**128;
+
+    /// @dev Constant that determines how many decimals can be represented.
+    int256 internal constant UNIT = 1e18;
 
     /// @notice Finds the zero-based index of the first zero in the binary representation of the given number.
     /// @dev See the "Find First Set" article on Wikipedia https://en.wikipedia.org/wiki/Find_first_set
