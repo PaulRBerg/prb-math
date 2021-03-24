@@ -1,8 +1,6 @@
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { Decimal } from "decimal.js";
 
-export const UNIT = 1e18;
-
 export function bn(x: BigNumberish | Decimal): BigNumber {
   if (BigNumber.isBigNumber(x)) {
     return x;
@@ -20,12 +18,24 @@ export function fp(x: number | Decimal): BigNumber {
   return bn(toFp(x));
 }
 
-export function toFp(x: BigNumberish | Decimal): Decimal {
-  return decimal(x).mul(UNIT);
+export function maxUint(exp: number): BigNumber {
+  return bn(2).pow(exp).sub(1);
 }
 
-export function fromFp(x: BigNumberish | Decimal): Decimal {
-  return decimal(x).div(UNIT);
+export function maxInt(exp: number): BigNumber {
+  return powOfTwo(exp - 1).sub(1);
+}
+
+export function minInt(exp: number): BigNumber {
+  return powOfTwo(exp - 1).mul(-1);
+}
+
+export function powOfTwo(exp: number | BigNumber): BigNumber {
+  return bn(2).pow(bn(exp));
+}
+
+export function toFp(x: BigNumberish | Decimal): Decimal {
+  return decimal(x).mul(1e18);
 }
 
 function parseScientific(num: string): string {
