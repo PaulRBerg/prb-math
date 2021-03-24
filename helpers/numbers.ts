@@ -1,6 +1,8 @@
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { Decimal } from "decimal.js";
 
+import { UNIT } from "./constants";
+
 export function bn(x: BigNumberish | Decimal): BigNumber {
   if (BigNumber.isBigNumber(x)) {
     return x;
@@ -16,6 +18,10 @@ export function decimal(x: BigNumberish | Decimal): Decimal {
 
 export function fp(x: number | Decimal): BigNumber {
   return bn(toFp(x));
+}
+
+export function fpPowOfTwo(exp: number | BigNumber): BigNumber {
+  return powOfTwo(exp).mul(UNIT);
 }
 
 export function maxUint(exp: number): BigNumber {
