@@ -1,0 +1,6 @@
+{
+  "extension": ["ts"],
+  "recursive": "test",
+  "require": ["hardhat/register"],
+  "timeout": 20000
+}

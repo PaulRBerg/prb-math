@@ -1,0 +1,79 @@
+{
+  "name": "@paulrberg/prb-math",
+  "description": "Paul Razvan Berg's fixed-point decimal math library for Solidity",
+  "version": "1.0.0",
+  "author": {
+    "name": "Paul Razvan Berg",
+    "url": "https://paulrberg.com"
+  },
+  "dependencies": {
+    "solc": "0.8.2"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^9.1.2",
+    "@commitlint/config-conventional": "^9.1.2",
+    "@ethersproject/abstract-signer": "^5.0.6",
+    "@ethersproject/bignumber": "^5.0.8",
+    "@nomiclabs/hardhat-ethers": "^2.0.1",
+    "@nomiclabs/hardhat-waffle": "^2.0.1",
+    "@typechain/ethers-v5": "^5.0.0",
+    "@typechain/hardhat": "^1.0.1",
+    "@types/chai": "^4.2.13",
+    "@types/fs-extra": "^9.0.1",
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^14.11.8",
+    "@typescript-eslint/eslint-plugin": "^3.10.1",
+    "@typescript-eslint/parser": "^3.10.1",
+    "chai": "^4.2.0",
+    "commitizen": "^4.2.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "decimal.js": "^10.2.1",
+    "dotenv": "^8.2.0",
+    "eslint": "^7.11.0",
+    "eslint-config-prettier": "^6.12.0",
+    "ethereum-waffle": "^3.2.0",
+    "ethers": "^5.0.32",
+    "fs-extra": "^9.0.1",
+    "hardhat": "^2.0.10",
+    "hardhat-gas-reporter": "^1.0.4",
+    "husky": "^4.3.0",
+    "mocha": "^8.1.3",
+    "prettier": "^2.1.2",
+    "prettier-plugin-solidity": "^1.0.0-beta.1",
+    "shelljs": "^0.8.4",
+    "solhint": "^3.2.1",
+    "solhint-plugin-prettier": "^0.0.5",
+    "solidity-coverage": "^0.7.12",
+    "ts-generator": "^0.1.1",
+    "ts-node": "^8.10.2",
+    "typechain": "^4.0.1",
+    "typescript": "^4.2.2"
+  },
+  "files": [
+    "/contracts"
+  ],
+  "keywords": [
+    "blockchain",
+    "ethereum",
+    "hardhat",
+    "smart-contracts",
+    "solidity"
+  ],
+  "license": "WTFPL",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "clean": "hardhat clean",
+    "commit": "git-cz",
+    "compile": "hardhat compile",
+    "coverage": "hardhat coverage --solcoverjs ./.solcover.js --temp artifacts --testfiles \"./test/**/*.ts\"",
+    "lint": "yarn run lint:sol && yarn run lint:ts && yarn run prettier:list-different",
+    "lint:sol": "solhint --config ./.solhint.json --max-warnings 0 \"contracts/**/*.sol\"",
+    "lint:ts": "eslint --config ./.eslintrc.yaml --ignore-path ./.eslintignore --ext .js,.ts .",
+    "prettier": "prettier --config .prettierrc --write \"**/*.{js,json,md,sol,ts}\"",
+    "prettier:list-different": "prettier --config .prettierrc --list-different \"**/*.{js,json,md,sol,ts}\"",
+    "test": "hardhat test",
+    "typechain": "hardhat typechain"
+  }
+}
