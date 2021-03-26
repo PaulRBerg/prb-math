@@ -27,33 +27,6 @@ library PRBMath {
     /// @dev Twice the UNI number.
     int256 internal constant TWICE_UNIT = 2e18;
 
-    /// @dev 2 raised to the power of 1.
-    uint256 internal constant TWO_POW_1 = 2**1;
-
-    /// @dev 2 raised to the power of 2.
-    uint256 internal constant TWO_POW_2 = 2**2;
-
-    /// @dev 2 raised to the power of 4.
-    uint256 internal constant TWO_POW_4 = 2**4;
-
-    /// @dev 2 raised to the power of 8.
-    uint256 internal constant TWO_POW_8 = 2**8;
-
-    /// @dev 2 raised to the power of 16.
-    uint256 internal constant TWO_POW_16 = 2**16;
-
-    /// @dev 2 raised to the power of 32.
-    uint256 internal constant TWO_POW_32 = 2**32;
-
-    /// @dev 2 raised to the power of 63.
-    uint256 internal constant TWO_POW_63 = 2**63;
-
-    /// @dev 2 raised to the power of 64.
-    uint256 internal constant TWO_POW_64 = 2**64;
-
-    /// @dev 2 raised to the power of 128.
-    uint256 internal constant TWO_POW_128 = 2**128;
-
     /// @dev Constant that determines how many decimals can be represented.
     int256 internal constant UNIT = 1e18;
 
@@ -207,35 +180,35 @@ library PRBMath {
     /// @param x The uint256 number for which to find the most significant bit.
     /// @param msb The most significant bit.
     function mostSignificantBit(uint256 x) internal pure returns (uint256 msb) {
-        if (x >= TWO_POW_128) {
+        if (x >= 2**128) {
             x >>= 128;
             msb += 128;
         }
-        if (x >= TWO_POW_64) {
+        if (x >= 2**64) {
             x >>= 64;
             msb += 64;
         }
-        if (x >= TWO_POW_32) {
+        if (x >= 2**32) {
             x >>= 32;
             msb += 32;
         }
-        if (x >= TWO_POW_16) {
+        if (x >= 2**16) {
             x >>= 16;
             msb += 16;
         }
-        if (x >= TWO_POW_8) {
+        if (x >= 2**8) {
             x >>= 8;
             msb += 8;
         }
-        if (x >= TWO_POW_4) {
+        if (x >= 2**4) {
             x >>= 4;
             msb += 4;
         }
-        if (x >= TWO_POW_2) {
+        if (x >= 2**2) {
             x >>= 2;
             msb += 2;
         }
-        if (x >= TWO_POW_1) {
+        if (x >= 2**1) {
             // No need to shift x any more.
             msb += 1;
         }
