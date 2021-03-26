@@ -115,7 +115,16 @@ library PRBMath {
     /// @param result The greatest integer less than or equal to x.
     function floor(int256 x) internal pure returns (int256 result) {
         require(x >= MIN_WHOLE_59x18);
-        result = x - (x % UNIT);
+        if (x % UNIT == 0) {
+            result = x;
+        } else {
+            result = x - x % UNIT;
+
+            // If x is negative then flooring goes one unit deeper.
+            if (x < 0) {
+                result -= UNIT;
+            }
+        }
     }
 
     /// @notice Yields the excess beyond x's floored value.
