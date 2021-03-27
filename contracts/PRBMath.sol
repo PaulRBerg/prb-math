@@ -37,7 +37,7 @@ library PRBMath {
     /// @dev Based on the function abs(x) = |x|.
     ///
     /// Requirements:
-    /// - `x` must be higher than min 59.18
+    /// - `x` must be higher than min 59.18.
     ///
     /// @param x The number to calculate the absolute for.
     /// @param result The absolute value of x.
