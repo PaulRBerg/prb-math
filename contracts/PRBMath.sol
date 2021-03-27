@@ -276,7 +276,7 @@ library PRBMath {
     }
 
     /// @notice Returns 1 in 59.18 representation, right padded by decimals zeros.
-    function unit() public pure returns (int256 result) {
+    function unit() internal pure returns (int256 result) {
         result = UNIT;
     }
 }
