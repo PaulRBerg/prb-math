@@ -1,7 +1,7 @@
 import { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
 
-import { LOG2_MAX_59x18, LOG2_PI, MAX_59x18, MAX_WHOLE_59x18, PI, ZERO_ADDRESS } from "../../../../helpers/constants";
+import { LOG2_MAX_59x18, MAX_59x18, MAX_WHOLE_59x18, PI, ZERO_ADDRESS } from "../../../../helpers/constants";
 import { bn, fp, fpPowOfTwo } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeLog2(): void {
@@ -94,17 +94,17 @@ export default function shouldBehaveLikeLog2(): void {
     it("works when x = pi", async function () {
       const x: BigNumber = PI;
       const result: BigNumber = await this.prbMath.doLog2(x);
-      expect(result).to.equal(LOG2_PI);
+      expect(result).to.equal(bn("1651496129472318782"));
     });
 
     it("works when x = 4", async function () {
-      const x: BigNumber = fpPowOfTwo(2);
+      const x: BigNumber = fp(4);
       const result: BigNumber = await this.prbMath.doLog2(x);
       expect(result).to.equal(fp(2));
     });
 
     it("works when x = 8", async function () {
-      const x: BigNumber = fpPowOfTwo(3);
+      const x: BigNumber = fp(8);
       const result: BigNumber = await this.prbMath.doLog2(x);
       expect(result).to.equal(fp(3));
     });
@@ -124,6 +124,7 @@ export default function shouldBehaveLikeLog2(): void {
     it("works when x = max 59x18", async function () {
       const x: BigNumber = MAX_59x18;
       const result: BigNumber = await this.prbMath.doLog2(x);
+      // The same as above because of precision limitations.
       expect(result).to.equal(LOG2_MAX_59x18);
     });
   });

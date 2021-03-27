@@ -15,6 +15,7 @@
         "endOfLine": "auto"
       }
     ],
-    "reason-string": ["off"]
+    "reason-string": "off",
+    "var-name-mixedcase": "off"
   }
 }

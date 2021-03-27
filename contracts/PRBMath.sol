@@ -34,9 +34,7 @@ library PRBMath {
 
     /// @notice Calculate the absolute value of x.
     ///
-    /// @dev Based on the function abs(x) = |x|.
-    ///
-    /// Requirements:
+    /// @dev Requirements:
     /// - `x` must be higher than min 59.18.
     ///
     /// @param x The number to calculate the absolute for.
@@ -105,7 +103,7 @@ library PRBMath {
         }
     }
 
-    /// @notice Yields the excess beyond x's floored value for positive numbers, and the part of the number to the right
+    /// @notice Yields the excess beyond x's floored value for positive numbers and the part of the number to the right
     /// of the radix point for negative numbers.
     /// @dev Based on the odd function definition. https://en.wikipedia.org/wiki/Fractional_part
     /// @param x The signed 59.18 decimal number to get the fractional part of.
@@ -120,9 +118,21 @@ library PRBMath {
         result = (x & (x - 1)) == 0;
     }
 
+    /// @notice Based on the insight that ln(x) = log2(x) * ln(2).
+    ///
+    /// Requirements:
+    /// - All from `log2`.
+    ///
+    /// Caveats:
+    /// - All from `log2`.
+    /// - This doesn't return exactly 1 for 2.718281828459045235, we would need more fine-grained precision for that.
+    ///
+    /// @param x The signed 59.18 decimal number for which to calculate the natural logarithm.
+    /// @return result The natural logarithm as a signed 59.18 decimal number.
     function ln(int256 x) internal pure returns (int256 result) {
-        x;
-        result = 0;
+        require(x > 0);
+        int256 ln_2 = 693147180559945309;
+        result = mul(log2(x), ln_2);
     }
 
     /// @notice Calculates the binary logarithm of x.
@@ -132,6 +142,9 @@ library PRBMath {
     ///
     /// Requirements:
     /// - `x` must be higher than zero.
+    ///
+    /// Caveats:
+    /// - The results are not perfectly accurate to the last decimal digit, because of the iterative approximation.
     ///
     /// @param x The signed 59.18 decimal number for which to calculate the binary logarithm.
     /// @return result The binary logarithm as a signed 59.18 decimal number.
@@ -178,7 +191,7 @@ library PRBMath {
     /// @notice Finds the zero-based index of the first zero in the binary representation of x.
     /// @dev See the "Find First Set" article on Wikipedia https://en.wikipedia.org/wiki/Find_first_set
     /// @param x The uint256 number for which to find the most significant bit.
-    /// @param msb The most significant bit.
+    /// @return msb The most significant bit.
     function mostSignificantBit(uint256 x) internal pure returns (uint256 msb) {
         if (x >= 2**128) {
             x >>= 128;
@@ -212,6 +225,22 @@ library PRBMath {
             // No need to shift x any more.
             msb += 1;
         }
+    }
+
+    function mul(int256 x, int256 y) internal pure returns (int256 result) {
+        int256 doubleScaledProduct = x * y;
+
+        // Before dividing, we add half the UNIT for positive numbers and subtract half the UNIT for negative numbers,
+        // so that we get rounding instead of truncation. Without this, 6.6e-19 would be truncated to 0 instead of being
+        // rounded to 1e-18. See "Listing 6" and text above it at https://accu.org/index.php/journals/1717
+        int256 doubleScaledProductWithHalfUnit;
+        if (x > 0) {
+            doubleScaledProductWithHalfUnit = doubleScaledProduct + HALF_UNIT;
+        } else {
+            doubleScaledProductWithHalfUnit = doubleScaledProduct - HALF_UNIT;
+        }
+
+        result = doubleScaledProductWithHalfUnit / UNIT;
     }
 
     /// @dev See https://github.com/Uniswap/uniswap-v3-core/blob/main/contracts/libraries/FullMath.sol.
