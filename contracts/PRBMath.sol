@@ -6,8 +6,8 @@ import "hardhat/console.sol";
 
 /// @title PRBMath
 /// @author Paul Razvan Berg
-/// @notice Smart contract library for mathematical functions. It works with int256 numbers considered
-/// to have 18 decimals, which are called signed 59.18 decimal numbers.
+/// @notice Smart contract library for mathematical functions. Works with signed int256 numbers considered
+/// to have 18 decimals.
 library PRBMath {
     /// @dev Half the UNIT number.
     int256 internal constant HALF_UNIT = 5e17;
@@ -105,18 +105,13 @@ library PRBMath {
         }
     }
 
-    /// @notice Yields the excess beyond x's floored value.
-    ///
-    /// @dev Based on the function frac(x) = x - [x]. https://en.wikipedia.org/wiki/Fractional_part
-    ///
-    /// Requirements:
-    /// - Same as the `floor` function.
-    ///
+    /// @notice Yields the excess beyond x's floored value for positive numbers, and the part of the number to the right
+    /// of the radix point for negative numbers.
+    /// @dev Based on the odd function definition. https://en.wikipedia.org/wiki/Fractional_part
     /// @param x The signed 59.18 decimal number to get the fractional part of.
     /// @param result The fractional part of x.
     function frac(int256 x) internal pure returns (int256 result) {
-        int256 flooredX = floor(x);
-        result = x - flooredX;
+        result = x % UNIT;
     }
 
     /// @dev See https://stackoverflow.com/a/600306/3873510.

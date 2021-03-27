@@ -40,6 +40,14 @@ export function powOfTwo(exp: number | BigNumber): BigNumber {
   return bn(2).pow(bn(exp));
 }
 
+export function solidityMod(x: BigNumber, n: BigNumber): BigNumber {
+  let result = x.mod(n);
+  if (x.isNegative()) {
+    result = result.sub(n);
+  }
+  return result;
+}
+
 export function toFp(x: BigNumberish | Decimal): Decimal {
   return decimal(x).mul(1e18);
 }

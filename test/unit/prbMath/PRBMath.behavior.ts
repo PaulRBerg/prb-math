@@ -1,6 +1,7 @@
 import shouldBehaveLikeAbs from "./pure/abs";
 import shouldBehaveLikeCeil from "./pure/ceil";
 import shouldBehaveLikeFloor from "./pure/floor";
+import shouldBehaveLikeFrac from "./pure/frac";
 import shouldBehaveLikeLog2 from "./pure/log2";
 
 export function shouldBehaveLikePrbMath(): void {
@@ -15,6 +16,10 @@ export function shouldBehaveLikePrbMath(): void {
 
     describe("floor", function () {
       shouldBehaveLikeFloor();
+    });
+
+    describe("frac", function () {
+      shouldBehaveLikeFrac();
     });
 
     describe("log2", function () {

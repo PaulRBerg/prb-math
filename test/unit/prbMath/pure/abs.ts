@@ -1,7 +1,7 @@
 import { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
 
-import { MAX_WHOLE_59x18, MIN_59x18, MIN_WHOLE_59x18, PI, UNIT } from "../../../../helpers/constants";
+import { MAX_59x18, MAX_WHOLE_59x18, MIN_59x18, MIN_WHOLE_59x18, PI, UNIT } from "../../../../helpers/constants";
 import { bn, fp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeAbs(): void {
@@ -9,7 +9,7 @@ export default function shouldBehaveLikeAbs(): void {
     it("works", async function () {
       const x: number = 0;
       const result: BigNumber = await this.prbMath.doAbs(x);
-      expect(result).to.equal(x);
+      expect(result).to.equal(0);
     });
   });
 
@@ -135,6 +135,12 @@ export default function shouldBehaveLikeAbs(): void {
 
     it("works when x = max whole 59x18", async function () {
       const x: BigNumber = MAX_WHOLE_59x18;
+      const result: BigNumber = await this.prbMath.doAbs(x);
+      expect(result).to.equal(x);
+    });
+
+    it("works when x = max 59x18", async function () {
+      const x: BigNumber = MAX_59x18;
       const result: BigNumber = await this.prbMath.doAbs(x);
       expect(result).to.equal(x);
     });

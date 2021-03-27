@@ -16,6 +16,10 @@ contract PRBMathMock {
         return PRBMath.floor(x);
     }
 
+    function doFrac(int256 x) public pure returns (int256) {
+        return PRBMath.frac(x);
+    }
+
     function doLog2(int256 x) public pure returns (int256) {
         return PRBMath.log2(x);
     }

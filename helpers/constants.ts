@@ -1,6 +1,6 @@
 import { BigNumber } from "@ethersproject/bignumber";
 
-import { bn, fp, maxInt, maxUint, minInt } from "./numbers";
+import { bn, fp, maxInt, maxUint, minInt, solidityMod } from "./numbers";
 
 export const UNIT: BigNumber = BigNumber.from(10).pow(18);
 
@@ -19,13 +19,13 @@ export const MAX_UINT256: BigNumber = maxUint(256);
 // Equivalent to max int256
 export const MAX_59x18: BigNumber = maxInt(256);
 
-export const MAX_WHOLE_59x18: BigNumber = MAX_59x18.sub(MAX_59x18.mod(UNIT));
+export const MAX_WHOLE_59x18: BigNumber = MAX_59x18.sub(solidityMod(MAX_59x18, UNIT));
 
 // Equivalent to min int256
 export const MIN_59x18: BigNumber = minInt(256);
 
 // See https://github.com/ethers-io/ethers.js/issues/1402
-export const MIN_WHOLE_59x18: BigNumber = MIN_59x18.add(MIN_59x18.mul(-1).mod(UNIT));
+export const MIN_WHOLE_59x18: BigNumber = MIN_59x18.sub(solidityMod(MIN_59x18, UNIT));
 
 export const PI: BigNumber = bn("3141592653589793238");
 
