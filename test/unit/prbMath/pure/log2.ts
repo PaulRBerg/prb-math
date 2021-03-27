@@ -5,16 +5,16 @@ import { LOG2_MAX_59x18, LOG2_PI, MAX_59x18, MAX_WHOLE_59x18, PI, ZERO_ADDRESS }
 import { bn, fp, fpPowOfTwo } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeLog2(): void {
-  describe("when x is a negative number", function () {
-    it("reverts", async function () {
-      await expect(this.prbMath.doLog2(fp(-1))).to.reverted;
-    });
-  });
-
   describe("when x is zero", function () {
     it("reverts", async function () {
       const x: number = 0;
       await expect(this.prbMath.doLog2(x)).to.be.reverted;
+    });
+  });
+
+  describe("when x is a negative number", function () {
+    it("reverts", async function () {
+      await expect(this.prbMath.doLog2(fp(-1))).to.reverted;
     });
   });
 

@@ -34,7 +34,7 @@ library PRBMath {
 
     /// @notice Calculate the absolute value of x.
     ///
-    /// @dev Based on the following function abs(x) = |x|.
+    /// @dev Based on the function abs(x) = |x|.
     ///
     /// Requirements:
     /// - `x` must be higher than min 59.18
@@ -48,8 +48,7 @@ library PRBMath {
 
     /// @notice Yields the least integer greater than or equal to x.
     ///
-    /// @dev Based on the function ceil(x) = x + (UNIT - x % 1e18).
-    /// https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
+    /// @dev See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
     ///
     /// Requirements:
     /// - `x` must be less than or equal to the maximum whole value permitted by the signed 59.18 decimal format.
@@ -58,7 +57,15 @@ library PRBMath {
     /// @param result The least integer greater than or equal to x.
     function ceil(int256 x) internal pure returns (int256 result) {
         require(x <= MAX_WHOLE_59x18);
-        result = x + (UNIT - (x % UNIT));
+        if (x % UNIT == 0) {
+            result = x;
+        } else {
+            // Solidity uses C fmod style, which returns a value with the same sign as x.
+            result = x - (x % UNIT);
+            if (x > 0) {
+                result += UNIT;
+            }
+        }
     }
 
     function div(int256 x, int256 y) internal pure returns (int256 result) {
@@ -78,8 +85,7 @@ library PRBMath {
 
     /// @notice Yields the greatest integer less than or equal to x.
     ///
-    /// @dev Based on the function floor(x) = x - (x % 1e18).
-    /// https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
+    /// @dev See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
     ///
     /// Requirements:
     /// - `x` must be greater than or equal to the minimum whole value permitted by the signed 59.18 decimal format.
@@ -91,9 +97,8 @@ library PRBMath {
         if (x % UNIT == 0) {
             result = x;
         } else {
-            result = x - x % UNIT;
-
-            // If x is negative then flooring goes one unit deeper.
+            // Solidity uses C fmod style, which returns a value with the same sign as x.
+            result = x - (x % UNIT);
             if (x < 0) {
                 result -= UNIT;
             }
