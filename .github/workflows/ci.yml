@@ -1,0 +1,51 @@
+name: "Continuous Integration"
+
+env:
+  COVERAGE_GIT_BRANCH: "main"
+  COVERAGE_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+  COVERAGE_SERVICE_NAME: "github-actions-ci"
+  INFURA_API_KEY: ${{ secrets.INFURA_API_KEY }}
+  MNEMONIC: ${{ secrets.MNEMONIC }}
+
+on:
+  pull_request:
+    branches:
+      - "main"
+  push:
+    branches:
+      - "main"
+
+jobs:
+  ci:
+    runs-on: "ubuntu-18.04"
+    steps:
+      - name: "Check out the repo"
+        uses: "actions/checkout@v2"
+
+      - name: "Install Node.js 12.x"
+        uses: "actions/setup-node@v1"
+        with:
+          node-version: "12.x"
+
+      - uses: "actions/cache@v2"
+        with:
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          path: "./node_modules"
+
+      - name: "Install dependencies"
+        run: "yarn install --frozen-lockfile"
+
+      - name: "Lint Solidity and TypeScript code"
+        run: "yarn run lint"
+
+      - name: "Compile the contracts and generate TypeChain artifacts"
+        run: "yarn run typechain"
+
+      - name: "Test the contracts and run code coverage"
+        run: "yarn run coverage"
+
+      - name: "Upload report to Coveralls"
+        uses: "coverallsapp/github-action@master"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: "./coverage/lcov.info"
