@@ -1,133 +1,56 @@
 import { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
+import forEach from "mocha-each";
 
-import { MAX_59x18, MAX_WHOLE_59x18, MIN_59x18, MIN_WHOLE_59x18, PI, UNIT } from "../../../../helpers/constants";
+import { MAX_59x18, MAX_WHOLE_59x18, MIN_59x18, MIN_WHOLE_59x18, PI, UNIT, ZERO } from "../../../../helpers/constants";
 import { bn, fp, solidityMod } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeFrac(): void {
-  it("works when x = min 59x18", async function () {
-    const x: BigNumber = MIN_59x18;
-    const result: BigNumber = await this.prbMath.doFrac(x);
-    expect(result).to.equal(solidityMod(MIN_59x18, UNIT));
+  context("when x is zero", function () {
+    it("works", async function () {
+      const x: BigNumber = ZERO;
+      const result: BigNumber = await this.prbMath.doFrac(x);
+      expect(result).to.equal(ZERO);
+    });
   });
 
-  it("works when x = min whole 59x18", async function () {
-    const x: BigNumber = MIN_WHOLE_59x18;
-    const result: BigNumber = await this.prbMath.doFrac(x);
-    expect(result).to.equal(0);
+  context("when x is a negative number", function () {
+    const testSets = [
+      [MIN_59x18, solidityMod(MIN_59x18, UNIT)],
+      [MIN_WHOLE_59x18, ZERO],
+      [bn(-1e18).mul(UNIT), ZERO],
+      [fp(-4.2), fp(-0.2)],
+      [PI.mul(-1), solidityMod(PI.mul(-1), UNIT)],
+      [fp(-2), ZERO],
+      [fp(-1.125), fp(-0.125)],
+      [fp(-1), ZERO],
+      [fp(-0.5), fp(-0.5)],
+      [fp(-0.1), fp(-0.1)],
+    ];
+
+    forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
+      const result: BigNumber = await this.prbMath.doFrac(x);
+      expect(result).to.equal(expected);
+    });
   });
 
-  it("works when x = -1e18", async function () {
-    const x: BigNumber = bn(-1e18).mul(UNIT);
-    const result: BigNumber = await this.prbMath.doFrac(x);
-    expect(result).to.equal(0);
-  });
+  context("when x is a positive number", function () {
+    const testSets = [
+      [fp(0.1), fp(0.1)],
+      [fp(0.5), fp(0.5)],
+      [UNIT, ZERO],
+      [fp(1.125), fp(0.125)],
+      [fp(2), ZERO],
+      [PI, solidityMod(PI, UNIT)],
+      [fp(4.2), fp(0.2)],
+      [bn(1e18).mul(UNIT), ZERO],
+      [MAX_WHOLE_59x18, ZERO],
+      [MAX_59x18, solidityMod(MAX_59x18, UNIT)],
+    ];
 
-  it("works when x = -4.2", async function () {
-    const x: BigNumber = fp(-4.2);
-    const result: BigNumber = await this.prbMath.doFrac(x);
-    expect(result).to.equal(fp(-0.2));
-  });
-
-  it("works when x = -pi", async function () {
-    const x: BigNumber = PI.mul(-1);
-    const result: BigNumber = await this.prbMath.doFrac(x);
-    expect(result).to.equal(solidityMod(x, UNIT));
-  });
-
-  it("works when x = -1", async function () {
-    const x: BigNumber = fp(-1);
-    const result: BigNumber = await this.prbMath.doFrac(x);
-    expect(result).to.equal(0);
-  });
-
-  it("works when x = -1.125", async function () {
-    const x: BigNumber = fp(-1.125);
-    const result: BigNumber = await this.prbMath.doFrac(x);
-    expect(result).to.equal(fp(-0.125));
-  });
-
-  it("works when x = -2", async function () {
-    const x: BigNumber = fp(-2);
-    const result: BigNumber = await this.prbMath.doFrac(x);
-    expect(result).to.equal(0);
-  });
-
-  it("works when x = -0.5", async function () {
-    const x: BigNumber = fp(-0.5);
-    const result: BigNumber = await this.prbMath.doFrac(x);
-    expect(result).to.equal(x);
-  });
-
-  it("works when x = -0.1", async function () {
-    const x: BigNumber = fp(-0.1);
-    const result: BigNumber = await this.prbMath.doFrac(x);
-    expect(result).to.equal(x);
-  });
-
-  it("works when x = 0", async function () {
-    const x: number = 0;
-    const result: BigNumber = await this.prbMath.doFrac(x);
-    expect(result).to.equal(0);
-  });
-
-  it("works when x = 0.1", async function () {
-    const x: BigNumber = fp(0.1);
-    const result: BigNumber = await this.prbMath.doFrac(x);
-    expect(result).to.equal(x);
-  });
-
-  it("works when x = 0.5", async function () {
-    const x: BigNumber = fp(0.5);
-    const result: BigNumber = await this.prbMath.doFrac(x);
-    expect(result).to.equal(x);
-  });
-
-  it("works when x = 1", async function () {
-    const x: BigNumber = fp(1);
-    const result: BigNumber = await this.prbMath.doFrac(x);
-    expect(result).to.equal(0);
-  });
-
-  it("works when x = 1.125", async function () {
-    const x: BigNumber = fp(1.125);
-    const result: BigNumber = await this.prbMath.doFrac(x);
-    expect(result).to.equal(fp(0.125));
-  });
-
-  it("works when x = 2", async function () {
-    const x: BigNumber = fp(2);
-    const result: BigNumber = await this.prbMath.doFrac(x);
-    expect(result).to.equal(0);
-  });
-
-  it("works when x = pi", async function () {
-    const x: BigNumber = PI;
-    const result: BigNumber = await this.prbMath.doFrac(x);
-    expect(result).to.equal(solidityMod(PI, UNIT));
-  });
-
-  it("works when x = 4.2", async function () {
-    const x: BigNumber = fp(4.2);
-    const result: BigNumber = await this.prbMath.doFrac(x);
-    expect(result).to.equal(fp(0.2));
-  });
-
-  it("works when x = 1e18", async function () {
-    const x: BigNumber = bn(1e18).mul(UNIT);
-    const result: BigNumber = await this.prbMath.doFrac(x);
-    expect(result).to.equal(0);
-  });
-
-  it("works when x = max whole 59x18", async function () {
-    const x: BigNumber = MAX_WHOLE_59x18;
-    const result: BigNumber = await this.prbMath.doFrac(x);
-    expect(result).to.equal(0);
-  });
-
-  it("works when x = max 59x18", async function () {
-    const x: BigNumber = MAX_59x18;
-    const result: BigNumber = await this.prbMath.doFrac(x);
-    expect(result).to.equal(solidityMod(MAX_59x18, UNIT));
+    forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
+      const result: BigNumber = await this.prbMath.doFrac(x);
+      expect(result).to.equal(expected);
+    });
   });
 }

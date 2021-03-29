@@ -29,4 +29,6 @@ export const PI: BigNumber = bn("3141592653589793238");
 
 export const TWICE_UNIT: BigNumber = fp(2);
 
+export const ZERO = BigNumber.from(0);
+
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
