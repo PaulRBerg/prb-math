@@ -6,22 +6,23 @@ import "hardhat/console.sol";
 
 /// @title PRBMath
 /// @author Paul Razvan Berg
-/// @notice Smart contract library for mathematical functions. Works with signed int256 numbers considered
-/// to have 18 decimals.
+/// @notice Smart contract library for mathematical functions. Works with int256 numbers considered to have 18
+/// decimals. We call this format decimal 59.18 fixed-point numbers, since there can be up to 59 digits in the
+/// integer part and up to 18 digits in the fractional part.
 library PRBMath {
     /// @dev Half the UNIT number.
     int256 internal constant HALF_UNIT = 5e17;
 
-    /// @dev The maximum value a signed 59.18 decimal fixed point number can have.
+    /// @dev The maximum value a 59.18 decimal fixed-point number can have.
     int256 internal constant MAX_59x18 = type(int256).max;
 
-    /// @dev The maximum whole value a signed 59.18 decimal fixed point number can have.
+    /// @dev The maximum whole value a 59.18 decimal fixed-point number can have.
     int256 internal constant MAX_WHOLE_59x18 = type(int256).max - (type(int256).max % UNIT);
 
-    /// @dev The minimum value a signed 59.18 decimal fixed point number can have.
+    /// @dev The minimum value a 59.18 decimal fixed-point number can have.
     int256 internal constant MIN_59x18 = type(int256).min;
 
-    /// @dev The minimum whole value a signed 59.18 decimal fixed point number can have.
+    /// @dev The minimum whole value a 59.18 decimal fixed-point number can have.
     int256 internal constant MIN_WHOLE_59x18 = type(int256).min - (type(int256).min % UNIT);
 
     /// @dev Twice the UNI number.
@@ -49,9 +50,9 @@ library PRBMath {
     /// @dev See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
     ///
     /// Requirements:
-    /// - `x` must be less than or equal to the maximum whole value permitted by the signed 59.18 decimal format.
+    /// - `x` must be less than or equal to the maximum whole value allowed by the 59.18 decimal fixed-point format.
     ///
-    /// @param x The signed 59.18 decimal number to ceil.
+    /// @param x The 59.18 decimal fixed-point number to ceil.
     /// @param result The least integer greater than or equal to x.
     function ceil(int256 x) internal pure returns (int256 result) {
         require(x <= MAX_WHOLE_59x18);
@@ -86,9 +87,9 @@ library PRBMath {
     /// @dev See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
     ///
     /// Requirements:
-    /// - `x` must be greater than or equal to the minimum whole value permitted by the signed 59.18 decimal format.
+    /// - `x` must be greater than or equal to the minimum whole value allowed by the 59.18 decimal fixed-point format.
     ///
-    /// @param x The signed 59.18 decimal number to floor.
+    /// @param x The 59.18 decimal fixed-point number to floor.
     /// @param result The greatest integer less than or equal to x.
     function floor(int256 x) internal pure returns (int256 result) {
         require(x >= MIN_WHOLE_59x18);
@@ -106,8 +107,8 @@ library PRBMath {
     /// @notice Yields the excess beyond x's floored value for positive numbers and the part of the number to the right
     /// of the radix point for negative numbers.
     /// @dev Based on the odd function definition. https://en.wikipedia.org/wiki/Fractional_part
-    /// @param x The signed 59.18 decimal number to get the fractional part of.
-    /// @param result The fractional part of x.
+    /// @param x The 59.18 decimal fixed-point number to get the fractional part of.
+    /// @param result The fractional part of x as a 59.18 decimal fixed-point number.
     function frac(int256 x) internal pure returns (int256 result) {
         result = x % UNIT;
     }
@@ -127,8 +128,8 @@ library PRBMath {
     /// - All from `log2`.
     /// - This doesn't return exactly 1 for 2.718281828459045235, we would need more fine-grained precision for that.
     ///
-    /// @param x The signed 59.18 decimal number for which to calculate the natural logarithm.
-    /// @return result The natural logarithm as a signed 59.18 decimal number.
+    /// @param x The 59.18 decimal fixed-point number for which to calculate the natural logarithm.
+    /// @return result The natural logarithm as a 59.18 decimal fixed-point number.
     function ln(int256 x) internal pure returns (int256 result) {
         require(x > 0);
         int256 ln_2 = 693147180559945309;
@@ -146,8 +147,8 @@ library PRBMath {
     /// Caveats:
     /// - The results are not perfectly accurate to the last decimal digit, because of the iterative approximation.
     ///
-    /// @param x The signed 59.18 decimal number for which to calculate the binary logarithm.
-    /// @return result The binary logarithm as a signed 59.18 decimal number.
+    /// @param x The 59.18 decimal fixed-point number for which to calculate the binary logarithm.
+    /// @return result The binary logarithm as a 59.18 decimal fixed-point number.
     function log2(int256 x) internal pure returns (int256 result) {
         require(x > 0);
 
@@ -275,7 +276,18 @@ library PRBMath {
         result = 0;
     }
 
-    /// @notice Returns 1 in 59.18 representation, right padded by decimals zeros.
+    /// @notice Returns Euler's number in 59.18 decimal fixed-point representation.
+    /// @dev See https://en.wikipedia.org/wiki/E_(mathematical_constant).
+    function e() internal pure returns (int256 result) {
+        result = 2718281828459045235;
+    }
+
+    /// @notice Returns PI in 59.18 decimal fixed-point representation.
+    function pi() internal pure returns (int256 result) {
+        result = 3141592653589793238;
+    }
+
+    /// @notice Returns 1 in 59.18 decimal fixed-point representation.
     function unit() internal pure returns (int256 result) {
         result = UNIT;
     }

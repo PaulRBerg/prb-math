@@ -28,6 +28,14 @@ contract PRBMathMock {
         return PRBMath.log2(x);
     }
 
+    function getE() external pure returns (int256) {
+        return PRBMath.e();
+    }
+
+    function getPi() external pure returns (int256) {
+        return PRBMath.pi();
+    }
+
     function getUnit() external pure returns (int256) {
         return PRBMath.unit();
     }
