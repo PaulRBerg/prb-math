@@ -7,14 +7,14 @@ import { bn, fp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeFloor(): void {
   context("when x is zero", function () {
-    it("works", async function () {
+    it("returns zero", async function () {
       const x: BigNumber = ZERO;
       const result: BigNumber = await this.prbMath.doFloor(x);
       expect(result).to.equal(ZERO);
     });
   });
 
-  context("when x is a negative number", function () {
+  context("when x is negative", function () {
     context("when x < min whole 59x18", function () {
       const testSets = [[MIN_59x18], [MIN_WHOLE_59x18.sub(1)]];
 
@@ -42,7 +42,7 @@ export default function shouldBehaveLikeFloor(): void {
     });
   });
 
-  context("when x is a positive number", function () {
+  context("when x is positive", function () {
     const testSets = [
       [fp(0.1), ZERO],
       [fp(0.5), ZERO],

@@ -1,4 +1,5 @@
 import shouldBehaveLikeAbs from "./pure/abs";
+import shouldBehaveLikeAvg from "./pure/avg";
 import shouldBehaveLikeCeil from "./pure/ceil";
 import shouldBehaveLikeEGetter from "./pure/e";
 import shouldBehaveLikeFloor from "./pure/floor";
@@ -12,6 +13,10 @@ export function shouldBehaveLikePrbMath(): void {
   describe("Pure Functions", function () {
     describe("abs", function () {
       shouldBehaveLikeAbs();
+    });
+
+    describe("avg", function () {
+      shouldBehaveLikeAvg();
     });
 
     describe("ceil", function () {

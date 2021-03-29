@@ -6,21 +6,21 @@ import { E, LN_E, LN_MAX_59x18, MAX_59x18, MAX_WHOLE_59x18, PI, ZERO } from "../
 import { bn, fp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeLn(): void {
-  describe("when x is zero", function () {
+  context("when x is zero", function () {
     it("reverts", async function () {
       const x: BigNumber = ZERO;
       await expect(this.prbMath.doLn(x)).to.be.reverted;
     });
   });
 
-  describe("when x is a negative number", function () {
+  context("when x is negative", function () {
     it("reverts", async function () {
       const x: BigNumber = fp(-0.1);
       await expect(this.prbMath.doLn(x)).to.be.reverted;
     });
   });
 
-  describe("when x is a positive number", function () {
+  context("when x is positive", function () {
     const testSets = [
       [fp(0.1), bn("-2302585092994045673")],
       [fp(0.2), bn("-1609437912434100364")],

@@ -14,7 +14,7 @@ export default function shouldBehaveLikeFrac(): void {
     });
   });
 
-  context("when x is a negative number", function () {
+  context("when x is negative", function () {
     const testSets = [
       [MIN_59x18, solidityMod(MIN_59x18, UNIT)],
       [MIN_WHOLE_59x18, ZERO],
@@ -34,7 +34,7 @@ export default function shouldBehaveLikeFrac(): void {
     });
   });
 
-  context("when x is a positive number", function () {
+  context("when x is positive", function () {
     const testSets = [
       [fp(0.1), fp(0.1)],
       [fp(0.5), fp(0.5)],

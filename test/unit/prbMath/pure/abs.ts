@@ -14,7 +14,7 @@ export default function shouldBehaveLikeAbs(): void {
     });
   });
 
-  context("when x is a negative number", function () {
+  context("when x is negative", function () {
     context("when x = min 59x18", function () {
       it("reverts", async function () {
         const x: BigNumber = MIN_59x18;
@@ -43,7 +43,7 @@ export default function shouldBehaveLikeAbs(): void {
     });
   });
 
-  context("when x is a positive number", function () {
+  context("when x is positive", function () {
     context("when x > min 59x18", function () {
       const testSets = [
         [fp(0.1), fp(0.1)],

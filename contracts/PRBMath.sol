@@ -45,6 +45,19 @@ library PRBMath {
         return x < 0 ? -x : x;
     }
 
+    /// @notice Calculates arithmetic average of x and y, rounding down.
+    /// @param x The first 59.18 decimal fixed-point number.
+    /// @param y The second 59.18 decimal fixed-point number.
+    /// @return result The arithmetic average as a 59.18 decimal fixed-point number.
+    function avg(int256 x, int256 y) internal pure returns (int256 result) {
+        // Save gas by wrapping the code in an "unchecked" block. The calculations can never overflow.
+        unchecked {
+            // The last operand checks if both `x` and `y` are odd and if yes, it adds 1 to the result. We need it
+            // because if both numbers are odd, the 0.5 remainder gets truncated twice.
+            result = (x >> 1) + (y >> 1) + (x & y & 1);
+        }
+    }
+
     /// @notice Yields the least integer greater than or equal to x.
     ///
     /// @dev See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
@@ -126,7 +139,7 @@ library PRBMath {
     ///
     /// Caveats:
     /// - All from `log2`.
-    /// - This doesn't return exactly 1 for 2.718281828459045235, we would need more fine-grained precision for that.
+    /// - This doesn't return exactly 1 for 2.718281828459045235, for that we would need more fine-grained precision.
     ///
     /// @param x The 59.18 decimal fixed-point number for which to calculate the natural logarithm.
     /// @return result The natural logarithm as a 59.18 decimal fixed-point number.

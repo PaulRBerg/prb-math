@@ -7,14 +7,14 @@ import { bn, fp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeCeil(): void {
   context("when x is zero", function () {
-    it("works", async function () {
+    it("returns zero", async function () {
       const x: BigNumber = ZERO;
       const result: BigNumber = await this.prbMath.doCeil(x);
       expect(result).to.equal(x);
     });
   });
 
-  context("when x is a negative number", function () {
+  context("when x is negative", function () {
     const testSets = [
       [MIN_59x18, MIN_WHOLE_59x18],
       [MIN_WHOLE_59x18, MIN_WHOLE_59x18],
@@ -34,7 +34,7 @@ export default function shouldBehaveLikeCeil(): void {
     });
   });
 
-  context("when x is a positive number", function () {
+  context("when x is positive", function () {
     context("when x > max whole 59x18", function () {
       const testSets = [[MAX_WHOLE_59x18.add(1)], [MAX_59x18]];
 

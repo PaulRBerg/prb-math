@@ -4,39 +4,43 @@ pragma solidity >=0.8.0;
 import "../PRBMath.sol";
 
 contract PRBMathMock {
-    function doAbs(int256 x) external pure returns (int256) {
-        return PRBMath.abs(x);
+    function doAbs(int256 x) external pure returns (int256 result) {
+        result = PRBMath.abs(x);
     }
 
-    function doCeil(int256 x) external pure returns (int256) {
-        return PRBMath.ceil(x);
+    function doAvg(int256 x, int256 y) external view returns (int256 result) {
+        result = PRBMath.avg(x, y);
     }
 
-    function doFloor(int256 x) external pure returns (int256) {
-        return PRBMath.floor(x);
+    function doCeil(int256 x) external pure returns (int256 result) {
+        result = PRBMath.ceil(x);
     }
 
-    function doFrac(int256 x) external pure returns (int256) {
-        return PRBMath.frac(x);
+    function doFloor(int256 x) external pure returns (int256 result) {
+        result = PRBMath.floor(x);
     }
 
-    function doLn(int256 x) external pure returns (int256) {
-        return PRBMath.ln(x);
+    function doFrac(int256 x) external pure returns (int256 result) {
+        result = PRBMath.frac(x);
     }
 
-    function doLog2(int256 x) external pure returns (int256) {
-        return PRBMath.log2(x);
+    function doLn(int256 x) external pure returns (int256 result) {
+        result = PRBMath.ln(x);
     }
 
-    function getE() external pure returns (int256) {
-        return PRBMath.e();
+    function doLog2(int256 x) external pure returns (int256 result) {
+        result = PRBMath.log2(x);
     }
 
-    function getPi() external pure returns (int256) {
-        return PRBMath.pi();
+    function getE() external pure returns (int256 result) {
+        result = PRBMath.e();
     }
 
-    function getUnit() external pure returns (int256) {
-        return PRBMath.unit();
+    function getPi() external pure returns (int256 result) {
+        result = PRBMath.pi();
+    }
+
+    function getUnit() external pure returns (int256 result) {
+        result = PRBMath.unit();
     }
 }
