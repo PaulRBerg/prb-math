@@ -125,13 +125,6 @@ library PRBMath {
         result = x % UNIT;
     }
 
-    /// @dev Note that this function does NOT assume the 58.18 decimal fixed-point representation.
-    /// See https://stackoverflow.com/a/600306/3873510.
-    function isPowOfTwo(uint256 x) internal pure returns (bool result) {
-        require(x > 0);
-        result = (x & (x - 1)) == 0;
-    }
-
     /// @notice Calculates the natural logarithm of x.
     ///
     /// @dev Based on the insight that ln(x) = log2(x) * ln(2).
@@ -337,21 +330,6 @@ library PRBMath {
         b;
         denominator;
         result = 0;
-    }
-
-    /// @dev See https://stackoverflow.com/a/1322548/3873510.
-    function nextPowerOfTwo(uint256 x) internal pure returns (uint256 npot) {
-        require(x > 0);
-        npot = x - 1;
-        npot |= npot >> 1;
-        npot |= npot >> 2;
-        npot |= npot >> 4;
-        npot |= npot >> 8;
-        npot |= npot >> 16;
-        npot |= npot >> 32;
-        npot |= npot >> 64;
-        npot |= npot >> 128;
-        npot += 1;
     }
 
     function sqrt(int256 x) internal pure returns (int256 result) {
