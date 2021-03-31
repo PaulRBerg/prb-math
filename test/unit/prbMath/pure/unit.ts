@@ -5,7 +5,7 @@ import { UNIT } from "../../../../helpers/constants";
 
 export default function shouldBehaveLikeUnitGetter(): void {
   it("returns UNIT", async function () {
-    const result: BigNumber = await this.prbMath.getUnit();
+    const result: BigNumber = await this.contracts.prbMath.getUnit();
     expect(result).to.equal(UNIT);
   });
 }

@@ -5,7 +5,7 @@ import { PI } from "../../../../helpers/constants";
 
 export default function shouldBehaveLikePiGetter(): void {
   it("returns PI", async function () {
-    const result: BigNumber = await this.prbMath.getPi();
+    const result: BigNumber = await this.contracts.prbMath.getPi();
     expect(result).to.equal(PI);
   });
 }

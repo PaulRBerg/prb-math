@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: LGPL-3.0-or-later
 pragma solidity >=0.8.0;
 
 import "../PRBMath.sol";
@@ -8,7 +8,7 @@ contract PRBMathMock {
         result = PRBMath.abs(x);
     }
 
-    function doAvg(int256 x, int256 y) external view returns (int256 result) {
+    function doAvg(int256 x, int256 y) external pure returns (int256 result) {
         result = PRBMath.avg(x, y);
     }
 
@@ -26,6 +26,10 @@ contract PRBMathMock {
 
     function doLn(int256 x) external pure returns (int256 result) {
         result = PRBMath.ln(x);
+    }
+
+    function doLog10(int256 x) external pure returns (int256 result) {
+        result = PRBMath.log10(x);
     }
 
     function doLog2(int256 x) external pure returns (int256 result) {

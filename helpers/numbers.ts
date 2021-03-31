@@ -48,6 +48,10 @@ export function solidityMod(x: BigNumber, n: BigNumber): BigNumber {
   return result;
 }
 
+export function solidityModByUnit(x: BigNumber): BigNumber {
+  return solidityMod(x, UNIT);
+}
+
 export function toFp(x: BigNumberish | Decimal): Decimal {
   return decimal(x).mul(1e18);
 }

@@ -2,21 +2,21 @@ import { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
 import forEach from "mocha-each";
 
-import { E, LN_E, LN_MAX_59x18, MAX_59x18, MAX_WHOLE_59x18, PI, ZERO } from "../../../../helpers/constants";
+import { E, LN_E, LN_MAX_58x18, MAX_58x18, MAX_WHOLE_58x18, PI, ZERO } from "../../../../helpers/constants";
 import { bn, fp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeLn(): void {
   context("when x is zero", function () {
     it("reverts", async function () {
       const x: BigNumber = ZERO;
-      await expect(this.prbMath.doLn(x)).to.be.reverted;
+      await expect(this.contracts.prbMath.doLn(x)).to.be.reverted;
     });
   });
 
   context("when x is negative", function () {
     it("reverts", async function () {
       const x: BigNumber = fp(-0.1);
-      await expect(this.prbMath.doLn(x)).to.be.reverted;
+      await expect(this.contracts.prbMath.doLn(x)).to.be.reverted;
     });
   });
 
@@ -38,12 +38,13 @@ export default function shouldBehaveLikeLn(): void {
       [PI, bn("1144729885849400162")],
       [fp(4), bn("1386294361119890618")],
       [fp(8), bn("2079441541679835927")],
-      [MAX_WHOLE_59x18, LN_MAX_59x18],
-      [MAX_59x18, LN_MAX_59x18],
+      [bn(1e36), bn("41446531673892822276")],
+      [MAX_WHOLE_58x18, LN_MAX_58x18],
+      [MAX_58x18, LN_MAX_58x18],
     ];
 
     forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
-      const result: BigNumber = await this.prbMath.doLn(x);
+      const result: BigNumber = await this.contracts.prbMath.doLn(x);
       expect(result).to.equal(expected);
     });
   });
