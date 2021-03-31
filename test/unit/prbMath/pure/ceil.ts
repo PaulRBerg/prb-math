@@ -35,7 +35,7 @@ export default function shouldBehaveLikeCeil(): void {
   });
 
   context("when x is positive", function () {
-    context("when x > max whole 58x18", function () {
+    context("when x > max whole 58.18", function () {
       const testSets = [[MAX_WHOLE_58x18.add(1)], [MAX_58x18]];
 
       forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
@@ -43,7 +43,7 @@ export default function shouldBehaveLikeCeil(): void {
       });
     });
 
-    context("when x <= max whole 58x18", function () {
+    context("when x <= max whole 58.18", function () {
       const testSets = [
         [fp(0.1), fp(1)],
         [fp(0.5), fp(1)],

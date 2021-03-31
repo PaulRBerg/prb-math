@@ -49,7 +49,7 @@ library PRBMath {
     /// @param y The second 58.18 decimal fixed-point number.
     /// @return result The arithmetic average as a 58.18 decimal fixed-point number.
     function avg(int256 x, int256 y) internal pure returns (int256 result) {
-        // Save gas by wrapping the code in an "unchecked" block. The calculations can never overflow.
+        // Saving gas by wrapping the code in an "unchecked" block. The calculations can never overflow.
         unchecked {
             // The last operand checks if both x and y are odd and if yes, it adds 1 to the result. We need it
             // because if both numbers are odd, the 0.5 remainder gets truncated twice.
@@ -79,9 +79,26 @@ library PRBMath {
         }
     }
 
+    /// @notice Divides two 58.18 decimal fixed-point numbers, returning a new 58.18 decimal fixed-point number.
+    /// @dev Works by scaling the numerator first, then dividing by the denominator.
+    ///
+    /// Requirements:
+    /// - x * UNIT must not be higher than MAX_58x18
+    ///
+    /// Caveats:
+    /// - Susceptible to phantom overflow when x * UNIT > MAX_58x18
+    ///
+    /// @param x The numerator as a 58.18 decimal fixed-point number.
+    /// @param y The denominator as a 58.18 decimal fixed-point number.
+    /// @param result The quotient as a 58.18 decimal fixed-point number.
     function div(int256 x, int256 y) internal pure returns (int256 result) {
         int256 scaledNumerator = x * UNIT;
-        result = scaledNumerator / y;
+        // Saving gas by wrapping the code in an "unchecked" block. The calculations can never overflow, since the
+        // scaled numerator can't ever be equal to MIN_58x18.
+        // See https://ethereum.stackexchange.com/questions/96482/can-division-underflow-or-overflow-in-solidity
+        unchecked {
+            result = scaledNumerator / y;
+        }
     }
 
     function exp(int256 x) internal pure returns (int256 result) {

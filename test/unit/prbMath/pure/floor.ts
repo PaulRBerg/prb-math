@@ -15,7 +15,7 @@ export default function shouldBehaveLikeFloor(): void {
   });
 
   context("when x is negative", function () {
-    context("when x < min whole 58x18", function () {
+    context("when x < min whole 58.18", function () {
       const testSets = [[MIN_58x18], [MIN_WHOLE_58x18.sub(1)]];
 
       forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
@@ -23,7 +23,7 @@ export default function shouldBehaveLikeFloor(): void {
       });
     });
 
-    context("when x >= min whole 58x18", function () {
+    context("when x >= min whole 58.18", function () {
       const testSets = [
         [MIN_WHOLE_58x18, MIN_WHOLE_58x18],
         [bn(-1e36), bn(-1e36)],

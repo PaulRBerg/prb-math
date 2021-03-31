@@ -16,6 +16,10 @@ contract PRBMathMock {
         result = PRBMath.ceil(x);
     }
 
+    function doDiv(int256 x, int256 y) external pure returns (int256 result) {
+        result = PRBMath.div(x, y);
+    }
+
     function doFloor(int256 x) external pure returns (int256 result) {
         result = PRBMath.floor(x);
     }

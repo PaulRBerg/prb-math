@@ -15,14 +15,14 @@ export default function shouldBehaveLikeAbs(): void {
   });
 
   context("when x is negative", function () {
-    context("when x = min 58x18", function () {
+    context("when x = min 58.18", function () {
       it("reverts", async function () {
         const x: BigNumber = MIN_58x18;
         await expect(this.contracts.prbMath.doAbs(x)).to.be.reverted;
       });
     });
 
-    context("when x > min 58x18", function () {
+    context("when x > min 58.18", function () {
       const testSets = [
         [MIN_58x18.add(1), MAX_58x18],
         [MIN_WHOLE_58x18, MAX_WHOLE_58x18],
@@ -44,7 +44,7 @@ export default function shouldBehaveLikeAbs(): void {
   });
 
   context("when x is positive", function () {
-    context("when x > min 58x18", function () {
+    context("when x > min 58.18", function () {
       const testSets = [
         [fp(0.1), fp(0.1)],
         [fp(0.5), fp(0.5)],

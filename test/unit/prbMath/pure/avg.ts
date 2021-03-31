@@ -37,7 +37,7 @@ export default function shouldBehaveLikeAvg(): void {
       [fp(-2), fp(8), fp(3)],
       [fp(4), fp(-4), ZERO],
       [fp(8), fp(-2), fp(3)],
-      [MIN_58x18, MAX_58x18, bn(-1)],
+      [MIN_58x18, MAX_58x18, fp(-0.000000000000000001)],
     ];
 
     forEach(testSets).it(
