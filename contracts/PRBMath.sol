@@ -277,8 +277,7 @@ library PRBMath {
         }
 
         // Calculate the integer part n, add it to the result and finally calculate y = x * 2^(-n).
-        uint256 quotient = uint256(x / UNIT);
-        uint256 n = mostSignificantBit(quotient);
+        uint256 n = mostSignificantBit(x);
         result = int256(n) * UNIT * sign;
         int256 y = x >> n;
 
@@ -356,10 +355,10 @@ library PRBMath {
     /// PRIVATE FUNCTIONS ///
     /// @notice Finds the zero-based index of the first one in the binary representation of x.
     /// @dev See the "Find First Set" article on Wikipedia https://en.wikipedia.org/wiki/Find_first_set
-    /// Note that this function does NOT assume the 58.18 decimal fixed-point representation.
-    /// @param x The number for which to find the index of the most significant bit.
+    /// @param x The 58.18 decimal fixed-point number for which to find the index of the most significant bit.
     /// @return msb The index of the most significant bit.
-    function mostSignificantBit(uint256 x) private pure returns (uint256 msb) {
+    function mostSignificantBit(int256 x) private pure returns (uint256 msb) {
+        x /= UNIT;
         if (x >= 2**128) {
             x >>= 128;
             msb += 128;
