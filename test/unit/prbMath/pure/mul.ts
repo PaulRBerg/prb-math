@@ -21,10 +21,11 @@ export default function shouldBehaveLikeMul(): void {
       [MIN_58x18, ZERO],
       [fp(-0.5), ZERO],
       [ZERO, fp(-0.5)],
+    ].concat([
       [ZERO, fp(0.5)],
       [fp(0.5), ZERO],
       [MAX_58x18, ZERO],
-    ];
+    ]);
 
     forEach(testSets).it("takes %e and %e and returns zero", async function (x: BigNumber, y: BigNumber) {
       const result: BigNumber = await this.contracts.prbMath.doMul(x, y);
@@ -40,11 +41,12 @@ export default function shouldBehaveLikeMul(): void {
         [MIN_WHOLE_58x18, MIN_WHOLE_58x18],
         // First integer lower than the square root of MIN_58x18
         [bn("-240615969168004511545033772477625056928"), bn("-240615969168004511545033772477625056928")],
+      ].concat([
         // First integer higher than the square root of MAX_58x18
         [bn("240615969168004511545033772477625056928"), bn("240615969168004511545033772477625056928")],
         [MAX_WHOLE_58x18, MAX_WHOLE_58x18],
         [MAX_58x18, MAX_58x18],
-      ];
+      ]);
 
       forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
         await expect(this.contracts.prbMath.doMul(x, y)).to.be.reverted;

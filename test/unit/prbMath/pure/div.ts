@@ -66,6 +66,7 @@ export default function shouldBehaveLikeDiv(): void {
             [fp(-0.000000000000000001), fp(-1), fp(0.000000000000000001)],
             [fp(-0.000000000000000001), fp(-1).sub(1), ZERO],
             [fp(-0.000000000000000001), MIN_58x18, ZERO],
+          ].concat([
             [fp(0.000000000000000001), MAX_58x18, ZERO],
             [fp(0.000000000000000001), fp(1).add(1), ZERO],
             [fp(0.000000000000000001), fp(1), fp(0.000000000000000001)],
@@ -82,7 +83,7 @@ export default function shouldBehaveLikeDiv(): void {
             [fp(2503), fp(918882.11), bn("2723962054283546")],
             [bn(1e36), fp(1), bn(1e36)],
             [MAX_58x18.div(UNIT), fp(0.000000000000000001), MAX_WHOLE_58x18],
-          ];
+          ]);
 
           forEach(testSets).it(
             "takes %e and %e and returns %e",
@@ -111,6 +112,7 @@ export default function shouldBehaveLikeDiv(): void {
             [fp(-0.000000000000000001), fp(1), fp(-0.000000000000000001)],
             [fp(-0.000000000000000001), fp(1).add(1), ZERO],
             [fp(-0.000000000000000001), MAX_58x18, ZERO],
+          ].concat([
             [fp(0.000000000000000001), MIN_58x18, ZERO],
             [fp(0.000000000000000001), fp(-1).sub(1), ZERO],
             [fp(0.000000000000000001), fp(-1), fp(-0.000000000000000001)],
@@ -127,7 +129,7 @@ export default function shouldBehaveLikeDiv(): void {
             [fp(2503), fp(-918882.11), bn("-2723962054283546")],
             [bn(1e36), fp(-1), bn(-1e36)],
             [MAX_58x18.div(UNIT), fp(-0.000000000000000001), MIN_WHOLE_58x18],
-          ];
+          ]);
 
           forEach(testSets).it(
             "takes %e and %e and returns %e",

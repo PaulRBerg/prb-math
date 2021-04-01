@@ -6,14 +6,14 @@ import { MAX_58x18, MAX_WHOLE_58x18, MIN_58x18, MIN_WHOLE_58x18, ZERO } from "..
 import { bn, fp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeAvg(): void {
-  context("when both numbers are zero", function () {
+  context("when both operands are zero", function () {
     it("returns zero", async function () {
       const result: BigNumber = await this.contracts.prbMath.doAvg(ZERO, ZERO);
       expect(result).to.equal(ZERO);
     });
   });
 
-  context("when one number is zero and the other is non-zero", function () {
+  context("when one operand is zero and the other is not zero", function () {
     const testSets = [
       [fp(-4), ZERO, fp(-2)],
       [ZERO, fp(-4), fp(-2)],
@@ -30,7 +30,7 @@ export default function shouldBehaveLikeAvg(): void {
     );
   });
 
-  context("when one number is negative and the other is positive", function () {
+  context("when one operand is negative and the other is positive", function () {
     const testSets = [
       [MIN_WHOLE_58x18, MAX_WHOLE_58x18, ZERO],
       [fp(-4), fp(4), ZERO],
@@ -49,7 +49,7 @@ export default function shouldBehaveLikeAvg(): void {
     );
   });
 
-  context("when both numbers are negative", function () {
+  context("when both operands are negative", function () {
     const testSets = [
       [MIN_WHOLE_58x18, MIN_58x18, MIN_58x18.add(MIN_WHOLE_58x18).div(2)],
       [fp(-0.000000000000000001), fp(-0.000000000000000003), fp(-0.000000000000000002)],
@@ -68,8 +68,8 @@ export default function shouldBehaveLikeAvg(): void {
     );
   });
 
-  context("when both numbers are positive", function () {
-    context("when both numbers are odd", function () {
+  context("when both operands are positive", function () {
+    context("when both operands are odd", function () {
       const testSets = [
         [fp(0.000000000000000001), fp(0.000000000000000003), fp(0.000000000000000002)],
         [fp(1), fp(1), fp(1)],
@@ -88,7 +88,7 @@ export default function shouldBehaveLikeAvg(): void {
       );
     });
 
-    context("when both numbers are even", function () {
+    context("when both operands are even", function () {
       const testSets = [
         [fp(0.000000000000000002), fp(0.000000000000000004), fp(0.000000000000000003)],
         [fp(2), fp(2), fp(2)],
@@ -107,7 +107,7 @@ export default function shouldBehaveLikeAvg(): void {
       );
     });
 
-    context("when one number is even and the other is odd", function () {
+    context("when one operand is even and the other is odd", function () {
       const testSets = [
         [fp(0.000000000000000001), fp(0.000000000000000002), fp(0.000000000000000001)],
         [fp(1), fp(2), fp(1.5)],
