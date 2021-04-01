@@ -8,6 +8,7 @@ import shouldBehaveLikeFrac from "./pure/frac";
 import shouldBehaveLikeLn from "./pure/ln";
 import shouldBehaveLikeLog10 from "./pure/log10";
 import shouldBehaveLikeLog2 from "./pure/log2";
+import shouldBehaveLikeMul from "./pure/mul";
 import shouldBehaveLikePiGetter from "./pure/pi";
 import shouldBehaveLikeUnitGetter from "./pure/unit";
 
@@ -51,6 +52,10 @@ export function shouldBehaveLikePrbMath(): void {
 
     describe("log2", function () {
       shouldBehaveLikeLog2();
+    });
+
+    describe("mul", function () {
+      shouldBehaveLikeMul();
     });
 
     describe("pi", function () {

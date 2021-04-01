@@ -40,6 +40,10 @@ contract PRBMathMock {
         result = PRBMath.log2(x);
     }
 
+    function doMul(int256 x, int256 y) external pure returns (int256 result) {
+        result = PRBMath.mul(x, y);
+    }
+
     function getE() external pure returns (int256 result) {
         result = PRBMath.e();
     }

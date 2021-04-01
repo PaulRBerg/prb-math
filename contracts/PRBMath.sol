@@ -45,11 +45,11 @@ library PRBMath {
     }
 
     /// @notice Calculates arithmetic average of x and y, rounding down.
-    /// @param x The first 58.18 decimal fixed-point number.
-    /// @param y The second 58.18 decimal fixed-point number.
+    /// @param x The first operand as a 58.18 decimal fixed-point number.
+    /// @param y The second operand as a 58.18 decimal fixed-point number.
     /// @return result The arithmetic average as a 58.18 decimal fixed-point number.
     function avg(int256 x, int256 y) internal pure returns (int256 result) {
-        // Saving gas by wrapping the code in an "unchecked" block. The calculations can never overflow.
+        // Saving gas by wrapping the code in an "unchecked" block. The operations can never overflow.
         unchecked {
             // The last operand checks if both x and y are odd and if yes, it adds 1 to the result. We need it
             // because if both numbers are odd, the 0.5 remainder gets truncated twice.
@@ -93,8 +93,8 @@ library PRBMath {
     /// @param result The quotient as a 58.18 decimal fixed-point number.
     function div(int256 x, int256 y) internal pure returns (int256 result) {
         int256 scaledNumerator = x * UNIT;
-        // Saving gas by wrapping the code in an "unchecked" block. The calculations can never overflow, since the
-        // scaled numerator can't ever be equal to MIN_58x18.
+        // Saving gas by wrapping the code in an "unchecked" block. Overflows can happen only when the scaled numerator
+        // is MIN_58x18 and the denominator is -1. But the scaled numerator can't be MIN_58x18.
         // See https://ethereum.stackexchange.com/questions/96482/can-division-underflow-or-overflow-in-solidity
         unchecked {
             result = scaledNumerator / y;
@@ -320,20 +320,30 @@ library PRBMath {
         }
     }
 
+    /// @notice Multiplies two 58.18 decimal fixed-point numbers, returning a new 58.18 decimal fixed-point number.
+    /// @dev Requirements:
+    /// - x * y must not be higher than MAX_58x18 or smaller than MIN_58x18
+    /// - x * y +/- HALF_UNIT must not be higher than MAX_58x18 or smaller than MIN_58x18
+    ///
+    /// Caveats:
+    /// - Susceptible to phantom overflow when (x * y > MAX_58x18) OR (x * y < MIN_58x18)
+    /// - Susceptible to phantom overflow when (x * y + HALF_UNIT > MAX_58x18) OR (x * y - HALF_UNIT < MIN_58x18)
+    ///
+    /// @param x The first operand as a 58.18 decimal fixed-point number.
+    /// @param y The second operand as a 58.18 decimal fixed-point number.
+    /// @param result The product as a 58.18 decimal fixed-point number.
     function mul(int256 x, int256 y) internal pure returns (int256 result) {
         int256 doubleScaledProduct = x * y;
 
-        // Before dividing, we add half the UNIT for positive numbers and subtract half the UNIT for negative numbers,
+        // Before dividing, we add half the UNIT for positive products and subtract half the UNIT for negative products,
         // so that we get rounding instead of truncation. Without this, 6.6e-19 would be truncated to 0 instead of being
         // rounded to 1e-18. See "Listing 6" and text above it at https://accu.org/index.php/journals/1717
-        int256 doubleScaledProductWithHalfUnit;
-        if (x > 0) {
-            doubleScaledProductWithHalfUnit = doubleScaledProduct + HALF_UNIT;
-        } else {
-            doubleScaledProductWithHalfUnit = doubleScaledProduct - HALF_UNIT;
-        }
+        int256 doubleScaledProductWithHalfUnit =
+            doubleScaledProduct > 0 ? (doubleScaledProduct + HALF_UNIT) : (doubleScaledProduct - HALF_UNIT);
 
-        result = doubleScaledProductWithHalfUnit / UNIT;
+        unchecked {
+            result = doubleScaledProductWithHalfUnit / UNIT;
+        }
     }
 
     /// @dev See https://github.com/Uniswap/uniswap-v3-core/blob/main/contracts/libraries/FullMath.sol.
