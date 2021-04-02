@@ -5,6 +5,7 @@ import shouldBehaveLikeDiv from "./pure/div";
 import shouldBehaveLikeEGetter from "./pure/e";
 import shouldBehaveLikeFloor from "./pure/floor";
 import shouldBehaveLikeFrac from "./pure/frac";
+import shouldBehaveLikeInv from "./pure/inv";
 import shouldBehaveLikeLn from "./pure/ln";
 import shouldBehaveLikeLog10 from "./pure/log10";
 import shouldBehaveLikeLog2 from "./pure/log2";
@@ -40,6 +41,10 @@ export function shouldBehaveLikePrbMath(): void {
 
     describe("frac", function () {
       shouldBehaveLikeFrac();
+    });
+
+    describe("inv", function () {
+      shouldBehaveLikeInv();
     });
 
     describe("ln", function () {

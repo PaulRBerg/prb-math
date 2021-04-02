@@ -143,6 +143,19 @@ library PRBMath {
         result = x % UNIT;
     }
 
+    /// @notice Calculates 1 / x, rounding towards zero.
+    ///
+    /// @dev Requirements:
+    /// - x cannot be zero.
+    ///
+    /// @param x The 58.18 decimal fixed point number for which to calculate the inverse.
+    /// @return result The inverse as a 58.18 decimal fixed point number fixed point number
+    function inv(int256 x) internal pure returns (int256 result) {
+        unchecked {
+            result = (UNIT * UNIT) / x;
+        }
+    }
+
     /// @notice Calculates the natural logarithm of x.
     ///
     /// @dev Based on the insight that ln(x) = log2(x) * ln(2).
