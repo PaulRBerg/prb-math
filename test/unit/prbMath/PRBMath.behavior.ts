@@ -2,7 +2,6 @@ import shouldBehaveLikeAbs from "./pure/abs";
 import shouldBehaveLikeAvg from "./pure/avg";
 import shouldBehaveLikeCeil from "./pure/ceil";
 import shouldBehaveLikeDiv from "./pure/div";
-import shouldBehaveLikeEGetter from "./pure/e";
 import shouldBehaveLikeFloor from "./pure/floor";
 import shouldBehaveLikeFrac from "./pure/frac";
 import shouldBehaveLikeInv from "./pure/inv";
@@ -10,8 +9,6 @@ import shouldBehaveLikeLn from "./pure/ln";
 import shouldBehaveLikeLog10 from "./pure/log10";
 import shouldBehaveLikeLog2 from "./pure/log2";
 import shouldBehaveLikeMul from "./pure/mul";
-import shouldBehaveLikePiGetter from "./pure/pi";
-import shouldBehaveLikeUnitGetter from "./pure/unit";
 
 export function shouldBehaveLikePrbMath(): void {
   describe("Pure Functions", function () {
@@ -29,10 +26,6 @@ export function shouldBehaveLikePrbMath(): void {
 
     describe("div", function () {
       shouldBehaveLikeDiv();
-    });
-
-    describe("e", function () {
-      shouldBehaveLikeEGetter();
     });
 
     describe("floor", function () {
@@ -61,14 +54,6 @@ export function shouldBehaveLikePrbMath(): void {
 
     describe("mul", function () {
       shouldBehaveLikeMul();
-    });
-
-    describe("pi", function () {
-      shouldBehaveLikePiGetter();
-    });
-
-    describe("unit", function () {
-      shouldBehaveLikeUnitGetter();
     });
   });
 }
