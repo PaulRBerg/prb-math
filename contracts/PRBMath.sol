@@ -83,6 +83,7 @@ library PRBMath {
     /// @dev Works by scaling the numerator first, then dividing by the denominator.
     ///
     /// Requirements:
+    /// - y cannot be zero
     /// - x * UNIT must not be higher than MAX_58x18
     ///
     /// Caveats:
@@ -178,6 +179,7 @@ library PRBMath {
         require(x > 0);
         result = MAX_58x18;
 
+        // Note that the "mul" in this block is the assembly mul operation, not our function defined in this contract.
         // prettier-ignore
         assembly {
             switch x
@@ -264,7 +266,10 @@ library PRBMath {
 
         if (result == MAX_58x18) {
             int256 log2_10 = 332192809488736234;
-            result = div(log2(x), log2_10);
+            // Saving gas by implementing the "div" function inline.
+            unchecked {
+                result = (log2(x) * UNIT) / log2_10;
+            }
         }
     }
 
