@@ -102,6 +102,25 @@ library PRBMath {
         }
     }
 
+    /// @notice Calculates the natural exponent of x.
+    ///
+    /// @dev Based on the insight that e^x = 2^(x * log2(e)),
+    ///
+    /// Requirements:
+    /// - x must be lower than 88.722839111672999628.
+    /// - All from `log2`.
+    ///
+    /// @param x The exponent as a 59.18 decimal fixed-point number.
+    /// @return result The result as a 59.18 decimal fixed-point number.
+    function exp(int256 x) internal pure returns (uint256 result) {
+        // Otherwise the value passed to `exp2` would be higher than 128e18.
+        require(x < 88722839111672999628);
+        unchecked {
+            int256 log2_e = 1442695040888963407;
+            result = exp2(mul(x, log2_e));
+        }
+    }
+
     /// @notice Calculates the binary exponent of x using the binary fraction method.
     /// @dev See https://ethereum.stackexchange.com/q/79903/24693
     ///
