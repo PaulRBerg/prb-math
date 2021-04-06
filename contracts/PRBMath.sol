@@ -6,23 +6,23 @@ import "hardhat/console.sol";
 /// @title PRBMath
 /// @author Paul Razvan Berg
 /// @notice Smart contract library for mathematical functions that works with int256 numbers considered to have 18
-/// decimals. We call this form 58.18 decimal fixed-point numbers, since there can be up to 58 digits in the 58
+/// decimals. We call this form 59.18 decimal fixed-point numbers, since there can be up to 59 digits in the 59
 /// digits in the integer part and up to 18 digits in the fractional part.
 library PRBMath {
     /// @dev Half the UNIT number.
     int256 internal constant HALF_UNIT = 5e17;
 
-    /// @dev The maximum value a 58.18 decimal fixed-point number can have.
-    int256 internal constant MAX_58x18 = type(int256).max;
+    /// @dev The maximum value a 59.18 decimal fixed-point number can have.
+    int256 internal constant MAX_59x18 = type(int256).max;
 
-    /// @dev The maximum whole value a 58.18 decimal fixed-point number can have.
-    int256 internal constant MAX_WHOLE_58x18 = type(int256).max - (type(int256).max % UNIT);
+    /// @dev The maximum whole value a 59.18 decimal fixed-point number can have.
+    int256 internal constant MAX_WHOLE_59x18 = type(int256).max - (type(int256).max % UNIT);
 
-    /// @dev The minimum value a 58.18 decimal fixed-point number can have.
-    int256 internal constant MIN_58x18 = type(int256).min;
+    /// @dev The minimum value a 59.18 decimal fixed-point number can have.
+    int256 internal constant MIN_59x18 = type(int256).min;
 
-    /// @dev The minimum whole value a 58.18 decimal fixed-point number can have.
-    int256 internal constant MIN_WHOLE_58x18 = type(int256).min - (type(int256).min % UNIT);
+    /// @dev The minimum whole value a 59.18 decimal fixed-point number can have.
+    int256 internal constant MIN_WHOLE_59x18 = type(int256).min - (type(int256).min % UNIT);
 
     /// @dev Twice the UNI number.
     int256 internal constant TWICE_UNIT = 2e18;
@@ -35,19 +35,19 @@ library PRBMath {
     /// @notice Calculate the absolute value of x.
     ///
     /// @dev Requirements:
-    /// - x must be higher than min 58.18.
+    /// - x must be higher than min 59.18.
     ///
     /// @param x The number to calculate the absolute for.
     /// @param result The absolute value of x.
     function abs(int256 x) internal pure returns (int256 result) {
-        require(x > MIN_58x18);
+        require(x > MIN_59x18);
         return x < 0 ? -x : x;
     }
 
     /// @notice Calculates arithmetic average of x and y, rounding down.
-    /// @param x The first operand as a 58.18 decimal fixed-point number.
-    /// @param y The second operand as a 58.18 decimal fixed-point number.
-    /// @return result The arithmetic average as a 58.18 decimal fixed-point number.
+    /// @param x The first operand as a 59.18 decimal fixed-point number.
+    /// @param y The second operand as a 59.18 decimal fixed-point number.
+    /// @return result The arithmetic average as a 59.18 decimal fixed-point number.
     function avg(int256 x, int256 y) internal pure returns (int256 result) {
         // Saving gas by wrapping the code in an "unchecked" block. The operations can never overflow.
         unchecked {
@@ -62,12 +62,12 @@ library PRBMath {
     /// @dev See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
     ///
     /// Requirements:
-    /// - x must be less than or equal to the maximum whole value allowed by the 58.18 decimal fixed-point format.
+    /// - x must be less than or equal to the maximum whole value allowed by the 59.18 decimal fixed-point format.
     ///
-    /// @param x The 58.18 decimal fixed-point number to ceil.
+    /// @param x The 59.18 decimal fixed-point number to ceil.
     /// @param result The least integer greater than or equal to x.
     function ceil(int256 x) internal pure returns (int256 result) {
-        require(x <= MAX_WHOLE_58x18);
+        require(x <= MAX_WHOLE_59x18);
         if (x % UNIT == 0) {
             result = x;
         } else {
@@ -79,23 +79,23 @@ library PRBMath {
         }
     }
 
-    /// @notice Divides two 58.18 decimal fixed-point numbers, returning a new 58.18 decimal fixed-point number.
+    /// @notice Divides two 59.18 decimal fixed-point numbers, returning a new 59.18 decimal fixed-point number.
     /// @dev Works by scaling the numerator first, then dividing by the denominator.
     ///
     /// Requirements:
     /// - y cannot be zero
-    /// - x * UNIT must not be higher than MAX_58x18
+    /// - x * UNIT must not be higher than MAX_59x18
     ///
     /// Caveats:
-    /// - Susceptible to phantom overflow when x * UNIT > MAX_58x18
+    /// - Susceptible to phantom overflow when x * UNIT > MAX_59x18
     ///
-    /// @param x The numerator as a 58.18 decimal fixed-point number.
-    /// @param y The denominator as a 58.18 decimal fixed-point number.
-    /// @param result The quotient as a 58.18 decimal fixed-point number.
+    /// @param x The numerator as a 59.18 decimal fixed-point number.
+    /// @param y The denominator as a 59.18 decimal fixed-point number.
+    /// @param result The quotient as a 59.18 decimal fixed-point number.
     function div(int256 x, int256 y) internal pure returns (int256 result) {
         int256 scaledNumerator = x * UNIT;
         // Saving gas by wrapping the code in an "unchecked" block. Overflows can happen only when the scaled numerator
-        // is MIN_58x18 and the denominator is -1. But the scaled numerator can't be MIN_58x18.
+        // is MIN_59x18 and the denominator is -1. But the scaled numerator can't be MIN_59x18.
         // See https://ethereum.stackexchange.com/questions/96482/can-division-underflow-or-overflow-in-solidity
         unchecked {
             result = scaledNumerator / y;
@@ -117,12 +117,12 @@ library PRBMath {
     /// @dev See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
     ///
     /// Requirements:
-    /// - x must be greater than or equal to the minimum whole value allowed by the 58.18 decimal fixed-point format.
+    /// - x must be greater than or equal to the minimum whole value allowed by the 59.18 decimal fixed-point format.
     ///
-    /// @param x The 58.18 decimal fixed-point number to floor.
+    /// @param x The 59.18 decimal fixed-point number to floor.
     /// @param result The greatest integer less than or equal to x.
     function floor(int256 x) internal pure returns (int256 result) {
-        require(x >= MIN_WHOLE_58x18);
+        require(x >= MIN_WHOLE_59x18);
         if (x % UNIT == 0) {
             result = x;
         } else {
@@ -137,8 +137,8 @@ library PRBMath {
     /// @notice Yields the excess beyond x's floored value for positive numbers and the part of the number to the right
     /// of the radix point for negative numbers.
     /// @dev Based on the odd function definition. https://en.wikipedia.org/wiki/Fractional_part
-    /// @param x The 58.18 decimal fixed-point number to get the fractional part of.
-    /// @param result The fractional part of x as a 58.18 decimal fixed-point number.
+    /// @param x The 59.18 decimal fixed-point number to get the fractional part of.
+    /// @param result The fractional part of x as a 59.18 decimal fixed-point number.
     function frac(int256 x) internal pure returns (int256 result) {
         result = x % UNIT;
     }
@@ -148,8 +148,8 @@ library PRBMath {
     /// @dev Requirements:
     /// - x cannot be zero.
     ///
-    /// @param x The 58.18 decimal fixed point number for which to calculate the inverse.
-    /// @return result The inverse as a 58.18 decimal fixed point number fixed point number
+    /// @param x The 59.18 decimal fixed point number for which to calculate the inverse.
+    /// @return result The inverse as a 59.18 decimal fixed point number fixed point number
     function inv(int256 x) internal pure returns (int256 result) {
         unchecked {
             result = (UNIT * UNIT) / x;
@@ -167,8 +167,8 @@ library PRBMath {
     /// - All from `log2`.
     /// - This doesn't return exactly 1 for 2.718281828459045235, for that we would need more fine-grained precision.
     ///
-    /// @param x The 58.18 decimal fixed-point number for which to calculate the natural logarithm.
-    /// @return result The natural logarithm as a 58.18 decimal fixed-point number.
+    /// @param x The 59.18 decimal fixed-point number for which to calculate the natural logarithm.
+    /// @return result The natural logarithm as a 59.18 decimal fixed-point number.
     function ln(int256 x) internal pure returns (int256 result) {
         require(x > 0);
         int256 ln_2 = 693147180559945309;
@@ -186,11 +186,11 @@ library PRBMath {
     /// Caveats:
     /// - All from `log2`.
     ///
-    /// @param x The 58.18 decimal fixed-point number for which to calculate the common logarithm.
-    /// @return result The common logarithm as a 58.18 decimal fixed-point number.
+    /// @param x The 59.18 decimal fixed-point number for which to calculate the common logarithm.
+    /// @return result The common logarithm as a 59.18 decimal fixed-point number.
     function log10(int256 x) internal pure returns (int256 result) {
         require(x > 0);
-        result = MAX_58x18;
+        result = MAX_59x18;
 
         // Note that the "mul" in this block is the assembly mul operation, not our function defined in this contract.
         // prettier-ignore
@@ -275,7 +275,7 @@ library PRBMath {
             case 10000000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT, 58) }
         }
 
-        if (result == MAX_58x18) {
+        if (result == MAX_59x18) {
             int256 log2_10 = 332192809488736234;
             // Saving gas by implementing the "div" function inline.
             unchecked {
@@ -295,8 +295,8 @@ library PRBMath {
     /// Caveats:
     /// - The results are nor perfectly accurate to the last digit, due to the precision of the iterative approximation.
     ///
-    /// @param x The 58.18 decimal fixed-point number for which to calculate the binary logarithm.
-    /// @return result The binary logarithm as a 58.18 decimal fixed-point number.
+    /// @param x The 59.18 decimal fixed-point number for which to calculate the binary logarithm.
+    /// @return result The binary logarithm as a 59.18 decimal fixed-point number.
     function log2(int256 x) internal pure returns (int256 result) {
         require(x > 0);
 
@@ -337,18 +337,18 @@ library PRBMath {
         }
     }
 
-    /// @notice Multiplies two 58.18 decimal fixed-point numbers, returning a new 58.18 decimal fixed-point number.
+    /// @notice Multiplies two 59.18 decimal fixed-point numbers, returning a new 59.18 decimal fixed-point number.
     /// @dev Requirements:
-    /// - x * y must not be higher than MAX_58x18 or smaller than MIN_58x18
-    /// - x * y +/- HALF_UNIT must not be higher than MAX_58x18 or smaller than MIN_58x18
+    /// - x * y must not be higher than MAX_59x18 or smaller than MIN_59x18
+    /// - x * y +/- HALF_UNIT must not be higher than MAX_59x18 or smaller than MIN_59x18
     ///
     /// Caveats:
-    /// - Susceptible to phantom overflow when (x * y > MAX_58x18) OR (x * y < MIN_58x18)
-    /// - Susceptible to phantom overflow when (x * y + HALF_UNIT > MAX_58x18) OR (x * y - HALF_UNIT < MIN_58x18)
+    /// - Susceptible to phantom overflow when (x * y > MAX_59x18) OR (x * y < MIN_59x18)
+    /// - Susceptible to phantom overflow when (x * y + HALF_UNIT > MAX_59x18) OR (x * y - HALF_UNIT < MIN_59x18)
     ///
-    /// @param x The first operand as a 58.18 decimal fixed-point number.
-    /// @param y The second operand as a 58.18 decimal fixed-point number.
-    /// @param result The product as a 58.18 decimal fixed-point number.
+    /// @param x The first operand as a 59.18 decimal fixed-point number.
+    /// @param y The second operand as a 59.18 decimal fixed-point number.
+    /// @param result The product as a 59.18 decimal fixed-point number.
     function mul(int256 x, int256 y) internal pure returns (int256 result) {
         int256 doubleScaledProduct = x * y;
 
@@ -368,18 +368,18 @@ library PRBMath {
         result = 0;
     }
 
-    /// @notice Returns Euler's number in 58.18 decimal fixed-point representation.
+    /// @notice Returns Euler's number in 59.18 decimal fixed-point representation.
     /// @dev See https://en.wikipedia.org/wiki/E_(mathematical_constant).
     function e() internal pure returns (int256 result) {
         result = 2718281828459045235;
     }
 
-    /// @notice Returns PI in 58.18 decimal fixed-point representation.
+    /// @notice Returns PI in 59.18 decimal fixed-point representation.
     function pi() internal pure returns (int256 result) {
         result = 3141592653589793238;
     }
 
-    /// @notice Returns 1 in 58.18 decimal fixed-point representation.
+    /// @notice Returns 1 in 59.18 decimal fixed-point representation.
     function unit() internal pure returns (int256 result) {
         result = UNIT;
     }
@@ -390,7 +390,7 @@ library PRBMath {
     /// @dev See the note on msb in the "Find First Set" Wikipedia article https://en.wikipedia.org/wiki/Find_first_set
     ///
     /// Caveats:
-    /// - This function does not assume the 58.18 decimal fixed-point representation.
+    /// - This function does not assume the 59.18 decimal fixed-point representation.
     ///
     /// @param x The unsigned number for which to find the index of the most significant bit.
     /// @return msb The index of the most significant bit.
@@ -437,7 +437,7 @@ library PRBMath {
     /// - result must fit within uint256
     ///
     /// Caveats:
-    /// - This function does not assume the 58.18 decimal fixed-point representation.
+    /// - This function does not assume the 59.18 decimal fixed-point representation.
     ///
     /// @param x The multiplicand.
     /// @param y The multiplier.

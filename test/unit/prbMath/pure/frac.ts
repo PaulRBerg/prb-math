@@ -2,7 +2,7 @@ import { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
 import forEach from "mocha-each";
 
-import { MAX_58x18, MAX_WHOLE_58x18, MIN_58x18, MIN_WHOLE_58x18, PI, ZERO } from "../../../../helpers/constants";
+import { MAX_59x18, MAX_WHOLE_59x18, MIN_59x18, MIN_WHOLE_59x18, PI, ZERO } from "../../../../helpers/constants";
 import { bn, fp, solidityMod, solidityModByUnit } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeFrac(): void {
@@ -16,8 +16,8 @@ export default function shouldBehaveLikeFrac(): void {
 
   context("when x is negative", function () {
     const testSets = [
-      [MIN_58x18, solidityModByUnit(MIN_58x18)],
-      [MIN_WHOLE_58x18, ZERO],
+      [MIN_59x18, solidityModByUnit(MIN_59x18)],
+      [MIN_WHOLE_59x18, ZERO],
       [bn(-1e36), ZERO],
       [fp(-4.2), fp(-0.2)],
       [PI.mul(-1), solidityMod(PI.mul(-1), fp(1))],
@@ -44,8 +44,8 @@ export default function shouldBehaveLikeFrac(): void {
       [PI, solidityModByUnit(PI)],
       [fp(4.2), fp(0.2)],
       [bn(1e36), ZERO],
-      [MAX_WHOLE_58x18, ZERO],
-      [MAX_58x18, solidityModByUnit(MAX_58x18)],
+      [MAX_WHOLE_59x18, ZERO],
+      [MAX_59x18, solidityModByUnit(MAX_59x18)],
     ];
 
     forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {

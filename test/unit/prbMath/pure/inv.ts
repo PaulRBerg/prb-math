@@ -2,7 +2,7 @@ import { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
 import forEach from "mocha-each";
 
-import { MAX_58x18, MAX_WHOLE_58x18, MIN_58x18, MIN_WHOLE_58x18, PI, ZERO } from "../../../../helpers/constants";
+import { MAX_59x18, MAX_WHOLE_59x18, MIN_59x18, MIN_WHOLE_59x18, PI, ZERO } from "../../../../helpers/constants";
 import { bn, fp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeInv(): void {
@@ -16,8 +16,8 @@ export default function shouldBehaveLikeInv(): void {
   context("when x is not zero", function () {
     context("when x is negative", function () {
       const testSets = [
-        [MIN_58x18, ZERO],
-        [MIN_WHOLE_58x18, ZERO],
+        [MIN_59x18, ZERO],
+        [MIN_WHOLE_59x18, ZERO],
         [bn(-1e36).sub(1), ZERO],
         [bn(-1e36), fp(-0.000000000000000001)],
         [fp(-2503), fp(-0.000399520575309628)],
@@ -56,8 +56,8 @@ export default function shouldBehaveLikeInv(): void {
         [fp(2503), fp(0.000399520575309628)],
         [bn(1e36), fp(0.000000000000000001)],
         [bn(1e36).add(1), ZERO],
-        [MAX_WHOLE_58x18, ZERO],
-        [MAX_58x18, ZERO],
+        [MAX_WHOLE_59x18, ZERO],
+        [MAX_59x18, ZERO],
       ];
 
       forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {

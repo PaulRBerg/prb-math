@@ -2,7 +2,7 @@ import { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
 import forEach from "mocha-each";
 
-import { E, LOG10_MAX_58x18, MAX_58x18, MAX_WHOLE_58x18, PI, ZERO } from "../../../../helpers/constants";
+import { E, LOG10_MAX_59x18, MAX_59x18, MAX_WHOLE_59x18, PI, ZERO } from "../../../../helpers/constants";
 import { bn, fp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeLog10(): void {
@@ -64,8 +64,8 @@ export default function shouldBehaveLikeLog10(): void {
         [fp(1010.892143), bn("30047048210719801170")],
         [fp(440934.1881), bn("56443737734181779783")],
         [bn(1e36).add(1e6), bn("180000000000000000376")],
-        [MAX_WHOLE_58x18, LOG10_MAX_58x18],
-        [MAX_58x18, LOG10_MAX_58x18],
+        [MAX_WHOLE_59x18, LOG10_MAX_59x18],
+        [MAX_59x18, LOG10_MAX_59x18],
       ];
 
       forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
