@@ -6,7 +6,7 @@ import "hardhat/console.sol";
 /// @title PRBMath
 /// @author Paul Razvan Berg
 /// @notice Smart contract library for mathematical functions that works with int256 numbers considered to have 18
-/// decimals. We call this format decimal 58.18 fixed-point numbers, since there can be up to 58 digits in the 58
+/// decimals. We call this form 58.18 decimal fixed-point numbers, since there can be up to 58 digits in the 58
 /// digits in the integer part and up to 18 digits in the fractional part.
 library PRBMath {
     /// @dev Half the UNIT number.
@@ -271,10 +271,8 @@ library PRBMath {
             case 1000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT, 54) }
             case 10000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT, 55) }
             case 100000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT, 56) }
-            // solhint-disable max-line-length
             case 1000000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT, 57) }
             case 10000000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT, 58) }
-            // solhint-enable max-line-length
         }
 
         if (result == MAX_58x18) {
@@ -312,7 +310,8 @@ library PRBMath {
         }
 
         // Calculate the integer part n, add it to the result and finally calculate y = x * 2^(-n).
-        uint256 n = mostSignificantBit(x);
+        int256 quotient = x / UNIT;
+        uint256 n = mostSignificantBit(quotient);
         result = int256(n) * UNIT * sign;
         int256 y = x >> n;
 
@@ -364,18 +363,6 @@ library PRBMath {
         }
     }
 
-    /// @dev See https://github.com/Uniswap/uniswap-v3-core/blob/main/contracts/libraries/FullMath.sol.
-    function mulDiv(
-        uint256 a,
-        uint256 b,
-        uint256 denominator
-    ) internal pure returns (uint256 result) {
-        a;
-        b;
-        denominator;
-        result = 0;
-    }
-
     function sqrt(int256 x) internal pure returns (int256 result) {
         x;
         result = 0;
@@ -398,12 +385,16 @@ library PRBMath {
     }
 
     /// PRIVATE FUNCTIONS ///
+
     /// @notice Finds the zero-based index of the first one in the binary representation of x.
-    /// @dev See the "Find First Set" article on Wikipedia https://en.wikipedia.org/wiki/Find_first_set
-    /// @param x The 58.18 decimal fixed-point number for which to find the index of the most significant bit.
+    /// @dev See the note on msb in the "Find First Set" Wikipedia article https://en.wikipedia.org/wiki/Find_first_set
+    ///
+    /// Caveats:
+    /// - This function does not assume the 58.18 decimal fixed-point representation.
+    ///
+    /// @param x The unsigned number for which to find the index of the most significant bit.
     /// @return msb The index of the most significant bit.
     function mostSignificantBit(int256 x) private pure returns (uint256 msb) {
-        x /= UNIT;
         if (x >= 2**128) {
             x >>= 128;
             msb += 128;
@@ -435,6 +426,116 @@ library PRBMath {
         if (x >= 2**1) {
             // No need to shift x any more.
             msb += 1;
+        }
+    }
+
+    /// @notice Calculates floor(a×b÷denominator) with full precision.
+    /// @dev Credit to Remco Bloemen under MIT license https://xn--2-umb.com/21/muldiv
+    ///
+    /// Requirements:
+    /// - `denominator` cannot be zero
+    /// - result must fit within uint256
+    ///
+    /// Caveats:
+    /// - This function does not assume the 58.18 decimal fixed-point representation.
+    ///
+    /// @param x The multiplicand.
+    /// @param y The multiplier.
+    /// @param denominator The divisor.
+    /// @return result The 256-bit result.
+    function mulDiv(
+        uint256 x,
+        uint256 y,
+        uint256 denominator
+    ) private pure returns (uint256 result) {
+        // 512-bit multiply [prod1 prod0] = a * b
+        // Compute the product mod 2**256 and mod 2**256 - 1
+        // then use the Chinese Remainder Theorem to reconstruct
+        // the 512 bit result. The result is stored in two 256
+        // variables such that product = prod1 * 2**256 + prod0
+        uint256 prod0; // Least significant 256 bits of the product
+        uint256 prod1; // Most significant 256 bits of the product
+        assembly {
+            let mm := mulmod(x, y, not(0))
+            prod0 := mul(x, y)
+            prod1 := sub(sub(mm, prod0), lt(mm, prod0))
+        }
+
+        // Handle non-overflow cases, 256 by 256 division
+        if (prod1 == 0) {
+            require(denominator > 0);
+            assembly {
+                result := div(prod0, denominator)
+            }
+            return result;
+        }
+
+        // Make sure the result is less than 2**256.
+        // Also prevents denominator == 0
+        require(denominator > prod1);
+
+        ///////////////////////////////////////////////
+        // 512 by 256 division.
+        ///////////////////////////////////////////////
+
+        // Make division exact by subtracting the remainder from [prod1 prod0]
+        // Compute remainder using mulmod
+        uint256 remainder;
+        assembly {
+            remainder := mulmod(x, y, denominator)
+        }
+        // Subtract 256 bit number from 512 bit number
+        assembly {
+            prod1 := sub(prod1, gt(remainder, prod0))
+            prod0 := sub(prod0, remainder)
+        }
+
+        // Factor powers of two out of denominator
+        // Compute largest power of two divisor of denominator.
+        // Always >= 1.
+        unchecked {
+            uint256 lpotd = (type(uint256).max - denominator + 1) & denominator;
+            // Divide denominator by power of two
+            assembly {
+                denominator := div(denominator, lpotd)
+            }
+
+            // Divide [prod1 prod0] by the factors of two
+            assembly {
+                prod0 := div(prod0, lpotd)
+            }
+            // Shift in bits from prod1 into prod0. For this we need
+            // to flip `twos` such that it is 2**256 / twos.
+            // If twos is zero, then it becomes one
+            assembly {
+                lpotd := add(div(sub(0, lpotd), lpotd), 1)
+            }
+            prod0 |= prod1 * lpotd;
+
+            // Invert denominator mod 2**256
+            // Now that denominator is an odd number, it has an inverse
+            // modulo 2**256 such that denominator * inv = 1 mod 2**256.
+            // Compute the inverse by starting with a seed that is correct
+            // correct for four bits. That is, denominator * inv = 1 mod 2**4
+            uint256 inverse = (3 * denominator) ^ 2;
+            // Now use Newton-Raphson iteration to improve the precision.
+            // Thanks to Hensel's lifting lemma, this also works in modular
+            // arithmetic, doubling the correct bits in each step.
+            inverse *= 2 - denominator * inverse; // inverse mod 2**8
+            inverse *= 2 - denominator * inverse; // inverse mod 2**16
+            inverse *= 2 - denominator * inverse; // inverse mod 2**32
+            inverse *= 2 - denominator * inverse; // inverse mod 2**64
+            inverse *= 2 - denominator * inverse; // inverse mod 2**128
+            inverse *= 2 - denominator * inverse; // inverse mod 2**256
+
+            // Because the division is now exact we can divide by multiplying
+            // with the modular inverse of denominator. This will give us the
+            // correct result modulo 2**256. Since the precoditions guarantee
+            // that the outcome is less than 2**256, this is the final result.
+            // We don't need to compute the high bits of the result and prod1
+            // is no longer required.
+            result = prod0 * inverse;
+            return result;
         }
     }
 }

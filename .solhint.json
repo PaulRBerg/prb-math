@@ -7,7 +7,7 @@
     "const-name-snakecase": "off",
     "constructor-syntax": "error",
     "func-visibility": ["error", { "ignoreConstructors": true }],
-    "max-line-length": ["error", 120],
+    "max-line-length": ["error", 132],
     "no-inline-assembly": "off",
     "not-rely-on-time": "off",
     "prettier/prettier": [
