@@ -20,6 +20,10 @@ contract PRBMathMock {
         result = PRBMath.div(x, y);
     }
 
+    function doExp2(int256 x) external pure returns (uint256 result) {
+        result = PRBMath.exp2(x);
+    }
+
     function doFloor(int256 x) external pure returns (int256 result) {
         result = PRBMath.floor(x);
     }
