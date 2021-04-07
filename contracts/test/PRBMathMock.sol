@@ -56,15 +56,7 @@ contract PRBMathMock {
         result = PRBMath.mul(x, y);
     }
 
-    function getE() external pure returns (int256 result) {
-        result = PRBMath.e();
-    }
-
-    function getPi() external pure returns (int256 result) {
-        result = PRBMath.pi();
-    }
-
-    function getUnit() external pure returns (int256 result) {
-        result = PRBMath.unit();
+    function doSqrt(int256 x) external pure returns (int256 result) {
+        result = PRBMath.sqrt(x);
     }
 }

@@ -49,7 +49,7 @@ library PRBMath {
     /// @param y The second operand as a 59.18 decimal fixed-point number.
     /// @return result The arithmetic average as a 59.18 decimal fixed-point number.
     function avg(int256 x, int256 y) internal pure returns (int256 result) {
-        // Saving gas by wrapping the code in an "unchecked" block. The operations can never overflow.
+        // The operations can never overflow.
         unchecked {
             // The last operand checks if both x and y are odd and if yes, it adds 1 to the result. We need it
             // because if both numbers are odd, the 0.5 remainder gets truncated twice.
@@ -94,12 +94,18 @@ library PRBMath {
     /// @param result The quotient as a 59.18 decimal fixed-point number.
     function div(int256 x, int256 y) internal pure returns (int256 result) {
         int256 scaledNumerator = x * UNIT;
-        // Saving gas by wrapping the code in an "unchecked" block. Overflows can happen only when the scaled numerator
-        // is MIN_59x18 and the denominator is -1. But the scaled numerator can't be MIN_59x18.
+        // Overflows can happen only when the scaled numerator is MIN_59x18 and the denominator is -1, but the scaled
+        // numerator ends in 18 zeros so it can't be MIN_59x18.
         // See https://ethereum.stackexchange.com/questions/96482/can-division-underflow-or-overflow-in-solidity
         unchecked {
             result = scaledNumerator / y;
         }
+    }
+
+    /// @notice Returns Euler's number in 59.18 decimal fixed-point representation.
+    /// @dev See https://en.wikipedia.org/wiki/E_(mathematical_constant).
+    function e() internal pure returns (int256 result) {
+        result = 2718281828459045235;
     }
 
     /// @notice Calculates the natural exponent of x.
@@ -108,12 +114,12 @@ library PRBMath {
     ///
     /// Requirements:
     /// - x must be lower than 88.722839111672999628.
-    /// - All from `log2`.
+    /// - All from "log2".
     ///
     /// @param x The exponent as a 59.18 decimal fixed-point number.
     /// @return result The result as a 59.18 decimal fixed-point number.
     function exp(int256 x) internal pure returns (uint256 result) {
-        // Otherwise the value passed to `exp2` would be higher than 128e18.
+        // Otherwise the value passed to "exp2" would be higher than 128e18.
         require(x < 88722839111672999628);
         unchecked {
             int256 log2_e = 1442695040888963407;
@@ -270,10 +276,10 @@ library PRBMath {
     /// @dev Based on the insight that ln(x) = log2(x) * ln(2).
     ///
     /// Requirements:
-    /// - All from `log2`.
+    /// - All from "log2".
     ///
     /// Caveats:
-    /// - All from `log2`.
+    /// - All from "log2".
     /// - This doesn't return exactly 1 for 2.718281828459045235, for that we would need more fine-grained precision.
     ///
     /// @param x The 59.18 decimal fixed-point number for which to calculate the natural logarithm.
@@ -290,10 +296,10 @@ library PRBMath {
     /// logarithm based on the insight that log10(x) = log2(x) / log2(10).
     ///
     /// Requirements:
-    /// - All from `log2`.
+    /// - All from "log2".
     ///
     /// Caveats:
-    /// - All from `log2`.
+    /// - All from "log2".
     ///
     /// @param x The 59.18 decimal fixed-point number for which to calculate the common logarithm.
     /// @return result The common logarithm as a 59.18 decimal fixed-point number.
@@ -386,8 +392,8 @@ library PRBMath {
 
         if (result == MAX_59x18) {
             int256 log2_10 = 332192809488736234;
-            // Saving gas by implementing the "div" function inline.
             unchecked {
+                // Implement the "div" function inline.
                 result = (log2(x) * UNIT) / log2_10;
             }
         }
@@ -419,7 +425,7 @@ library PRBMath {
         }
 
         // Calculate the integer part n, add it to the result and finally calculate y = x * 2^(-n).
-        int256 quotient = x / UNIT;
+        uint256 quotient = uint256(x / UNIT);
         uint256 n = mostSignificantBit(quotient);
         result = int256(n) * UNIT * sign;
         int256 y = x >> n;
@@ -449,7 +455,7 @@ library PRBMath {
     /// @notice Multiplies two 59.18 decimal fixed-point numbers, returning a new 59.18 decimal fixed-point number.
     /// @dev Requirements:
     /// - x * y must not be higher than MAX_59x18 or smaller than MIN_59x18
-    /// - x * y +/- HALF_UNIT must not be higher than MAX_59x18 or smaller than MIN_59x18
+    /// - x * y +/- HALF_UNIT must not be higher than MAX_59x18/ smaller than MIN_59x18
     ///
     /// Caveats:
     /// - Susceptible to phantom overflow when (x * y > MAX_59x18) OR (x * y < MIN_59x18)
@@ -472,20 +478,28 @@ library PRBMath {
         }
     }
 
-    function sqrt(int256 x) internal pure returns (int256 result) {
-        x;
-        result = 0;
-    }
-
-    /// @notice Returns Euler's number in 59.18 decimal fixed-point representation.
-    /// @dev See https://en.wikipedia.org/wiki/E_(mathematical_constant).
-    function e() internal pure returns (int256 result) {
-        result = 2718281828459045235;
-    }
-
     /// @notice Returns PI in 59.18 decimal fixed-point representation.
     function pi() internal pure returns (int256 result) {
         result = 3141592653589793238;
+    }
+
+    /// @notice Calculates the square root of x, rounding down.
+    /// @dev Uses the Babylonian method https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Babylonian_method.
+    ///
+    /// Requirements:
+    /// - x must be zero or higher.
+    /// - x must be lower than MAX_59x18 / UNIT.
+    ///
+    /// @param x The 59.18 decimal fixed-point number for which to calculate the square root.
+    /// @return result The result as a 59.18 decimal fixed-point .
+    function sqrt(int256 x) internal pure returns (int256 result) {
+        require(x >= 0);
+        require(x < 57896044618658097711785492504343953926634992332820282019729);
+        unchecked {
+            // Multiply x by the UNIT to account for the factor of UNIT that is picked up when multiplying two 59.18
+            // decimal fixed-point numbers together (in this, both numbers are the square root).
+            result = int256(sqrtUint256(uint256(x * UNIT)));
+        }
     }
 
     /// @notice Returns 1 in 59.18 decimal fixed-point representation.
@@ -501,9 +515,9 @@ library PRBMath {
     /// Caveats:
     /// - This function does not assume the 59.18 decimal fixed-point representation.
     ///
-    /// @param x The unsigned number for which to find the index of the most significant bit.
-    /// @return msb The index of the most significant bit.
-    function mostSignificantBit(int256 x) private pure returns (uint256 msb) {
+    /// @param x The uint256 number for which to find the index of the most significant bit.
+    /// @return msb The index of the most significant bit as an uint256.
+    function mostSignificantBit(uint256 x) private pure returns (uint256 msb) {
         if (x >= 2**128) {
             x >>= 128;
             msb += 128;
@@ -548,19 +562,17 @@ library PRBMath {
     /// Caveats:
     /// - This function does not assume the 59.18 decimal fixed-point representation.
     ///
-    /// @param x The multiplicand.
-    /// @param y The multiplier.
-    /// @param denominator The divisor.
-    /// @return result The 256-bit result.
+    /// @param x The multiplicand as an uint256.
+    /// @param y The multiplier as an uint256.
+    /// @param denominator The divisor as an uint256.
+    /// @return result The result as an uint256.
     function mulDiv(
         uint256 x,
         uint256 y,
         uint256 denominator
     ) private pure returns (uint256 result) {
-        // 512-bit multiply [prod1 prod0] = a * b
-        // Compute the product mod 2**256 and mod 2**256 - 1
-        // then use the Chinese Remainder Theorem to reconstruct
-        // the 512 bit result. The result is stored in two 256
+        // 512-bit multiply [prod1 prod0] = a * b. Compute the product mod 2**256 and mod 2**256 - 1, then use
+        // use the Chinese Remainder Theorem to reconstruct the 512 bit result. The result is stored in two 256
         // variables such that product = prod1 * 2**256 + prod0
         uint256 prod0; // Least significant 256 bits of the product
         uint256 prod1; // Most significant 256 bits of the product
@@ -579,16 +591,14 @@ library PRBMath {
             return result;
         }
 
-        // Make sure the result is less than 2**256.
-        // Also prevents denominator == 0
+        // Make sure the result is less than 2**256. Also prevents denominator == 0.
         require(denominator > prod1);
 
         ///////////////////////////////////////////////
         // 512 by 256 division.
         ///////////////////////////////////////////////
 
-        // Make division exact by subtracting the remainder from [prod1 prod0]
-        // Compute remainder using mulmod
+        // Make division exact by subtracting the remainder from [prod1 prod0]. Compute remainder using mulmod.
         uint256 remainder;
         assembly {
             remainder := mulmod(x, y, denominator)
@@ -599,9 +609,7 @@ library PRBMath {
             prod0 := sub(prod0, remainder)
         }
 
-        // Factor powers of two out of denominator
-        // Compute largest power of two divisor of denominator.
-        // Always >= 1.
+        // Factor powers of two out of denominator and compute largest power of two divisor of denominator. Always >= 1.
         unchecked {
             uint256 lpotd = (type(uint256).max - denominator + 1) & denominator;
             // Divide denominator by power of two
@@ -613,23 +621,19 @@ library PRBMath {
             assembly {
                 prod0 := div(prod0, lpotd)
             }
-            // Shift in bits from prod1 into prod0. For this we need
-            // to flip `twos` such that it is 2**256 / twos.
-            // If twos is zero, then it becomes one
+            // Shift in bits from prod1 into prod0. For this we need to flip `lpotd` such that it is 2**256 / twos.
+            // If `lpotd` is zero, then it becomes one.
             assembly {
                 lpotd := add(div(sub(0, lpotd), lpotd), 1)
             }
             prod0 |= prod1 * lpotd;
 
-            // Invert denominator mod 2**256
-            // Now that denominator is an odd number, it has an inverse
-            // modulo 2**256 such that denominator * inv = 1 mod 2**256.
-            // Compute the inverse by starting with a seed that is correct
-            // correct for four bits. That is, denominator * inv = 1 mod 2**4
+            // Invert denominator mod 2**256. Now that denominator is an odd number, it has an inverse modulo 2**256 such
+            // that denominator * inv = 1 mod 2**256. Compute the inverse by starting with a seed that is correct for
+            // four bits. That is, denominator * inv = 1 mod 2**4
             uint256 inverse = (3 * denominator) ^ 2;
-            // Now use Newton-Raphson iteration to improve the precision.
-            // Thanks to Hensel's lifting lemma, this also works in modular
-            // arithmetic, doubling the correct bits in each step.
+            // Now use Newton-Raphson iteration to improve the precision. Thanks to Hensel's lifting lemma, this also
+            // works in modular arithmetic, doubling the correct bits in each step.
             inverse *= 2 - denominator * inverse; // inverse mod 2**8
             inverse *= 2 - denominator * inverse; // inverse mod 2**16
             inverse *= 2 - denominator * inverse; // inverse mod 2**32
@@ -637,14 +641,71 @@ library PRBMath {
             inverse *= 2 - denominator * inverse; // inverse mod 2**128
             inverse *= 2 - denominator * inverse; // inverse mod 2**256
 
-            // Because the division is now exact we can divide by multiplying
-            // with the modular inverse of denominator. This will give us the
-            // correct result modulo 2**256. Since the precoditions guarantee
-            // that the outcome is less than 2**256, this is the final result.
-            // We don't need to compute the high bits of the result and prod1
+            // Because the division is now exact we can divide by multiplying with the modular inverse of denominator.
+            // This will give us the correct result modulo 2**256. Since the precoditions guarantee that the outcome is
+            // less than 2**256, this is the final result. We don't need to compute the high bits of the result and prod1
             // is no longer required.
             result = prod0 * inverse;
             return result;
+        }
+    }
+
+    /// @notice Calculates the square root of x, rounding down.
+    /// @dev Uses the Babylonian method https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Babylonian_method.
+    ///
+    /// Caveats:
+    /// - This function does not assume the 59.18 decimal fixed-point representation.
+    ///
+    /// @param x The uint256 number for which to calculate the square root.
+    /// @return result The result as an uint256.
+    function sqrtUint256(uint256 x) private pure returns (uint256 result) {
+        if (x == 0) {
+            return 0;
+        }
+
+        // Calculate the square root of the perfect square of a power of two that is the closest to x.
+        uint256 x_aux = uint256(x);
+        uint256 x0 = 1;
+        if (x_aux >= 0x100000000000000000000000000000000) {
+            x_aux >>= 128;
+            x0 <<= 64;
+        }
+        if (x_aux >= 0x10000000000000000) {
+            x_aux >>= 64;
+            x0 <<= 32;
+        }
+        if (x_aux >= 0x100000000) {
+            x_aux >>= 32;
+            x0 <<= 16;
+        }
+        if (x_aux >= 0x10000) {
+            x_aux >>= 16;
+            x0 <<= 8;
+        }
+        if (x_aux >= 0x100) {
+            x_aux >>= 8;
+            x0 <<= 4;
+        }
+        if (x_aux >= 0x10) {
+            x_aux >>= 4;
+            x0 <<= 2;
+        }
+        if (x_aux >= 0x8) {
+            x0 <<= 1;
+        }
+        result = x0;
+
+        // The operations can never overflow because the result is max 2^127 when it enters this block.
+        unchecked {
+            result = (result + x / result) >> 1;
+            result = (result + x / result) >> 1;
+            result = (result + x / result) >> 1;
+            result = (result + x / result) >> 1;
+            result = (result + x / result) >> 1;
+            result = (result + x / result) >> 1;
+            result = (result + x / result) >> 1; // Seven iterations should be enough
+            uint256 roundedDownResult = x / result;
+            return result >= roundedDownResult ? roundedDownResult : result;
         }
     }
 }

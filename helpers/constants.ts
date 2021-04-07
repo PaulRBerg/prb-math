@@ -29,6 +29,8 @@ export const MIN_WHOLE_59x18: BigNumber = MIN_59x18.sub(solidityModByUnit(MIN_59
 
 export const PI: BigNumber = bn("3141592653589793238");
 
+export const SQRT_2 = bn("1414213562373095048");
+
 export const TWICE_UNIT: BigNumber = fp(2);
 
 export const ZERO = BigNumber.from(0);

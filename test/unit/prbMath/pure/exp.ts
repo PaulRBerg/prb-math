@@ -5,7 +5,7 @@ import forEach from "mocha-each";
 import { E, MAX_59x18, MAX_WHOLE_59x18, PI, ZERO } from "../../../../helpers/constants";
 import { bn, fp } from "../../../../helpers/numbers";
 
-export default function shouldBehaveLikeExp2(): void {
+export default function shouldBehaveLikeExp(): void {
   context("when x is zero", function () {
     it("returns zero", async function () {
       const x: BigNumber = ZERO;
@@ -22,7 +22,7 @@ export default function shouldBehaveLikeExp2(): void {
   });
 
   context("when x is positive", function () {
-    context.only("when x is 88722839111672999628 or higher", function () {
+    context("when x is 88722839111672999628 or higher", function () {
       const testSets = [bn("88722839111672999628"), MAX_WHOLE_59x18, MAX_59x18];
 
       forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
@@ -41,6 +41,7 @@ export default function shouldBehaveLikeExp2(): void {
         [PI, bn("23140692632779268978")],
         [fp(4), bn("54598150033144239022")],
         [fp(11.89215), bn("146115107851442195836576")],
+        [fp(16), bn("8886110520507872601096941")],
         [fp(20.82), bn("1101567497354306723400287049")],
         [fp(33.333333), bn("299559147061116199283918898757208")],
         [fp(64), bn("6235149080811616783274026429479962296900339424")],
