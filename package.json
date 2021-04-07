@@ -33,6 +33,7 @@
     "ethers": "^5.0.32",
     "fs-extra": "^9.0.1",
     "hardhat": "^2.0.10",
+    "hardhat-contract-sizer": "^2.0.3",
     "hardhat-gas-reporter": "^1.0.4",
     "husky": "^4.3.0",
     "mocha": "^8.1.3",
