@@ -62,7 +62,7 @@ library PRBMath {
     /// @dev See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
     ///
     /// Requirements:
-    /// - x must be less than or equal to the maximum whole value allowed by the 59.18 decimal fixed-point format.
+    /// - x must be less than or equal to MAX_WHOLE_59x18
     ///
     /// @param x The 59.18 decimal fixed-point number to ceil.
     /// @param result The least integer greater than or equal to x.
@@ -128,6 +128,7 @@ library PRBMath {
     }
 
     /// @notice Calculates the binary exponent of x using the binary fraction method.
+    ///
     /// @dev See https://ethereum.stackexchange.com/q/79903/24693
     ///
     /// Requirements:
@@ -232,7 +233,7 @@ library PRBMath {
     /// @dev See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
     ///
     /// Requirements:
-    /// - x must be greater than or equal to the minimum whole value allowed by the 59.18 decimal fixed-point format.
+    /// - x must be greater than or equal to MIN_WHOLE_59x18.
     ///
     /// @param x The 59.18 decimal fixed-point number to floor.
     /// @param result The greatest integer less than or equal to x.
@@ -259,6 +260,7 @@ library PRBMath {
     }
 
     /// @notice Calculates geometric mean of x and y, i.e. sqrt(x * y), rounding down.
+    ///
     /// @dev Requirements:
     /// - x * y must be lower than MAX_59.18.
     /// - x * y cannot be negative.
@@ -470,13 +472,13 @@ library PRBMath {
     }
 
     /// @notice Multiplies two 59.18 decimal fixed-point numbers, returning a new 59.18 decimal fixed-point number.
+    ///
     /// @dev Requirements:
     /// - x * y must not be higher than MAX_59x18 or smaller than MIN_59x18
     /// - x * y +/- HALF_UNIT must not be higher than MAX_59x18/ smaller than MIN_59x18
     ///
     /// Caveats:
-    /// - Susceptible to phantom overflow when (x * y > MAX_59x18) OR (x * y < MIN_59x18)
-    /// - Susceptible to phantom overflow when (x * y + HALF_UNIT > MAX_59x18) OR (x * y - HALF_UNIT < MIN_59x18)
+    /// - Susceptible to phantom overflow when the intermediary result does not between MIN_59x18 and MAX_59x18
     ///
     /// @param x The first operand as a 59.18 decimal fixed-point number.
     /// @param y The second operand as a 59.18 decimal fixed-point number.
@@ -498,6 +500,41 @@ library PRBMath {
     /// @notice Returns PI in 59.18 decimal fixed-point representation.
     function pi() internal pure returns (int256 result) {
         result = 3141592653589793238;
+    }
+
+    /// @notice Raises x to the power of y using the famous algorithm "exponentiation by squaring".
+    ///
+    /// @dev See https://en.wikipedia.org/wiki/Exponentiation_by_squaring
+    ///
+    /// Requirements:
+    /// - All from "abs" and "mul".
+    ///
+    /// Caveats:
+    /// - Assumes 0^0 is 1.
+    /// - All from "mul";
+    ///
+    /// @param x The base as a 59.18 decimal fixed-point number.
+    /// @param y The exponent as an uint256.
+    /// @return result The result as a 59.18 decimal fixed-point number.
+    function pow(int256 x, uint256 y) internal pure returns (int256 result) {
+        int256 absX = abs(x);
+
+        // Calculate the first iteration of the loop in advance.
+        int256 absResult = y & 1 > 0 ? absX : UNIT;
+
+        // Euivalent to "for(y /= 2; y > 0; y /= 2)" but faster.
+        for (y >>= 1; y > 0; y >>= 1) {
+            absX = mul(absX, absX);
+
+            // Equivalent to "y % 2 == 1".
+            if (y & 1 > 0) {
+                absResult = mul(absResult, absX);
+            }
+        }
+
+        // Is the base negative and the exponent an odd number? If yes, the result should be negative.
+        bool isNegative = x < 0 && y & 1 == 1;
+        result = isNegative ? -absResult : absResult;
     }
 
     /// @notice Calculates the square root of x, rounding down.
@@ -681,33 +718,33 @@ library PRBMath {
         }
 
         // Calculate the square root of the perfect square of a power of two that is the closest to x.
-        uint256 x_aux = uint256(x);
+        uint256 xAux = uint256(x);
         uint256 x0 = 1;
-        if (x_aux >= 0x100000000000000000000000000000000) {
-            x_aux >>= 128;
+        if (xAux >= 0x100000000000000000000000000000000) {
+            xAux >>= 128;
             x0 <<= 64;
         }
-        if (x_aux >= 0x10000000000000000) {
-            x_aux >>= 64;
+        if (xAux >= 0x10000000000000000) {
+            xAux >>= 64;
             x0 <<= 32;
         }
-        if (x_aux >= 0x100000000) {
-            x_aux >>= 32;
+        if (xAux >= 0x100000000) {
+            xAux >>= 32;
             x0 <<= 16;
         }
-        if (x_aux >= 0x10000) {
-            x_aux >>= 16;
+        if (xAux >= 0x10000) {
+            xAux >>= 16;
             x0 <<= 8;
         }
-        if (x_aux >= 0x100) {
-            x_aux >>= 8;
+        if (xAux >= 0x100) {
+            xAux >>= 8;
             x0 <<= 4;
         }
-        if (x_aux >= 0x10) {
-            x_aux >>= 4;
+        if (xAux >= 0x10) {
+            xAux >>= 4;
             x0 <<= 2;
         }
-        if (x_aux >= 0x8) {
+        if (xAux >= 0x8) {
             x0 <<= 1;
         }
         result = x0;
