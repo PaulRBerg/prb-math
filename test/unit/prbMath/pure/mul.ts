@@ -40,9 +40,9 @@ export default function shouldBehaveLikeMul(): void {
         [MIN_59x18, MIN_59x18],
         [MIN_59x18, bn(-1)],
         [MIN_WHOLE_59x18, MIN_WHOLE_59x18],
-        [SQRT_MAX_59x18.mul(-1), SQRT_MAX_59x18.mul(-1)],
+        [SQRT_MAX_59x18.mul(-1), SQRT_MAX_59x18.mul(-1).sub(1)],
       ].concat([
-        [SQRT_MAX_59x18, SQRT_MAX_59x18],
+        [SQRT_MAX_59x18, SQRT_MAX_59x18.add(1)],
         [MAX_WHOLE_59x18, MAX_WHOLE_59x18],
         [MAX_59x18, MAX_59x18],
       ]);

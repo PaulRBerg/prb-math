@@ -68,6 +68,7 @@ export default function shouldBehaveLikeGm(): void {
         [fp(-2), fp(-8), fp(4)],
         [fp(-1), fp(-4), fp(2)],
         [fp(-1), fp(-1), fp(1)],
+      ].concat([
         [fp(1), fp(1), fp(1)],
         [fp(1), fp(4), fp(2)],
         [fp(2), fp(8), fp(4)],
@@ -78,7 +79,7 @@ export default function shouldBehaveLikeGm(): void {
         [MAX_59x18, 1, SQRT_MAX_59x18],
         [MAX_WHOLE_59x18, 1, SQRT_MAX_59x18],
         [SQRT_MAX_59x18, SQRT_MAX_59x18, SQRT_MAX_59x18],
-      ];
+      ]);
 
       forEach(testSets).it(
         "takes %e and %e and returns %e",

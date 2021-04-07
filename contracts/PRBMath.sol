@@ -118,7 +118,7 @@ library PRBMath {
     ///
     /// @param x The exponent as a 59.18 decimal fixed-point number.
     /// @return result The result as a 59.18 decimal fixed-point number.
-    function exp(int256 x) internal pure returns (uint256 result) {
+    function exp(int256 x) internal pure returns (int256 result) {
         // Otherwise the value passed to "exp2" would be higher than 128e18.
         require(x < 88722839111672999628);
         unchecked {
@@ -137,7 +137,7 @@ library PRBMath {
     ///
     /// @param x The exponent as a 59.18 decimal fixed-point number.
     /// @return result The result as a 59.18 decimal fixed-point number.
-    function exp2(int256 x) internal pure returns (uint256 result) {
+    function exp2(int256 x) internal pure returns (int256 result) {
         // 2**128 doesn't fit within the 128.128-bit format used internally in this function.
         require(x < 128e18);
 
@@ -224,7 +224,7 @@ library PRBMath {
             result = result << ((xb >> 128) + 1);
 
             // Convert the result to the 59.18 decimal fixed-point format.
-            result = mulDiv(result, uint256(UNIT), 2**128);
+            result = int256(mulDiv(uint256(result), uint256(UNIT), 2**128));
         }
     }
 
@@ -541,7 +541,7 @@ library PRBMath {
     /// @dev Uses the Babylonian method https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Babylonian_method.
     ///
     /// Requirements:
-    /// - x must be zero or higher.
+    /// - x cannot be negative.
     /// - x must be lower than MAX_59x18 / UNIT.
     ///
     /// @param x The 59.18 decimal fixed-point number for which to calculate the square root.
