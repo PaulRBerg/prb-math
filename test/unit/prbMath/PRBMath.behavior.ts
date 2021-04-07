@@ -2,6 +2,7 @@ import shouldBehaveLikeAbs from "./pure/abs";
 import shouldBehaveLikeAvg from "./pure/avg";
 import shouldBehaveLikeCeil from "./pure/ceil";
 import shouldBehaveLikeDiv from "./pure/div";
+import shouldBehaveLikeExp from "./pure/exp";
 import shouldBehaveLikeExp2 from "./pure/exp2";
 import shouldBehaveLikeFloor from "./pure/floor";
 import shouldBehaveLikeFrac from "./pure/frac";
@@ -27,6 +28,10 @@ export function shouldBehaveLikePrbMath(): void {
 
     describe("div", function () {
       shouldBehaveLikeDiv();
+    });
+
+    describe("exp", function () {
+      shouldBehaveLikeExp();
     });
 
     describe("exp2", function () {

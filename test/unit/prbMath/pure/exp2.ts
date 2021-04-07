@@ -25,7 +25,7 @@ export default function shouldBehaveLikeExp2(): void {
     context("when x is 128e18 or higher", function () {
       const testSets = [fp(128), MAX_WHOLE_59x18, MAX_59x18];
 
-      forEach(testSets).it("takes %e and revers", async function (x: BigNumber) {
+      forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
         await expect(this.contracts.prbMath.doExp2(x)).to.be.reverted;
       });
     });
