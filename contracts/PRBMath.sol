@@ -258,6 +258,23 @@ library PRBMath {
         result = x % UNIT;
     }
 
+    /// @notice Calculates geometric mean of x and y, i.e. sqrt(x * y), rounding down.
+    /// @dev Requirements:
+    /// - x * y must be lower than MAX_59.18.
+    /// - x * y cannot be negative.
+    ///
+    /// @param x The first operand as a 59.18 decimal fixed-point number.
+    /// @param y The second operand as a 59.18 decimal fixed-point number.
+    /// @return result The result as a 59.18 decimal fixed-point number.
+    function gm(int256 x, int256 y) internal pure returns (int256 result) {
+        int256 xy = x * y;
+        require(xy >= 0);
+
+        // We don't need to multiply by the UNIT here because the x*y product had already picked up a factor of UNIT
+        // during multiplication. See the comments within the "sqrt" function.
+        result = int256(sqrtUint256(uint256(xy)));
+    }
+
     /// @notice Calculates 1 / x, rounding towards zero.
     ///
     /// @dev Requirements:

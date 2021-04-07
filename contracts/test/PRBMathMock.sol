@@ -36,6 +36,10 @@ contract PRBMathMock {
         result = PRBMath.frac(x);
     }
 
+    function doGm(int256 x, int256 y) external pure returns (int256 result) {
+        result = PRBMath.gm(x, y);
+    }
+
     function doInv(int256 x) external pure returns (int256 result) {
         result = PRBMath.inv(x);
     }

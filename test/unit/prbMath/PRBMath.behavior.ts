@@ -6,6 +6,7 @@ import shouldBehaveLikeExp from "./pure/exp";
 import shouldBehaveLikeExp2 from "./pure/exp2";
 import shouldBehaveLikeFloor from "./pure/floor";
 import shouldBehaveLikeFrac from "./pure/frac";
+import shouldBehaveLikeGm from "./pure/gm";
 import shouldBehaveLikeInv from "./pure/inv";
 import shouldBehaveLikeLn from "./pure/ln";
 import shouldBehaveLikeLog10 from "./pure/log10";
@@ -45,6 +46,10 @@ export function shouldBehaveLikePrbMath(): void {
 
     describe("frac", function () {
       shouldBehaveLikeFrac();
+    });
+
+    describe("gm", function () {
+      shouldBehaveLikeGm();
     });
 
     describe("inv", function () {

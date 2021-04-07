@@ -31,6 +31,8 @@ export const PI: BigNumber = bn("3141592653589793238");
 
 export const SQRT_2 = bn("1414213562373095048");
 
+export const SQRT_MAX_59x18 = bn("240615969168004511545033772477625056927");
+
 export const TWICE_UNIT: BigNumber = fp(2);
 
 export const ZERO = BigNumber.from(0);

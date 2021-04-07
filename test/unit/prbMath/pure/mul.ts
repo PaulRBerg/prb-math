@@ -10,6 +10,7 @@ import {
   MIN_59x18,
   MIN_WHOLE_59x18,
   PI,
+  SQRT_MAX_59x18,
   UNIT,
   ZERO,
 } from "../../../../helpers/constants";
@@ -39,11 +40,9 @@ export default function shouldBehaveLikeMul(): void {
         [MIN_59x18, MIN_59x18],
         [MIN_59x18, bn(-1)],
         [MIN_WHOLE_59x18, MIN_WHOLE_59x18],
-        // First integer lower than the square root of MIN_59x18
-        [bn("-240615969168004511545033772477625056928"), bn("-240615969168004511545033772477625056928")],
+        [SQRT_MAX_59x18.mul(-1), SQRT_MAX_59x18.mul(-1)],
       ].concat([
-        // First integer higher than the square root of MAX_59x18
-        [bn("240615969168004511545033772477625056928"), bn("240615969168004511545033772477625056928")],
+        [SQRT_MAX_59x18, SQRT_MAX_59x18],
         [MAX_WHOLE_59x18, MAX_WHOLE_59x18],
         [MAX_59x18, MAX_59x18],
       ]);
