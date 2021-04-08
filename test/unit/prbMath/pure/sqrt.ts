@@ -26,7 +26,7 @@ export default function shouldBehaveLikeSqrt(): void {
       const testSets = [bn("57896044618658097711785492504343953926634992332820282019729"), MAX_WHOLE_59x18, MAX_59x18];
 
       forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
-        await expect(this.contracts.prbMath.doExp(x)).to.be.reverted;
+        await expect(this.contracts.prbMath.doSqrt(x)).to.be.reverted;
       });
     });
 
