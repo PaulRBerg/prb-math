@@ -12,6 +12,7 @@ import shouldBehaveLikeLn from "./pure/ln";
 import shouldBehaveLikeLog10 from "./pure/log10";
 import shouldBehaveLikeLog2 from "./pure/log2";
 import shouldBehaveLikeMul from "./pure/mul";
+import shouldBehaveLikePow from "./pure/pow";
 import shouldBehaveLikeSqrt from "./pure/sqrt";
 
 export function shouldBehaveLikePrbMath(): void {
@@ -70,6 +71,10 @@ export function shouldBehaveLikePrbMath(): void {
 
     describe("mul", function () {
       shouldBehaveLikeMul();
+    });
+
+    describe("pow", function () {
+      shouldBehaveLikePow();
     });
 
     describe("sqrt", function () {

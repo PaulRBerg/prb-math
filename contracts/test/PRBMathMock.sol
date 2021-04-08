@@ -60,6 +60,10 @@ contract PRBMathMock {
         result = PRBMath.mul(x, y);
     }
 
+    function doPow(int256 x, uint256 y) external pure returns (int256 result) {
+        result = PRBMath.pow(x, y);
+    }
+
     function doSqrt(int256 x) external pure returns (int256 result) {
         result = PRBMath.sqrt(x);
     }

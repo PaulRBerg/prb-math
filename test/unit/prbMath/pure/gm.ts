@@ -9,7 +9,7 @@ import {
   MIN_59x18,
   MIN_WHOLE_59x18,
   PI,
-  SQRT_MAX_59x18,
+  SQRT_MAX_DIV_BY_UNIT,
   ZERO,
 } from "../../../../helpers/constants";
 import { bn, fp } from "../../../../helpers/numbers";
@@ -43,13 +43,13 @@ export default function shouldBehaveLikeGm(): void {
   context("when the product of x and y is positive", function () {
     context("when the product of x and y overflows", function () {
       const testSets = [
-        [MIN_59x18, -1],
-        [MIN_59x18, -2],
-        [MIN_WHOLE_59x18, -3],
-        [SQRT_MAX_59x18.mul(-1), SQRT_MAX_59x18.mul(-1).sub(1)],
-        [SQRT_MAX_59x18, SQRT_MAX_59x18.add(1)],
-        [MAX_WHOLE_59x18, 3],
-        [MAX_59x18, 2],
+        [MIN_59x18, fp(-0.000000000000000001)],
+        [MIN_59x18, fp(-0.000000000000000002)],
+        [MIN_WHOLE_59x18, fp(-0.000000000000000003)],
+        [SQRT_MAX_DIV_BY_UNIT.mul(-1), SQRT_MAX_DIV_BY_UNIT.mul(-1).sub(1)],
+        [SQRT_MAX_DIV_BY_UNIT, SQRT_MAX_DIV_BY_UNIT.add(1)],
+        [MAX_WHOLE_59x18, fp(0.000000000000000003)],
+        [MAX_59x18, fp(0.000000000000000002)],
       ];
 
       forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
@@ -59,8 +59,8 @@ export default function shouldBehaveLikeGm(): void {
 
     context("when the product of x and y does not overflow", function () {
       const testSets = [
-        [MIN_WHOLE_59x18, -1, SQRT_MAX_59x18],
-        [SQRT_MAX_59x18.mul(-1), SQRT_MAX_59x18.mul(-1), SQRT_MAX_59x18],
+        [MIN_WHOLE_59x18, fp(-0.000000000000000001), SQRT_MAX_DIV_BY_UNIT],
+        [SQRT_MAX_DIV_BY_UNIT.mul(-1), SQRT_MAX_DIV_BY_UNIT.mul(-1), SQRT_MAX_DIV_BY_UNIT],
         [fp(-2404.8), fp(-7899.210662), bn("4358442588812843362311")],
         [fp(-322.47), fp(-674.77), bn("466468736251423392217")],
         [PI.mul(-1), fp(-8.2), bn("5075535416036056441")],
@@ -76,16 +76,16 @@ export default function shouldBehaveLikeGm(): void {
         [PI, fp(8.2), bn("5075535416036056441")],
         [fp(322.47), fp(674.77), bn("466468736251423392217")],
         [fp(2404.8), fp(7899.210662), bn("4358442588812843362311")],
-        [MAX_59x18, 1, SQRT_MAX_59x18],
-        [MAX_WHOLE_59x18, 1, SQRT_MAX_59x18],
-        [SQRT_MAX_59x18, SQRT_MAX_59x18, SQRT_MAX_59x18],
+        [SQRT_MAX_DIV_BY_UNIT, SQRT_MAX_DIV_BY_UNIT, SQRT_MAX_DIV_BY_UNIT],
+        [MAX_WHOLE_59x18, fp(0.000000000000000001), SQRT_MAX_DIV_BY_UNIT],
+        [MAX_59x18, fp(0.000000000000000001), SQRT_MAX_DIV_BY_UNIT],
       ]);
 
       forEach(testSets).it(
         "takes %e and %e and returns %e",
         async function (x: BigNumber, y: BigNumber, expected: BigNumber) {
           const result = await this.contracts.prbMath.doGm(x, y);
-          expect(result).to.equal(expected);
+          expect(expected).to.equal(result);
         },
       );
     });

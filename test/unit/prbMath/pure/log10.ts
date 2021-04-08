@@ -42,7 +42,7 @@ export default function shouldBehaveLikeLog10(): void {
 
       forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
         const result: BigNumber = await this.contracts.prbMath.doLog10(x);
-        expect(result).to.equal(expected);
+        expect(expected).to.equal(result);
       });
     });
 
@@ -70,7 +70,7 @@ export default function shouldBehaveLikeLog10(): void {
 
       forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
         const result: BigNumber = await this.contracts.prbMath.doLog10(x);
-        expect(result).to.equal(expected);
+        expect(expected).to.equal(result);
       });
     });
   });

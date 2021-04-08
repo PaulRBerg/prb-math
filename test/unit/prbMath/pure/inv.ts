@@ -36,7 +36,7 @@ export default function shouldBehaveLikeInv(): void {
 
       forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
         const result: BigNumber = await this.contracts.prbMath.doInv(x);
-        expect(result).to.equal(expected);
+        expect(expected).to.equal(result);
       });
     });
 
@@ -62,7 +62,7 @@ export default function shouldBehaveLikeInv(): void {
 
       forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
         const result: BigNumber = await this.contracts.prbMath.doInv(x);
-        expect(result).to.equal(expected);
+        expect(expected).to.equal(result);
       });
     });
   });

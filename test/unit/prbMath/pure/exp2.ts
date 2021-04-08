@@ -54,7 +54,7 @@ export default function shouldBehaveLikeExp2(): void {
 
       forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
         const result: BigNumber = await this.contracts.prbMath.doExp2(x);
-        expect(result).to.equal(expected);
+        expect(expected).to.equal(result);
       });
     });
   });

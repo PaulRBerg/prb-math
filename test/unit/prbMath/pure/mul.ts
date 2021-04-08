@@ -108,7 +108,7 @@ export default function shouldBehaveLikeMul(): void {
             "takes %e and %e and returns %e",
             async function (x: BigNumber, y: BigNumber, expected: BigNumber) {
               const result: BigNumber = await this.contracts.prbMath.doMul(x, y);
-              expect(result).to.equal(expected);
+              expect(expected).to.equal(result);
             },
           );
         });
@@ -154,7 +154,7 @@ export default function shouldBehaveLikeMul(): void {
             "takes %e and %e and returns %e",
             async function (x: BigNumber, y: BigNumber, expected: BigNumber) {
               const result: BigNumber = await this.contracts.prbMath.doMul(x, y);
-              expect(result).to.equal(expected);
+              expect(expected).to.equal(result);
             },
           );
         });

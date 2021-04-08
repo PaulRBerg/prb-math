@@ -89,7 +89,7 @@ export default function shouldBehaveLikeDiv(): void {
             "takes %e and %e and returns %e",
             async function (x: BigNumber, y: BigNumber, expected: BigNumber) {
               const result: BigNumber = await this.contracts.prbMath.doDiv(x, y);
-              expect(result).to.equal(expected);
+              expect(expected).to.equal(result);
             },
           );
         });
@@ -135,7 +135,7 @@ export default function shouldBehaveLikeDiv(): void {
             "takes %e and %e and returns %e",
             async function (x: BigNumber, y: BigNumber, expected: BigNumber) {
               const result: BigNumber = await this.contracts.prbMath.doDiv(x, y);
-              expect(result).to.equal(expected);
+              expect(expected).to.equal(result);
             },
           );
         });

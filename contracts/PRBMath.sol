@@ -521,24 +521,25 @@ library PRBMath {
     /// @param y The exponent as an uint256.
     /// @return result The result as a 59.18 decimal fixed-point number.
     function pow(int256 x, uint256 y) internal pure returns (int256 result) {
-        int256 absX = abs(x);
+        uint256 absX = uint256(abs(x));
 
         // Calculate the first iteration of the loop in advance.
-        int256 absResult = y & 1 > 0 ? absX : UNIT;
+        uint256 absResult = y & 1 > 0 ? absX : uint256(UNIT);
 
         // Euivalent to "for(y /= 2; y > 0; y /= 2)" but faster.
         for (y >>= 1; y > 0; y >>= 1) {
-            absX = mul(absX, absX);
+            absX = mulDiv(absX, absX, uint256(UNIT));
 
             // Equivalent to "y % 2 == 1".
             if (y & 1 > 0) {
-                absResult = mul(absResult, absX);
+                absResult = mulDiv(absResult, absX, uint256(UNIT));
             }
         }
 
-        // Is the base negative and the exponent an odd number? If yes, the result should be negative.
+        require(absResult <= uint256(MAX_59x18));
+        // Is the base negative and the exponent an odd number?
         bool isNegative = x < 0 && y & 1 == 1;
-        result = isNegative ? -absResult : absResult;
+        result = isNegative ? -int256(absResult) : int256(absResult);
     }
 
     /// @notice Calculates the square root of x, rounding down.
@@ -548,6 +549,9 @@ library PRBMath {
     /// - x cannot be negative.
     /// - x must be lower than MAX_59x18 / UNIT.
     ///
+    /// Caveats:
+    /// - The maximum fixed-point number permitted is 57896044618658097711785492504343953926634.992332820282019729
+    ///
     /// @param x The 59.18 decimal fixed-point number for which to calculate the square root.
     /// @return result The result as a 59.18 decimal fixed-point .
     function sqrt(int256 x) internal pure returns (int256 result) {
@@ -555,7 +559,7 @@ library PRBMath {
         require(x < 57896044618658097711785492504343953926634992332820282019729);
         unchecked {
             // Multiply x by the UNIT to account for the factor of UNIT that is picked up when multiplying two 59.18
-            // decimal fixed-point numbers together (in this, both numbers are the square root).
+            // decimal fixed-point numbers together (in this case, both numbers are the square root).
             result = int256(sqrtUint256(uint256(x * UNIT)));
         }
     }

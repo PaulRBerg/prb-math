@@ -25,7 +25,7 @@ export default function shouldBehaveLikeAvg(): void {
       "takes %e and %e and returns %e",
       async function (x: BigNumber, y: BigNumber, expected: BigNumber) {
         const result: BigNumber = await this.contracts.prbMath.doAvg(x, y);
-        expect(result).to.equal(expected);
+        expect(expected).to.equal(result);
       },
     );
   });
@@ -44,7 +44,7 @@ export default function shouldBehaveLikeAvg(): void {
       "takes %e and %e and returns %e",
       async function (x: BigNumber, y: BigNumber, expected: BigNumber) {
         const result: BigNumber = await this.contracts.prbMath.doAvg(x, y);
-        expect(result).to.equal(expected);
+        expect(expected).to.equal(result);
       },
     );
   });
@@ -63,7 +63,7 @@ export default function shouldBehaveLikeAvg(): void {
       "takes %e and %e and returns %e",
       async function (x: BigNumber, y: BigNumber, expected: BigNumber) {
         const result: BigNumber = await this.contracts.prbMath.doAvg(x, y);
-        expect(result).to.equal(expected);
+        expect(expected).to.equal(result);
       },
     );
   });
@@ -83,7 +83,7 @@ export default function shouldBehaveLikeAvg(): void {
         "takes %e and %e and returns %e",
         async function (x: BigNumber, y: BigNumber, expected: BigNumber) {
           const result: BigNumber = await this.contracts.prbMath.doAvg(x, y);
-          expect(result).to.equal(expected);
+          expect(expected).to.equal(result);
         },
       );
     });
@@ -102,7 +102,7 @@ export default function shouldBehaveLikeAvg(): void {
         "takes %e and %e and returns %e",
         async function (x: BigNumber, y: BigNumber, expected: BigNumber) {
           const result: BigNumber = await this.contracts.prbMath.doAvg(x, y);
-          expect(result).to.equal(expected);
+          expect(expected).to.equal(result);
         },
       );
     });
@@ -121,7 +121,7 @@ export default function shouldBehaveLikeAvg(): void {
         "takes %e and %e and returns %e",
         async function (x: BigNumber, y: BigNumber, expected: BigNumber) {
           const result: BigNumber = await this.contracts.prbMath.doAvg(x, y);
-          expect(result).to.equal(expected);
+          expect(expected).to.equal(result);
         },
       );
     });

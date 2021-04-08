@@ -2,7 +2,16 @@ import { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
 import forEach from "mocha-each";
 
-import { E, MAX_59x18, MAX_WHOLE_59x18, PI, SQRT_2, SQRT_MAX_59x18, UNIT, ZERO } from "../../../../helpers/constants";
+import {
+  E,
+  MAX_59x18,
+  MAX_WHOLE_59x18,
+  PI,
+  SQRT_2,
+  SQRT_MAX_DIV_BY_UNIT,
+  UNIT,
+  ZERO,
+} from "../../../../helpers/constants";
 import { bn, fp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeSqrt(): void {
@@ -30,7 +39,7 @@ export default function shouldBehaveLikeSqrt(): void {
       });
     });
 
-    context("when x is lower than 88722839111672999628", function () {
+    context("when x is lower than 57896044618658097711785492504343953926634992332820282019729", function () {
       const testSets = [
         [fp(0.000000000000000001), fp(0.000000001)],
         [fp(0.000000000000001), fp(0.000000031622776601)],
@@ -47,12 +56,12 @@ export default function shouldBehaveLikeSqrt(): void {
         [bn("1889920002192904839344128288891377732371920009212883"), bn("43473210166640613973238162807779776")],
         [bn(1e58), bn(1e38)],
         [bn(5e58), bn("223606797749978969640917366873127623544")],
-        [MAX_WHOLE_59x18.div(UNIT), SQRT_MAX_59x18],
+        [MAX_59x18.div(UNIT), SQRT_MAX_DIV_BY_UNIT],
       ];
 
       forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
         const result: BigNumber = await this.contracts.prbMath.doSqrt(x);
-        expect(result).to.equal(expected);
+        expect(expected).to.equal(result);
       });
     });
   });
