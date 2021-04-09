@@ -3,11 +3,12 @@ pragma solidity >=0.8.0;
 
 import "./PRBMathCommon.sol";
 
-/// @title PRBMath
+/// @title PRBMathSD59x18
 /// @author Paul Razvan Berg
-/// @notice Smart contract library for mathematical functions that works with int256 numbers considered to have 18
-/// decimals. We call this number representation signed 59.18-decimal fixed-point, since there can be up to 59 digits
-// in the 59 digits in the integer part and up to 18 digits in the fractional part.
+/// @notice Smart contract library for advanced maths. It works with int256 numbers considered to have 18 trailing decimals.
+/// We call this number representation signed 59.18-decimal fixed-point, since the numbers can have a sign and there can be
+/// up to 59 digits in the integer part and up to 18 digits in the fractional part. The numbers are bound by the minimum
+/// and the maximum values permitted by the Solidity type int256.
 library PRBMathSD59x18 {
     /// @dev Half the UNIT number.
     int256 internal constant HALF_UNIT = 5e17;
@@ -56,10 +57,10 @@ library PRBMathSD59x18 {
 
     /// @notice Yields the least integer greater than or equal to x.
     ///
-    /// @dev See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
+    /// @dev See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions.
     ///
     /// Requirements:
-    /// - x must be less than or equal to MAX_WHOLE_SD59x18
+    /// - x must be less than or equal to MAX_WHOLE_SD59x18.
     ///
     /// @param x The signed 59.18-decimal fixed-point number to ceil.
     /// @param result The least integer greater than or equal to x.
@@ -108,7 +109,7 @@ library PRBMathSD59x18 {
 
     /// @notice Calculates the natural exponent of x.
     ///
-    /// @dev Based on the insight that e^x = 2^(x * log2(e)),
+    /// @dev Based on the insight that e^x = 2^(x * log2(e)).
     ///
     /// Requirements:
     /// - x must be lower than 88.722839111672999628.
@@ -329,7 +330,7 @@ library PRBMathSD59x18 {
         require(x > 0);
         result = MAX_SD59x18;
 
-        // Note that the "mul" in this block is the assembly mul operation, not our function defined in this contract.
+        // Note that the "mul" in this block is the assembly mul operation, not the "mul" function defined in this contract.
         // prettier-ignore
         assembly {
             switch x
@@ -477,11 +478,11 @@ library PRBMathSD59x18 {
     /// @notice Multiplies two signed 59.18-decimal fixed-point numbers, returning a new signed 59.18-decimal fixed-point number.
     ///
     /// @dev Requirements:
-    /// - x * y must not be higher than MAX_SD59x18 or smaller than MIN_SD59x18
-    /// - x * y +/- HALF_UNIT must not be higher than MAX_SD59x18/ smaller than MIN_SD59x18
+    /// - x * y must not be higher than MAX_SD59x18 or smaller than MIN_SD59x18.
+    /// - x * y +/- HALF_UNIT must not be higher than MAX_SD59x18/ smaller than MIN_SD59x18.
     ///
     /// Caveats:
-    /// - Susceptible to phantom overflow when the intermediary result does not between MIN_SD59x18 and MAX_SD59x18
+    /// - Susceptible to phantom overflow when the intermediary result does not between MIN_SD59x18 and MAX_SD59x18.
     ///
     /// @param x The multiplicand as a signed 59.18-decimal fixed-point number.
     /// @param y The multiplier as a signed 59.18-decimal fixed-point number.
@@ -549,7 +550,7 @@ library PRBMathSD59x18 {
     /// - x must be lower than MAX_SD59x18 / UNIT.
     ///
     /// Caveats:
-    /// - The maximum fixed-point number permitted is 57896044618658097711785492504343953926634.992332820282019729
+    /// - The maximum fixed-point number permitted is 57896044618658097711785492504343953926634.992332820282019729.
     ///
     /// @param x The signed 59.18-decimal fixed-point number for which to calculate the square root.
     /// @return result The result as a signed 59.18-decimal fixed-point .

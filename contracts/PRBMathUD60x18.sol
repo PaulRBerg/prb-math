@@ -3,6 +3,12 @@ pragma solidity >=0.8.0;
 
 import "./PRBMathCommon.sol";
 
+/// @title PRBMathUD60x18
+/// @author Paul Razvan Berg
+/// @notice Smart contract library for advanced maths. It works with uint256 numbers considered to have 18 trailing decimals.
+/// We call this number representation unsigned 60.18-decimal fixed-point, since there can be up to 60 digits in the integer
+/// part and up to 18 digits in the fractional part. The numbers are bound by the minimum and the maximum values
+/// permitted by the Solidity type uint256.
 library PRBMathUD60x18 {
     /// @dev Half the UNIT number.
     uint256 internal constant HALF_UNIT = 5e17;

@@ -3,6 +3,7 @@ pragma solidity >=0.8.0;
 
 library PRBMathCommon {
     /// @notice Finds the zero-based index of the first one in the binary representation of x.
+    ///
     /// @dev See the note on msb in the "Find First Set" Wikipedia article https://en.wikipedia.org/wiki/Find_first_set
     ///
     /// Caveats:
@@ -46,6 +47,7 @@ library PRBMathCommon {
     }
 
     /// @notice Calculates floor(x*y÷denominator) with full precision.
+    ///
     /// @dev Credit to Remco Bloemen under MIT license https://xn--2-umb.com/21/muldiv.
     ///
     /// Requirements:
