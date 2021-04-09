@@ -2,14 +2,14 @@ import { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
 import forEach from "mocha-each";
 
-import { E, MAX_59x18, MAX_WHOLE_59x18, PI, ZERO } from "../../../../helpers/constants";
+import { E, MAX_SD59x18, MAX_WHOLE_SD59x18, PI, ZERO } from "../../../../helpers/constants";
 import { bn, fp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeExp(): void {
   context("when x is zero", function () {
     it("returns zero", async function () {
       const x: BigNumber = ZERO;
-      const result: BigNumber = await this.contracts.prbMath.doExp(x);
+      const result: BigNumber = await this.contracts.prbMathSD59x18.doExp(x);
       expect(result).to.equal(fp(1));
     });
   });
@@ -17,16 +17,16 @@ export default function shouldBehaveLikeExp(): void {
   context("when x is negative", function () {
     it("reverts", async function () {
       const x: BigNumber = fp(-1);
-      await expect(this.contracts.prbMath.doExp(x)).to.be.reverted;
+      await expect(this.contracts.prbMathSD59x18.doExp(x)).to.be.reverted;
     });
   });
 
   context("when x is positive", function () {
     context("when x is 88722839111672999628 or higher", function () {
-      const testSets = [bn("88722839111672999628"), MAX_WHOLE_59x18, MAX_59x18];
+      const testSets = [bn("88722839111672999628"), MAX_WHOLE_SD59x18, MAX_SD59x18];
 
       forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
-        await expect(this.contracts.prbMath.doExp(x)).to.be.reverted;
+        await expect(this.contracts.prbMathSD59x18.doExp(x)).to.be.reverted;
       });
     });
 
@@ -50,7 +50,7 @@ export default function shouldBehaveLikeExp(): void {
       ];
 
       forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
-        const result: BigNumber = await this.contracts.prbMath.doExp(x);
+        const result: BigNumber = await this.contracts.prbMathSD59x18.doExp(x);
         expect(expected).to.equal(result);
       });
     });

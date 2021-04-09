@@ -15,7 +15,7 @@ import shouldBehaveLikeMul from "./pure/mul";
 import shouldBehaveLikePow from "./pure/pow";
 import shouldBehaveLikeSqrt from "./pure/sqrt";
 
-export function shouldBehaveLikePrbMath(): void {
+export function shouldBehaveLikePrbMathSd59x18(): void {
   describe("Pure Functions", function () {
     describe("abs", function () {
       shouldBehaveLikeAbs();

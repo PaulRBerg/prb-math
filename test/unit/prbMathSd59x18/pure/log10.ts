@@ -2,21 +2,21 @@ import { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
 import forEach from "mocha-each";
 
-import { E, LOG10_MAX_59x18, MAX_59x18, MAX_WHOLE_59x18, PI, ZERO } from "../../../../helpers/constants";
+import { E, LOG10_MAX_SD59x18, MAX_SD59x18, MAX_WHOLE_SD59x18, PI, ZERO } from "../../../../helpers/constants";
 import { bn, fp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeLog10(): void {
   context("when x is zero", function () {
     it("reverts", async function () {
       const x: BigNumber = ZERO;
-      await expect(this.contracts.prbMath.doLog10(x)).to.be.reverted;
+      await expect(this.contracts.prbMathSD59x18.doLog10(x)).to.be.reverted;
     });
   });
 
   context("when x is negative", function () {
     it("reverts", async function () {
       const x: BigNumber = fp(-0.1);
-      await expect(this.contracts.prbMath.doLog10(x)).to.be.reverted;
+      await expect(this.contracts.prbMathSD59x18.doLog10(x)).to.be.reverted;
     });
   });
 
@@ -41,7 +41,7 @@ export default function shouldBehaveLikeLog10(): void {
       ];
 
       forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
-        const result: BigNumber = await this.contracts.prbMath.doLog10(x);
+        const result: BigNumber = await this.contracts.prbMathSD59x18.doLog10(x);
         expect(expected).to.equal(result);
       });
     });
@@ -64,12 +64,12 @@ export default function shouldBehaveLikeLog10(): void {
         [fp(1010.892143), bn("30047048210719801170")],
         [fp(440934.1881), bn("56443737734181779783")],
         [bn(1e36).add(1e6), bn("180000000000000000376")],
-        [MAX_WHOLE_59x18, LOG10_MAX_59x18],
-        [MAX_59x18, LOG10_MAX_59x18],
+        [MAX_WHOLE_SD59x18, LOG10_MAX_SD59x18],
+        [MAX_SD59x18, LOG10_MAX_SD59x18],
       ];
 
       forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
-        const result: BigNumber = await this.contracts.prbMath.doLog10(x);
+        const result: BigNumber = await this.contracts.prbMathSD59x18.doLog10(x);
         expect(expected).to.equal(result);
       });
     });

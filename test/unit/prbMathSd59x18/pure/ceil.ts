@@ -2,14 +2,21 @@ import { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
 import forEach from "mocha-each";
 
-import { MAX_59x18, MAX_WHOLE_59x18, MIN_59x18, MIN_WHOLE_59x18, PI, ZERO } from "../../../../helpers/constants";
+import {
+  MAX_SD59x18,
+  MAX_WHOLE_SD59x18,
+  MIN_SD59x18,
+  MIN_WHOLE_SD59x18,
+  PI,
+  ZERO,
+} from "../../../../helpers/constants";
 import { bn, fp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeCeil(): void {
   context("when x is zero", function () {
     it("returns zero", async function () {
       const x: BigNumber = ZERO;
-      const result: BigNumber = await this.contracts.prbMath.doCeil(x);
+      const result: BigNumber = await this.contracts.prbMathSD59x18.doCeil(x);
       expect(result).to.equal(ZERO);
     });
   });
@@ -17,8 +24,8 @@ export default function shouldBehaveLikeCeil(): void {
   context("when x is not zero", function () {
     context("when x is negative", function () {
       const testSets = [
-        [MIN_59x18, MIN_WHOLE_59x18],
-        [MIN_WHOLE_59x18, MIN_WHOLE_59x18],
+        [MIN_SD59x18, MIN_WHOLE_SD59x18],
+        [MIN_WHOLE_SD59x18, MIN_WHOLE_SD59x18],
         [bn(-1e36), bn(-1e36)],
         [fp(-4.2), fp(-4)],
         [PI.mul(-1), fp(-3)],
@@ -30,17 +37,17 @@ export default function shouldBehaveLikeCeil(): void {
       ];
 
       forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
-        const result: BigNumber = await this.contracts.prbMath.doCeil(x);
+        const result: BigNumber = await this.contracts.prbMathSD59x18.doCeil(x);
         expect(expected).to.equal(result);
       });
     });
 
     context("when x is positive", function () {
       context("when x > max whole 59.18", function () {
-        const testSets = [[MAX_WHOLE_59x18.add(1)], [MAX_59x18]];
+        const testSets = [[MAX_WHOLE_SD59x18.add(1)], [MAX_SD59x18]];
 
         forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
-          await expect(this.contracts.prbMath.doCeil(x)).to.be.reverted;
+          await expect(this.contracts.prbMathSD59x18.doCeil(x)).to.be.reverted;
         });
       });
 
@@ -54,11 +61,11 @@ export default function shouldBehaveLikeCeil(): void {
           [PI, fp(4)],
           [fp(4.2), fp(5)],
           [bn(1e36), bn(1e36)],
-          [MAX_WHOLE_59x18, MAX_WHOLE_59x18],
+          [MAX_WHOLE_SD59x18, MAX_WHOLE_SD59x18],
         ];
 
         forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
-          const result: BigNumber = await this.contracts.prbMath.doCeil(x);
+          const result: BigNumber = await this.contracts.prbMathSD59x18.doCeil(x);
           expect(expected).to.equal(result);
         });
       });

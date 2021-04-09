@@ -2,14 +2,21 @@ import { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
 import forEach from "mocha-each";
 
-import { MAX_59x18, MAX_WHOLE_59x18, MIN_59x18, MIN_WHOLE_59x18, PI, ZERO } from "../../../../helpers/constants";
+import {
+  MAX_SD59x18,
+  MAX_WHOLE_SD59x18,
+  MIN_SD59x18,
+  MIN_WHOLE_SD59x18,
+  PI,
+  ZERO,
+} from "../../../../helpers/constants";
 import { bn, fp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeFloor(): void {
   context("when x is zero", function () {
     it("returns zero", async function () {
       const x: BigNumber = ZERO;
-      const result: BigNumber = await this.contracts.prbMath.doFloor(x);
+      const result: BigNumber = await this.contracts.prbMathSD59x18.doFloor(x);
       expect(result).to.equal(ZERO);
     });
   });
@@ -17,16 +24,16 @@ export default function shouldBehaveLikeFloor(): void {
   context("when x is not zero", function () {
     context("when x is negative", function () {
       context("when x < min whole 59.18", function () {
-        const testSets = [[MIN_59x18], [MIN_WHOLE_59x18.sub(1)]];
+        const testSets = [[MIN_SD59x18], [MIN_WHOLE_SD59x18.sub(1)]];
 
         forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
-          await expect(this.contracts.prbMath.doFloor(x)).to.be.reverted;
+          await expect(this.contracts.prbMathSD59x18.doFloor(x)).to.be.reverted;
         });
       });
 
       context("when x >= min whole 59.18", function () {
         const testSets = [
-          [MIN_WHOLE_59x18, MIN_WHOLE_59x18],
+          [MIN_WHOLE_SD59x18, MIN_WHOLE_SD59x18],
           [bn(-1e36), bn(-1e36)],
           [fp(-4.2), fp(-5)],
           [fp(-2), fp(-2)],
@@ -37,7 +44,7 @@ export default function shouldBehaveLikeFloor(): void {
         ];
 
         forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
-          const result: BigNumber = await this.contracts.prbMath.doFloor(x);
+          const result: BigNumber = await this.contracts.prbMathSD59x18.doFloor(x);
           expect(expected).to.equal(result);
         });
       });
@@ -53,12 +60,12 @@ export default function shouldBehaveLikeFloor(): void {
         [PI, fp(3)],
         [fp(4.2), fp(4)],
         [bn(1e36), bn(1e36)],
-        [MAX_WHOLE_59x18, MAX_WHOLE_59x18],
-        [MAX_59x18, MAX_WHOLE_59x18],
+        [MAX_WHOLE_SD59x18, MAX_WHOLE_SD59x18],
+        [MAX_SD59x18, MAX_WHOLE_SD59x18],
       ];
 
       forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
-        const result: BigNumber = await this.contracts.prbMath.doFloor(x);
+        const result: BigNumber = await this.contracts.prbMathSD59x18.doFloor(x);
         expect(expected).to.equal(result);
       });
     });

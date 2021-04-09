@@ -2,7 +2,7 @@ import { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
 import forEach from "mocha-each";
 
-import { E, MAX_59x18, MAX_WHOLE_59x18, PI, SQRT_MAX_59x18, ZERO } from "../../../../helpers/constants";
+import { E, MAX_SD59x18, MAX_WHOLE_SD59x18, PI, SQRT_MAX_SD59x18, ZERO } from "../../../../helpers/constants";
 import { bn, fp, fpPowOfTwo } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikePow(): void {
@@ -11,7 +11,7 @@ export default function shouldBehaveLikePow(): void {
       it("returns 1e18", async function () {
         const x: BigNumber = ZERO;
         const y: BigNumber = ZERO;
-        const result: BigNumber = await this.contracts.prbMath.doPow(x, y);
+        const result: BigNumber = await this.contracts.prbMathSD59x18.doPow(x, y);
         expect(result).to.equal(fp(1));
       });
     });
@@ -21,7 +21,7 @@ export default function shouldBehaveLikePow(): void {
 
       forEach(testSets).it("takes %e and returns zero", async function (y: BigNumber) {
         const x: BigNumber = ZERO;
-        const result: BigNumber = await this.contracts.prbMath.doPow(x, y);
+        const result: BigNumber = await this.contracts.prbMathSD59x18.doPow(x, y);
         expect(result).to.equal(ZERO);
       });
     });
@@ -29,12 +29,12 @@ export default function shouldBehaveLikePow(): void {
 
   context("when the base is not zero", function () {
     context("when the exponent is zero", function () {
-      const testSets = [fp(1), E, PI, MAX_59x18];
+      const testSets = [fp(1), E, PI, MAX_SD59x18];
       const expected: BigNumber = fp(1);
 
       forEach(testSets).it("takes %e and returns 1e18", async function (x: BigNumber) {
         const y: BigNumber = ZERO;
-        const result: BigNumber = await this.contracts.prbMath.doPow(x, y);
+        const result: BigNumber = await this.contracts.prbMathSD59x18.doPow(x, y);
         expect(expected).to.equal(result);
       });
     });
@@ -42,14 +42,14 @@ export default function shouldBehaveLikePow(): void {
     context("when the exponent is not zero", function () {
       context("when the result overflows", function () {
         const testSets = [
-          [bn("38685626227668133590597632000000000000"), 3], // first number whose cube doesn't fit within MAX_59x18
-          [SQRT_MAX_59x18.add(1), 2],
-          [MAX_WHOLE_59x18, 2],
-          [MAX_59x18, 2],
+          [bn("38685626227668133590597632000000000000"), 3], // first number whose cube doesn't fit within MAX_SD59x18
+          [SQRT_MAX_SD59x18.add(1), 2],
+          [MAX_WHOLE_SD59x18, 2],
+          [MAX_SD59x18, 2],
         ];
 
         forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
-          await expect(this.contracts.prbMath.doPow(x, y)).to.be.reverted;
+          await expect(this.contracts.prbMathSD59x18.doPow(x, y)).to.be.reverted;
         });
       });
 
@@ -67,22 +67,22 @@ export default function shouldBehaveLikePow(): void {
           [fp(478.77), 20, bn("400441047687151121501368529571950234763284476825512183793320584974037932")],
           [fp(6452.166), 7, bn("465520409372619407422434167862736844121311696")],
           [bn(1e36), 2, bn(1e54)],
-          // First number whose cube fits within MAX_59x18
+          // First number whose cube fits within MAX_SD59x18
           [
             bn("38685626227668133590597631999999999999"),
             3,
             bn("57896044618658097711785492504343953922145259302939748254975940481744194640509"),
           ],
-          // Precision errors makes the result not equal to MAX_59x18
-          [SQRT_MAX_59x18, 2, MAX_59x18.sub(bn("30389015870437635377568666707"))],
-          [MAX_WHOLE_59x18, 1, MAX_WHOLE_59x18],
-          [MAX_59x18, 1, MAX_59x18],
+          // Precision errors makes the result not equal to MAX_SD59x18
+          [SQRT_MAX_SD59x18, 2, MAX_SD59x18.sub(bn("30389015870437635377568666707"))],
+          [MAX_WHOLE_SD59x18, 1, MAX_WHOLE_SD59x18],
+          [MAX_SD59x18, 1, MAX_SD59x18],
         ];
 
         forEach(testSets).it(
           "takes %e and %e and returns %e",
           async function (x: BigNumber, y: BigNumber, expected: BigNumber) {
-            const result: BigNumber = await this.contracts.prbMath.doPow(x, y);
+            const result: BigNumber = await this.contracts.prbMathSD59x18.doPow(x, y);
             expect(expected).to.equal(result);
           },
         );

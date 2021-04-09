@@ -1,70 +1,70 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 pragma solidity >=0.8.0;
 
-import "../PRBMath.sol";
+import "../PRBMathSD59x18.sol";
 
-contract PRBMathMock {
+contract PRBMathSD59x18Mock {
     function doAbs(int256 x) external pure returns (int256 result) {
-        result = PRBMath.abs(x);
+        result = PRBMathSD59x18.abs(x);
     }
 
     function doAvg(int256 x, int256 y) external pure returns (int256 result) {
-        result = PRBMath.avg(x, y);
+        result = PRBMathSD59x18.avg(x, y);
     }
 
     function doCeil(int256 x) external pure returns (int256 result) {
-        result = PRBMath.ceil(x);
+        result = PRBMathSD59x18.ceil(x);
     }
 
     function doDiv(int256 x, int256 y) external pure returns (int256 result) {
-        result = PRBMath.div(x, y);
+        result = PRBMathSD59x18.div(x, y);
     }
 
     function doExp(int256 x) external pure returns (int256 result) {
-        result = PRBMath.exp(x);
+        result = PRBMathSD59x18.exp(x);
     }
 
     function doExp2(int256 x) external pure returns (int256 result) {
-        result = PRBMath.exp2(x);
+        result = PRBMathSD59x18.exp2(x);
     }
 
     function doFloor(int256 x) external pure returns (int256 result) {
-        result = PRBMath.floor(x);
+        result = PRBMathSD59x18.floor(x);
     }
 
     function doFrac(int256 x) external pure returns (int256 result) {
-        result = PRBMath.frac(x);
+        result = PRBMathSD59x18.frac(x);
     }
 
     function doGm(int256 x, int256 y) external pure returns (int256 result) {
-        result = PRBMath.gm(x, y);
+        result = PRBMathSD59x18.gm(x, y);
     }
 
     function doInv(int256 x) external pure returns (int256 result) {
-        result = PRBMath.inv(x);
+        result = PRBMathSD59x18.inv(x);
     }
 
     function doLn(int256 x) external pure returns (int256 result) {
-        result = PRBMath.ln(x);
+        result = PRBMathSD59x18.ln(x);
     }
 
     function doLog10(int256 x) external pure returns (int256 result) {
-        result = PRBMath.log10(x);
+        result = PRBMathSD59x18.log10(x);
     }
 
     function doLog2(int256 x) external pure returns (int256 result) {
-        result = PRBMath.log2(x);
+        result = PRBMathSD59x18.log2(x);
     }
 
     function doMul(int256 x, int256 y) external pure returns (int256 result) {
-        result = PRBMath.mul(x, y);
+        result = PRBMathSD59x18.mul(x, y);
     }
 
     function doPow(int256 x, uint256 y) external pure returns (int256 result) {
-        result = PRBMath.pow(x, y);
+        result = PRBMathSD59x18.pow(x, y);
     }
 
     function doSqrt(int256 x) external pure returns (int256 result) {
-        result = PRBMath.sqrt(x);
+        result = PRBMathSD59x18.sqrt(x);
     }
 }
