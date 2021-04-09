@@ -67,13 +67,13 @@ export default function shouldBehaveLikePow(): void {
           [fp(478.77), 20, bn("400441047687151121501368529571950234763284476825512183793320584974037932")],
           [fp(6452.166), 7, bn("465520409372619407422434167862736844121311696")],
           [bn(1e36), 2, bn(1e54)],
-          // first number whose cube fits within MAX_59x18
+          // First number whose cube fits within MAX_59x18
           [
             bn("38685626227668133590597631999999999999"),
             3,
             bn("57896044618658097711785492504343953922145259302939748254975940481744194640509"),
           ],
-          // precision errors makes the result not equal to MAX_59x18
+          // Precision errors makes the result not equal to MAX_59x18
           [SQRT_MAX_59x18, 2, MAX_59x18.sub(bn("30389015870437635377568666707"))],
           [MAX_WHOLE_59x18, 1, MAX_WHOLE_59x18],
           [MAX_59x18, 1, MAX_59x18],

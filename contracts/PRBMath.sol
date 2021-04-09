@@ -94,8 +94,8 @@ library PRBMath {
     /// @param result The quotient as a 59.18 decimal fixed-point number.
     function div(int256 x, int256 y) internal pure returns (int256 result) {
         int256 scaledNumerator = x * UNIT;
-        // Overflows can happen only when the scaled numerator is MIN_59x18 and the denominator is -1, but the scaled
-        // numerator ends in 18 zeros so it can't be MIN_59x18.
+        // When dividing numbers in Solidity, overflow can happen only when the scaled numerator is MIN_59x18 and the
+        // denominator is -1, but the scaled numerator ends in 18 zeros so it can't be MIN_59x18.
         // See https://ethereum.stackexchange.com/questions/96482/can-division-underflow-or-overflow-in-solidity
         unchecked {
             result = scaledNumerator / y;
@@ -614,7 +614,7 @@ library PRBMath {
         }
     }
 
-    /// @notice Calculates floor(a×b÷denominator) with full precision.
+    /// @notice Calculates floor(x*y÷denominator) with full precision.
     /// @dev Credit to Remco Bloemen under MIT license https://xn--2-umb.com/21/muldiv
     ///
     /// Requirements:
@@ -633,7 +633,7 @@ library PRBMath {
         uint256 y,
         uint256 denominator
     ) private pure returns (uint256 result) {
-        // 512-bit multiply [prod1 prod0] = a * b. Compute the product mod 2**256 and mod 2**256 - 1, then use
+        // 512-bit multiply [prod1 prod0] = x * y. Compute the product mod 2**256 and mod 2**256 - 1, then use
         // use the Chinese Remainder Theorem to reconstruct the 512 bit result. The result is stored in two 256
         // variables such that product = prod1 * 2**256 + prod0
         uint256 prod0; // Least significant 256 bits of the product
@@ -660,42 +660,43 @@ library PRBMath {
         // 512 by 256 division.
         ///////////////////////////////////////////////
 
-        // Make division exact by subtracting the remainder from [prod1 prod0]. Compute remainder using mulmod.
+        // Make division exact by subtracting the remainder from [prod1 prod0].
         uint256 remainder;
         assembly {
+            // Compute remainder using mulmod.
             remainder := mulmod(x, y, denominator)
-        }
-        // Subtract 256 bit number from 512 bit number
-        assembly {
+
+            // Subtract 256 bit number from 512 bit number
             prod1 := sub(prod1, gt(remainder, prod0))
             prod0 := sub(prod0, remainder)
         }
 
         // Factor powers of two out of denominator and compute largest power of two divisor of denominator. Always >= 1.
+        // See https://cs.stackexchange.com/q/138556/92363.
         unchecked {
-            uint256 lpotd = (type(uint256).max - denominator + 1) & denominator;
-            // Divide denominator by power of two
+            // Does not overflow because denominator cannot be zero at this stage in the function.
+            uint256 lpotdod = denominator & (~denominator + 1);
             assembly {
-                denominator := div(denominator, lpotd)
+                // Divide denominator by lpotdod.
+                denominator := div(denominator, lpotdod)
+
+                // Divide [prod1 prod0] by lpotdod.
+                prod0 := div(prod0, lpotdod)
+
+                // Flip lpotdod such that it is 2**256 / lpotdod. If lpotdod is zero, then it becomes one.
+                lpotdod := add(div(sub(0, lpotdod), lpotdod), 1)
             }
 
-            // Divide [prod1 prod0] by the factors of two
-            assembly {
-                prod0 := div(prod0, lpotd)
-            }
-            // Shift in bits from prod1 into prod0. For this we need to flip `lpotd` such that it is 2**256 / twos.
-            // If `lpotd` is zero, then it becomes one.
-            assembly {
-                lpotd := add(div(sub(0, lpotd), lpotd), 1)
-            }
-            prod0 |= prod1 * lpotd;
+            // Shift in bits from prod1 into prod0.
+            prod0 |= prod1 * lpotdod;
 
             // Invert denominator mod 2**256. Now that denominator is an odd number, it has an inverse modulo 2**256 such
             // that denominator * inv = 1 mod 2**256. Compute the inverse by starting with a seed that is correct for
             // four bits. That is, denominator * inv = 1 mod 2**4
             uint256 inverse = (3 * denominator) ^ 2;
-            // Now use Newton-Raphson iteration to improve the precision. Thanks to Hensel's lifting lemma, this also
-            // works in modular arithmetic, doubling the correct bits in each step.
+
+            // Now use Newton-Raphson iteration to improve the precision. Thanks to Hensel's lifting lemma, this also works
+            // in modular arithmetic, doubling the correct bits in each step.
             inverse *= 2 - denominator * inverse; // inverse mod 2**8
             inverse *= 2 - denominator * inverse; // inverse mod 2**16
             inverse *= 2 - denominator * inverse; // inverse mod 2**32
