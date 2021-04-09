@@ -290,7 +290,8 @@ library PRBMath {
     /// @return result The inverse as a 59.18 decimal fixed point number fixed point number
     function inv(int256 x) internal pure returns (int256 result) {
         unchecked {
-            result = (UNIT * UNIT) / x;
+            // 1e36 is UNIT^2.
+            result = 1e36 / x;
         }
     }
 
@@ -484,8 +485,8 @@ library PRBMath {
     /// Caveats:
     /// - Susceptible to phantom overflow when the intermediary result does not between MIN_59x18 and MAX_59x18
     ///
-    /// @param x The first operand as a 59.18 decimal fixed-point number.
-    /// @param y The second operand as a 59.18 decimal fixed-point number.
+    /// @param x The multiplicand as a 59.18 decimal fixed-point number.
+    /// @param y The multiplier as a 59.18 decimal fixed-point number.
     /// @param result The product as a 59.18 decimal fixed-point number.
     function mul(int256 x, int256 y) internal pure returns (int256 result) {
         int256 doubleScaledProduct = x * y;
@@ -674,7 +675,7 @@ library PRBMath {
         // Factor powers of two out of denominator and compute largest power of two divisor of denominator. Always >= 1.
         // See https://cs.stackexchange.com/q/138556/92363.
         unchecked {
-            // Does not overflow because denominator cannot be zero at this stage in the function.
+            // Does not overflow because the denominator cannot be zero at this stage in the function.
             uint256 lpotdod = denominator & (~denominator + 1);
             assembly {
                 // Divide denominator by lpotdod.
