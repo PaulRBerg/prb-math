@@ -1,7 +1,7 @@
 import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { Decimal } from "decimal.js";
 
-import { UNIT } from "./constants";
+import { SCALE } from "./constants";
 
 export function bn(x: BigNumberish | Decimal): BigNumber {
   if (BigNumber.isBigNumber(x)) {
@@ -21,7 +21,7 @@ export function fp(x: number | Decimal): BigNumber {
 }
 
 export function fpPowOfTwo(exp: number | BigNumber): BigNumber {
-  return powOfTwo(exp).mul(UNIT);
+  return powOfTwo(exp).mul(SCALE);
 }
 
 export function maxUint(exp: number): BigNumber {
@@ -48,8 +48,8 @@ export function solidityMod(x: BigNumber, n: BigNumber): BigNumber {
   return result;
 }
 
-export function solidityModByUnit(x: BigNumber): BigNumber {
-  return solidityMod(x, UNIT);
+export function solidityModByScale(x: BigNumber): BigNumber {
+  return solidityMod(x, SCALE);
 }
 
 export function toFp(x: BigNumberish | Decimal): Decimal {

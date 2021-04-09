@@ -8,7 +8,6 @@ import { Contracts, Signers } from "../types/index";
 
 const { createFixtureLoader } = waffle;
 
-/// This is run at the beginning of each suite of tests: 2e2, integration and unit.
 export function baseContext(description: string, hooks: () => void): void {
   describe(description, function () {
     before(async function () {

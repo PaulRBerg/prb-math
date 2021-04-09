@@ -8,8 +8,8 @@ import {
   MAX_WHOLE_SD59x18,
   PI,
   SQRT_2,
-  SQRT_MAX_SD59x18_DIV_BY_UNIT,
-  UNIT,
+  SQRT_MAX_SD59x18_DIV_BY_SCALE,
+  SCALE,
   ZERO,
 } from "../../../../helpers/constants";
 import { bn, fp } from "../../../../helpers/numbers";
@@ -60,7 +60,7 @@ export default function shouldBehaveLikeSqrt(): void {
         [bn("1889920002192904839344128288891377732371920009212883"), bn("43473210166640613973238162807779776")],
         [bn(1e58), bn(1e38)],
         [bn(5e58), bn("223606797749978969640917366873127623544")],
-        [MAX_SD59x18.div(UNIT), SQRT_MAX_SD59x18_DIV_BY_UNIT],
+        [MAX_SD59x18.div(SCALE), SQRT_MAX_SD59x18_DIV_BY_SCALE],
       ];
 
       forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {

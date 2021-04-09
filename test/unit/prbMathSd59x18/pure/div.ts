@@ -8,7 +8,7 @@ import {
   MIN_SD59x18,
   MIN_WHOLE_SD59x18,
   PI,
-  UNIT,
+  SCALE,
   ZERO,
 } from "../../../../helpers/constants";
 import { bn, fp } from "../../../../helpers/numbers";
@@ -16,7 +16,7 @@ import { bn, fp } from "../../../../helpers/numbers";
 export default function shouldBehaveLikeDiv(): void {
   context("when the denominator is zero", function () {
     it("reverts", async function () {
-      const x: BigNumber = UNIT;
+      const x: BigNumber = SCALE;
       const y: BigNumber = ZERO;
       await expect(this.contracts.prbMathSD59x18.doDiv(x, y)).to.be.reverted;
     });
@@ -44,10 +44,10 @@ export default function shouldBehaveLikeDiv(): void {
     context("when the numerator is not zero", function () {
       context("when the scaled numerator overflows", function () {
         const testSets = [
-          [MIN_SD59x18.div(UNIT).sub(1), fp(-0.000000000000000001)],
-          [MIN_SD59x18.div(UNIT).sub(1), fp(0.000000000000000001)],
-          [MAX_SD59x18.div(UNIT).add(1), fp(-0.000000000000000001)],
-          [MAX_SD59x18.div(UNIT).add(1), fp(0.000000000000000001)],
+          [MIN_SD59x18.div(SCALE).sub(1), fp(-0.000000000000000001)],
+          [MIN_SD59x18.div(SCALE).sub(1), fp(0.000000000000000001)],
+          [MAX_SD59x18.div(SCALE).add(1), fp(-0.000000000000000001)],
+          [MAX_SD59x18.div(SCALE).add(1), fp(0.000000000000000001)],
         ];
 
         forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
@@ -58,7 +58,7 @@ export default function shouldBehaveLikeDiv(): void {
       context("when the scaled numerator does not overflow", function () {
         context("when the numerator and the denominator have the same sign", function () {
           const testSets = [
-            [MIN_SD59x18.div(UNIT), fp(-0.000000000000000001), MAX_WHOLE_SD59x18],
+            [MIN_SD59x18.div(SCALE), fp(-0.000000000000000001), MAX_WHOLE_SD59x18],
             [bn(-1e36), fp(-1), bn(1e36)],
             [fp(-2503), fp(-918882.11), bn("2723962054283546")],
             [fp(-772.05), fp(-199.98), bn("3860636063606360636")],
@@ -90,7 +90,7 @@ export default function shouldBehaveLikeDiv(): void {
             [fp(772.05), fp(199.98), bn("3860636063606360636")],
             [fp(2503), fp(918882.11), bn("2723962054283546")],
             [bn(1e36), fp(1), bn(1e36)],
-            [MAX_SD59x18.div(UNIT), fp(0.000000000000000001), MAX_WHOLE_SD59x18],
+            [MAX_SD59x18.div(SCALE), fp(0.000000000000000001), MAX_WHOLE_SD59x18],
           ]);
 
           forEach(testSets).it(
@@ -104,7 +104,7 @@ export default function shouldBehaveLikeDiv(): void {
 
         context("when the numerator and the denominator do not have the same sign", function () {
           const testSets = [
-            [MIN_WHOLE_SD59x18.div(UNIT), fp(0.000000000000000001), MIN_WHOLE_SD59x18],
+            [MIN_WHOLE_SD59x18.div(SCALE), fp(0.000000000000000001), MIN_WHOLE_SD59x18],
             [bn(-1e36), fp(1), bn(-1e36)],
             [fp(-2503), fp(918882.11), bn("-2723962054283546")],
             [fp(-772.05), fp(199.98), bn("-3860636063606360636")],
@@ -136,7 +136,7 @@ export default function shouldBehaveLikeDiv(): void {
             [fp(772.05), fp(-199.98), bn("-3860636063606360636")],
             [fp(2503), fp(-918882.11), bn("-2723962054283546")],
             [bn(1e36), fp(-1), bn(-1e36)],
-            [MAX_SD59x18.div(UNIT), fp(-0.000000000000000001), MIN_WHOLE_SD59x18],
+            [MAX_SD59x18.div(SCALE), fp(-0.000000000000000001), MIN_WHOLE_SD59x18],
           ]);
 
           forEach(testSets).it(

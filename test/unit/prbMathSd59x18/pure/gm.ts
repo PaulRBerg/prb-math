@@ -9,7 +9,7 @@ import {
   MIN_SD59x18,
   MIN_WHOLE_SD59x18,
   PI,
-  SQRT_MAX_SD59x18_DIV_BY_UNIT,
+  SQRT_MAX_SD59x18_DIV_BY_SCALE,
   ZERO,
 } from "../../../../helpers/constants";
 import { bn, fp } from "../../../../helpers/numbers";
@@ -46,8 +46,8 @@ export default function shouldBehaveLikeGm(): void {
         [MIN_SD59x18, fp(-0.000000000000000001)],
         [MIN_SD59x18, fp(-0.000000000000000002)],
         [MIN_WHOLE_SD59x18, fp(-0.000000000000000003)],
-        [SQRT_MAX_SD59x18_DIV_BY_UNIT.mul(-1), SQRT_MAX_SD59x18_DIV_BY_UNIT.mul(-1).sub(1)],
-        [SQRT_MAX_SD59x18_DIV_BY_UNIT, SQRT_MAX_SD59x18_DIV_BY_UNIT.add(1)],
+        [SQRT_MAX_SD59x18_DIV_BY_SCALE.mul(-1), SQRT_MAX_SD59x18_DIV_BY_SCALE.mul(-1).sub(1)],
+        [SQRT_MAX_SD59x18_DIV_BY_SCALE, SQRT_MAX_SD59x18_DIV_BY_SCALE.add(1)],
         [MAX_WHOLE_SD59x18, fp(0.000000000000000003)],
         [MAX_SD59x18, fp(0.000000000000000002)],
       ];
@@ -59,8 +59,8 @@ export default function shouldBehaveLikeGm(): void {
 
     context("when the product of x and y does not overflow", function () {
       const testSets = [
-        [MIN_WHOLE_SD59x18, fp(-0.000000000000000001), SQRT_MAX_SD59x18_DIV_BY_UNIT],
-        [SQRT_MAX_SD59x18_DIV_BY_UNIT.mul(-1), SQRT_MAX_SD59x18_DIV_BY_UNIT.mul(-1), SQRT_MAX_SD59x18_DIV_BY_UNIT],
+        [MIN_WHOLE_SD59x18, fp(-0.000000000000000001), SQRT_MAX_SD59x18_DIV_BY_SCALE],
+        [SQRT_MAX_SD59x18_DIV_BY_SCALE.mul(-1), SQRT_MAX_SD59x18_DIV_BY_SCALE.mul(-1), SQRT_MAX_SD59x18_DIV_BY_SCALE],
         [fp(-2404.8), fp(-7899.210662), bn("4358442588812843362311")],
         [fp(-322.47), fp(-674.77), bn("466468736251423392217")],
         [PI.mul(-1), fp(-8.2), bn("5075535416036056441")],
@@ -76,9 +76,9 @@ export default function shouldBehaveLikeGm(): void {
         [PI, fp(8.2), bn("5075535416036056441")],
         [fp(322.47), fp(674.77), bn("466468736251423392217")],
         [fp(2404.8), fp(7899.210662), bn("4358442588812843362311")],
-        [SQRT_MAX_SD59x18_DIV_BY_UNIT, SQRT_MAX_SD59x18_DIV_BY_UNIT, SQRT_MAX_SD59x18_DIV_BY_UNIT],
-        [MAX_WHOLE_SD59x18, fp(0.000000000000000001), SQRT_MAX_SD59x18_DIV_BY_UNIT],
-        [MAX_SD59x18, fp(0.000000000000000001), SQRT_MAX_SD59x18_DIV_BY_UNIT],
+        [SQRT_MAX_SD59x18_DIV_BY_SCALE, SQRT_MAX_SD59x18_DIV_BY_SCALE, SQRT_MAX_SD59x18_DIV_BY_SCALE],
+        [MAX_WHOLE_SD59x18, fp(0.000000000000000001), SQRT_MAX_SD59x18_DIV_BY_SCALE],
+        [MAX_SD59x18, fp(0.000000000000000001), SQRT_MAX_SD59x18_DIV_BY_SCALE],
       ]);
 
       forEach(testSets).it(

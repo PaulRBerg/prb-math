@@ -10,26 +10,23 @@ import "./PRBMathCommon.sol";
 /// part and up to 18 digits in the fractional part. The numbers are bound by the minimum and the maximum values
 /// permitted by the Solidity type uint256.
 library PRBMathUD60x18 {
-    /// @dev Half the UNIT number.
-    uint256 internal constant HALF_UNIT = 5e17;
+    /// @dev Half the SCALE number.
+    uint256 internal constant HALF_SCALE = 5e17;
 
     /// @dev The maximum value an unsigned 60.18-decimal fixed-point number can have.
     uint256 internal constant MAX_60x18 = type(uint256).max;
 
     /// @dev The maximum whole value an unsigned 60.18-decimal fixed-point number can have.
-    uint256 internal constant MAX_WHOLE_60x18 = type(uint256).max - (type(uint256).max % UNIT);
-
-    /// @dev Twice the UNI number.
-    uint256 internal constant TWICE_UNIT = 2e18;
+    uint256 internal constant MAX_WHOLE_60x18 = type(uint256).max - (type(uint256).max % SCALE);
 
     /// @dev Constant that determines how many decimals can be represented.
-    uint256 internal constant UNIT = 1e18;
+    uint256 internal constant SCALE = 1e18;
 
-    /// @dev Largest power of two divisor of UNIT.
-    uint256 internal constant UNIT_LPOTD = 262144;
+    /// @dev Largest power of two divisor of SCALE.
+    uint256 internal constant SCALE_LPOTD = 262144;
 
-    /// @dev UNIT inverted mod MAX_60x18.
-    uint256 internal constant UNIT_INVERSE = 78156646155174841979727994598816262306175212592076161876661508869554232690281;
+    /// @dev SCALE inverted mod MAX_60x18.
+    uint256 internal constant SCALE_INVERSE = 78156646155174841979727994598816262306175212592076161876661508869554232690281;
 
     /// @notice Divides two 60.18-decimal fixed-point numbers, returning a new 60.18-decimal fixed-point number.
     ///
@@ -42,13 +39,13 @@ library PRBMathUD60x18 {
     /// @param y The denominator as an unsigned 60.18-decimal fixed-point number.
     /// @param result The quotient as an unsigned 60.18-decimal fixed-point number.
     function div(uint256 x, uint256 y) internal pure returns (uint256 result) {
-        result = PRBMathCommon.mulDiv(x, UNIT, y);
+        result = PRBMathCommon.mulDiv(x, SCALE, y);
     }
 
     /// @notice Multiplies two unsigned 60.18-decimal fixed-point numbers, returning a new unsigned 60.18-decimal
     /// fixed-point number.
     ///
-    /// @dev Implements a variant of "mulDiv" with constant folding because the denominator is always UNIT.
+    /// @dev Implements a variant of "mulDiv" with constant folding because the denominator is always SCALE.
     ///
     /// Requirements:
     /// - The product must fit within MAX_60x18.
@@ -71,21 +68,21 @@ library PRBMathUD60x18 {
 
         if (prod1 == 0) {
             unchecked {
-                result = prod0 / UNIT;
+                result = prod0 / SCALE;
                 return result;
             }
         }
 
-        require(UNIT > prod1);
+        require(SCALE > prod1);
 
         assembly {
-            let remainder := mulmod(x, y, UNIT)
+            let remainder := mulmod(x, y, SCALE)
             result := mul(
                 or(
-                    div(sub(prod0, remainder), UNIT_LPOTD),
-                    mul(sub(prod1, gt(remainder, prod0)), add(div(sub(0, UNIT_LPOTD), UNIT_LPOTD), 1))
+                    div(sub(prod0, remainder), SCALE_LPOTD),
+                    mul(sub(prod1, gt(remainder, prod0)), add(div(sub(0, SCALE_LPOTD), SCALE_LPOTD), 1))
                 ),
-                UNIT_INVERSE
+                SCALE_INVERSE
             )
         }
     }
