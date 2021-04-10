@@ -5,10 +5,10 @@ import "./PRBMathCommon.sol";
 
 /// @title PRBMathSD59x18
 /// @author Paul Razvan Berg
-/// @notice Smart contract library for advanced fixed-point math. It works with int256 numbers considered to have 18 trailing decimals.
-/// We call this number representation signed 59.18-decimal fixed-point, since the numbers can have a sign and there can be
-/// up to 59 digits in the integer part and up to 18 digits in the fractional part. The numbers are bound by the minimum
-/// and the maximum values permitted by the Solidity type int256.
+/// @notice Smart contract library for advanced fixed-point math. It works with int256 numbers considered to have 18
+/// trailing decimals. We call this number representation signed 59.18-decimal fixed-point, since the numbers can have
+/// a sign and there can be up to 59 digits in the integer part and up to 18 digits in the fractional part. The numbers
+/// are bound by the minimum and the maximum values permitted by the Solidity type int256.
 library PRBMathSD59x18 {
     /// @dev Half the SCALE number.
     int256 internal constant HALF_SCALE = 5e17;
@@ -49,15 +49,16 @@ library PRBMathSD59x18 {
     function avg(int256 x, int256 y) internal pure returns (int256 result) {
         // The operations can never overflow.
         unchecked {
-            // The last operand checks if both x and y are odd and if yes, we add 1 to the result. We need it
-            // because if both numbers are odd, the 0.5 remainder gets truncated twice.
+            // The last operand checks if both x and y are odd and if that is the case, we add 1 to the result. We need
+            // to do this because if both numbers are odd, the 0.5 remainder gets truncated twice.
             result = (x >> 1) + (y >> 1) + (x & y & 1);
         }
     }
 
-    /// @notice Yields the least integer greater than or equal to x.
+    /// @notice Yields the least greatest signed 59.18 decimal fixed-point number greater than or equal to x.
     ///
-    /// @dev See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions.
+    /// @dev Optimised for fractional value inputs, because for every whole value there are (1e18 - 1) fractional counterparts.
+    /// See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions.
     ///
     /// Requirements:
     /// - x must be less than or equal to MAX_WHOLE_SD59x18.
@@ -234,9 +235,10 @@ library PRBMathSD59x18 {
         }
     }
 
-    /// @notice Yields the greatest integer less than or equal to x.
+    /// @notice Yields the greatest signed 59.18 decimal fixed-point number less than or equal to x.
     ///
-    /// @dev See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
+    /// @dev Optimised for fractional value inputs, because for every whole value there are (1e18 - 1) fractional counterparts.
+    /// See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions.
     ///
     /// Requirements:
     /// - x must be greater than or equal to MIN_WHOLE_SD59x18.
@@ -259,13 +261,15 @@ library PRBMathSD59x18 {
         }
     }
 
-    /// @notice Yields the excess beyond x's floored value for positive numbers and the part of the number to the right
+    /// @notice Yields the excess beyond the floor of x for positive numbers and the part of the number to the right
     /// of the radix point for negative numbers.
     /// @dev Based on the odd function definition. https://en.wikipedia.org/wiki/Fractional_part
     /// @param x The signed 59.18-decimal fixed-point number to get the fractional part of.
     /// @param result The fractional part of x as a signed 59.18-decimal fixed-point number.
     function frac(int256 x) internal pure returns (int256 result) {
-        result = x % SCALE;
+        unchecked {
+            result = x % SCALE;
+        }
     }
 
     /// @notice Calculates geometric mean of x and y, i.e. sqrt(x * y), rounding down.
@@ -292,10 +296,10 @@ library PRBMathSD59x18 {
     /// - x cannot be zero.
     ///
     /// @param x The signed 59.18-decimal fixed-point number for which to calculate the inverse.
-    /// @return result The inverse as a signed 59.18-decimal fixed-point number fixed-point number
+    /// @return result The inverse as a signed 59.18-decimal fixed-point number.
     function inv(int256 x) internal pure returns (int256 result) {
         unchecked {
-            // 1e36 is SCALE^2.
+            // 1e36 is SCALE * SCALE.
             result = 1e36 / x;
         }
     }
