@@ -432,56 +432,51 @@ library PRBMathSD59x18 {
         }
     }
 
-    /// @notice Calculates the binary logarithm of x.
-    ///
-    /// @dev Based on the iterative approximation algorithm.
-    /// https://en.wikipedia.org/wiki/Binary_logarithm#Iterative_approximation
-    ///
-    /// Requirements:
-    /// - x must be higher than zero.
-    ///
-    /// Caveats:
-    /// - The results are nor perfectly accurate to the last digit, due to the precision of the iterative approximation.
-    ///
-    /// @param x The signed 59.18-decimal fixed-point number for which to calculate the binary logarithm.
-    /// @return result The binary logarithm as a signed 59.18-decimal fixed-point number.
     function log2(int256 x) internal pure returns (int256 result) {
         require(x > 0);
-
-        // TODO: explain this
-        int256 sign;
-        if (x >= SCALE) {
-            sign = 1;
-        } else {
-            sign = -1;
-            x = div(SCALE, x);
-        }
-
-        // Calculate the integer part n, add it to the result and finally calculate y = x * 2^(-n).
-        uint256 quotient = uint256(x / SCALE);
-        uint256 n = PRBMathCommon.mostSignificantBit(quotient);
-        result = int256(n) * SCALE * sign;
-        int256 y = x >> n;
-
-        // If y = 1, the fractional part is zero.
-        if (y == SCALE) {
-            return result;
-        }
-
-        // Calculate the fractional part via the iterative approximation.
-        int256 delta;
-        for (delta = HALF_SCALE; delta > 0; delta >>= 1) {
-            // TODO: replace this with "mul"
-            y = (y * y) / SCALE;
-
-            // Is y^2 > 2 and so in the range [2,4)?
-            if (y >= 2e18) {
-                // Add the 2^(-m) factor to the logarithm.
-                result += delta * sign;
-
-                // Corresponds to z/2 on Wikipedia.
-                y >>= 1;
+        unchecked {
+            // This works because log2(x) = -log2(1/x).
+            int256 sign;
+            if (x >= SCALE) {
+                sign = 1;
+            } else {
+                sign = -1;
+                // Compute the inverse inline to save gas. The left-hand operand is SCALE * SCALE.
+                assembly {
+                    x := div(1000000000000000000000000000000000000, x)
+                }
             }
+
+            // Calculate the integer part of the logarithm and add it to the result and finally calculate y = x * 2^(-n).
+            uint256 n = PRBMathCommon.mostSignificantBit(uint256(x / SCALE));
+
+            // The integer part of the logarithm as a signed 59.18-decimal fixed-point number. The operation can't overflow
+            // beacuse n is maximum 255, SCALE is 1e18 and sign is either 1 or -1.
+            result = int256(n) * SCALE;
+
+            // This is y = x * 2^(-n).
+            int256 y = x >> n;
+
+            // If y = 1, the fractional part is zero.
+            if (y == SCALE) {
+                return result * sign;
+            }
+
+            // Calculate the fractional part via the iterative approximation.
+            // The "delta >>= 1" part is equivalent to "delta /= 2" but shifting bits is faster.
+            for (int256 delta = int256(HALF_SCALE); delta > 0; delta >>= 1) {
+                y = (y * y) / SCALE;
+
+                // Is y^2 > 2 and so in the range [2,4)?
+                if (y >= 2 * SCALE) {
+                    // Add the 2^(-m) factor to the logarithm.
+                    result += delta;
+
+                    // Corresponds to z/2 on Wikipedia.
+                    y >>= 1;
+                }
+            }
+            result *= sign;
         }
     }
 
@@ -573,8 +568,8 @@ library PRBMathSD59x18 {
         require(x >= 0);
         require(x < 57896044618658097711785492504343953926634992332820282019729);
         unchecked {
-            // Multiply x by the SCALE to account for the factor of SCALE that is picked up when multiplying two 59.18
-            // decimal fixed-point numbers together (in this case, both numbers are the square root).
+            // Multiply x by the SCALE to account for the factor of SCALE that is picked up when multiplying two signed
+            // 59.18-decimal fixed-point numbers together (in this case, those two numbers are both the square root).
             result = int256(PRBMathCommon.sqrtUint256(uint256(x * SCALE)));
         }
     }
