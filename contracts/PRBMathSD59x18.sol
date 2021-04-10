@@ -5,7 +5,7 @@ import "./PRBMathCommon.sol";
 
 /// @title PRBMathSD59x18
 /// @author Paul Razvan Berg
-/// @notice Smart contract library for advanced maths. It works with int256 numbers considered to have 18 trailing decimals.
+/// @notice Smart contract library for advanced fixed-point math. It works with int256 numbers considered to have 18 trailing decimals.
 /// We call this number representation signed 59.18-decimal fixed-point, since the numbers can have a sign and there can be
 /// up to 59 digits in the integer part and up to 18 digits in the fractional part. The numbers are bound by the minimum
 /// and the maximum values permitted by the Solidity type int256.
@@ -49,7 +49,7 @@ library PRBMathSD59x18 {
     function avg(int256 x, int256 y) internal pure returns (int256 result) {
         // The operations can never overflow.
         unchecked {
-            // The last operand checks if both x and y are odd and if yes, it adds 1 to the result. We need it
+            // The last operand checks if both x and y are odd and if yes, we add 1 to the result. We need it
             // because if both numbers are odd, the 0.5 remainder gets truncated twice.
             result = (x >> 1) + (y >> 1) + (x & y & 1);
         }
@@ -66,13 +66,16 @@ library PRBMathSD59x18 {
     /// @param result The least integer greater than or equal to x.
     function ceil(int256 x) internal pure returns (int256 result) {
         require(x <= MAX_WHOLE_SD59x18);
-        if (x % SCALE == 0) {
-            result = x;
-        } else {
-            // Solidity uses C fmod style, which returns a value with the same sign as x.
-            result = x - (x % SCALE);
-            if (x > 0) {
-                result += SCALE;
+        unchecked {
+            int256 remainder = x % SCALE;
+            if (remainder == 0) {
+                result = x;
+            } else {
+                // Solidity uses C fmod style, which returns a modulus with the same sign as x.
+                result = x - remainder;
+                if (x > 0) {
+                    result += SCALE;
+                }
             }
         }
     }
@@ -242,13 +245,16 @@ library PRBMathSD59x18 {
     /// @param result The greatest integer less than or equal to x.
     function floor(int256 x) internal pure returns (int256 result) {
         require(x >= MIN_WHOLE_SD59x18);
-        if (x % SCALE == 0) {
-            result = x;
-        } else {
-            // Solidity uses C fmod style, which returns a value with the same sign as x.
-            result = x - (x % SCALE);
-            if (x < 0) {
-                result -= SCALE;
+        unchecked {
+            int256 remainder = x % SCALE;
+            if (remainder == 0) {
+                result = x;
+            } else {
+                // Solidity uses C fmod style, which returns a modulus with the same sign as x.
+                result = x - remainder;
+                if (x < 0) {
+                    result -= SCALE;
+                }
             }
         }
     }
@@ -542,7 +548,7 @@ library PRBMathSD59x18 {
         result = isNegative ? -int256(absResult) : int256(absResult);
     }
 
-    /// @notice Returns 1 in 59.18-decimal fixed-point representation.
+    /// @notice Returns 1 as a signed 59.18-decimal fixed-point number.
     function scale() internal pure returns (int256 result) {
         result = SCALE;
     }
