@@ -1,14 +1,11 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 pragma solidity >=0.8.0;
 
+/// @dev Common mathematical functions used in both PRBMathSD59x18 and PRBMathUD60x18. Note that this shared library
+/// assumes neither the signed 59.18-decimal fixed-point nor the unsigned 60.18-decimal fixed-point representation.
 library PRBMathCommon {
     /// @notice Finds the zero-based index of the first one in the binary representation of x.
-    ///
     /// @dev See the note on msb in the "Find First Set" Wikipedia article https://en.wikipedia.org/wiki/Find_first_set
-    ///
-    /// Caveats:
-    /// - This function does not assume the signed 59.18-decimal fixed-point representation.
-    ///
     /// @param x The uint256 number for which to find the index of the most significant bit.
     /// @return msb The index of the most significant bit as an uint256.
     function mostSignificantBit(uint256 x) internal pure returns (uint256 msb) {
@@ -154,7 +151,7 @@ library PRBMathCommon {
     ///
     /// @param x The uint256 number for which to calculate the square root.
     /// @return result The result as an uint256.
-    function sqrtUint256(uint256 x) internal pure returns (uint256 result) {
+    function sqrt(uint256 x) internal pure returns (uint256 result) {
         if (x == 0) {
             return 0;
         }

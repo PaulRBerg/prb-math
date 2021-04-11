@@ -14,16 +14,16 @@ library PRBMathSD59x18 {
     int256 internal constant HALF_SCALE = 5e17;
 
     /// @dev The maximum value a signed 59.18-decimal fixed-point number can have.
-    int256 internal constant MAX_SD59x18 = type(int256).max;
+    int256 internal constant MAX_SD59x18 = 57896044618658097711785492504343953926634992332820282019728792003956564819967;
 
     /// @dev The maximum whole value a signed 59.18-decimal fixed-point number can have.
-    int256 internal constant MAX_WHOLE_SD59x18 = type(int256).max - (type(int256).max % SCALE);
+    int256 internal constant MAX_WHOLE_SD59x18 = 57896044618658097711785492504343953926634992332820282019728000000000000000000;
 
     /// @dev The minimum value a signed 59.18-decimal fixed-point number can have.
-    int256 internal constant MIN_SD59x18 = type(int256).min;
+    int256 internal constant MIN_SD59x18 = -57896044618658097711785492504343953926634992332820282019728792003956564819968;
 
     /// @dev The minimum whole value a signed 59.18-decimal fixed-point number can have.
-    int256 internal constant MIN_WHOLE_SD59x18 = type(int256).min - (type(int256).min % SCALE);
+    int256 internal constant MIN_WHOLE_SD59x18 = -57896044618658097711785492504343953926634992332820282019728000000000000000000;
 
     /// @dev Constant that determines how many decimals can be represented.
     int256 internal constant SCALE = 1e18;
@@ -287,7 +287,7 @@ library PRBMathSD59x18 {
 
         // We don't need to multiply by the SCALE here because the x*y product had already picked up a factor of SCALE
         // during multiplication. See the comments within the "sqrt" function.
-        result = int256(PRBMathCommon.sqrtUint256(uint256(xy)));
+        result = int256(PRBMathCommon.sqrt(uint256(xy)));
     }
 
     /// @notice Calculates 1 / x, rounding towards zero.
@@ -318,9 +318,8 @@ library PRBMathSD59x18 {
     /// @param x The signed 59.18-decimal fixed-point number for which to calculate the natural logarithm.
     /// @return result The natural logarithm as a signed 59.18-decimal fixed-point number.
     function ln(int256 x) internal pure returns (int256 result) {
-        require(x > 0);
-        int256 ln_2 = 693147180559945309;
-        result = mul(log2(x), ln_2);
+        // The multiplier is ln(2).
+        result = mul(log2(x), 693147180559945309);
     }
 
     /// @notice Calculates the common logarithm of x.
@@ -338,30 +337,29 @@ library PRBMathSD59x18 {
     /// @return result The common logarithm as a signed 59.18-decimal fixed-point number.
     function log10(int256 x) internal pure returns (int256 result) {
         require(x > 0);
-        result = MAX_SD59x18;
 
         // Note that the "mul" in this block is the assembly mul operation, not the "mul" function defined in this contract.
         // prettier-ignore
         assembly {
             switch x
             case 1 { result := mul(SCALE, sub(0, 18)) }
-            case 10 { result := mul(SCALE, sub(0, 17)) }
-            case 100 { result := mul(SCALE, sub(0, 16)) }
-            case 1000 { result := mul(SCALE, sub(0, 15)) }
-            case 10000 { result := mul(SCALE, sub(0, 14)) }
-            case 100000 { result := mul(SCALE, sub(0, 13)) }
-            case 1000000 { result := mul(SCALE, sub(0, 12)) }
-            case 10000000 { result := mul(SCALE, sub(0, 11)) }
-            case 100000000 { result := mul(SCALE, sub(0, 10)) }
-            case 1000000000 { result := mul(SCALE, sub(0, 9)) }
-            case 10000000000 { result := mul(SCALE, sub(0, 8)) }
-            case 100000000000 { result := mul(SCALE, sub(0, 7)) }
-            case 1000000000000 { result := mul(SCALE, sub(0, 6)) }
-            case 10000000000000 { result := mul(SCALE, sub(0, 5)) }
-            case 100000000000000 { result := mul(SCALE, sub(0, 4)) }
-            case 1000000000000000 { result := mul(SCALE, sub(0, 3)) }
-            case 10000000000000000 { result := mul(SCALE, sub(0, 2)) }
-            case 100000000000000000 { result := mul(SCALE, sub(0, 1)) }
+            case 10 { result := mul(SCALE, sub(1, 18)) }
+            case 100 { result := mul(SCALE, sub(2, 18)) }
+            case 1000 { result := mul(SCALE, sub(3, 18)) }
+            case 10000 { result := mul(SCALE, sub(4, 18)) }
+            case 100000 { result := mul(SCALE, sub(5, 18)) }
+            case 1000000 { result := mul(SCALE, sub(6, 18)) }
+            case 10000000 { result := mul(SCALE, sub(7, 18)) }
+            case 100000000 { result := mul(SCALE, sub(8, 18)) }
+            case 1000000000 { result := mul(SCALE, sub(9, 18)) }
+            case 10000000000 { result := mul(SCALE, sub(10, 18)) }
+            case 100000000000 { result := mul(SCALE, sub(11, 18)) }
+            case 1000000000000 { result := mul(SCALE, sub(12, 18)) }
+            case 10000000000000 { result := mul(SCALE, sub(13, 18)) }
+            case 100000000000000 { result := mul(SCALE, sub(14, 18)) }
+            case 1000000000000000 { result := mul(SCALE, sub(15, 18)) }
+            case 10000000000000000 { result := mul(SCALE, sub(16, 18)) }
+            case 100000000000000000 { result := mul(SCALE, sub(17, 18)) }
             case 1000000000000000000 { result := 0 }
             case 10000000000000000000 { result := SCALE }
             case 100000000000000000000 { result := mul(SCALE, 2) }
@@ -421,17 +419,32 @@ library PRBMathSD59x18 {
             case 100000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE, 56) }
             case 1000000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE, 57) }
             case 10000000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE, 58) }
+            default {
+                result := MAX_SD59x18
+            }
         }
 
         if (result == MAX_SD59x18) {
-            int256 log2_10 = 332192809488736234;
+            // Do the fixed-point division inline to save gas. The denominator is log2(10).
             unchecked {
-                // Implement the "div" function inline.
-                result = (log2(x) * SCALE) / log2_10;
+                result = (log2(x) * SCALE) / 332192809488736234;
             }
         }
     }
 
+    /// @notice Calculates the binary logarithm of x.
+    ///
+    /// @dev Based on the iterative approximation algorithm.
+    /// https://en.wikipedia.org/wiki/Binary_logarithm#Iterative_approximation
+    ///
+    /// Requirements:
+    /// - x must be greater than zero.
+    ///
+    /// Caveats:
+    /// - The results are nor perfectly accurate to the last digit, due to the lossy precision of the iterative approximation.
+    ///
+    /// @param x The signed 59.18-decimal fixed-point number for which to calculate the binary logarithm.
+    /// @return result The binary logarithm as a signed 59.18-decimal fixed-point number.
     function log2(int256 x) internal pure returns (int256 result) {
         require(x > 0);
         unchecked {
@@ -441,7 +454,7 @@ library PRBMathSD59x18 {
                 sign = 1;
             } else {
                 sign = -1;
-                // Compute the inverse inline to save gas. The left-hand operand is SCALE * SCALE.
+                // Do the fixed-point inversion inline to save gas. The numeretor is SCALE * SCALE.
                 assembly {
                     x := div(1000000000000000000000000000000000000, x)
                 }
@@ -463,7 +476,7 @@ library PRBMathSD59x18 {
             }
 
             // Calculate the fractional part via the iterative approximation.
-            // The "delta >>= 1" part is equivalent to "delta /= 2" but shifting bits is faster.
+            // The "delta >>= 1" part is equivalent to "delta /= 2", but shifting bits is faster.
             for (int256 delta = int256(HALF_SCALE); delta > 0; delta >>= 1) {
                 y = (y * y) / SCALE;
 
@@ -570,7 +583,7 @@ library PRBMathSD59x18 {
         unchecked {
             // Multiply x by the SCALE to account for the factor of SCALE that is picked up when multiplying two signed
             // 59.18-decimal fixed-point numbers together (in this case, those two numbers are both the square root).
-            result = int256(PRBMathCommon.sqrtUint256(uint256(x * SCALE)));
+            result = int256(PRBMathCommon.sqrt(uint256(x * SCALE)));
         }
     }
 }
