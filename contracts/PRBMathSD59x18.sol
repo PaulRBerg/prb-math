@@ -116,17 +116,17 @@ library PRBMathSD59x18 {
     /// @dev Based on the insight that e^x = 2^(x * log2(e)).
     ///
     /// Requirements:
-    /// - x must be lower than 88.722839111672999628.
+    /// - x must be lower than 88722839111672999628.
     /// - All from "log2".
     ///
     /// @param x The exponent as a signed 59.18-decimal fixed-point number.
     /// @return result The result as a signed 59.18-decimal fixed-point number.
     function exp(int256 x) internal pure returns (int256 result) {
-        // Otherwise the value passed to "exp2" would be higher than 128e18.
+        // Without this check, the value passed to "exp2" would be higher than 128e18.
         require(x < 88722839111672999628);
         unchecked {
-            int256 log2_e = 1442695040888963407;
-            result = exp2(mul(x, log2_e));
+            // The multiplier is log2(e).
+            result = exp2(mul(x, 1442695040888963407));
         }
     }
 
@@ -148,7 +148,6 @@ library PRBMathSD59x18 {
         // TODO: remove this check and make the function compatible with negative numbers.
         require(x >= 0);
 
-        // prettier-ignore
         unchecked {
             // Convert x to the 128.128-bit fixed-point format.
             uint256 xb = (uint256(x) << 128) / uint256(SCALE);
@@ -529,7 +528,7 @@ library PRBMathSD59x18 {
     /// @dev See https://en.wikipedia.org/wiki/Exponentiation_by_squaring
     ///
     /// Requirements:
-    /// - All from "abs" and "mul".
+    /// - All from "abs" and "mulDiv".
     ///
     /// Caveats:
     /// - Assumes 0^0 is 1.
