@@ -47,7 +47,7 @@ library PRBMathUD60x18 {
     /// See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions.
     ///
     /// Requirements:
-    /// - x must be less than or equal to MAX_WHOLE_SD59x18.
+    /// - x must be less than or equal to MAX_WHOLE_UD60x18.
     ///
     /// @param x The unsigned 60.18-decimal fixed-point number to ceil.
     /// @param result The least integer greater than or equal to x.
@@ -229,17 +229,25 @@ library PRBMathUD60x18 {
     /// @notice Calculates geometric mean of x and y, i.e. sqrt(x * y), rounding down.
     ///
     /// @dev Requirements:
-    /// - x * y must be lower than MAX_UD60x18.
+    /// - x * y must fit within MAX_UD60x18, lest it overflows.
     ///
     /// @param x The first operand as an unsigned 60.18-decimal fixed-point number.
     /// @param y The second operand as an unsigned 60.18-decimal fixed-point number.
     /// @return result The result as an unsigned 60.18-decimal fixed-point number.
     function gm(uint256 x, uint256 y) internal pure returns (uint256 result) {
-        uint256 xy = x * y;
+        if (x == 0) {
+            return 0;
+        }
 
-        // We don't need to multiply by the SCALE here because the x*y product had already picked up a factor of SCALE
-        // during multiplication. See the comments within the "sqrt" function.
-        result = PRBMathCommon.sqrt(xy);
+        unchecked {
+            // Checking for overflow this way is faster than letting Solidity do it.
+            uint256 xy = x * y;
+            require(xy / x == y);
+
+            // We don't need to multiply by the SCALE here because the x*y product had already picked up a factor of SCALE
+            // during multiplication. See the comments within the "sqrt" function.
+            result = PRBMathCommon.sqrt(xy);
+        }
     }
 
     /// @notice Calculates 1 / x, rounding towards zero.

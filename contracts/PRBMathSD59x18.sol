@@ -274,19 +274,29 @@ library PRBMathSD59x18 {
     /// @notice Calculates geometric mean of x and y, i.e. sqrt(x * y), rounding down.
     ///
     /// @dev Requirements:
-    /// - x * y must be lower than MAX_SD59x18.
+    /// - x * y must fit within MAX_SD59x18, lest it overflows.
     /// - x * y cannot be negative.
     ///
     /// @param x The first operand as a signed 59.18-decimal fixed-point number.
     /// @param y The second operand as a signed 59.18-decimal fixed-point number.
     /// @return result The result as a signed 59.18-decimal fixed-point number.
     function gm(int256 x, int256 y) internal pure returns (int256 result) {
-        int256 xy = x * y;
-        require(xy >= 0);
+        if (x == 0) {
+            return 0;
+        }
 
-        // We don't need to multiply by the SCALE here because the x*y product had already picked up a factor of SCALE
-        // during multiplication. See the comments within the "sqrt" function.
-        result = int256(PRBMathCommon.sqrt(uint256(xy)));
+        unchecked {
+            // Checking for overflow this way is faster than letting Solidity do it.
+            int256 xy = x * y;
+            require(xy / x == y);
+
+            // The product cannot be negative.
+            require(xy >= 0);
+
+            // We don't need to multiply by the SCALE here because the x*y product had already picked up a factor of SCALE
+            // during multiplication. See the comments within the "sqrt" function.
+            result = int256(PRBMathCommon.sqrt(uint256(xy)));
+        }
     }
 
     /// @notice Calculates 1 / x, rounding towards zero.
