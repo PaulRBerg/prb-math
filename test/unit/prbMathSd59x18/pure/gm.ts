@@ -47,7 +47,7 @@ export default function shouldBehaveLikeGm(): void {
         [MIN_SD59x18, fp(-0.000000000000000002)],
         [MIN_WHOLE_SD59x18, fp(-0.000000000000000003)],
         [SQRT_MAX_SD59x18_DIV_BY_SCALE.mul(-1), SQRT_MAX_SD59x18_DIV_BY_SCALE.mul(-1).sub(1)],
-        [SQRT_MAX_SD59x18_DIV_BY_SCALE, SQRT_MAX_SD59x18_DIV_BY_SCALE.add(1)],
+        [SQRT_MAX_SD59x18_DIV_BY_SCALE.add(1), SQRT_MAX_SD59x18_DIV_BY_SCALE.add(1)],
         [MAX_WHOLE_SD59x18, fp(0.000000000000000003)],
         [MAX_SD59x18, fp(0.000000000000000002)],
       ];

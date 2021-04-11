@@ -24,16 +24,16 @@ export function fpPowOfTwo(exp: number | BigNumber): BigNumber {
   return powOfTwo(exp).mul(SCALE);
 }
 
-export function maxUint(exp: number): BigNumber {
-  return bn(2).pow(exp).sub(1);
-}
-
 export function maxInt(exp: number): BigNumber {
   return powOfTwo(exp - 1).sub(1);
 }
 
 export function minInt(exp: number): BigNumber {
   return powOfTwo(exp - 1).mul(-1);
+}
+
+export function maxUint(exp: number): BigNumber {
+  return bn(2).pow(exp).sub(1);
 }
 
 export function powOfTwo(exp: number | BigNumber): BigNumber {
@@ -48,6 +48,7 @@ export function solidityMod(x: BigNumber, n: BigNumber): BigNumber {
   return result;
 }
 
+// See https://github.com/ethers-io/ethers.js/issues/1402.
 export function solidityModByScale(x: BigNumber): BigNumber {
   return solidityMod(x, SCALE);
 }

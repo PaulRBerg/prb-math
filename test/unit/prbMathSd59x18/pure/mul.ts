@@ -10,8 +10,8 @@ import {
   MIN_SD59x18,
   MIN_WHOLE_SD59x18,
   PI,
-  SQRT_MAX_SD59x18,
   SCALE,
+  SQRT_MAX_SD59x18,
   ZERO,
 } from "../../../../helpers/constants";
 import { bn, fp } from "../../../../helpers/numbers";

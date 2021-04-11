@@ -250,9 +250,9 @@ library PRBMathUD60x18 {
     /// @param x The unsigned 60.18-decimal fixed-point number for which to calculate the inverse.
     /// @return result The inverse as an unsigned 60.18-decimal fixed-point number.
     function inv(uint256 x) internal pure returns (uint256 result) {
-        assembly {
-            // The left-hand operand is SCALE * SCALE.
-            result := div(1000000000000000000000000000000000000, x)
+        unchecked {
+            // 1e36 is SCALE * SCALE.
+            result = 1e36 / x;
         }
     }
 
