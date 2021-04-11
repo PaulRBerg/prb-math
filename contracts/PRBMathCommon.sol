@@ -158,35 +158,34 @@ library PRBMathCommon {
 
         // Calculate the square root of the perfect square of a power of two that is the closest to x.
         uint256 xAux = uint256(x);
-        uint256 x0 = 1;
+        result = 1;
         if (xAux >= 0x100000000000000000000000000000000) {
             xAux >>= 128;
-            x0 <<= 64;
+            result <<= 64;
         }
         if (xAux >= 0x10000000000000000) {
             xAux >>= 64;
-            x0 <<= 32;
+            result <<= 32;
         }
         if (xAux >= 0x100000000) {
             xAux >>= 32;
-            x0 <<= 16;
+            result <<= 16;
         }
         if (xAux >= 0x10000) {
             xAux >>= 16;
-            x0 <<= 8;
+            result <<= 8;
         }
         if (xAux >= 0x100) {
             xAux >>= 8;
-            x0 <<= 4;
+            result <<= 4;
         }
         if (xAux >= 0x10) {
             xAux >>= 4;
-            x0 <<= 2;
+            result <<= 2;
         }
         if (xAux >= 0x8) {
-            x0 <<= 1;
+            result <<= 1;
         }
-        result = x0;
 
         // The operations can never overflow because the result is max 2^127 when it enters this block.
         unchecked {
