@@ -505,7 +505,9 @@ library PRBMathSD59x18 {
             }
         }
 
+        // The result must fit within the 59.18-decimal fixed-point representation.
         require(absResult <= uint256(MAX_SD59x18));
+
         // Is the base negative and the exponent an odd number?
         bool isNegative = x < 0 && y & 1 == 1;
         result = isNegative ? -int256(absResult) : int256(absResult);
