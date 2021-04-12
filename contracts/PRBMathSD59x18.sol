@@ -122,8 +122,14 @@ library PRBMathSD59x18 {
     /// @param x The exponent as a signed 59.18-decimal fixed-point number.
     /// @return result The result as a signed 59.18-decimal fixed-point number.
     function exp(int256 x) internal pure returns (int256 result) {
+        // Without this check, the value passed to "exp2" would be lower than -59794705707972522261.
+        if (x < -41446531673892822322) {
+            return 0;
+        }
+
         // Without this check, the value passed to "exp2" would be higher than 128e18.
         require(x < 88722839111672999628);
+
         unchecked {
             // The multiplier is log2(e).
             result = exp2(mul(x, 1442695040888963407));
