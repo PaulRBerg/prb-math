@@ -123,10 +123,7 @@ library PRBMathUD60x18 {
             uint256 x128x128 = (x << 128) / SCALE;
 
             // Pass x to the PRBMathCommon.exp2 functon, which uses the 128-128-bit fixed-point number representation.
-            uint256 result128x128 = PRBMathCommon.exp2(x128x128);
-
-            // Convert the result to the signed 60.18-decimal fixed-point format.
-            result = PRBMathCommon.mulDiv(result128x128, SCALE, 2**128);
+            result = PRBMathCommon.exp2(x128x128);
         }
     }
 
@@ -468,7 +465,7 @@ library PRBMathUD60x18 {
     function sqrt(uint256 x) internal pure returns (uint256 result) {
         require(x < 115792089237316195423570985008687907853269984665640564039458);
         unchecked {
-            // Multiply x by the SCALE to account for the factor of SCALE that is picked up when multiplying two signed
+            // Multiply x by the SCALE to account for the factor of SCALE that is picked up when multiplying two unsigned
             // 60.18-decimal fixed-point numbers together (in this case, those two numbers are both the square root).
             result = PRBMathCommon.sqrt(x * SCALE);
         }

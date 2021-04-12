@@ -142,16 +142,17 @@ library PRBMathSD59x18 {
     ///
     /// Requirements:
     /// - x must be 128e18 or lower.
-    /// - x cannot be negative.
     /// - result must fit within MAX_SD59x18.
+    ///
+    /// Caveats:
+    /// - For any x lower than -59794705707972522261, the result is zero.
     ///
     /// @param x The exponent as a signed 59.18-decimal fixed-point number.
     /// @return result The result as a signed 59.18-decimal fixed-point number.
     function exp2(int256 x) internal pure returns (int256 result) {
         // This works because 2^-x = 1/2^x.
         if (x < 0) {
-            // 2**59.794705707972522262 is the maximum number for which the inverse does not equal zero when doing
-            // the fixed-point division below.
+            // 2**59.794705707972522262 is the maximum number whose inverse does not equal zero.
             if (x < -59794705707972522261) {
                 return 0;
             }
@@ -169,11 +170,10 @@ library PRBMathSD59x18 {
                 // Convert x to the 128.128-bit fixed-point format.
                 uint256 x128x128 = (uint256(x) << 128) / uint256(SCALE);
 
-                // Pass x to the PRBMathCommon.exp2 functon, which uses the 128-128-bit fixed-point number representation.
-                uint256 result128x128 = PRBMathCommon.exp2(x128x128);
+                // We need to pass x as a 128-128-bit fixed-point number.
+                uint256 resultUint256 = PRBMathCommon.exp2(x128x128);
 
-                // Convert the result to the signed 59.18-decimal fixed-point format.
-                uint256 resultUint256 = PRBMathCommon.mulDiv(result128x128, uint256(SCALE), 2**128);
+                // We get the result as an unsigned 60.18-decimal fixed-point number, but we need signed 59.18-decimal fixed-point.
                 require(resultUint256 <= uint256(MAX_SD59x18));
                 result = int256(resultUint256);
             }

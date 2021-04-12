@@ -5,9 +5,9 @@ pragma solidity >=0.8.0;
 /// assumes neither the signed 59.18-decimal fixed-point nor the unsigned 60.18-decimal fixed-point representation.
 library PRBMathCommon {
     /// @notice Calculates the binary exponent of x using the binary fraction method.
-    /// @dev This functions works with unsigned 128.128-bit fixed-point numbers, because it's the most efficient way.
+    /// @dev Uses 128.128-bit fixed-point numbers because it's the most efficient way.
     /// @param x The exponent as an unsigned 128.128-bit fixed-point number.
-    /// @return result The result as an unsigned 128.128-bit fixed-point number.
+    /// @return result The result as an unsigned 60x18 decimal fixed-point number.
     function exp2(uint256 x) internal pure returns (uint256 result) {
         unchecked {
             // Start from 0.5 in the 128.128-bit fixed-point format. We need to use uint256 because the intermediary
@@ -84,6 +84,9 @@ library PRBMathCommon {
             // Multiply the result by the integer part 2^n + 1. We have to shift by one bit extra because we have already divided
             // by two when we set the result equal to 0.5 above.
             result = result << ((x >> 128) + 1);
+
+            // Convert the result to the signed 60.18-decimal fixed-point format.
+            result = PRBMathCommon.mulDiv(result, 1e18, 2**128);
         }
     }
 
