@@ -22,7 +22,7 @@ export default function shouldBehaveLikePow(): void {
       forEach(testSets).it("takes %e and returns zero", async function (y: BigNumber) {
         const x: BigNumber = ZERO;
         const result: BigNumber = await this.contracts.prbMathUD60x18.doPow(x, y);
-        expect(result).to.equal(ZERO);
+        expect(ZERO).to.equal(result);
       });
     });
   });

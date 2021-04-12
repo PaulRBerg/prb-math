@@ -144,17 +144,19 @@ library PRBMathSD59x18 {
     function exp2(int256 x) internal pure returns (int256 result) {
         // This works because 2^-x = 1/2^x.
         if (x < 0) {
-            // 2**128 doesn't fit within the 128.128-bit format used internally in this function.
-            require(x > -128e18);
+            // 2**59.794705707972522262 is the maximum number for which the inverse does not equal zero when doing
+            // the fixed-point division below.
+            if (x < -59794705707972522261) {
+                return 0;
+            }
 
-            result = exp2(-x);
             // Do the fixed-point inversion inline to save gas. The numeretor is SCALE * SCALE.
             unchecked {
-                result = 1e36 / result;
+                result = 1e36 / exp2(-x);
             }
             return result;
         } else {
-            // 2**128 doesn't fit within the 128.128-bit format used internally in this function.
+            // 2**128 doesn't fit within the 128.128-bit fixed-point representation.
             require(x < 128e18);
 
             unchecked {

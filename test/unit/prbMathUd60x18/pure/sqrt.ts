@@ -18,12 +18,12 @@ export default function shouldBehaveLikeSqrt(): void {
     it("returns zero", async function () {
       const x: BigNumber = ZERO;
       const result: BigNumber = await this.contracts.prbMathUD60x18.doSqrt(x);
-      expect(result).to.equal(ZERO);
+      expect(ZERO).to.equal(result);
     });
   });
 
   context("when x is positive", function () {
-    context("when x is 115792089237316195423570985008687907853269984665640564039458 or higher", function () {
+    context("when x is 115792089237316195423570985008687907853269984665640564039458 or greater", function () {
       const testSets = [
         bn("115792089237316195423570985008687907853269984665640564039458"),
         MAX_WHOLE_UD60x18,

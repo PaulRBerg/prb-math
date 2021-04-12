@@ -14,15 +14,8 @@ export default function shouldBehaveLikeExp(): void {
     });
   });
 
-  context("when x is negative", function () {
-    it("reverts", async function () {
-      const x: BigNumber = fp(-1);
-      await expect(this.contracts.prbMathSD59x18.doExp(x)).to.be.reverted;
-    });
-  });
-
   context("when x is positive", function () {
-    context("when x is 88722839111672999628 or higher", function () {
+    context("when x is 88722839111672999628 or greater", function () {
       const testSets = [bn("88722839111672999628"), MAX_WHOLE_SD59x18, MAX_SD59x18];
 
       forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {

@@ -23,7 +23,7 @@ export default function shouldBehaveLikeGm(): void {
 
     forEach(testSets).it("takes %e and %e and returns zero", async function (x: BigNumber, y: BigNumber) {
       const result: BigNumber = await this.contracts.prbMathSD59x18.doGm(x, y);
-      expect(result).to.equal(ZERO);
+      expect(ZERO).to.equal(result);
     });
   });
 

@@ -15,7 +15,7 @@ export default function shouldBehaveLikeExp(): void {
   });
 
   context("when x is positive", function () {
-    context("when x is 88722839111672999628 or higher", function () {
+    context("when x is 88722839111672999628 or greater", function () {
       const testSets = [bn("88722839111672999628"), MAX_WHOLE_UD60x18, MAX_UD60x18];
 
       forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {

@@ -15,7 +15,7 @@ export default function shouldBehaveLikeExp2(): void {
   });
 
   context("when x is positive", function () {
-    context("when x is 128e18 or higher", function () {
+    context("when x is 128e18 or greater", function () {
       const testSets = [fp(128), MAX_WHOLE_UD60x18, MAX_UD60x18];
 
       forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {

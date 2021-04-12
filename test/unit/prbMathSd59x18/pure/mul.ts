@@ -30,7 +30,7 @@ export default function shouldBehaveLikeMul(): void {
 
     forEach(testSets).it("takes %e and %e and returns zero", async function (x: BigNumber, y: BigNumber) {
       const result: BigNumber = await this.contracts.prbMathSD59x18.doMul(x, y);
-      expect(result).to.equal(ZERO);
+      expect(ZERO).to.equal(result);
     });
   });
 
@@ -69,7 +69,7 @@ export default function shouldBehaveLikeMul(): void {
       context("when the half scale step does not cause an overflow", function () {
         context("when the operands have the same sign", function () {
           const testSets = [
-            // Need to add 1 because the absolute value of MIN_SD59x18 is higher by MAX_SD59x18 by 1.
+            // Need to add 1 because the absolute value of MIN_SD59x18 is greater by MAX_SD59x18 by 1.
             [MIN_SD59x18.add(HALF_SCALE).add(1), fp(-0.000000000000000001), MAX_SD59x18.div(SCALE)],
             [MIN_WHOLE_SD59x18.add(HALF_SCALE), fp(-0.000000000000000001), MAX_WHOLE_SD59x18.div(SCALE)],
             [bn(-1e36), bn(-1e24), bn(1e42)],
@@ -115,7 +115,7 @@ export default function shouldBehaveLikeMul(): void {
 
         context("when the operands do not have the same sign", function () {
           const testSets = [
-            // Need to add 1 because the absolute value of MIN_SD59x18 is higher by MAX_SD59x18 by 1.
+            // Need to add 1 because the absolute value of MIN_SD59x18 is greater by MAX_SD59x18 by 1.
             [MIN_SD59x18.add(HALF_SCALE).add(1), fp(0.000000000000000001), MIN_SD59x18.div(SCALE)],
             [MIN_WHOLE_SD59x18.add(HALF_SCALE), fp(0.000000000000000001), MIN_WHOLE_SD59x18.div(SCALE)],
             [bn(-1e36), bn(1e24), bn(-1e42)],

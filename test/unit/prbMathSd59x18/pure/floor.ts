@@ -17,7 +17,7 @@ export default function shouldBehaveLikeFloor(): void {
     it("returns zero", async function () {
       const x: BigNumber = ZERO;
       const result: BigNumber = await this.contracts.prbMathSD59x18.doFloor(x);
-      expect(result).to.equal(ZERO);
+      expect(ZERO).to.equal(result);
     });
   });
 

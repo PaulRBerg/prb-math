@@ -10,7 +10,7 @@ export default function shouldBehaveLikeFrac(): void {
     it("works", async function () {
       const x: BigNumber = ZERO;
       const result: BigNumber = await this.contracts.prbMathUD60x18.doFrac(x);
-      expect(result).to.equal(ZERO);
+      expect(ZERO).to.equal(result);
     });
   });
 

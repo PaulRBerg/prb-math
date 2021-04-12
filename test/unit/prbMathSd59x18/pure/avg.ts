@@ -9,7 +9,7 @@ export default function shouldBehaveLikeAvg(): void {
   context("when both operands are zero", function () {
     it("returns zero", async function () {
       const result: BigNumber = await this.contracts.prbMathSD59x18.doAvg(ZERO, ZERO);
-      expect(result).to.equal(ZERO);
+      expect(ZERO).to.equal(result);
     });
   });
 
