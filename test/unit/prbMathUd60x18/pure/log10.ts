@@ -6,7 +6,7 @@ import { E, LOG10_MAX_UD60x18, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, SCALE, ZERO }
 import { bn, fp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeLog10(): void {
-  context("when x is lower than 1e18", function () {
+  context("when x is less than 1e18", function () {
     const testSets = [ZERO, bn(1), bn(10), bn(1e4), fp(0.1), fp(0.5), SCALE.sub(1)];
 
     forEach(testSets).it("takes %e and reverts", async function () {

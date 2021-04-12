@@ -35,7 +35,7 @@ export default function shouldBehaveLikeSqrt(): void {
       });
     });
 
-    context("when x is lower than 115792089237316195423570985008687907853269984665640564039458", function () {
+    context("when x is less than 115792089237316195423570985008687907853269984665640564039458", function () {
       const testSets = [
         [fp(0.000000000000000001), fp(0.000000001)],
         [fp(0.000000000000001), fp(0.000000031622776601)],

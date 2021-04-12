@@ -90,7 +90,7 @@ library PRBMathUD60x18 {
     /// @dev Based on the insight that e^x = 2^(x * log2(e)).
     ///
     /// Requirements:
-    /// - x must be lower than 88722839111672999628.
+    /// - x must be less than 88722839111672999628.
     /// - All from "log2".
     ///
     /// @param x The exponent as an unsigned 60.18-decimal fixed-point number.
@@ -109,7 +109,7 @@ library PRBMathUD60x18 {
     /// @dev See https://ethereum.stackexchange.com/q/79903/24693.
     ///
     /// Requirements:
-    /// - x must be 128e18 or lower.
+    /// - x must be 128e18 or less.
     /// - result must fit within MAX_UD60x18.
     ///
     /// @param x The exponent as an unsigned 60.18-decimal fixed-point number.
@@ -455,7 +455,7 @@ library PRBMathUD60x18 {
     /// @dev Uses the Babylonian method https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Babylonian_method.
     ///
     /// Requirements:
-    /// - x must be lower than MAX_UD60x18 / SCALE.
+    /// - x must be less than MAX_UD60x18 / SCALE.
     ///
     /// Caveats:
     /// - The maximum fixed-point number permitted is 115792089237316195423570985008687907853269.984665640564039458.

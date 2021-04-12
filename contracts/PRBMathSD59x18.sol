@@ -116,13 +116,13 @@ library PRBMathSD59x18 {
     /// @dev Based on the insight that e^x = 2^(x * log2(e)).
     ///
     /// Requirements:
-    /// - x must be lower than 88722839111672999628.
+    /// - x must be less than 88722839111672999628.
     /// - All from "log2".
     ///
     /// @param x The exponent as a signed 59.18-decimal fixed-point number.
     /// @return result The result as a signed 59.18-decimal fixed-point number.
     function exp(int256 x) internal pure returns (int256 result) {
-        // Without this check, the value passed to "exp2" would be lower than -59794705707972522261.
+        // Without this check, the value passed to "exp2" would be less than -59794705707972522261.
         if (x < -41446531673892822322) {
             return 0;
         }
@@ -141,11 +141,11 @@ library PRBMathSD59x18 {
     /// @dev See https://ethereum.stackexchange.com/q/79903/24693.
     ///
     /// Requirements:
-    /// - x must be 128e18 or lower.
+    /// - x must be 128e18 or less.
     /// - result must fit within MAX_SD59x18.
     ///
     /// Caveats:
-    /// - For any x lower than -59794705707972522261, the result is zero.
+    /// - For any x less than -59794705707972522261, the result is zero.
     ///
     /// @param x The exponent as a signed 59.18-decimal fixed-point number.
     /// @return result The result as a signed 59.18-decimal fixed-point number.
@@ -525,7 +525,7 @@ library PRBMathSD59x18 {
     ///
     /// Requirements:
     /// - x cannot be negative.
-    /// - x must be lower than MAX_SD59x18 / SCALE.
+    /// - x must be less than MAX_SD59x18 / SCALE.
     ///
     /// Caveats:
     /// - The maximum fixed-point number permitted is 57896044618658097711785492504343953926634.992332820282019729.

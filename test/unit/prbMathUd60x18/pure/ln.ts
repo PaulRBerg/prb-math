@@ -15,7 +15,7 @@ import {
 import { bn, fp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeLn(): void {
-  context("when x is lower than 1e18", function () {
+  context("when x is less than 1e18", function () {
     const testSets = [ZERO, fp(0.0625), fp(0.1), fp(0.5), fp(0.8), SCALE.sub(1)];
 
     forEach(testSets).it("takes %e and reverts", async function () {

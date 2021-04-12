@@ -23,7 +23,7 @@ export default function shouldBehaveLikeExp(): void {
   });
 
   context("when x is negative", function () {
-    context("when x is lower than -41446531673892822322", function () {
+    context("when x is less than -41446531673892822322", function () {
       const testSets = [bn("-41446531673892822323"), MIN_WHOLE_SD59x18, MIN_SD59x18];
 
       forEach(testSets).it("takes %e and returns zero", async function (x: BigNumber) {
@@ -65,7 +65,7 @@ export default function shouldBehaveLikeExp(): void {
       });
     });
 
-    context("when x is lower than 88722839111672999628", function () {
+    context("when x is less than 88722839111672999628", function () {
       const testSets = [
         [fp(0.000000000000000001), fp(1)], // because this is very close to zero
         [fp(0.000000000000001), bn("1000000000000001000")],

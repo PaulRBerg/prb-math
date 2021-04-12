@@ -23,7 +23,7 @@ export default function shouldBehaveLikeExp(): void {
       });
     });
 
-    context("when x is lower than 88722839111672999628", function () {
+    context("when x is less than 88722839111672999628", function () {
       const testSets = [
         [fp(0.000000000000000001), fp(1)], // because this is very close to zero
         [fp(0.000000000000001), bn("1000000000000000999")],

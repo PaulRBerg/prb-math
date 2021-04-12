@@ -15,7 +15,7 @@ library PRBMathCommon {
             result = 0x80000000000000000000000000000000;
 
             // Multiply the result by root(2, 2^-i) when the bit at position i is 1. None of the intermediary results overflows
-            // because the initial result is 2^127 and all magic factors are lower than 2^129.
+            // because the initial result is 2^127 and all magic factors are less than 2^129.
             if (x & 0x80000000000000000000000000000000 > 0) result = (result * 0x16A09E667F3BCC908B2FB1366EA957D3E) >> 128;
             if (x & 0x40000000000000000000000000000000 > 0) result = (result * 0x1306FE0A31B7152DE8D5A46305C85EDED) >> 128;
             if (x & 0x20000000000000000000000000000000 > 0) result = (result * 0x1172B83C7D517ADCDF7C8C50EB14A7920) >> 128;
