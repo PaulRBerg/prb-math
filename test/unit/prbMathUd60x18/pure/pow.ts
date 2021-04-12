@@ -8,11 +8,11 @@ import { bn, fp, fpPowOfTwo } from "../../../../helpers/numbers";
 export default function shouldBehaveLikePow(): void {
   context("when the base is zero", function () {
     context("when the exponent is zero", function () {
-      it("returns 1e18", async function () {
+      it("retrieves 1e18", async function () {
         const x: BigNumber = ZERO;
         const y: BigNumber = ZERO;
         const result: BigNumber = await this.contracts.prbMathUD60x18.doPow(x, y);
-        expect(result).to.equal(fp(1));
+        expect(fp(1)).to.equal(result);
       });
     });
 

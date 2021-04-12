@@ -63,4 +63,16 @@ contract PRBMathUD60x18Mock {
     function doSqrt(uint256 x) external pure returns (uint256 result) {
         result = PRBMathUD60x18.sqrt(x);
     }
+
+    function getE() external pure returns (uint256 result) {
+        result = PRBMathUD60x18.e();
+    }
+
+    function getPi() external pure returns (uint256 result) {
+        result = PRBMathUD60x18.pi();
+    }
+
+    function getScale() external pure returns (uint256 result) {
+        result = PRBMathUD60x18.scale();
+    }
 }

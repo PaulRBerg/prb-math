@@ -15,10 +15,10 @@ import { bn, fp, fpPowOfTwo } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeExp2(): void {
   context("when x is zero", function () {
-    it("returns zero", async function () {
+    it("retrieves 1e18", async function () {
       const x: BigNumber = ZERO;
       const result: BigNumber = await this.contracts.prbMathSD59x18.doExp2(x);
-      expect(result).to.equal(fp(1));
+      expect(fp(1)).to.equal(result);
     });
   });
 

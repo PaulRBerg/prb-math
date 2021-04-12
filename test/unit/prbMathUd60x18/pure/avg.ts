@@ -7,7 +7,7 @@ import { bn, fp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeAvg(): void {
   context("when both operands are zero", function () {
-    it("returns zero", async function () {
+    it("retrieves zero", async function () {
       const result: BigNumber = await this.contracts.prbMathUD60x18.doAvg(ZERO, ZERO);
       expect(ZERO).to.equal(result);
     });

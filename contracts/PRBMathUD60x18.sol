@@ -67,7 +67,7 @@ library PRBMathUD60x18 {
 
     /// @notice Divides two unsigned 60.18-decimal fixed-point numbers, returning a new unsigned 60.18-decimal fixed-point number.
     ///
-    /// @dev Scales the numerator first, then divides by the denominator.
+    /// @dev Uses mulDiv to enable overflow-safe multiplication and division.
     ///
     /// Requirements:
     /// - y cannot be zero.
@@ -122,7 +122,7 @@ library PRBMathUD60x18 {
             // Convert x to the 128.128-bit fixed-point format.
             uint256 x128x128 = (x << 128) / SCALE;
 
-            // Pass x to the PRBMathCommon.exp2 functon, which uses the 128-128-bit fixed-point number representation.
+            // Pass x to the PRBMathCommon.exp2 function, which uses the 128.128-bit fixed-point number representation.
             result = PRBMathCommon.exp2(x128x128);
         }
     }
@@ -412,7 +412,7 @@ library PRBMathUD60x18 {
         }
     }
 
-    /// @notice Returns PI as an unsigned 60.18-decimal fixed-point number.
+    /// @notice Retrieves PI as an unsigned 60.18-decimal fixed-point number.
     function pi() internal pure returns (uint256 result) {
         result = 3141592653589793238;
     }
@@ -441,7 +441,7 @@ library PRBMathUD60x18 {
 
             // Equivalent to "y % 2 == 1".
             if (y & 1 > 0) {
-                result = PRBMathCommon.mulDiv(result, x, uint256(SCALE));
+                result = PRBMathCommon.mulDiv(result, x, SCALE);
             }
         }
     }

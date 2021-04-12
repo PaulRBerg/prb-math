@@ -170,12 +170,8 @@ library PRBMathSD59x18 {
                 // Convert x to the 128.128-bit fixed-point format.
                 uint256 x128x128 = (uint256(x) << 128) / uint256(SCALE);
 
-                // We need to pass x as a 128-128-bit fixed-point number.
-                uint256 resultUint256 = PRBMathCommon.exp2(x128x128);
-
-                // We get the result as an unsigned 60.18-decimal fixed-point number, but we need signed 59.18-decimal fixed-point.
-                require(resultUint256 <= uint256(MAX_SD59x18));
-                result = int256(resultUint256);
+                // Safe to convert the result to int256 directly because the maximum input allowed is 128e18.
+                result = int256(PRBMathCommon.exp2(x128x128));
             }
         }
     }
@@ -474,7 +470,7 @@ library PRBMathSD59x18 {
         }
     }
 
-    /// @notice Returns PI as a signed 59.18-decimal fixed-point number.
+    /// @notice Retrieves PI as a signed 59.18-decimal fixed-point number.
     function pi() internal pure returns (int256 result) {
         result = 3141592653589793238;
     }

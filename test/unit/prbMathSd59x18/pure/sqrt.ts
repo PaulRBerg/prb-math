@@ -15,7 +15,7 @@ import { bn, fp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeSqrt(): void {
   context("when x is zero", function () {
-    it("returns zero", async function () {
+    it("retrieves zero", async function () {
       const x: BigNumber = ZERO;
       const result: BigNumber = await this.contracts.prbMathSD59x18.doSqrt(x);
       expect(ZERO).to.equal(result);
