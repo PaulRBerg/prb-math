@@ -497,18 +497,18 @@ library PRBMathSD59x18 {
     /// @param y The exponent as an uint256.
     /// @return result The result as a signed 59.18-decimal fixed-point number.
     function pow(int256 x, uint256 y) internal pure returns (int256 result) {
-        uint256 absX = uint256(abs(x));
+        uint256 ax = uint256(abs(x));
 
         // Calculate the first iteration of the loop in advance.
-        uint256 absResult = y & 1 > 0 ? absX : uint256(SCALE);
+        uint256 absResult = y & 1 > 0 ? ax : uint256(SCALE);
 
         // Euivalent to "for(y /= 2; y > 0; y /= 2)" but faster.
         for (y >>= 1; y > 0; y >>= 1) {
-            absX = PRBMathCommon.mulDiv(absX, absX, uint256(SCALE));
+            ax = PRBMathCommon.mulDiv(ax, ax, uint256(SCALE));
 
             // Equivalent to "y % 2 == 1".
             if (y & 1 > 0) {
-                absResult = PRBMathCommon.mulDiv(absResult, absX, uint256(SCALE));
+                absResult = PRBMathCommon.mulDiv(absResult, ax, uint256(SCALE));
             }
         }
 
