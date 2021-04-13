@@ -10,6 +10,9 @@ import "./PRBMathCommon.sol";
 /// a sign and there can be up to 59 digits in the integer part and up to 18 digits in the fractional part. The numbers
 /// are bound by the minimum and the maximum values permitted by the Solidity type int256.
 library PRBMathSD59x18 {
+    /// @dev log2(e) as a signed 59.18-decimal fixed-point number.
+    int256 internal constant LOG2_E = 1442695040888963407;
+
     /// @dev Half the SCALE number.
     int256 internal constant HALF_SCALE = 5e17;
 
@@ -130,9 +133,10 @@ library PRBMathSD59x18 {
         // Without this check, the value passed to "exp2" would be higher than 128e18.
         require(x < 88722839111672999628);
 
+        // Do the fixed-point multiplication inline to save gas.
         unchecked {
-            // The multiplier is log2(e).
-            result = exp2(mul(x, 1442695040888963407));
+            int256 doubleScaleProduct = x * LOG2_E;
+            result = exp2((doubleScaleProduct + HALF_SCALE) / SCALE);
         }
     }
 
@@ -257,20 +261,23 @@ library PRBMathSD59x18 {
 
     /// @notice Calculates the natural logarithm of x.
     ///
-    /// @dev Based on the insight that ln(x) = log2(x) * ln(2).
+    /// @dev Based on the insight that ln(x) = log2(x) / log2(e).
     ///
     /// Requirements:
     /// - All from "log2".
     ///
     /// Caveats:
     /// - All from "log2".
-    /// - This doesn't return exactly 1 for 2.718281828459045235, for that we would need more fine-grained precision.
+    /// - This doesn't return exactly 1 for 2718281828459045235, for that we would need more fine-grained precision.
     ///
     /// @param x The signed 59.18-decimal fixed-point number for which to calculate the natural logarithm.
     /// @return result The natural logarithm as a signed 59.18-decimal fixed-point number.
     function ln(int256 x) internal pure returns (int256 result) {
-        // The multiplier is ln(2).
-        result = mul(log2(x), 693147180559945309);
+        // Do the fixed-point multiplication inline to save gas. This is overflow-safe because the maximum value that log2(x)
+        // can return is 195205294292027477728.
+        unchecked {
+            result = (log2(x) * SCALE) / LOG2_E;
+        }
     }
 
     /// @notice Calculates the common logarithm of x.

@@ -6,8 +6,8 @@ export const SCALE: BigNumber = BigNumber.from(10).pow(18);
 
 export const E: BigNumber = bn("2718281828459045235");
 export const LN_E: BigNumber = bn("999999999999999990");
-export const LN_MAX_SD59x18: BigNumber = bn("135305999368893231500");
-export const LN_MAX_UD60x18: BigNumber = bn("135999146549453176809");
+export const LN_MAX_SD59x18: BigNumber = bn("135305999368893231615");
+export const LN_MAX_UD60x18: BigNumber = bn("135999146549453176925");
 export const LOG10_MAX_SD59x18: BigNumber = bn("587626488943152049156");
 export const LOG10_MAX_UD60x18: BigNumber = bn("590636788899791861115");
 export const LOG2_MAX_SD59x18: BigNumber = bn("195205294292027477728");

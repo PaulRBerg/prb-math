@@ -13,6 +13,9 @@ library PRBMathUD60x18 {
     /// @dev Half the SCALE number.
     uint256 internal constant HALF_SCALE = 5e17;
 
+    /// @dev log2(e) as an unsigned 60.18-decimal fixed-point number.
+    uint256 internal constant LOG2_E = 1442695040888963407;
+
     /// @dev The maximum value an unsigned 60.18-decimal fixed-point number can have.
     uint256 internal constant MAX_UD60x18 = 115792089237316195423570985008687907853269984665640564039457584007913129639935;
 
@@ -98,9 +101,11 @@ library PRBMathUD60x18 {
     function exp(uint256 x) internal pure returns (uint256 result) {
         // Without this check, the value passed to "exp2" would be higher than 128e18.
         require(x < 88722839111672999628);
+
+        // Do the fixed-point multiplication inline to save gas.
         unchecked {
-            // The multiplier is log2(e).
-            result = exp2(mul(x, 1442695040888963407));
+            uint256 doubleScaleProduct = x * LOG2_E;
+            result = exp2((doubleScaleProduct + HALF_SCALE) / SCALE);
         }
     }
 
@@ -192,20 +197,23 @@ library PRBMathUD60x18 {
 
     /// @notice Calculates the natural logarithm of x.
     ///
-    /// @dev Based on the insight that ln(x) = log2(x) * ln(2).
+    /// @dev Based on the insight that ln(x) = log2(x) / log2(e).
     ///
     /// Requirements:
     /// - All from "log2".
     ///
     /// Caveats:
     /// - All from "log2".
-    /// - This doesn't return exactly 1 for 2.718281828459045235, for that we would need more fine-grained precision.
+    /// - This doesn't return exactly 1 for 2718281828459045235, for that we would need more fine-grained precision.
     ///
     /// @param x The unsigned 60.18-decimal fixed-point number for which to calculate the natural logarithm.
     /// @return result The natural logarithm as an unsigned 60.18-decimal fixed-point number.
     function ln(uint256 x) internal pure returns (uint256 result) {
-        uint256 ln_2 = 693147180559945309;
-        result = mul(log2(x), ln_2);
+        // Do the fixed-point multiplication inline to save gas. This is overflow-safe because the maximum value that log2(x)
+        // can return is 196205294292027477728.
+        unchecked {
+            result = (log2(x) * SCALE) / LOG2_E;
+        }
     }
 
     /// @notice Calculates the common logarithm of x.
@@ -370,13 +378,18 @@ library PRBMathUD60x18 {
     /// @notice Multiplies two unsigned 60.18-decimal fixed-point numbers, returning a new unsigned 60.18-decimal
     /// fixed-point number.
     ///
-    /// @dev Implements a variant of "mulDiv" with constant folding because the denominator is always SCALE.
+    /// @dev Implements a variant of "mulDiv" with constant folding, since the denominator is always SCALE. Before returning
+    /// the final result, we add 1 if (x * y) % SCALE >= HALF_SCALE. Without this, 6.6e-19 would be truncated to 0 instead of being
+    /// rounded to 1e-18. See "Listing 6" and text above it at https://accu.org/index.php/journals/1717.
     ///
     /// Requirements:
-    /// - The product must fit within MAX_UD60x18.
+    /// - The result must fit within MAX_UD60x18.
     ///
     /// Caveats:
-    /// - Rounds instead of truncating, e.g. 6.6e-19 would be truncated to 0 instead of being rounded to 1e-18.
+    /// - This is purposely left uncommented, read the NatSpec of RBMathCommon.mulDiv to understand how this works.
+    /// - It is assumed that there are no x and y that can solve the following two equations:
+    ///     1. x * y = MAX_UD60x18 * SCALE
+    ///     2. (x * y) % SCALE >= SCALE / 2
     ///
     /// @param x The multiplicand as an unsigned 60.18-decimal fixed-point number.
     /// @param y The multiplier as an unsigned 60.18-decimal fixed-point number.
@@ -390,24 +403,32 @@ library PRBMathUD60x18 {
             prod1 := sub(sub(mm, prod0), lt(mm, prod0))
         }
 
+        uint256 remainder;
+        uint256 roundUpUnit;
+        assembly {
+            remainder := mulmod(x, y, SCALE)
+            roundUpUnit := gt(remainder, 499999999999999999)
+        }
+
         if (prod1 == 0) {
             unchecked {
-                result = prod0 / SCALE;
+                result = (prod0 / SCALE) + roundUpUnit;
                 return result;
             }
         }
 
         require(SCALE > prod1);
 
-        // Tip: read the comments in the PRBMathCommon.mulDiv function to understand what this block of code does.
         assembly {
-            let remainder := mulmod(x, y, SCALE)
-            result := mul(
-                or(
-                    div(sub(prod0, remainder), SCALE_LPOTD),
-                    mul(sub(prod1, gt(remainder, prod0)), add(div(sub(0, SCALE_LPOTD), SCALE_LPOTD), 1))
+            result := add(
+                mul(
+                    or(
+                        div(sub(prod0, remainder), SCALE_LPOTD),
+                        mul(sub(prod1, gt(remainder, prod0)), add(div(sub(0, SCALE_LPOTD), SCALE_LPOTD), 1))
+                    ),
+                    SCALE_INVERSE
                 ),
-                SCALE_INVERSE
+                roundUpUnit
             )
         }
     }

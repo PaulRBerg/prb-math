@@ -44,7 +44,7 @@ export default function shouldBehaveLikeMul(): void {
     context("when the double scaled product does not overflow", function () {
       const testSets = [
         [fp(0.000000000000000001), fp(0.000000000000000001), ZERO],
-        [fp(0.000000000000000006), fp(0.1), ZERO],
+        [fp(0.000000000000000006), fp(0.1), fp(0.000000000000000001)],
         [fp(0.000000001), fp(0.000000001), fp(0.000000000000000001)],
         [fp(0.00001), fp(0.00001), fp(0.0000000001)],
         [fp(0.001), fp(0.01), fp(0.00001)],
@@ -64,7 +64,7 @@ export default function shouldBehaveLikeMul(): void {
         [MAX_WHOLE_UD60x18, fp(0.5), MAX_WHOLE_UD60x18.div(2)],
         [MAX_UD60x18.sub(HALF_SCALE), fp(0.000000000000000001), MAX_UD60x18.div(SCALE)],
         [MAX_UD60x18, fp(0.01), MAX_UD60x18.div(100)],
-        [MAX_UD60x18, fp(0.5), MAX_UD60x18.div(2)],
+        [MAX_UD60x18, fp(0.5), MAX_UD60x18.div(2).add(1)],
       ];
 
       forEach(testSets).it(
