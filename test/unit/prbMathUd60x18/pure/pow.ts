@@ -40,9 +40,9 @@ export default function shouldBehaveLikePow(): void {
     });
 
     context("when the exponent is not zero", function () {
-      context("when the result overflows", function () {
+      context("when the result overflows ud60x18", function () {
         const testSets = [
-          [bn("48740834812604276470692694885616578542"), 3], // first number whose cube doesn't fit within MAX_UD60x18
+          [bn("48740834812604276470692694885616578542"), 3], // smallest number whose cube doesn't fit within MAX_UD60x18
           [SQRT_MAX_UD60x18.add(1), 2],
           [MAX_WHOLE_UD60x18, 2],
           [MAX_UD60x18, 2],
@@ -53,7 +53,7 @@ export default function shouldBehaveLikePow(): void {
         });
       });
 
-      context("when the result does not overflow", function () {
+      context("when the result does not overflow ud60x18", function () {
         const testSets = [
           [fp(0.001), 3, fp(0.000000001)],
           [fp(0.1), 2, fp(0.01)],
@@ -67,7 +67,7 @@ export default function shouldBehaveLikePow(): void {
           [fp(478.77), 20, bn("400441047687151121501368529571950234763284476825512183793320584974037932")],
           [fp(6452.166), 7, bn("465520409372619407422434167862736844121311696")],
           [bn(1e36), 2, bn(1e54)],
-          // First number whose cube fits within MAX_UD60x18
+          // Biggest number whose cube fits within MAX_UD60x18
           [
             bn("48740834812604276470692694885616578541"),
             3,
