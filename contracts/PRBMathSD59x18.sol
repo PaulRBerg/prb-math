@@ -29,7 +29,7 @@ library PRBMathSD59x18 {
     /// @dev The minimum whole value a signed 59.18-decimal fixed-point number can have.
     int256 internal constant MIN_WHOLE_SD59x18 = -57896044618658097711785492504343953926634992332820282019728000000000000000000;
 
-    /// @dev Constant that determines how many decimals can be represented.
+    /// @dev How many trailing decimals can be represented.
     int256 internal constant SCALE = 1e18;
 
     /// @dev Largest power of two divisor of SCALE. Used only in the "mul" function.
@@ -448,23 +448,12 @@ library PRBMathSD59x18 {
         }
     }
 
-    /// @notice Multiplies two signed 59.18-decimal fixed-point numbers, returning a new signed 59.18-decimal fixed-point number.
-    ///
-    /// @dev Variant of "mulDivSigned" in which the denominator is always SCALE. Before returning the final result, we
-    /// add 1 if (x * y) % SCALE >= HALF_SCALE. Without this, 6.6e-19 would be truncated to 0 instead of being rounded
-    /// to 1e-18. See "Listing 6" and text above it at https://accu.org/index.php/journals/1717.
-    ///
-    /// Requirements:
-    /// - None of the inputs can be MIN_SD59x18.
-    /// - The result must fit within MAX_SD59x18.
-    ///
-    /// Caveats:
-    /// - This is purposely left uncommented; read the NatSpec of RBMathCommon.mulDivSigned to understand how this works.
-    /// - The result must not be greater than MAX_SD59x18 or less than MIN_SD59x18.
-    ///
+    /// @notice Multiplies two signed 59.18-decimal fixed-point numbers together, returning a new signed 59.18-decimal
+    /// fixed-point number.
+    /// @dev See the documentation for the "mulDivSigned" and "mulDivFixedPoint" functions in PRBMathCommon.sol.
     /// @param x The multiplicand as a signed 59.18-decimal fixed-point number.
     /// @param y The multiplier as a signed 59.18-decimal fixed-point number.
-    /// @param result The product as a signed 59.18-decimal fixed-point number.
+    /// @return result The result as a signed 59.18-decimal fixed-point number.
     function mul(int256 x, int256 y) internal pure returns (int256 result) {
         require(x > MIN_SD59x18);
         require(y > MIN_SD59x18);
@@ -475,40 +464,7 @@ library PRBMathSD59x18 {
             ax = x < 0 ? uint256(-x) : uint256(x);
             ay = y < 0 ? uint256(-y) : uint256(y);
 
-            uint256 prod0;
-            uint256 prod1;
-
-            assembly {
-                let mm := mulmod(ax, ay, not(0))
-                prod0 := mul(ax, ay)
-                prod1 := sub(sub(mm, prod0), lt(mm, prod0))
-            }
-
-            uint256 remainder;
-            uint256 roundUpUnit;
-            assembly {
-                remainder := mulmod(ax, ay, SCALE)
-                roundUpUnit := gt(remainder, 499999999999999999)
-            }
-
-            uint256 resultUnsigned;
-            if (prod1 == 0) {
-                resultUnsigned = (prod0 / uint256(SCALE)) + roundUpUnit;
-            } else {
-                require(uint256(SCALE) > prod1);
-                assembly {
-                    resultUnsigned := add(
-                        mul(
-                            or(
-                                div(sub(prod0, remainder), SCALE_LPOTD),
-                                mul(sub(prod1, gt(remainder, prod0)), add(div(sub(0, SCALE_LPOTD), SCALE_LPOTD), 1))
-                            ),
-                            SCALE_INVERSE
-                        ),
-                        roundUpUnit
-                    )
-                }
-            }
+            uint256 resultUnsigned = PRBMathCommon.mulDivFixedPoint(ax, ay);
             require(resultUnsigned <= uint256(MAX_SD59x18));
 
             uint256 sx;
@@ -526,7 +482,7 @@ library PRBMathSD59x18 {
         result = 3141592653589793238;
     }
 
-    /// @notice Raises x (signed 59.19-decimal fixed-point number) to the power of y (basic unsigned integer) using the
+    /// @notice Raises x (signed 59.18-decimal fixed-point number) to the power of y (basic unsigned integer) using the
     /// famous algorithm "exponentiation by squaring".
     ///
     /// @dev See https://en.wikipedia.org/wiki/Exponentiation_by_squaring

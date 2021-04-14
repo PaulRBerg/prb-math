@@ -2,10 +2,20 @@
 pragma solidity >=0.8.0;
 
 /// @dev Common mathematical functions used in both PRBMathSD59x18 and PRBMathUD60x18. Note that this shared library
-/// assumes neither the signed 59.18-decimal fixed-point nor the unsigned 60.18-decimal fixed-point representation.
+/// does not always assume the signed 59.18-decimal fixed-point or the unsigned 60.18-decimal fixed-point
+// representation. When it does not, it is annonated in the function natspec documentation.
 library PRBMathCommon {
+    /// @dev How many trailing decimals can be represented.
+    uint256 internal constant SCALE = 1e18;
+
+    /// @dev Largest power of two divisor of SCALE.
+    uint256 internal constant SCALE_LPOTD = 262144;
+
+    /// @dev SCALE inverted mod 2^256.
+    uint256 internal constant SCALE_INVERSE = 78156646155174841979727994598816262306175212592076161876661508869554232690281;
+
     /// @notice Calculates the binary exponent of x using the binary fraction method.
-    /// @dev Uses 128.128-bit fixed-point numbers because it's the most efficient way.
+    /// @dev Uses 128.128-bit fixed-point numbers - it is the most efficient way.
     /// @param x The exponent as an unsigned 128.128-bit fixed-point number.
     /// @return result The result as an unsigned 60x18 decimal fixed-point number.
     function exp2(uint256 x) internal pure returns (uint256 result) {
@@ -138,7 +148,7 @@ library PRBMathCommon {
     /// - The result must fit within uint256.
     ///
     /// Caveats:
-    /// - This function does not assume the unsigned 60.18 decimal fixed-point representation.
+    /// - This function does not work with fixed-point numbers.
     ///
     /// @param x The multiplicand as an uint256.
     /// @param y The multiplier as an uint256.
@@ -284,11 +294,68 @@ library PRBMathCommon {
         result = sx ^ sy ^ sd == 0 ? -int256(resultUnsigned) : int256(resultUnsigned);
     }
 
+    /// @notice Calculates floor(x*y÷1e18) with full precision.
+    ///
+    /// @dev Variant of "mulDiv" with constant folding (the denominator is always 1e18). Before returning the final
+    /// result, we add 1 if (x * y) % SCALE >= HALF_SCALE. Without this, 6.6e-19 would be truncated to 0 instead of
+    /// being rounded to 1e-18.  See "Listing 6" and text above it at https://accu.org/index.php/journals/1717.
+    ///
+    /// Requirements:
+    /// - The result must fit within uint256.
+    ///
+    /// Caveats:
+    /// - The body is purposely left uncommented; see the comments in "mulDiv" to understand how this works.
+    /// - It is assumed that the result can never be type(uint256).max when x and y solve the following two queations:
+    ///     1) x * y = type(uint256).max * SCALE
+    ///     2) (x * y) % SCALE >= SCALE / 2
+    ///
+    /// @param x The multiplicand as an unsigned 60.18-decimal fixed-point number.
+    /// @param y The multiplier as an unsigned 60.18-decimal fixed-point number.
+    /// @return result The result as an unsigned 60.18-decimal fixed-point number.
+    function mulDivFixedPoint(uint256 x, uint256 y) internal pure returns (uint256 result) {
+        uint256 prod0;
+        uint256 prod1;
+        assembly {
+            let mm := mulmod(x, y, not(0))
+            prod0 := mul(x, y)
+            prod1 := sub(sub(mm, prod0), lt(mm, prod0))
+        }
+
+        uint256 remainder;
+        uint256 roundUpUnit;
+        assembly {
+            remainder := mulmod(x, y, SCALE)
+            roundUpUnit := gt(remainder, 499999999999999999)
+        }
+
+        if (prod1 == 0) {
+            unchecked {
+                result = (prod0 / SCALE) + roundUpUnit;
+                return result;
+            }
+        }
+
+        require(SCALE > prod1);
+
+        assembly {
+            result := add(
+                mul(
+                    or(
+                        div(sub(prod0, remainder), SCALE_LPOTD),
+                        mul(sub(prod1, gt(remainder, prod0)), add(div(sub(0, SCALE_LPOTD), SCALE_LPOTD), 1))
+                    ),
+                    SCALE_INVERSE
+                ),
+                roundUpUnit
+            )
+        }
+    }
+
     /// @notice Calculates the square root of x, rounding down.
     /// @dev Uses the Babylonian method https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Babylonian_method.
     ///
     /// Caveats:
-    /// - This function does not assume the signed 59.18-decimal fixed-point representation.
+    /// - This function does not work with fixed-point numbers.
     ///
     /// @param x The uint256 number for which to calculate the square root.
     /// @return result The result as an uint256.

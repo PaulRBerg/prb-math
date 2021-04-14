@@ -22,14 +22,8 @@ library PRBMathUD60x18 {
     /// @dev The maximum whole value an unsigned 60.18-decimal fixed-point number can have.
     uint256 internal constant MAX_WHOLE_UD60x18 = 115792089237316195423570985008687907853269984665640564039457000000000000000000;
 
-    /// @dev Constant that determines how many decimals can be represented.
+    /// @dev How many trailing decimals can be represented.
     uint256 internal constant SCALE = 1e18;
-
-    /// @dev Largest power of two divisor of SCALE.
-    uint256 internal constant SCALE_LPOTD = 262144;
-
-    /// @dev SCALE inverted mod 2^256.
-    uint256 internal constant SCALE_INVERSE = 78156646155174841979727994598816262306175212592076161876661508869554232690281;
 
     /// @notice Calculates arithmetic average of x and y, rounding down.
     /// @param x The first operand as an unsigned 60.18-decimal fixed-point number.
@@ -375,62 +369,14 @@ library PRBMathUD60x18 {
         }
     }
 
-    /// @notice Multiplies two unsigned 60.18-decimal fixed-point numbers, returning a new unsigned 60.18-decimal
+    /// @notice Multiplies two unsigned 60.18-decimal fixed-point numbers together, returning a new unsigned 60.18-decimal
     /// fixed-point number.
-    ///
-    /// @dev Variant of "mulDiv" in which the denominator is always 1e18. Before returning the final result, we add 1 if
-    /// (x * y) % SCALE >= HALF_SCALE. Without this, 6.6e-19 would be truncated to 0 instead of being rounded to 1e-18.
-    /// See "Listing 6" and text above it at https://accu.org/index.php/journals/1717.
-    ///
-    /// Requirements:
-    /// - The result must fit within MAX_UD60x18.
-    ///
-    /// Caveats:
-    /// - This is purposely left uncommented; read the NatSpec of RBMathCommon.mulDiv to understand how this works.
-    /// - It is assumed that there are no x and y that can solve the following two equations:
-    ///     1. x * y = MAX_UD60x18 * SCALE
-    ///     2. (x * y) % SCALE >= SCALE / 2
-    ///
+    /// @dev See the documentation for the "mulDivFixedPoint" function in PRBMathCommon.sol.
     /// @param x The multiplicand as an unsigned 60.18-decimal fixed-point number.
     /// @param y The multiplier as an unsigned 60.18-decimal fixed-point number.
-    /// @param result The product as an unsigned 60.18-decimal fixed-point number.
+    /// @return result The result as an unsigned 60.18-decimal fixed-point number.
     function mul(uint256 x, uint256 y) internal pure returns (uint256 result) {
-        uint256 prod0;
-        uint256 prod1;
-        assembly {
-            let mm := mulmod(x, y, not(0))
-            prod0 := mul(x, y)
-            prod1 := sub(sub(mm, prod0), lt(mm, prod0))
-        }
-
-        uint256 remainder;
-        uint256 roundUpUnit;
-        assembly {
-            remainder := mulmod(x, y, SCALE)
-            roundUpUnit := gt(remainder, 499999999999999999)
-        }
-
-        if (prod1 == 0) {
-            unchecked {
-                result = (prod0 / SCALE) + roundUpUnit;
-                return result;
-            }
-        }
-
-        require(SCALE > prod1);
-
-        assembly {
-            result := add(
-                mul(
-                    or(
-                        div(sub(prod0, remainder), SCALE_LPOTD),
-                        mul(sub(prod1, gt(remainder, prod0)), add(div(sub(0, SCALE_LPOTD), SCALE_LPOTD), 1))
-                    ),
-                    SCALE_INVERSE
-                ),
-                roundUpUnit
-            )
-        }
+        result = PRBMathCommon.mulDivFixedPoint(x, y);
     }
 
     /// @notice Retrieves PI as an unsigned 60.18-decimal fixed-point number.
@@ -438,7 +384,8 @@ library PRBMathUD60x18 {
         result = 3141592653589793238;
     }
 
-    /// @notice Raises x to the power of y using the famous algorithm "exponentiation by squaring".
+    /// @notice Raises x (unsigned 60.18-decimal fixed-point number) to the power of y (basic unsigned integer) using the
+    /// famous algorithm "exponentiation by squaring".
     ///
     /// @dev See https://en.wikipedia.org/wiki/Exponentiation_by_squaring
     ///
