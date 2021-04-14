@@ -6,6 +6,7 @@ import {
   E,
   HALF_SCALE,
   MAX_SD59x18,
+  MAX_UD60x18,
   MAX_WHOLE_SD59x18,
   MIN_SD59x18,
   MIN_WHOLE_SD59x18,
@@ -19,7 +20,7 @@ import { bn, fp } from "../../../../helpers/numbers";
 export default function shouldBehaveLikeMul(): void {
   context("when one of the operands is zero", function () {
     const testSets = [
-      [MIN_SD59x18, ZERO],
+      [MIN_SD59x18.add(1), ZERO],
       [fp(-0.5), ZERO],
       [ZERO, fp(-0.5)],
     ].concat([
@@ -35,41 +36,40 @@ export default function shouldBehaveLikeMul(): void {
   });
 
   context("when neither of the operands is zero", function () {
-    context("when the double scaled product overflows", function () {
+    context("when one of the operands is min sd59x18", function () {
       const testSets = [
-        [MIN_SD59x18, MIN_SD59x18],
-        [MIN_SD59x18, bn(-1)],
-        [MIN_WHOLE_SD59x18, MIN_WHOLE_SD59x18],
-        [SQRT_MAX_SD59x18.mul(-1), SQRT_MAX_SD59x18.mul(-1).sub(1)],
-      ].concat([
-        [SQRT_MAX_SD59x18, SQRT_MAX_SD59x18.add(1)],
-        [MAX_WHOLE_SD59x18, MAX_WHOLE_SD59x18],
-        [MAX_SD59x18, MAX_SD59x18],
-      ]);
+        [MIN_SD59x18, bn(1)],
+        [bn(1), MIN_SD59x18],
+      ];
 
       forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
         await expect(this.contracts.prbMathSD59x18.doMul(x, y)).to.be.reverted;
       });
     });
 
-    context("when the double scaled product does not overflow", function () {
-      context("when the half scale step causes an overflow", function () {
+    context("when both operands are not min sd59x18", function () {
+      context("when the result overflows", function () {
         const testSets = [
-          [MIN_SD59x18, bn(1)],
-          [MIN_SD59x18.add(HALF_SCALE).sub(1), bn(1)],
-          [MAX_SD59x18.sub(HALF_SCALE).add(1), bn(1)],
-          [MAX_SD59x18, bn(1)],
-        ];
+          [MIN_SD59x18.add(1), MIN_SD59x18.add(1)],
+          [MIN_SD59x18.add(1), fp(-2)],
+          [MIN_WHOLE_SD59x18, MIN_WHOLE_SD59x18],
+          [SQRT_MAX_SD59x18.mul(-1), SQRT_MAX_SD59x18.mul(-1).sub(1)],
+        ].concat([
+          [fp(2), MAX_UD60x18],
+          [SQRT_MAX_SD59x18, SQRT_MAX_SD59x18.add(1)],
+          [MAX_WHOLE_SD59x18, MAX_WHOLE_SD59x18],
+          [MAX_SD59x18, MAX_SD59x18],
+        ]);
 
         forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
           await expect(this.contracts.prbMathSD59x18.doMul(x, y)).to.be.reverted;
         });
       });
 
-      context("when the half scale step does not cause an overflow", function () {
+      context("when the result does not overflow", function () {
         context("when the operands have the same sign", function () {
           const testSets = [
-            // Need to add 1 because the absolute value of MIN_SD59x18 is greater by MAX_SD59x18 by 1.
+            // We need to add 1 because the absolute value of MIN_SD59x18 is greater by MAX_SD59x18 by 1.
             [MIN_SD59x18.add(HALF_SCALE).add(1), fp(-0.000000000000000001), MAX_SD59x18.div(SCALE)],
             [MIN_WHOLE_SD59x18.add(HALF_SCALE), fp(-0.000000000000000001), MAX_WHOLE_SD59x18.div(SCALE)],
             [bn(-1e36), bn(-1e24), bn(1e42)],

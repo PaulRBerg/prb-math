@@ -7,9 +7,10 @@ import { bn, fp, fpPowOfTwo } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikePow(): void {
   context("when the base is zero", function () {
+    const x: BigNumber = ZERO;
+
     context("when the exponent is zero", function () {
       it("retrieves 1e18", async function () {
-        const x: BigNumber = ZERO;
         const y: BigNumber = ZERO;
         const result: BigNumber = await this.contracts.prbMathSD59x18.doPow(x, y);
         expect(fp(1)).to.equal(result);
@@ -20,7 +21,6 @@ export default function shouldBehaveLikePow(): void {
       const testSets = [fp(1), E, PI];
 
       forEach(testSets).it("takes %e and returns zero", async function (y: BigNumber) {
-        const x: BigNumber = ZERO;
         const result: BigNumber = await this.contracts.prbMathSD59x18.doPow(x, y);
         expect(ZERO).to.equal(result);
       });
@@ -62,8 +62,8 @@ export default function shouldBehaveLikePow(): void {
           [fp(2), 100, fpPowOfTwo(100)],
           [E, 2, bn("7389056098930650225")],
           [fp(100), 4, bn(1e26)],
-          [PI, 3, bn("31006276680299820158")],
-          [fp(5.491), 19, bn("113077820843204476043049664958463")],
+          [PI, 3, bn("31006276680299820162")],
+          [fp(5.491), 19, bn("113077820843204476043049664958629")],
           [fp(478.77), 20, bn("400441047687151121501368529571950234763284476825512183793320584974037932")],
           [fp(6452.166), 7, bn("465520409372619407422434167862736844121311696")],
           [bn(1e36), 2, bn(1e54)],
@@ -71,7 +71,7 @@ export default function shouldBehaveLikePow(): void {
           [
             bn("38685626227668133590597631999999999999"),
             3,
-            bn("57896044618658097711785492504343953922145259302939748254975940481744194640509"),
+            bn("57896044618658097711785492504343953922145259302939748255014626107971862774100"),
           ],
           // Precision errors makes the result not equal to MAX_SD59x18
           [SQRT_MAX_SD59x18, 2, MAX_SD59x18.sub(bn("30389015870437635377568666707"))],

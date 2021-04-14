@@ -134,8 +134,8 @@ library PRBMathCommon {
     /// @dev Credit to Remco Bloemen under MIT license https://xn--2-umb.com/21/muldiv.
     ///
     /// Requirements:
-    /// - denominator cannot be zero.
-    /// - result must fit within uint256.
+    /// - The denominator cannot be zero.
+    /// - The result must fit within uint256.
     ///
     /// Caveats:
     /// - This function does not assume the unsigned 60.18 decimal fixed-point representation.
@@ -151,7 +151,7 @@ library PRBMathCommon {
     ) internal pure returns (uint256 result) {
         // 512-bit multiply [prod1 prod0] = x * y. Compute the product mod 2**256 and mod 2**256 - 1, then use
         // use the Chinese Remainder Theorem to reconstruct the 512 bit result. The result is stored in two 256
-        // variables such that product = prod1 * 2**256 + prod0
+        // variables such that product = prod1 * 2**256 + prod0.
         uint256 prod0; // Least significant 256 bits of the product
         uint256 prod1; // Most significant 256 bits of the product
         assembly {
@@ -227,6 +227,61 @@ library PRBMathCommon {
             result = prod0 * inverse;
             return result;
         }
+    }
+
+    /// @notice Calculates floor(x*y÷denominator) with full precision.
+    ///
+    /// @dev An extension of "mulDiv" that works with signed numbers. Works by computing the signs and the absolute
+    /// values separately.
+    ///
+    /// Requirements:
+    /// - All from "mulDiv".
+    /// - None of the inputs can be type(int256).min.
+    /// - The result must fit within int256.
+    ///
+    /// Caveats:
+    /// - All from "mulDiv".
+    ///
+    /// @param x The multiplicand as an int256.
+    /// @param y The multiplier as an int256.
+    /// @param denominator The divisor as an int256.
+    /// @return result The result as an int256.
+    function mulDivSigned(
+        int256 x,
+        int256 y,
+        int256 denominator
+    ) internal pure returns (int256 result) {
+        require(x > type(int256).min);
+        require(y > type(int256).min);
+        require(denominator > type(int256).min);
+
+        // Get hold of the absolute values of x, y and the denominator.
+        uint256 ax;
+        uint256 ay;
+        uint256 ad;
+        unchecked {
+            ax = x < 0 ? uint256(-x) : uint256(x);
+            ay = y < 0 ? uint256(-y) : uint256(y);
+            ad = denominator < 0 ? uint256(-denominator) : uint256(denominator);
+        }
+
+        // Compute the absolute value of (x*y)÷denominator. The result must fit within int256.
+        uint256 resultUnsigned = PRBMathCommon.mulDiv(ax, ay, ad);
+        require(resultUnsigned <= uint256(type(int256).max));
+
+        // Get the signs of x, y and the denominator.
+        uint256 sx;
+        uint256 sy;
+        uint256 sd;
+        assembly {
+            sx := sgt(x, sub(0, 1))
+            sy := sgt(y, sub(0, 1))
+            sd := sgt(denominator, sub(0, 1))
+        }
+
+        // XOR over sx, sy and sd. This is basically checking whether there one or three negative signs in the inputs.
+        // If yes, the result should be negative too.
+        result = sx ^ sy ^ sd == 0 ? -int256(resultUnsigned) : int256(resultUnsigned);
     }
 
     /// @notice Calculates the square root of x, rounding down.

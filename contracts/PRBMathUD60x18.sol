@@ -28,7 +28,7 @@ library PRBMathUD60x18 {
     /// @dev Largest power of two divisor of SCALE.
     uint256 internal constant SCALE_LPOTD = 262144;
 
-    /// @dev SCALE inverted mod MAX_UD60x18.
+    /// @dev SCALE inverted mod 2^256.
     uint256 internal constant SCALE_INVERSE = 78156646155174841979727994598816262306175212592076161876661508869554232690281;
 
     /// @notice Calculates arithmetic average of x and y, rounding down.
@@ -99,7 +99,7 @@ library PRBMathUD60x18 {
     /// @param x The exponent as an unsigned 60.18-decimal fixed-point number.
     /// @return result The result as an unsigned 60.18-decimal fixed-point number.
     function exp(uint256 x) internal pure returns (uint256 result) {
-        // Without this check, the value passed to "exp2" would be higher than 128e18.
+        // Without this check, the value passed to "exp2" would be greater than 128e18.
         require(x < 88722839111672999628);
 
         // Do the fixed-point multiplication inline to save gas.
@@ -115,7 +115,7 @@ library PRBMathUD60x18 {
     ///
     /// Requirements:
     /// - x must be 128e18 or less.
-    /// - result must fit within MAX_UD60x18.
+    /// - The result must fit within MAX_UD60x18.
     ///
     /// @param x The exponent as an unsigned 60.18-decimal fixed-point number.
     /// @return result The result as an unsigned 60.18-decimal fixed-point number.
@@ -378,15 +378,15 @@ library PRBMathUD60x18 {
     /// @notice Multiplies two unsigned 60.18-decimal fixed-point numbers, returning a new unsigned 60.18-decimal
     /// fixed-point number.
     ///
-    /// @dev Implements a variant of "mulDiv" with constant folding, since the denominator is always SCALE. Before returning
-    /// the final result, we add 1 if (x * y) % SCALE >= HALF_SCALE. Without this, 6.6e-19 would be truncated to 0 instead of being
-    /// rounded to 1e-18. See "Listing 6" and text above it at https://accu.org/index.php/journals/1717.
+    /// @dev Variant of "mulDiv" in which the denominator is always 1e18. Before returning the final result, we add 1 if
+    /// (x * y) % SCALE >= HALF_SCALE. Without this, 6.6e-19 would be truncated to 0 instead of being rounded to 1e-18.
+    /// See "Listing 6" and text above it at https://accu.org/index.php/journals/1717.
     ///
     /// Requirements:
     /// - The result must fit within MAX_UD60x18.
     ///
     /// Caveats:
-    /// - This is purposely left uncommented, read the NatSpec of RBMathCommon.mulDiv to understand how this works.
+    /// - This is purposely left uncommented; read the NatSpec of RBMathCommon.mulDiv to understand how this works.
     /// - It is assumed that there are no x and y that can solve the following two equations:
     ///     1. x * y = MAX_UD60x18 * SCALE
     ///     2. (x * y) % SCALE >= SCALE / 2
@@ -458,11 +458,11 @@ library PRBMathUD60x18 {
 
         // Euivalent to "for(y /= 2; y > 0; y /= 2)" but faster.
         for (y >>= 1; y > 0; y >>= 1) {
-            x = PRBMathCommon.mulDiv(x, x, SCALE);
+            x = mul(x, x);
 
-            // Equivalent to "y % 2 == 1".
+            // Equivalent to "y % 2 == 1" but faster.
             if (y & 1 > 0) {
-                result = PRBMathCommon.mulDiv(result, x, SCALE);
+                result = mul(result, x);
             }
         }
     }

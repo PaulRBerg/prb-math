@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 pragma solidity >=0.8.0;
 
+import "hardhat/console.sol";
 import "./PRBMathCommon.sol";
 
 /// @title PRBMathSD59x18
@@ -31,12 +32,18 @@ library PRBMathSD59x18 {
     /// @dev Constant that determines how many decimals can be represented.
     int256 internal constant SCALE = 1e18;
 
+    /// @dev Largest power of two divisor of SCALE. Used only in the "mul" function.
+    uint256 internal constant SCALE_LPOTD = 262144;
+
+    /// @dev SCALE inverted mod 2^256. Used only in the "mul" function.
+    uint256 internal constant SCALE_INVERSE = 78156646155174841979727994598816262306175212592076161876661508869554232690281;
+
     /// INTERNAL FUNCTIONS ///
 
     /// @notice Calculate the absolute value of x.
     ///
     /// @dev Requirements:
-    /// - x must be higher than min 59.18.
+    /// - x must be greater than min 59.18.
     ///
     /// @param x The number to calculate the absolute for.
     /// @param result The absolute value of x.
@@ -86,26 +93,16 @@ library PRBMathSD59x18 {
 
     /// @notice Divides two signed 59.18-decimal fixed-point numbers, returning a new signed 59.18-decimal fixed-point number.
     ///
-    /// @dev Scales the numerator first, then divides by the denominator.
+    /// @dev Uses mulDiv to enable overflow-safe multiplication and division.
     ///
     /// Requirements:
     /// - y cannot be zero.
-    /// - x * SCALE must not be higher than MAX_SD59x18.
-    ///
-    /// Caveats:
-    /// - Susceptible to phantom overflow when x * SCALE > MAX_SD59x18.
     ///
     /// @param x The numerator as a signed 59.18-decimal fixed-point number.
     /// @param y The denominator as a signed 59.18-decimal fixed-point number.
     /// @param result The quotient as a signed 59.18-decimal fixed-point number.
     function div(int256 x, int256 y) internal pure returns (int256 result) {
-        int256 scaledNumerator = x * SCALE;
-        // When dividing numbers in Solidity, overflow can happen only when the scaled numerator is MIN_SD59x18 and the
-        // denominator is -1, but the scaled numerator ends in 18 zeros so it can't be MIN_SD59x18.
-        // See https://ethereum.stackexchange.com/questions/96482/can-division-underflow-or-overflow-in-solidity
-        unchecked {
-            result = scaledNumerator / y;
-        }
+        result = PRBMathCommon.mulDivSigned(x, SCALE, y);
     }
 
     /// @notice Returns Euler's number as a signed 59.18-decimal fixed-point number.
@@ -130,7 +127,7 @@ library PRBMathSD59x18 {
             return 0;
         }
 
-        // Without this check, the value passed to "exp2" would be higher than 128e18.
+        // Without this check, the value passed to "exp2" would be greater than 128e18.
         require(x < 88722839111672999628);
 
         // Do the fixed-point multiplication inline to save gas.
@@ -146,7 +143,7 @@ library PRBMathSD59x18 {
     ///
     /// Requirements:
     /// - x must be 128e18 or less.
-    /// - result must fit within MAX_SD59x18.
+    /// - The result must fit within MAX_SD59x18.
     ///
     /// Caveats:
     /// - For any x less than -59794705707972522261, the result is zero.
@@ -453,27 +450,74 @@ library PRBMathSD59x18 {
 
     /// @notice Multiplies two signed 59.18-decimal fixed-point numbers, returning a new signed 59.18-decimal fixed-point number.
     ///
-    /// @dev Requirements:
-    /// - x * y must not be higher than MAX_SD59x18 or smaller than MIN_SD59x18.
-    /// - x * y +/- HALF_SCALE must not be higher than MAX_SD59x18/ smaller than MIN_SD59x18.
+    /// @dev Variant of "mulDivSigned" in which the denominator is always SCALE. Before returning the final result, we
+    /// add 1 if (x * y) % SCALE >= HALF_SCALE. Without this, 6.6e-19 would be truncated to 0 instead of being rounded
+    /// to 1e-18. See "Listing 6" and text above it at https://accu.org/index.php/journals/1717.
+    ///
+    /// Requirements:
+    /// - None of the inputs can be MIN_SD59x18.
+    /// - The result must fit within MAX_SD59x18.
     ///
     /// Caveats:
-    /// - Susceptible to phantom overflow when the intermediary result does not between MIN_SD59x18 and MAX_SD59x18.
+    /// - This is purposely left uncommented; read the NatSpec of RBMathCommon.mulDivSigned to understand how this works.
+    /// - The result must not be greater than MAX_SD59x18 or less than MIN_SD59x18.
     ///
     /// @param x The multiplicand as a signed 59.18-decimal fixed-point number.
     /// @param y The multiplier as a signed 59.18-decimal fixed-point number.
     /// @param result The product as a signed 59.18-decimal fixed-point number.
     function mul(int256 x, int256 y) internal pure returns (int256 result) {
-        int256 doubleScaledProduct = x * y;
-
-        // Before dividing, we add half the SCALE for positive products and subtract half the SCALE for negative products,
-        // so that we get rounding instead of truncation. Without this, 6.6e-19 would be truncated to 0 instead of being
-        // rounded to 1e-18. See "Listing 6" and text above it at https://accu.org/index.php/journals/1717
-        int256 doubleScaledProductWithHalfScale =
-            doubleScaledProduct > 0 ? (doubleScaledProduct + HALF_SCALE) : (doubleScaledProduct - HALF_SCALE);
+        require(x > MIN_SD59x18);
+        require(y > MIN_SD59x18);
 
         unchecked {
-            result = doubleScaledProductWithHalfScale / SCALE;
+            uint256 ax;
+            uint256 ay;
+            ax = x < 0 ? uint256(-x) : uint256(x);
+            ay = y < 0 ? uint256(-y) : uint256(y);
+
+            uint256 prod0;
+            uint256 prod1;
+
+            assembly {
+                let mm := mulmod(ax, ay, not(0))
+                prod0 := mul(ax, ay)
+                prod1 := sub(sub(mm, prod0), lt(mm, prod0))
+            }
+
+            uint256 remainder;
+            uint256 roundUpUnit;
+            assembly {
+                remainder := mulmod(ax, ay, SCALE)
+                roundUpUnit := gt(remainder, 499999999999999999)
+            }
+
+            uint256 resultUnsigned;
+            if (prod1 == 0) {
+                resultUnsigned = (prod0 / uint256(SCALE)) + roundUpUnit;
+            } else {
+                require(uint256(SCALE) > prod1);
+                assembly {
+                    resultUnsigned := add(
+                        mul(
+                            or(
+                                div(sub(prod0, remainder), SCALE_LPOTD),
+                                mul(sub(prod1, gt(remainder, prod0)), add(div(sub(0, SCALE_LPOTD), SCALE_LPOTD), 1))
+                            ),
+                            SCALE_INVERSE
+                        ),
+                        roundUpUnit
+                    )
+                }
+            }
+            require(resultUnsigned <= uint256(MAX_SD59x18));
+
+            uint256 sx;
+            uint256 sy;
+            assembly {
+                sx := sgt(x, sub(0, 1))
+                sy := sgt(y, sub(0, 1))
+            }
+            result = sx ^ sy == 1 ? -int256(resultUnsigned) : int256(resultUnsigned);
         }
     }
 
@@ -482,7 +526,8 @@ library PRBMathSD59x18 {
         result = 3141592653589793238;
     }
 
-    /// @notice Raises x to the power of y using the famous algorithm "exponentiation by squaring".
+    /// @notice Raises x (signed 59.19-decimal fixed-point number) to the power of y (basic unsigned integer) using the
+    /// famous algorithm "exponentiation by squaring".
     ///
     /// @dev See https://en.wikipedia.org/wiki/Exponentiation_by_squaring
     ///
@@ -497,18 +542,18 @@ library PRBMathSD59x18 {
     /// @param y The exponent as an uint256.
     /// @return result The result as a signed 59.18-decimal fixed-point number.
     function pow(int256 x, uint256 y) internal pure returns (int256 result) {
-        uint256 ax = uint256(abs(x));
+        uint256 absX = uint256(abs(x));
 
         // Calculate the first iteration of the loop in advance.
-        uint256 absResult = y & 1 > 0 ? ax : uint256(SCALE);
+        uint256 absResult = y & 1 > 0 ? absX : uint256(SCALE);
 
         // Euivalent to "for(y /= 2; y > 0; y /= 2)" but faster.
         for (y >>= 1; y > 0; y >>= 1) {
-            ax = PRBMathCommon.mulDiv(ax, ax, uint256(SCALE));
+            absX = uint256(mul(int256(absX), int256(absX)));
 
-            // Equivalent to "y % 2 == 1".
+            // Equivalent to "y % 2 == 1" but faster.
             if (y & 1 > 0) {
-                absResult = PRBMathCommon.mulDiv(absResult, ax, uint256(SCALE));
+                absResult = uint256(mul(int256(absResult), int256(absX)));
             }
         }
 
