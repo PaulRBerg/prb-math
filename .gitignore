@@ -6,6 +6,7 @@ artifacts/
 build/
 cache/
 coverage/
+crytic-export/
 dist/
 lib/
 node_modules/

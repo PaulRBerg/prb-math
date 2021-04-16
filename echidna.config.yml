@@ -1,0 +1,6 @@
+checkAsserts: true
+coverage: false
+deployer: "0x4bcb303609F19e71Ab82A3A3393c46BfEa1e44Fc"
+format: "text"
+sender:
+  - "0x4bcb303609F19e71Ab82A3A3393c46BfEa1e44Fc"
