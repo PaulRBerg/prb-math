@@ -36,6 +36,7 @@
     "hardhat-contract-sizer": "^2.0.3",
     "hardhat-gas-reporter": "^1.0.4",
     "husky": "^4.3.0",
+    "import-sort-parser-typescript": "^6.0.0",
     "import-sort-style-module": "^6.0.0",
     "mocha": "^8.1.3",
     "mocha-each": "^2.0.1",
@@ -60,6 +61,16 @@
     "smart-contracts",
     "solidity"
   ],
+  "importSort": {
+    ".js, .jsx": {
+      "parser": "babylon",
+      "style": "module"
+    },
+    ".ts, .tsx": {
+      "parser": "typescript",
+      "style": "module"
+    }
+  },
   "license": "WTFPL",
   "publishConfig": {
     "access": "public"

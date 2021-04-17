@@ -2,8 +2,8 @@ import hre from "hardhat";
 import { Artifact } from "hardhat/types";
 
 import { PRBMathUD60x18Mock } from "../../../typechain/PRBMathUD60x18Mock";
-import { shouldBehaveLikePrbMathUd60x18 } from "./PRBMathUD60x18.behavior";
 import { baseContext } from "../../contexts";
+import { shouldBehaveLikePrbMathUd60x18 } from "./PRBMathUD60x18.behavior";
 
 const { deployContract } = hre.waffle;
 
