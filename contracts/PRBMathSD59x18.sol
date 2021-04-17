@@ -74,7 +74,7 @@ library PRBMathSD59x18 {
     /// - x must be less than or equal to MAX_WHOLE_SD59x18.
     ///
     /// @param x The signed 59.18-decimal fixed-point number to ceil.
-    /// @param result The least integer greater than or equal to x.
+    /// @param result The least integer greater than or equal to x, as a signed 58.18-decimal fixed-point number.
     function ceil(int256 x) internal pure returns (int256 result) {
         require(x <= MAX_WHOLE_SD59x18);
         unchecked {
@@ -186,7 +186,7 @@ library PRBMathSD59x18 {
     /// - x must be greater than or equal to MIN_WHOLE_SD59x18.
     ///
     /// @param x The signed 59.18-decimal fixed-point number to floor.
-    /// @param result The greatest integer less than or equal to x.
+    /// @param result The greatest integer less than or equal to x, as a signed 58.18-decimal fixed-point number.
     function floor(int256 x) internal pure returns (int256 result) {
         require(x >= MIN_WHOLE_SD59x18);
         unchecked {
@@ -488,11 +488,12 @@ library PRBMathSD59x18 {
     /// @dev See https://en.wikipedia.org/wiki/Exponentiation_by_squaring
     ///
     /// Requirements:
-    /// - All from "abs" and "mulDiv".
+    /// - All from "abs".
+    /// - The result must fit within MAX_SD59x18.
     ///
     /// Caveats:
+    /// - All from "PRBMathCommon.mulDivFixedPoint".
     /// - Assumes 0^0 is 1.
-    /// - All from "mul".
     ///
     /// @param x The base as a signed 59.18-decimal fixed-point number.
     /// @param y The exponent as an uint256.

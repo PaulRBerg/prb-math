@@ -47,7 +47,7 @@ library PRBMathUD60x18 {
     /// - x must be less than or equal to MAX_WHOLE_UD60x18.
     ///
     /// @param x The unsigned 60.18-decimal fixed-point number to ceil.
-    /// @param result The least integer greater than or equal to x.
+    /// @param result The least integer greater than or equal to x, as an unsigned 60.18-decimal fixed-point number.
     function ceil(uint256 x) internal pure returns (uint256 result) {
         require(x <= MAX_WHOLE_UD60x18);
         assembly {
@@ -130,7 +130,7 @@ library PRBMathUD60x18 {
     /// @dev Optimised for fractional value inputs, because for every whole value there are (1e18 - 1) fractional counterparts.
     /// See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions.
     /// @param x The unsigned 60.18-decimal fixed-point number to floor.
-    /// @param result The greatest integer less than or equal to x.
+    /// @param result The greatest integer less than or equal to x, as an unsigned 60.18-decimal fixed-point number.
     function floor(uint256 x) internal pure returns (uint256 result) {
         assembly {
             // Equivalent to "x % SCALE" but faster.
@@ -390,11 +390,11 @@ library PRBMathUD60x18 {
     /// @dev See https://en.wikipedia.org/wiki/Exponentiation_by_squaring
     ///
     /// Requirements:
-    /// - All from "mul".
+    /// - The result must fit within MAX_UD60x18.
     ///
     /// Caveats:
+    /// - All from "PRBMathCommon.mulDivFixedPoint".
     /// - Assumes 0^0 is 1.
-    /// - All from "mul".
     ///
     /// @param x The base as an unsigned 60.18-decimal fixed-point number.
     /// @param y The exponent as an uint256.
@@ -405,11 +405,11 @@ library PRBMathUD60x18 {
 
         // Euivalent to "for(y /= 2; y > 0; y /= 2)" but faster.
         for (y >>= 1; y > 0; y >>= 1) {
-            x = mul(x, x);
+            x = PRBMathCommon.mulDivFixedPoint(x, x);
 
             // Equivalent to "y % 2 == 1" but faster.
             if (y & 1 > 0) {
-                result = mul(result, x);
+                result = PRBMathCommon.mulDivFixedPoint(result, x);
             }
         }
     }
