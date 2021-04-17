@@ -48,8 +48,10 @@ library PRBMathSD59x18 {
     /// @param x The number to calculate the absolute for.
     /// @param result The absolute value of x.
     function abs(int256 x) internal pure returns (int256 result) {
-        require(x > MIN_SD59x18);
-        result = x < 0 ? -x : x;
+        unchecked {
+            require(x > MIN_SD59x18);
+            result = x < 0 ? -x : x;
+        }
     }
 
     /// @notice Calculates arithmetic average of x and y, rounding down.
