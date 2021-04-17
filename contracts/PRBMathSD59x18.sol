@@ -95,16 +95,48 @@ library PRBMathSD59x18 {
 
     /// @notice Divides two signed 59.18-decimal fixed-point numbers, returning a new signed 59.18-decimal fixed-point number.
     ///
-    /// @dev Uses mulDiv to enable overflow-safe multiplication and division.
+    /// @dev An extension of "PRBMathCommon.mulDiv" that works with signed numbers. The idea is to compute the signs and the
+    /// absolute values separately.
     ///
     /// Requirements:
+    /// - All from "PRBMathCommon.mulDiv".
+    /// - None of the inputs can be type(int256).min.
     /// - y cannot be zero.
+    /// - The result must fit within int256.
+    ///
+    /// Caveats:
+    /// - All from "PRBMathCommon.mulDiv".
     ///
     /// @param x The numerator as a signed 59.18-decimal fixed-point number.
     /// @param y The denominator as a signed 59.18-decimal fixed-point number.
     /// @param result The quotient as a signed 59.18-decimal fixed-point number.
     function div(int256 x, int256 y) internal pure returns (int256 result) {
-        result = PRBMathCommon.mulDivSigned(x, SCALE, y);
+        require(x > type(int256).min);
+        require(y > type(int256).min);
+
+        // Get hold of the absolute values of x and y.
+        uint256 ax;
+        uint256 ay;
+        unchecked {
+            ax = x < 0 ? uint256(-x) : uint256(x);
+            ay = y < 0 ? uint256(-y) : uint256(y);
+        }
+
+        // Compute the absolute value of (x*SCALE)÷y. The result must fit within int256.
+        uint256 resultUnsigned = PRBMathCommon.mulDiv(ax, uint256(SCALE), ay);
+        require(resultUnsigned <= uint256(type(int256).max));
+
+        // Get the signs of x and y.
+        uint256 sx;
+        uint256 sy;
+        assembly {
+            sx := sgt(x, sub(0, 1))
+            sy := sgt(y, sub(0, 1))
+        }
+
+        // XOR over sx and sy. This is basically checking whether the inputs have the same sign. If yes, the result
+        // should be positive. Otherwise, it should be negative.
+        result = sx ^ sy == 1 ? -int256(resultUnsigned) : int256(resultUnsigned);
     }
 
     /// @notice Returns Euler's number as a signed 59.18-decimal fixed-point number.
