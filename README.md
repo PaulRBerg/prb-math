@@ -63,13 +63,10 @@ contract SignedConsumer {
     result = PRBMathCommon.exp(x);
   }
 
+  /// @notice Calculates x*y÷1e18 while handling possible intermediary overflow.
   /// @dev Try this with x = type(int256).max and y = 5e17.
-  function signedMulDiv(
-    int256 x,
-    int256 y,
-    int256 denominator
-  ) external pure returns (int256 result) {
-    result = PRBMathCommon.mulDiv(x, y, denominator);
+  function signedMul(int256 x, int256 y) external pure returns (int256 result) {
+    result = PRBMathCommon.mulDiv(x, y);
   }
 
   /// @dev Note that "y" is a basic uint256 integer, not a fixed-point number.
@@ -105,13 +102,10 @@ contract UnsignedConsumer {
     result = PRBMathCommon.exp(x);
   }
 
+  /// @notice Calculates x*y÷1e18 while handling possible intermediary overflow.
   /// @dev Try this with x = type(uint256).max and y = 5e17.
-  function unsignedMulDiv(
-    uint256 x,
-    uint256 y,
-    uint256 denominator
-  ) external pure returns (uint256 result) {
-    result = PRBMathCommon.mulDiv(x, y, denominator);
+  function unsignedMul(uint256 x, uint256 y) external pure returns (uint256 result) {
+    result = PRBMathCommon.mul(x, y);
   }
 
   /// @dev Note that "y" is a basic uint256 integer, not a fixed-point number.

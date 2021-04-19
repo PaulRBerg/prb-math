@@ -42,7 +42,7 @@ library PRBMathSD59x18 {
     /// @notice Calculate the absolute value of x.
     ///
     /// @dev Requirements:
-    /// - x must be greater than min 59.18.
+    /// - x must be greater than MIN_SD59x18.
     ///
     /// @param x The number to calculate the absolute for.
     /// @param result The absolute value of x.
@@ -94,8 +94,7 @@ library PRBMathSD59x18 {
 
     /// @notice Divides two signed 59.18-decimal fixed-point numbers, returning a new signed 59.18-decimal fixed-point number.
     ///
-    /// @dev An extension of "PRBMathCommon.mulDiv" that works with signed numbers. The idea is to compute the signs and the
-    /// absolute values separately.
+    /// @dev Variant of "mulDiv" that works with signed numbers. Works by computing the signs and the absolute values separately.
     ///
     /// Requirements:
     /// - All from "PRBMathCommon.mulDiv".
@@ -475,7 +474,20 @@ library PRBMathSD59x18 {
 
     /// @notice Multiplies two signed 59.18-decimal fixed-point numbers together, returning a new signed 59.18-decimal
     /// fixed-point number.
-    /// @dev See the documentation for the "mulDivSigned" and "mulDivFixedPoint" functions in PRBMathCommon.sol.
+    ///
+    /// @dev Variant of "mulDiv" that works with signed numbers and employs constant folding, i.e. the denominator is 1e18.
+    /// Before returning the final result, we add 1 if (x * y) % SCALE >= HALF_SCALE. Without this, 6.6e-19 would be
+    /// truncated to 0 instead of being rounded to 1e-18.
+    ///
+    /// Requirements:
+    /// - The result must fit within MAX_SD59x18.
+    ///
+    /// Caveats:
+    /// - The body is purposely left uncommented; see the comments in "PRBMathCommon.mulDiv" to understand how this works.
+    /// - It is assumed that the result can never be type(uint256).max when x and y solve the following two equations:
+    ///     1) x * y = type(uint256).max * SCALE
+    ///     2) (x * y) % SCALE >= SCALE / 2
+    ///
     /// @param x The multiplicand as a signed 59.18-decimal fixed-point number.
     /// @param y The multiplier as a signed 59.18-decimal fixed-point number.
     /// @return result The result as a signed 59.18-decimal fixed-point number.
@@ -489,7 +501,39 @@ library PRBMathSD59x18 {
             ax = x < 0 ? uint256(-x) : uint256(x);
             ay = y < 0 ? uint256(-y) : uint256(y);
 
-            uint256 resultUnsigned = PRBMathCommon.mulDivFixedPoint(ax, ay);
+            uint256 prod0;
+            uint256 prod1;
+            assembly {
+                let mm := mulmod(ax, ay, not(0))
+                prod0 := mul(ax, ay)
+                prod1 := sub(sub(mm, prod0), lt(mm, prod0))
+            }
+
+            uint256 remainder;
+            uint256 roundUpUnit;
+            assembly {
+                remainder := mulmod(ax, ay, SCALE)
+                roundUpUnit := gt(remainder, 499999999999999999)
+            }
+
+            uint256 resultUnsigned;
+            if (prod1 == 0) {
+                resultUnsigned = (prod0 / uint256(SCALE)) + roundUpUnit;
+            } else {
+                require(uint256(SCALE) > prod1);
+                assembly {
+                    resultUnsigned := add(
+                        mul(
+                            or(
+                                div(sub(prod0, remainder), SCALE_LPOTD),
+                                mul(sub(prod1, gt(remainder, prod0)), add(div(sub(0, SCALE_LPOTD), SCALE_LPOTD), 1))
+                            ),
+                            SCALE_INVERSE
+                        ),
+                        roundUpUnit
+                    )
+                }
+            }
             require(resultUnsigned <= uint256(MAX_SD59x18));
 
             uint256 sx;
@@ -513,11 +557,11 @@ library PRBMathSD59x18 {
     /// @dev See https://en.wikipedia.org/wiki/Exponentiation_by_squaring
     ///
     /// Requirements:
-    /// - All from "abs".
+    /// - All from "abs" and "mul".
     /// - The result must fit within MAX_SD59x18.
     ///
     /// Caveats:
-    /// - All from "PRBMathCommon.mulDivFixedPoint".
+    /// - All from "mul".
     /// - Assumes 0^0 is 1.
     ///
     /// @param x The base as a signed 59.18-decimal fixed-point number.
@@ -531,11 +575,11 @@ library PRBMathSD59x18 {
 
         // Euivalent to "for(y /= 2; y > 0; y /= 2)" but faster.
         for (y >>= 1; y > 0; y >>= 1) {
-            absX = PRBMathCommon.mulDivFixedPoint(absX, absX);
+            absX = uint256(mul(int256(absX), int256(absX)));
 
             // Equivalent to "y % 2 == 1" but faster.
             if (y & 1 > 0) {
-                absResult = PRBMathCommon.mulDivFixedPoint(absResult, absX);
+                absResult = uint256(mul(int256(absResult), int256(absX)));
             }
         }
 
