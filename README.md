@@ -19,7 +19,7 @@ which is fast, but I didn't like that it operates with binary numbers and it lim
 [Fixidity](https://github.com/CementDAO/Fixidity), which operates with denary numbers and has wide precision, but is slow
 and susceptible to phantom overflow.
 
-## Caveat
+## Caveat Emptor
 
 This is experimental software and is provided on an "as is" and "as available" basis. I do not give any warranties
 and will not be liable for any loss, direct or indirect through continued use of this codebase.
@@ -124,18 +124,18 @@ contract UnsignedConsumer {
 
 PRBMath is faster than ABDKMath for `abs`, `exp`, `exp2`, `gm`, `inv`, `ln`,
 `log2`. Conversely, PRBMath is slower than ABDKMath for `avg`, `div`, `mul`, `pow` and `sqrt`. There are
-two reasons why PRBMath lags behind ABDKMath's multiplication and division functions:
+two technical reasons why PRBMath lags behind ABDKMath's `mul` and `div` functions:
 
 1. PRBMath operates with 256-bit word sizes, so it has to account for possible intermediary overflow. ABDKMath operates with
    128-bit word sizes.
 2. PRBMath rounds up instead of truncating in certain cases (see [Listing 6](https://accu.org/index.php/journals/1717) and text above
-   it), which makes PRBMath slightly more precise.
+   it), which does it slightly more precise than ABDKMath but comes at a gas cost.
 
 ### PRBMath
 
 | SD59x18 | Min | Max   | Avg  |     | UD60x18 | Min  | Max   | Avg  |
 | ------- | --- | ----- | ---- | --- | ------- | ---- | ----- | ---- |
-| abs     | 68  | 72    | 70   |
+| abs     | 68  | 72    | 70   |     | n/a     | n/a  | n/a   | n/a  |
 | avg     | 57  | 57    | 57   |     | avg     | 57   | 57    | 57   |
 | ceil    | 82  | 117   | 101  |     | ceil    | 78   | 78    | 78   |
 | div     | 431 | 483   | 451  |     | div     | 205  | 205   | 205  |
@@ -154,7 +154,7 @@ two reasons why PRBMath lags behind ABDKMath's multiplication and division funct
 
 ### ABDKMath64x64
 
-See https://github.com/paulrberg/abdk-gas-estimations.
+See [abdk-gas-estimations](https://github.com/paulrberg/abdk-gas-estimations).
 
 | Method | Min  | Max  | Avg  |
 | ------ | ---- | ---- | ---- |
@@ -242,7 +242,7 @@ $ yarn clean
 ## Security
 
 While I set a high bar for code quality and test coverage, you shouldn't assume that this library is completely safe to use. The contracts
-have not been audited by a security researcher. If you discover any security issues, you can report them via [Keybase](https://keybase.io/paulrberg).
+have not been audited by a security researcher. If you discover any security issues, please report them via [Keybase](https://keybase.io/paulrberg).
 
 ## Acknowledgements
 
