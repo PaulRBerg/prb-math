@@ -7,7 +7,7 @@ import "./PRBMathCommon.sol";
 /// @author Paul Razvan Berg
 /// @notice Smart contract library for advanced fixed-point math. It works with uint256 numbers considered to have 18
 /// trailing decimals. We call this number representation unsigned 60.18-decimal fixed-point, since there can be up to 60
-/// digits in the integer part and up to 18 digits in the fractional part. The numbers are bound by the minimum and the
+/// digits in the integer part and up to 18 decimals in the fractional part. The numbers are bound by the minimum and the
 /// maximum values permitted by the Solidity type uint256.
 library PRBMathUD60x18 {
     /// @dev Half the SCALE number.
@@ -205,9 +205,7 @@ library PRBMathUD60x18 {
     function ln(uint256 x) internal pure returns (uint256 result) {
         // Do the fixed-point multiplication inline to save gas. This is overflow-safe because the maximum value that log2(x)
         // can return is 196205294292027477728.
-        unchecked {
-            result = (log2(x) * SCALE) / LOG2_E;
-        }
+        unchecked { result = (log2(x) * SCALE) / LOG2_E; }
     }
 
     /// @notice Calculates the common logarithm of x.
@@ -315,9 +313,7 @@ library PRBMathUD60x18 {
 
         if (result == MAX_UD60x18) {
             // Do the fixed-point division inline to save gas. The denominator is log2(10).
-            unchecked {
-                result = (log2(x) * SCALE) / 332192809488736234;
-            }
+            unchecked { result = (log2(x) * SCALE) / 332192809488736234; }
         }
     }
 

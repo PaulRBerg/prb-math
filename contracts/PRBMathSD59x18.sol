@@ -7,7 +7,7 @@ import "./PRBMathCommon.sol";
 /// @author Paul Razvan Berg
 /// @notice Smart contract library for advanced fixed-point math. It works with int256 numbers considered to have 18
 /// trailing decimals. We call this number representation signed 59.18-decimal fixed-point, since the numbers can have
-/// a sign and there can be up to 59 digits in the integer part and up to 18 digits in the fractional part. The numbers
+/// a sign and there can be up to 59 digits in the integer part and up to 18 decimals in the fractional part. The numbers
 /// are bound by the minimum and the maximum values permitted by the Solidity type int256.
 library PRBMathSD59x18 {
     /// @dev log2(e) as a signed 59.18-decimal fixed-point number.
