@@ -1,6 +1,6 @@
 # PRBMath [![Coverage Status](https://coveralls.io/repos/github/hifi-finance/prb-math/badge.svg?branch=main)](https://coveralls.io/github/hifi-finance/prb-math?branch=main) [![Styled with Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io) [![Commitizen Friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![License: WTFPL](https://img.shields.io/badge/License-WTFPL-yellow.svg)](https://spdx.org/licenses/WTFPL.html)
 
-**Smart contract library for advanced fixed-point math.** PRBMath operates with signed 59.18-decimal fixed-point and unsigned
+**Smart contract library for advanced fixed-point math**, which operates with signed 59.18-decimal fixed-point and unsigned
 60.18-decimal fixed-point numbers. The name stems from the fact that there can be up to 59/60 digits in the integer part and up to 18 decimals
 in the fractional part. The numbers are bound by the minimum and the maximum values permitted by the Solidity types int256 and uint256.
 
@@ -8,7 +8,7 @@ in the fractional part. The numbers are bound by the minimum and the maximum val
 - [x] Offers advanced math functions like logarithms, exponentials, powers and square roots
 - [x] Operates with signed and unsigned denary fixed-point numbers, with 18 trailing decimals
 - [x] Bakes in overflow-safe multiplication and division
-- [x] Gas efficient, without compromising on user-friendliness
+- [x] Gas efficient, but still user-friendly
 - [x] Well-documented via NatSpec comments
 - [x] Thoroughly tested with Hardhat and Waffle
 
@@ -133,6 +133,8 @@ two technical reasons why PRBMath lags behind ABDKMath's `mul` and `div` functio
 
 ### PRBMath
 
+Based on v1.0.0 of the library.
+
 | SD59x18 | Min | Max   | Avg  |     | UD60x18 | Min  | Max   | Avg  |
 | ------- | --- | ----- | ---- | --- | ------- | ---- | ----- | ---- |
 | abs     | 68  | 72    | 70   |     | n/a     | n/a  | n/a   | n/a  |
@@ -154,7 +156,7 @@ two technical reasons why PRBMath lags behind ABDKMath's `mul` and `div` functio
 
 ### ABDKMath64x64
 
-See [abdk-gas-estimations](https://github.com/paulrberg/abdk-gas-estimations).
+Based on v3.0 of the library. See [abdk-gas-estimations](https://github.com/paulrberg/abdk-gas-estimations).
 
 | Method | Min  | Max  | Avg  |
 | ------ | ---- | ---- | ---- |
