@@ -1,10 +1,13 @@
 {
   "name": "prb-math",
   "description": "Smart contract library for advanced fixed-point math",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": {
     "name": "Paul Razvan Berg",
     "url": "https://paulrberg.com"
+  },
+  "bugs": {
+    "url": "https://github.com/hifi-finance/prb-math/issues"
   },
   "devDependencies": {
     "@commitlint/cli": "^9.1.2",
@@ -61,6 +64,7 @@
     "smart-contracts",
     "solidity"
   ],
+  "homepage": "https://github.com/hifi-finance/prb-math#readme",
   "importSort": {
     ".js, .jsx": {
       "parser": "babylon",
@@ -74,6 +78,10 @@
   "license": "WTFPL",
   "publishConfig": {
     "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hifi-finance/prb-math"
   },
   "scripts": {
     "clean": "hardhat clean",

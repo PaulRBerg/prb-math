@@ -1,4 +1,4 @@
-# PRBMath [![Coverage Status](https://coveralls.io/repos/github/paulrberg/prb-math/badge.svg?branch=main)](https://coveralls.io/github/paulrberg/prb-math?branch=main) [![Styled with Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io) [![Commitizen Friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![License: WTFPL](https://img.shields.io/badge/License-WTFPL-yellow.svg)](https://spdx.org/licenses/WTFPL.html)
+# PRBMath [![Coverage Status](https://coveralls.io/repos/github/hifi-finance/prb-math/badge.svg?branch=main)](https://coveralls.io/github/hifi-finance/prb-math?branch=main) [![Styled with Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io) [![Commitizen Friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![License: WTFPL](https://img.shields.io/badge/License-WTFPL-yellow.svg)](https://spdx.org/licenses/WTFPL.html)
 
 **Smart contract library for advanced fixed-point math.** PRBMath operates with signed 59.18-decimal fixed-point and unsigned
 60.18-decimal fixed-point numbers. The name stems from the fact that there can be up to 59/60 digits in the integer part and up to 18 decimals
@@ -59,13 +59,13 @@ contract SignedConsumer {
   }
 
   function signedExp(int256 x) external pure returns (int256 result) {
-    result = PRBMathCommon.exp(x);
+    result = PRBMathSD59x18.exp(x);
   }
 
   /// @notice Calculates x*y÷1e18 while handling possible intermediary overflow.
   /// @dev Try this with x = type(int256).max and y = 5e17.
   function signedMul(int256 x, int256 y) external pure returns (int256 result) {
-    result = PRBMathCommon.mulDiv(x, y);
+    result = PRBMathSD59x18.mulDiv(x, y);
   }
 
   /// @dev Note that "y" is a basic uint256 integer, not a fixed-point number.
@@ -91,20 +91,20 @@ import "prb-math/contracts/PRBMathUD60x18.sol";
 contract UnsignedConsumer {
   using PRBMathUD60x18 for uint256;
 
-  /// @dev Note that "x" must be greater than or equal to 1e18, lest the result would be negative, and negative numbers
-  /// are not supported by the unsigned 60.18-decimal fixed-point representation.
+  /// @dev Note that "x" must be greater than or equal to 1e18, lest the result would be negative, and negative
+  /// numbers are not supported by the unsigned 60.18-decimal fixed-point representation.
   function unsignedLog2(uint256 x) external pure returns (uint256 result) {
     result = x.log2();
   }
 
   function unsignedExp(uint256 x) external pure returns (uint256 result) {
-    result = PRBMathCommon.exp(x);
+    result = PRBMathUD60x18.exp(x);
   }
 
   /// @notice Calculates x*y÷1e18 while handling possible intermediary overflow.
   /// @dev Try this with x = type(uint256).max and y = 5e17.
   function unsignedMul(uint256 x, uint256 y) external pure returns (uint256 result) {
-    result = PRBMathCommon.mul(x, y);
+    result = PRBMathUD60x18.mul(x, y);
   }
 
   /// @dev Note that "y" is a basic uint256 integer, not a fixed-point number.
