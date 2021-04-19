@@ -1,0 +1,6 @@
+# folders
+test/
+
+# files
+.DS_Store
+.npmignore
