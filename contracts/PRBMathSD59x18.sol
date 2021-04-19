@@ -148,8 +148,8 @@ library PRBMathSD59x18 {
     /// @dev Based on the insight that e^x = 2^(x * log2(e)).
     ///
     /// Requirements:
-    /// - x must be less than 88722839111672999628.
     /// - All from "log2".
+    /// - x must be less than 88722839111672999628.
     ///
     /// @param x The exponent as a signed 59.18-decimal fixed-point number.
     /// @return result The result as a signed 59.18-decimal fixed-point number.
@@ -476,14 +476,14 @@ library PRBMathSD59x18 {
     /// fixed-point number.
     ///
     /// @dev Variant of "mulDiv" that works with signed numbers and employs constant folding, i.e. the denominator is
-    /// alawys 1e18. See the documentation for the "PRBMathCommon.mulDivFixedPoint" function.
+    /// alawys 1e18.
     ///
     /// Requirements:
-    /// - The result must fit within MAX_SD59x18.
     /// - All from "PRBMathCommon.mulDivFixedPoint".
+    /// - The result must fit within MAX_SD59x18.
     ///
     /// Caveats:
-    /// - All from "PRBMathCommon.mulDivFixedPoint".
+    /// - The body is purposely left uncommented; see the NatSpec comments in "PRBMathCommon.mulDiv" to understand how this works.
     ///
     /// @param x The multiplicand as a signed 59.18-decimal fixed-point number.
     /// @param y The multiplier as a signed 59.18-decimal fixed-point number.
@@ -522,11 +522,11 @@ library PRBMathSD59x18 {
     /// @dev See https://en.wikipedia.org/wiki/Exponentiation_by_squaring
     ///
     /// Requirements:
-    /// - All from "abs" and "mul".
+    /// - All from "abs" and "PRBMathCommon.mulDivFixedPoint".
     /// - The result must fit within MAX_SD59x18.
     ///
     /// Caveats:
-    /// - All from "mul".
+    /// - All from "PRBMathCommon.mulDivFixedPoint".
     /// - Assumes 0^0 is 1.
     ///
     /// @param x The base as a signed 59.18-decimal fixed-point number.

@@ -93,8 +93,8 @@ library PRBMathUD60x18 {
     /// @dev Based on the insight that e^x = 2^(x * log2(e)).
     ///
     /// Requirements:
-    /// - x must be less than 88722839111672999628.
     /// - All from "log2".
+    /// - x must be less than 88722839111672999628.
     ///
     /// @param x The exponent as an unsigned 60.18-decimal fixed-point number.
     /// @return result The result as an unsigned 60.18-decimal fixed-point number.
@@ -395,7 +395,7 @@ library PRBMathUD60x18 {
     /// - The result must fit within MAX_UD60x18.
     ///
     /// Caveats:
-    /// - All from "mulDiv".
+    /// - All from "mul".
     /// - Assumes 0^0 is 1.
     ///
     /// @param x The base as an unsigned 60.18-decimal fixed-point number.
