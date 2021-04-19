@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: WTFPL
 pragma solidity >=0.8.0;
 
-import "hardhat/console.sol";
 import "./PRBMathCommon.sol";
 
 /// @title PRBMathSD59x18
@@ -193,9 +192,7 @@ library PRBMathSD59x18 {
             }
 
             // Do the fixed-point inversion inline to save gas. The numeretor is SCALE * SCALE.
-            unchecked {
-                result = 1e36 / exp2(-x);
-            }
+            unchecked { result = 1e36 / exp2(-x); }
             return result;
         } else {
             // 2**128 doesn't fit within the 128.128-bit fixed-point representation.
@@ -243,9 +240,7 @@ library PRBMathSD59x18 {
     /// @param x The signed 59.18-decimal fixed-point number to get the fractional part of.
     /// @param result The fractional part of x as a signed 59.18-decimal fixed-point number.
     function frac(int256 x) internal pure returns (int256 result) {
-        unchecked {
-            result = x % SCALE;
-        }
+        unchecked { result = x % SCALE; }
     }
 
     /// @notice Calculates geometric mean of x and y, i.e. sqrt(x * y), rounding down.
@@ -306,9 +301,7 @@ library PRBMathSD59x18 {
     function ln(int256 x) internal pure returns (int256 result) {
         // Do the fixed-point multiplication inline to save gas. This is overflow-safe because the maximum value that log2(x)
         // can return is 195205294292027477728.
-        unchecked {
-            result = (log2(x) * SCALE) / LOG2_E;
-        }
+        unchecked { result = (log2(x) * SCALE) / LOG2_E; }
     }
 
     /// @notice Calculates the common logarithm of x.
@@ -415,9 +408,7 @@ library PRBMathSD59x18 {
 
         if (result == MAX_SD59x18) {
             // Do the fixed-point division inline to save gas. The denominator is log2(10).
-            unchecked {
-                result = (log2(x) * SCALE) / 332192809488736234;
-            }
+            unchecked { result = (log2(x) * SCALE) / 332192809488736234; }
         }
     }
 
