@@ -25,12 +25,6 @@ library PRBMathUD60x18 {
     /// @dev How many trailing decimals can be represented.
     uint256 internal constant SCALE = 1e18;
 
-    /// @dev Largest power of two divisor of SCALE.
-    uint256 internal constant SCALE_LPOTD = 262144;
-
-    /// @dev SCALE inverted mod 2^256.
-    uint256 internal constant SCALE_INVERSE = 78156646155174841979727994598816262306175212592076161876661508869554232690281;
-
     /// @notice Calculates arithmetic average of x and y, rounding down.
     /// @param x The first operand as an unsigned 60.18-decimal fixed-point number.
     /// @param y The second operand as an unsigned 60.18-decimal fixed-point number.
