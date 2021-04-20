@@ -4,13 +4,13 @@
 60.18-decimal fixed-point numbers. The name stems from the fact that there can be up to 59/60 digits in the integer part and up to 18 decimals
 in the fractional part. The numbers are bound by the minimum and the maximum values permitted by the Solidity types int256 and uint256.
 
-- [x] Designed for Solidity >=0.8.0
-- [x] Offers advanced math functions like logarithms, exponentials, powers and square roots
-- [x] Operates with signed and unsigned denary fixed-point numbers, with 18 trailing decimals
-- [x] Bakes in overflow-safe multiplication and division
-- [x] Gas efficient, but still user-friendly
-- [x] Well-documented via NatSpec comments
-- [x] Thoroughly tested with Hardhat and Waffle
+- Designed for Solidity >=0.8.0
+- Operates with signed and unsigned denary fixed-point numbers, with 18 trailing decimals
+- Offers advanced math functions like logarithms, exponentials, powers and square roots
+- Gas efficient, but still user-friendly
+- Bakes in overflow-safe multiplication and division
+- Well-documented via NatSpec comments
+- Thoroughly tested with Hardhat and Waffle
 
 I created this because I wanted a fixed-point math library that is at the same time practical, intuitive and efficient.
 I looked at
@@ -128,8 +128,8 @@ two technical reasons why PRBMath lags behind ABDKMath's `mul` and `div` functio
 
 1. PRBMath operates with 256-bit word sizes, so it has to account for possible intermediary overflow. ABDKMath operates with
    128-bit word sizes.
-2. PRBMath rounds up instead of truncating in certain cases (see [Listing 6](https://accu.org/index.php/journals/1717) and text above
-   it), which does it slightly more precise than ABDKMath but comes at a gas cost.
+2. PRBMath rounds up instead of truncating in certain cases (see listing 6 and text above it in this
+   [article](https://accu.org/index.php/journals/1717)), which makes it slightly more precise than ABDKMath but comes at a gas cost.
 
 ### PRBMath
 
