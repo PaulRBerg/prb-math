@@ -401,11 +401,11 @@ library PRBMathUD60x18 {
 
         // Equivalent to "for(y /= 2; y > 0; y /= 2)" but faster.
         for (y >>= 1; y > 0; y >>= 1) {
-            x = mul(x, x);
+            x = PRBMathCommon.mulDivFixedPoint(x, x);
 
             // Equivalent to "y % 2 == 1" but faster.
             if (y & 1 > 0) {
-                result = mul(result, x);
+                result = PRBMathCommon.mulDivFixedPoint(result, x);
             }
         }
     }
