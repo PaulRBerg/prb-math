@@ -65,7 +65,7 @@ contract SignedConsumer {
   /// @notice Calculates x*y÷1e18 while handling possible intermediary overflow.
   /// @dev Try this with x = type(int256).max and y = 5e17.
   function signedMul(int256 x, int256 y) external pure returns (int256 result) {
-    result = PRBMathSD59x18.mulDiv(x, y);
+    result = PRBMathSD59x18.mul(x, y);
   }
 
   /// @dev Note that "y" is a basic uint256 integer, not a fixed-point number.
