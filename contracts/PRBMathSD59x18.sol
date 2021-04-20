@@ -31,12 +31,6 @@ library PRBMathSD59x18 {
     /// @dev How many trailing decimals can be represented.
     int256 internal constant SCALE = 1e18;
 
-    /// @dev Largest power of two divisor of SCALE. Used only in the "mul" function.
-    uint256 internal constant SCALE_LPOTD = 262144;
-
-    /// @dev SCALE inverted mod 2^256. Used only in the "mul" function.
-    uint256 internal constant SCALE_INVERSE = 78156646155174841979727994598816262306175212592076161876661508869554232690281;
-
     /// INTERNAL FUNCTIONS ///
 
     /// @notice Calculate the absolute value of x.
@@ -44,7 +38,7 @@ library PRBMathSD59x18 {
     /// @dev Requirements:
     /// - x must be greater than MIN_SD59x18.
     ///
-    /// @param x The number to calculate the absolute for.
+    /// @param x The number to calculate the absolute value for.
     /// @param result The absolute value of x.
     function abs(int256 x) internal pure returns (int256 result) {
         unchecked {
@@ -190,7 +184,7 @@ library PRBMathSD59x18 {
                 return 0;
             }
 
-            // Do the fixed-point inversion inline to save gas. The numeretor is SCALE * SCALE.
+            // Do the fixed-point inversion inline to save gas. The numerator is SCALE * SCALE.
             unchecked { result = 1e36 / exp2(-x); }
             return result;
         } else {
@@ -433,7 +427,7 @@ library PRBMathSD59x18 {
                 sign = 1;
             } else {
                 sign = -1;
-                // Do the fixed-point inversion inline to save gas. The numeretor is SCALE * SCALE.
+                // Do the fixed-point inversion inline to save gas. The numerator is SCALE * SCALE.
                 assembly {
                     x := div(1000000000000000000000000000000000000, x)
                 }
@@ -443,7 +437,7 @@ library PRBMathSD59x18 {
             uint256 n = PRBMathCommon.mostSignificantBit(uint256(x / SCALE));
 
             // The integer part of the logarithm as a signed 59.18-decimal fixed-point number. The operation can't overflow
-            // beacuse n is maximum 255, SCALE is 1e18 and sign is either 1 or -1.
+            // because n is maximum 255, SCALE is 1e18 and sign is either 1 or -1.
             result = int256(n) * SCALE;
 
             // This is y = x * 2^(-n).
@@ -538,7 +532,7 @@ library PRBMathSD59x18 {
         // Calculate the first iteration of the loop in advance.
         uint256 absResult = y & 1 > 0 ? absX : uint256(SCALE);
 
-        // Euivalent to "for(y /= 2; y > 0; y /= 2)" but faster.
+        // Equivalent to "for(y /= 2; y > 0; y /= 2)" but faster.
         for (y >>= 1; y > 0; y >>= 1) {
             absX = PRBMathCommon.mulDivFixedPoint(absX, absX);
 

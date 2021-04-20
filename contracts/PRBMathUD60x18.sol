@@ -337,7 +337,7 @@ library PRBMathUD60x18 {
             uint256 n = PRBMathCommon.mostSignificantBit(x / SCALE);
 
             // The integer part of the logarithm as an unsigned 60.18-decimal fixed-point number. The operation can't overflow
-            // beacuse n is maximum 255 and SCALE is 1e18.
+            // because n is maximum 255 and SCALE is 1e18.
             result = n * SCALE;
 
             // This is y = x * 2^(-n).
@@ -399,7 +399,7 @@ library PRBMathUD60x18 {
         // Calculate the first iteration of the loop in advance.
         result = y & 1 > 0 ? x : SCALE;
 
-        // Euivalent to "for(y /= 2; y > 0; y /= 2)" but faster.
+        // Equivalent to "for(y /= 2; y > 0; y /= 2)" but faster.
         for (y >>= 1; y > 0; y >>= 1) {
             x = mul(x, x);
 
