@@ -177,16 +177,15 @@ library PRBMathSD59x18 {
     /// @param x The exponent as a signed 59.18-decimal fixed-point number.
     /// @return result The result as a signed 59.18-decimal fixed-point number.
     function exp2(int256 x) internal pure returns (int256 result) {
-        // This works because 2^-x = 1/2^x.
+        // This works because 2^(-x) = 1/2^x.
         if (x < 0) {
-            // 2**59.794705707972522262 is the maximum number whose inverse does not equal zero.
+            // 2**59.794705707972522262 is the maximum number whose inverse does not turn into zero.
             if (x < -59794705707972522261) {
                 return 0;
             }
 
             // Do the fixed-point inversion inline to save gas. The numerator is SCALE * SCALE.
             unchecked { result = 1e36 / exp2(-x); }
-            return result;
         } else {
             // 2**128 doesn't fit within the 128.128-bit fixed-point representation.
             require(x < 128e18);

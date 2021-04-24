@@ -16,7 +16,7 @@ library PRBMathCommon {
 
     /// @notice Calculates the binary exponent of x using the binary fraction method.
     /// @dev Uses 128.128-bit fixed-point numbers, which is the most efficient way.
-    /// See https://ethereum.stackexchange.com/a/96594/24693
+    /// See https://ethereum.stackexchange.com/a/96594/24693.
     /// @param x The exponent as an unsigned 128.128-bit fixed-point number.
     /// @return result The result as an unsigned 60x18 decimal fixed-point number.
     function exp2(uint256 x) internal pure returns (uint256 result) {
@@ -91,12 +91,17 @@ library PRBMathCommon {
             if (x & 0x20000000000000000 > 0) result = (result * 0x1000000000000000162E42FEFA39EF359) >> 128;
             if (x & 0x10000000000000000 > 0) result = (result * 0x10000000000000000B17217F7D1CF79AC) >> 128;
 
-            // Multiply the result by the integer part 2^n + 1. We have to shift by one bit extra because we have already divided
-            // by two when we set the result equal to 0.5 above.
-            result = result << ((x >> 128) + 1);
-
-            // Convert the result to the signed 60.18-decimal fixed-point format.
-            result = PRBMathCommon.mulDiv(result, SCALE, 2**128);
+            // We do two things at the same time below:
+            //
+            //     1. Multiply the result by 2^n + 1, where 2^n is the integer part and 1 is an extra bit to account
+            //        for the fact that we initially set the result to 0.5 We implement this by subtracting from 127
+            //        instead of 128.
+            //     2. Convert the result to the unsigned 60.18-decimal fixed-point format.
+            //
+            // This works because result * SCALE * 2^ip / 2^127 = result * SCALE / 2^(127 - ip), where ip is the integer
+            // part and SCALE / 2^128 is what converts the result to our unsigned fixed-point format.
+            result *= SCALE;
+            result >>= (127 - (x >> 128));
         }
     }
 
@@ -251,8 +256,8 @@ library PRBMathCommon {
     /// Caveats:
     /// - The body is purposely left uncommented; see the NatSpec comments in "PRBMathCommon.mulDiv" to understand how this works.
     /// - It is assumed that the result can never be type(uint256).max when x and y solve the following two queations:
-    ///     1) x * y = type(uint256).max * SCALE
-    ///     2) (x * y) % SCALE >= SCALE / 2
+    ///     1. x * y = type(uint256).max * SCALE
+    ///     2. (x * y) % SCALE >= SCALE / 2
     ///
     /// @param x The multiplicand as an unsigned 60.18-decimal fixed-point number.
     /// @param y The multiplier as an unsigned 60.18-decimal fixed-point number.
