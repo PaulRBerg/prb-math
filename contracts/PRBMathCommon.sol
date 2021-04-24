@@ -96,7 +96,7 @@ library PRBMathCommon {
             result = result << ((x >> 128) + 1);
 
             // Convert the result to the signed 60.18-decimal fixed-point format.
-            result = PRBMathCommon.mulDiv(result, 1e18, 2**128);
+            result = PRBMathCommon.mulDiv(result, SCALE, 2**128);
         }
     }
 
