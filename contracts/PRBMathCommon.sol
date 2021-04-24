@@ -15,13 +15,13 @@ library PRBMathCommon {
     uint256 internal constant SCALE_INVERSE = 78156646155174841979727994598816262306175212592076161876661508869554232690281;
 
     /// @notice Calculates the binary exponent of x using the binary fraction method.
-    /// @dev Uses 128.128-bit fixed-point numbers - it is the most efficient way.
+    /// @dev Uses 128.128-bit fixed-point numbers, which is the most efficient way.
+    /// See https://ethereum.stackexchange.com/a/96594/24693
     /// @param x The exponent as an unsigned 128.128-bit fixed-point number.
     /// @return result The result as an unsigned 60x18 decimal fixed-point number.
     function exp2(uint256 x) internal pure returns (uint256 result) {
         unchecked {
-            // Start from 0.5 in the 128.128-bit fixed-point format. We need to use uint256 because the intermediary
-            // may get very close to 2^256, which doesn't fit in int256.
+            // Start from 0.5 in the 128.128-bit fixed-point format.
             result = 0x80000000000000000000000000000000;
 
             // Multiply the result by root(2, 2^-i) when the bit at position i is 1. None of the intermediary results overflows
