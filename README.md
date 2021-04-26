@@ -59,13 +59,13 @@ contract SignedConsumer {
   }
 
   function signedExp(int256 x) external pure returns (int256 result) {
-    result = PRBMathSD59x18.exp(x);
+    result = x.exp();
   }
 
   /// @notice Calculates x*y÷1e18 while handling possible intermediary overflow.
   /// @dev Try this with x = type(int256).max and y = 5e17.
   function signedMul(int256 x, int256 y) external pure returns (int256 result) {
-    result = PRBMathSD59x18.mul(x, y);
+    result = x.mul(y);
   }
 
   /// @dev Note that "y" is a basic uint256 integer, not a fixed-point number.
@@ -98,13 +98,13 @@ contract UnsignedConsumer {
   }
 
   function unsignedExp(uint256 x) external pure returns (uint256 result) {
-    result = PRBMathUD60x18.exp(x);
+    result = x.exp();
   }
 
   /// @notice Calculates x*y÷1e18 while handling possible intermediary overflow.
   /// @dev Try this with x = type(uint256).max and y = 5e17.
   function unsignedMul(uint256 x, uint256 y) external pure returns (uint256 result) {
-    result = PRBMathUD60x18.mul(x, y);
+    result = x.mul(y);
   }
 
   /// @dev Note that "y" is a basic uint256 integer, not a fixed-point number.
