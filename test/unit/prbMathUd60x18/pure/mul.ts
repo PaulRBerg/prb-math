@@ -17,8 +17,8 @@ import { bn, fp } from "../../../../helpers/numbers";
 export default function shouldBehaveLikeMul(): void {
   context("when one of the operands is zero", function () {
     const testSets = [
-      [ZERO, fp(0.5)],
-      [fp(0.5), ZERO],
+      [ZERO, fp("0.5")],
+      [fp("0.5"), ZERO],
       [MAX_UD60x18, ZERO],
     ];
 
@@ -43,28 +43,28 @@ export default function shouldBehaveLikeMul(): void {
 
     context("when the double scaled product does not overflow", function () {
       const testSets = [
-        [fp(0.000000000000000001), fp(0.000000000000000001), ZERO],
-        [fp(0.000000000000000006), fp(0.1), fp(0.000000000000000001)],
-        [fp(0.000000001), fp(0.000000001), fp(0.000000000000000001)],
-        [fp(0.00001), fp(0.00001), fp(0.0000000001)],
-        [fp(0.001), fp(0.01), fp(0.00001)],
-        [fp(0.01), fp(0.05), fp(0.0005)],
-        [fp(1), fp(1), fp(1)],
-        [fp(2.098), fp(1.119), fp(2.347662)],
-        [PI, E, bn("8539734222673567063")],
-        [fp(18.3), fp(12.04), fp(220.332)],
-        [fp(314.271), fp(188.19), fp(59142.65949)],
-        [fp(9817), fp(2348), fp(23050316)],
-        [fp(12983.989), fp(782.99), fp(10166333.54711)],
-        [bn(1e36), bn(1e24), bn(1e42)],
+        [fp("0.000000000000000001"), fp("0.000000000000000001"), ZERO],
+        [fp("0.000000000000000006"), fp("0.1"), fp("0.000000000000000001")],
+        [fp("0.000000001"), fp("0.000000001"), fp("0.000000000000000001")],
+        [fp("0.00001"), fp("0.00001"), fp("0.0000000001")],
+        [fp("0.001"), fp("0.01"), fp("0.00001")],
+        [fp("0.01"), fp("0.05"), fp("0.0005")],
+        [fp("1"), fp("1"), fp("1")],
+        [fp("2.098"), fp("1.119"), fp("2.347662")],
+        [PI, E, fp("8.539734222673567063")],
+        [fp("18.3"), fp("12.04"), fp("220.332")],
+        [fp("314.271"), fp("188.19"), fp("59142.65949")],
+        [fp("9817"), fp("2348"), fp("23050316")],
+        [fp("12983.989"), fp("782.99"), fp("10166333.54711")],
+        [bn("1e36"), bn("1e24"), bn("1e42")],
         // Precision errors makes the result not equal to MAX_UD60x18
-        [SQRT_MAX_UD60x18, SQRT_MAX_UD60x18, MAX_UD60x18.sub(bn("680564733841876926926749214863"))],
-        [MAX_WHOLE_UD60x18, fp(0.000000000000000001), MAX_WHOLE_UD60x18.div(SCALE)],
-        [MAX_WHOLE_UD60x18, fp(0.01), MAX_WHOLE_UD60x18.div(100)],
-        [MAX_WHOLE_UD60x18, fp(0.5), MAX_WHOLE_UD60x18.div(2)],
-        [MAX_UD60x18.sub(HALF_SCALE), fp(0.000000000000000001), MAX_UD60x18.div(SCALE)],
-        [MAX_UD60x18, fp(0.01), MAX_UD60x18.div(100)],
-        [MAX_UD60x18, fp(0.5), MAX_UD60x18.div(2).add(1)],
+        [SQRT_MAX_UD60x18, SQRT_MAX_UD60x18, MAX_UD60x18.sub(fp("680564733841.876926926749214863"))],
+        [MAX_WHOLE_UD60x18, fp("0.000000000000000001"), MAX_WHOLE_UD60x18.div(SCALE)],
+        [MAX_WHOLE_UD60x18, fp("0.01"), MAX_WHOLE_UD60x18.div(100)],
+        [MAX_WHOLE_UD60x18, fp("0.5"), MAX_WHOLE_UD60x18.div(2)],
+        [MAX_UD60x18.sub(HALF_SCALE), fp("0.000000000000000001"), MAX_UD60x18.div(SCALE)],
+        [MAX_UD60x18, fp("0.01"), MAX_UD60x18.div(100)],
+        [MAX_UD60x18, fp("0.5"), MAX_UD60x18.div(2).add(1)],
       ];
 
       forEach(testSets).it(

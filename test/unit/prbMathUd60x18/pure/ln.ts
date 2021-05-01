@@ -15,8 +15,8 @@ import {
 import { bn, fp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeLn(): void {
-  context("when x is less than 1e18", function () {
-    const testSets = [ZERO, fp(0.0625), fp(0.1), fp(0.5), fp(0.8), SCALE.sub(1)];
+  context("when x is less than 1", function () {
+    const testSets = [ZERO, fp("0.0625"), fp("0.1"), fp("0.5"), fp("0.8"), SCALE.sub(1)];
 
     forEach(testSets).it("takes %e and reverts", async function () {
       const x: BigNumber = ZERO;
@@ -24,16 +24,16 @@ export default function shouldBehaveLikeLn(): void {
     });
   });
 
-  context("when x is greater than or equal to 1e18", function () {
+  context("when x is greater than or equal to 1", function () {
     const testSets = [
-      [fp(1), ZERO],
-      [fp(1.125), bn("117783035656383442")],
-      [fp(2), bn("693147180559945309")],
+      [fp("1"), ZERO],
+      [fp("1.125"), fp("0.117783035656383442")],
+      [fp("2"), fp("0.693147180559945309")],
       [E, LN_E],
-      [PI, bn("1144729885849400163")],
-      [fp(4), bn("1386294361119890619")],
-      [fp(8), bn("2079441541679835928")],
-      [bn(1e36), bn("41446531673892822311")],
+      [PI, fp("1.144729885849400163")],
+      [fp("4"), fp("1.386294361119890619")],
+      [fp("8"), fp("2.079441541679835928")],
+      [bn("1e36"), fp("41.446531673892822311")],
       [MAX_WHOLE_UD60x18, LN_MAX_UD60x18],
       [MAX_UD60x18, LN_MAX_UD60x18],
     ];

@@ -25,14 +25,14 @@ export default function shouldBehaveLikeFrac(): void {
     const testSets = [
       [MIN_SD59x18, solidityModByScale(MIN_SD59x18)],
       [MIN_WHOLE_SD59x18, ZERO],
-      [bn(-1e36), ZERO],
-      [fp(-4.2), fp(-0.2)],
-      [PI.mul(-1), solidityMod(PI.mul(-1), fp(1))],
-      [fp(-2), ZERO],
-      [fp(-1.125), fp(-0.125)],
-      [fp(-1), ZERO],
-      [fp(-0.5), fp(-0.5)],
-      [fp(-0.1), fp(-0.1)],
+      [bn("-1e36"), ZERO],
+      [fp("-4.2"), fp("-0.2")],
+      [PI.mul(-1), solidityMod(PI.mul(-1), fp("1"))],
+      [fp("-2"), ZERO],
+      [fp("-1.125"), fp("-0.125")],
+      [fp("-1"), ZERO],
+      [fp("-0.5"), fp("-0.5")],
+      [fp("-0.1"), fp("-0.1")],
     ];
 
     forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
@@ -43,14 +43,14 @@ export default function shouldBehaveLikeFrac(): void {
 
   context("when x is positive", function () {
     const testSets = [
-      [fp(0.1), fp(0.1)],
-      [fp(0.5), fp(0.5)],
-      [fp(1), ZERO],
-      [fp(1.125), fp(0.125)],
-      [fp(2), ZERO],
+      [fp("0.1"), fp("0.1")],
+      [fp("0.5"), fp("0.5")],
+      [fp("1"), ZERO],
+      [fp("1.125"), fp("0.125")],
+      [fp("2"), ZERO],
       [PI, solidityModByScale(PI)],
-      [fp(4.2), fp(0.2)],
-      [bn(1e36), ZERO],
+      [fp("4.2"), fp("0.2")],
+      [bn("1e36"), ZERO],
       [MAX_WHOLE_SD59x18, ZERO],
       [MAX_SD59x18, solidityModByScale(MAX_SD59x18)],
     ];

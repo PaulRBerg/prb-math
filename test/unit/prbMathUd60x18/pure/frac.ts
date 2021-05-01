@@ -16,14 +16,14 @@ export default function shouldBehaveLikeFrac(): void {
 
   context("when x is not zero", function () {
     const testSets = [
-      [fp(0.1), fp(0.1)],
-      [fp(0.5), fp(0.5)],
-      [fp(1), ZERO],
-      [fp(1.125), fp(0.125)],
-      [fp(2), ZERO],
+      [fp("0.1"), fp("0.1")],
+      [fp("0.5"), fp("0.5")],
+      [fp("1"), ZERO],
+      [fp("1.125"), fp("0.125")],
+      [fp("2"), ZERO],
       [PI, solidityModByScale(PI)],
-      [fp(4.2), fp(0.2)],
-      [bn(1e36), ZERO],
+      [fp("4.2"), fp("0.2")],
+      [bn("1e36"), ZERO],
       [MAX_WHOLE_UD60x18, ZERO],
       [MAX_UD60x18, solidityModByScale(MAX_UD60x18)],
     ];
