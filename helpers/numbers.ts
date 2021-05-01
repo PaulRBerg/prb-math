@@ -10,17 +10,6 @@ export function bn(x: BigNumberish): BigNumber {
   return BigNumber.from(integer);
 }
 
-export function bn_debug(x: BigNumberish): BigNumber {
-  if (BigNumber.isBigNumber(x)) {
-    return x;
-  }
-  const stringified = fromExponential(x.toString());
-  const integer = stringified.split(".")[0];
-  console.log({ stringified, integer });
-
-  return BigNumber.from(integer);
-}
-
 export function fp(x: string): BigNumber {
   // This finds either a whole number with up to 60 digits or a fixed-point number with up to 60 digits and up to 18 decimals.
   if (!/^[-+]?(\d{1,60}|(?=\d+\.\d+)\d{1,60}\.\d{1,18})$/.test(x)) {
