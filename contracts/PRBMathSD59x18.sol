@@ -413,7 +413,7 @@ library PRBMathSD59x18 {
     /// - x must be greater than zero.
     ///
     /// Caveats:
-    /// - The results are nor perfectly accurate to the last digit, due to the lossy precision of the iterative approximation.
+    /// - The results are not perfectly accurate to the last digit, due to the lossy precision of the iterative approximation.
     ///
     /// @param x The signed 59.18-decimal fixed-point number for which to calculate the binary logarithm.
     /// @return result The binary logarithm as a signed 59.18-decimal fixed-point number.
