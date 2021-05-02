@@ -10,7 +10,7 @@ import {
   PI,
   ZERO,
 } from "../../../../helpers/constants";
-import { bn, fp, solidityMod, solidityModByScale } from "../../../../helpers/numbers";
+import { fp, fps, solidityMod, solidityModByScale } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeFrac(): void {
   context("when x is zero", function () {
@@ -25,7 +25,7 @@ export default function shouldBehaveLikeFrac(): void {
     const testSets = [
       [MIN_SD59x18, solidityModByScale(MIN_SD59x18)],
       [MIN_WHOLE_SD59x18, ZERO],
-      [bn("-1e36"), ZERO],
+      [fps("-1e18"), ZERO],
       [fp("-4.2"), fp("-0.2")],
       [PI.mul(-1), solidityMod(PI.mul(-1), fp("1"))],
       [fp("-2"), ZERO],
@@ -50,7 +50,7 @@ export default function shouldBehaveLikeFrac(): void {
       [fp("2"), ZERO],
       [PI, solidityModByScale(PI)],
       [fp("4.2"), fp("0.2")],
-      [bn("1e36"), ZERO],
+      [fps("1e18"), ZERO],
       [MAX_WHOLE_SD59x18, ZERO],
       [MAX_SD59x18, solidityModByScale(MAX_SD59x18)],
     ];

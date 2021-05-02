@@ -12,7 +12,7 @@ import {
   SQRT_MAX_UD60x18,
   ZERO,
 } from "../../../../helpers/constants";
-import { bn, fp } from "../../../../helpers/numbers";
+import { fp, fps } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeMul(): void {
   context("when one of the operands is zero", function () {
@@ -56,7 +56,7 @@ export default function shouldBehaveLikeMul(): void {
         [fp("314.271"), fp("188.19"), fp("59142.65949")],
         [fp("9817"), fp("2348"), fp("23050316")],
         [fp("12983.989"), fp("782.99"), fp("10166333.54711")],
-        [bn("1e36"), bn("1e24"), bn("1e42")],
+        [fps("1e18"), fps("1e6"), fps("1e24")],
         // Precision errors makes the result not equal to MAX_UD60x18
         [SQRT_MAX_UD60x18, SQRT_MAX_UD60x18, MAX_UD60x18.sub(fp("680564733841.876926926749214863"))],
         [MAX_WHOLE_UD60x18, fp("0.000000000000000001"), MAX_WHOLE_UD60x18.div(SCALE)],

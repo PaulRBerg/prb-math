@@ -10,7 +10,7 @@ import {
   PI,
   ZERO,
 } from "../../../../helpers/constants";
-import { bn, fp } from "../../../../helpers/numbers";
+import { fp, fps } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeFloor(): void {
   context("when x is zero", function () {
@@ -34,7 +34,7 @@ export default function shouldBehaveLikeFloor(): void {
       context("when x >= min whole sd59x18", function () {
         const testSets = [
           [MIN_WHOLE_SD59x18, MIN_WHOLE_SD59x18],
-          [bn("-1e36"), bn("-1e36")],
+          [fps("-1e18"), fps("-1e18")],
           [fp("-4.2"), fp("-5")],
           [fp("-2"), fp("-2")],
           [fp("-1.125"), fp("-2")],
@@ -59,7 +59,7 @@ export default function shouldBehaveLikeFloor(): void {
         [fp("2"), fp("2")],
         [PI, fp("3")],
         [fp("4.2"), fp("4")],
-        [bn("1e36"), bn("1e36")],
+        [fps("1e18"), fps("1e18")],
         [MAX_WHOLE_SD59x18, MAX_WHOLE_SD59x18],
         [MAX_SD59x18, MAX_WHOLE_SD59x18],
       ];

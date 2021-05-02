@@ -3,7 +3,7 @@ import { expect } from "chai";
 import forEach from "mocha-each";
 
 import { MAX_UD60x18, MAX_WHOLE_UD60x18, PI, SCALE, ZERO } from "../../../../helpers/constants";
-import { bn, fp } from "../../../../helpers/numbers";
+import { fp, fps } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeDiv(): void {
   context("when the denominator is zero", function () {
@@ -16,7 +16,7 @@ export default function shouldBehaveLikeDiv(): void {
 
   context("when the denominator is not zero", function () {
     context("when the numerator is zero", function () {
-      const testSets = [fp("0.000000000000000001"), fp("1"), PI, bn("1e36")];
+      const testSets = [fp("0.000000000000000001"), fp("1"), PI, fps("1e18")];
 
       forEach(testSets).it("takes %e and returns zero", async function (y: BigNumber) {
         const result: BigNumber = await this.contracts.prbMathUD60x18.doDiv(ZERO, y);
@@ -52,7 +52,7 @@ export default function shouldBehaveLikeDiv(): void {
           [fp("100.135"), fp("100.134"), fp("1.000009986617931971")],
           [fp("772.05"), fp("199.98"), fp("3.860636063606360636")],
           [fp("2503"), fp("918882.11"), fp("0.002723962054283546")],
-          [bn("1e36"), fp("1"), bn("1e36")],
+          [fps("1e18"), fp("1"), fps("1e18")],
           [MAX_UD60x18.div(SCALE), fp("0.000000000000000001"), MAX_WHOLE_UD60x18],
         ];
 

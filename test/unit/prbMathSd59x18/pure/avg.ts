@@ -3,7 +3,7 @@ import { expect } from "chai";
 import forEach from "mocha-each";
 
 import { MAX_SD59x18, MAX_WHOLE_SD59x18, MIN_SD59x18, MIN_WHOLE_SD59x18, ZERO } from "../../../../helpers/constants";
-import { bn, fp } from "../../../../helpers/numbers";
+import { fp, fps } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeAvg(): void {
   context("when both operands are zero", function () {
@@ -75,7 +75,7 @@ export default function shouldBehaveLikeAvg(): void {
         [fp("1"), fp("1"), fp("1")],
         [fp("3"), fp("7"), fp("5")],
         [fp("99"), fp("199"), fp("149")],
-        [bn("1e36").add(1), bn("1e37").add(1), bn("5.5e36").add(1)],
+        [fps("1e18").add(1), fps("1e19").add(1), fps("5.5e18").add(1)],
         [MAX_SD59x18, MAX_SD59x18, MAX_SD59x18],
       ];
 
@@ -94,7 +94,7 @@ export default function shouldBehaveLikeAvg(): void {
         [fp("2"), fp("2"), fp("2")],
         [fp("4"), fp("8"), fp("6")],
         [fp("100"), fp("200"), fp("150")],
-        [bn("1e36"), bn("1e37"), bn("5.5e36")],
+        [fps("1e18"), fps("1e19"), fps("5.5e18")],
         [MIN_WHOLE_SD59x18, MIN_WHOLE_SD59x18, MIN_WHOLE_SD59x18],
       ];
 
@@ -113,7 +113,7 @@ export default function shouldBehaveLikeAvg(): void {
         [fp("1"), fp("2"), fp("1.5")],
         [fp("3"), fp("8"), fp("5.5")],
         [fp("99"), fp("200"), fp("149.5")],
-        [bn("1e36"), bn("1e37").add(1), bn("5.5e36")],
+        [fps("1e18"), fps("1e19").add(1), fps("5.5e18")],
         [MAX_WHOLE_SD59x18, MAX_SD59x18, MAX_SD59x18.add(MAX_WHOLE_SD59x18).div(2)],
       ];
 

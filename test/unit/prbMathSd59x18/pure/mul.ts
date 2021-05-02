@@ -15,7 +15,7 @@ import {
   SQRT_MAX_SD59x18,
   ZERO,
 } from "../../../../helpers/constants";
-import { bn, fp } from "../../../../helpers/numbers";
+import { fp, fps } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeMul(): void {
   context("when one of the operands is zero", function () {
@@ -72,7 +72,7 @@ export default function shouldBehaveLikeMul(): void {
             // We need to add 1 because the absolute value of MIN_SD59x18 is greater by MAX_SD59x18 by 1.
             [MIN_SD59x18.add(HALF_SCALE).add(1), fp("-0.000000000000000001"), MAX_SD59x18.div(SCALE)],
             [MIN_WHOLE_SD59x18.add(HALF_SCALE), fp("-0.000000000000000001"), MAX_WHOLE_SD59x18.div(SCALE)],
-            [bn("-1e36"), bn("-1e24"), bn("1e42")],
+            [fps("-1e18"), fps("-1e6"), fps("1e24")],
             [fp("-12983.989"), fp("-782.99"), fp("10166333.54711")],
             [fp("-9817"), fp("-2348"), fp("23050316")],
             [fp("-314.271"), fp("-188.19"), fp("59142.65949")],
@@ -99,7 +99,7 @@ export default function shouldBehaveLikeMul(): void {
             [fp("314.271"), fp("188.19"), fp("59142.65949")],
             [fp("9817"), fp("2348"), fp("23050316")],
             [fp("12983.989"), fp("782.99"), fp("10166333.54711")],
-            [bn("1e36"), bn("1e24"), bn("1e42")],
+            [fps("1e18"), fps("1e6"), fps("1e24")],
             [MAX_WHOLE_SD59x18.sub(HALF_SCALE), fp("0.000000000000000001"), MAX_WHOLE_SD59x18.div(SCALE)],
             [MAX_SD59x18.sub(HALF_SCALE), fp("0.000000000000000001"), MAX_SD59x18.div(SCALE)],
           ]);
@@ -118,7 +118,7 @@ export default function shouldBehaveLikeMul(): void {
             // Need to add 1 because the absolute value of MIN_SD59x18 is greater by MAX_SD59x18 by 1.
             [MIN_SD59x18.add(HALF_SCALE).add(1), fp("0.000000000000000001"), MIN_SD59x18.div(SCALE)],
             [MIN_WHOLE_SD59x18.add(HALF_SCALE), fp("0.000000000000000001"), MIN_WHOLE_SD59x18.div(SCALE)],
-            [bn("-1e36"), bn("1e24"), bn("-1e42")],
+            [fps("-1e18"), fps("1e6"), fps("-1e24")],
             [fp("-12983.989"), fp("782.99"), fp("-10166333.54711")],
             [fp("-9817"), fp("2348"), fp("-23050316")],
             [fp("-314.271"), fp("188.19"), fp("-59142.65949")],
@@ -145,7 +145,7 @@ export default function shouldBehaveLikeMul(): void {
             [fp("314.271"), fp("-188.19"), fp("-59142.65949")],
             [fp("9817"), fp("-2348"), fp("-23050316")],
             [fp("12983.989"), fp("-782.99"), fp("-10166333.54711")],
-            [bn("1e36"), bn("-1e24"), bn("-1e42")],
+            [fps("1e18"), fps("-1e6"), fps("-1e24")],
             [MAX_WHOLE_SD59x18.sub(HALF_SCALE), fp("-0.000000000000000001"), MIN_WHOLE_SD59x18.div(SCALE)],
             [MAX_SD59x18.sub(HALF_SCALE), fp("-0.000000000000000001"), MIN_SD59x18.add(1).div(SCALE)],
           ]);

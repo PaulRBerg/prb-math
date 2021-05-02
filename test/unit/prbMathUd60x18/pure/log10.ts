@@ -3,7 +3,7 @@ import { expect } from "chai";
 import forEach from "mocha-each";
 
 import { E, LOG10_MAX_UD60x18, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, SCALE, ZERO } from "../../../../helpers/constants";
-import { bn, fp } from "../../../../helpers/numbers";
+import { fp, fps } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeLog10(): void {
   context("when x is less than 1", function () {
@@ -11,7 +11,7 @@ export default function shouldBehaveLikeLog10(): void {
       ZERO,
       fp("0.000000000000000001"),
       fp("0.00000000000000001"),
-      bn("1e4"),
+      fps("1e4"),
       fp("0.1"),
       fp("0.5"),
       SCALE.sub(1),
@@ -27,12 +27,12 @@ export default function shouldBehaveLikeLog10(): void {
     context("when x is a power of ten", function () {
       const testSets = [
         [fp("1"), ZERO],
-        [bn("1e19"), fp("1")],
-        [bn("1e20"), fp("2")],
-        [bn("1e36"), fp("18")],
-        [bn("1e67"), fp("49")],
-        [bn("1e75"), fp("57")],
-        [bn("1e76"), fp("58")],
+        [fp("10"), fp("1")],
+        [fp("100"), fp("2")],
+        [fps("1e18"), fp("18")],
+        [fps("1e49"), fp("49")],
+        [fps("1e57"), fp("57")],
+        [fps("1e58"), fp("58")],
       ];
 
       forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {

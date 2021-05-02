@@ -10,7 +10,7 @@ import {
   PI,
   ZERO,
 } from "../../../../helpers/constants";
-import { bn, fp } from "../../../../helpers/numbers";
+import { fp, fps } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeAbs(): void {
   context("when x is zero", function () {
@@ -34,7 +34,7 @@ export default function shouldBehaveLikeAbs(): void {
         const testSets = [
           [MIN_SD59x18.add(1), MAX_SD59x18],
           [MIN_WHOLE_SD59x18, MAX_WHOLE_SD59x18],
-          [bn("-1e36"), bn("1e36")],
+          [fps("-1e18"), fps("1e18")],
           [fp("-4.2"), fp("4.2")],
           [fp("-2"), fp("2")],
           [PI.mul(-1), PI],
@@ -61,7 +61,7 @@ export default function shouldBehaveLikeAbs(): void {
           [fp("2"), fp("2")],
           [PI, PI],
           [fp("4.2"), fp("4.2")],
-          [bn("1e36"), bn("1e36")],
+          [fps("1e18"), fps("1e18")],
           [MAX_WHOLE_SD59x18, MAX_WHOLE_SD59x18],
           [MAX_SD59x18, MAX_SD59x18],
         ];

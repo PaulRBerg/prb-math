@@ -1,39 +1,35 @@
-import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { BigNumber } from "@ethersproject/bignumber";
 import fromExponential from "from-exponential";
 
-export function bn(x: BigNumberish): BigNumber {
-  if (BigNumber.isBigNumber(x)) {
-    return x;
-  }
-  const stringified = fromExponential(x.toString());
-  const integer = stringified.split(".")[0];
-  return BigNumber.from(integer);
-}
-
 export function fp(x: string): BigNumber {
-  // This finds either a whole number with up to 60 digits or a fixed-point number with up to 60 digits and up to 18 decimals.
+  // Check if x is either a whole number with up to 60 digits or a fixed-point number with up to 60 digits and up to 18 decimals.
   if (!/^[-+]?(\d{1,60}|(?=\d+\.\d+)\d{1,60}\.\d{1,18})$/.test(x)) {
-    throw new Error(`Unknown format for fixed-point number ${x}`);
+    throw new Error(`Unknown format for fixed-point number: ${x}`);
   }
 
   let integer: string;
   let decimals: string;
-  // eslint-disable-next-line prefer-const
-  [integer, decimals] = x.indexOf(".") == -1 ? [x, "0"] : x.split(".");
-
-  // If the length of the decimals string is less than 18, the trailing zeroes are implied.
   let trailingZeroes: number;
-  if (decimals !== "0") {
+
+  // If there is no dot, the number is whole.
+  if (x.indexOf(".") == -1) {
+    integer = x;
+    decimals = "0";
+    trailingZeroes = 0;
+  } else {
+    const parts = x.split(".");
+    integer = parts[0];
+    decimals = parts[1];
+
+    // If the length of the decimals string is less than 18, the trailing zeroes are implied.
     trailingZeroes = 18 - decimals.length;
     decimals = decimals.replace(/^0+/, "");
-  } else {
-    trailingZeroes = 0;
   }
 
   // Convert the string into a BigNumber.
   const ten: BigNumber = BigNumber.from(10);
   const scale: BigNumber = ten.pow(18);
-
   const integerBn = BigNumber.from(integer);
   let decimalsBn = BigNumber.from(decimals).mul(ten.pow(trailingZeroes));
 
@@ -43,6 +39,15 @@ export function fp(x: string): BigNumber {
   }
 
   return integerBn.mul(scale).add(decimalsBn);
+}
+
+export function fps(x: string): BigNumber {
+  // Check if the input is in scientific notation.
+  const captured = x.match(/^(-?\d+)(\.\d+)?(e|e-)(\d+)$/);
+  if (captured == null) {
+    throw new Error(`Unknown format for fixed-point number in scientific notation: ${x}`);
+  }
+  return fp(fromExponential(x));
 }
 
 export function fpPowOfTwo(exp: number | BigNumber): BigNumber {
