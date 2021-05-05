@@ -14,6 +14,7 @@
     "@commitlint/config-conventional": "^9.1.2",
     "@ethersproject/abstract-signer": "^5.1.0",
     "@ethersproject/bignumber": "^5.1.1",
+    "@ethersproject/wallet": "^5.1.0",
     "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
     "@typechain/ethers-v5": "^5.0.0",
