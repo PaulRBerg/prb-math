@@ -143,12 +143,16 @@ library PRBMathSD59x18 {
     ///
     /// Requirements:
     /// - All from "log2".
-    /// - x must be less than 88722839111672999628.
+    /// - x must be less than 88.722839111672999628.
+    ///
+    /// Caveats:
+    /// - All from "exp2".
+    /// - For any x less than -41.446531673892822322, the result is zero.
     ///
     /// @param x The exponent as a signed 59.18-decimal fixed-point number.
     /// @return result The result as a signed 59.18-decimal fixed-point number.
     function exp(int256 x) internal pure returns (int256 result) {
-        // Without this check, the value passed to "exp2" would be less than -59794705707972522261.
+        // Without this check, the value passed to "exp2" would be less than -59.794705707972522261.
         if (x < -41446531673892822322) {
             return 0;
         }
@@ -172,14 +176,14 @@ library PRBMathSD59x18 {
     /// - The result must fit within MAX_SD59x18.
     ///
     /// Caveats:
-    /// - For any x less than -59794705707972522261, the result is zero.
+    /// - For any x less than -59.794705707972522261, the result is zero.
     ///
     /// @param x The exponent as a signed 59.18-decimal fixed-point number.
     /// @return result The result as a signed 59.18-decimal fixed-point number.
     function exp2(int256 x) internal pure returns (int256 result) {
         // This works because 2^(-x) = 1/2^x.
         if (x < 0) {
-            // 2**59.794705707972522262 is the maximum number whose inverse does not turn into zero.
+            // 2**59.794705707972522262 is the maximum number whose inverse does not truncate down to zero.
             if (x < -59794705707972522261) {
                 return 0;
             }
@@ -413,7 +417,7 @@ library PRBMathSD59x18 {
     /// - x must be greater than zero.
     ///
     /// Caveats:
-    /// - The results are not perfectly accurate to the last digit, due to the lossy precision of the iterative approximation.
+    /// - The results are not perfectly accurate to the last decimal, due to the lossy precision of the iterative approximation.
     ///
     /// @param x The signed 59.18-decimal fixed-point number for which to calculate the binary logarithm.
     /// @return result The binary logarithm as a signed 59.18-decimal fixed-point number.

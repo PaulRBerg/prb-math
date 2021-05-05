@@ -314,7 +314,7 @@ library PRBMathCommon {
             return 0;
         }
 
-        // Calculate the square root of the perfect square of a power of two that is the closest to x.
+        // Set the initial guess to the closest power of two that is higher than x.
         uint256 xAux = uint256(x);
         result = 1;
         if (xAux >= 0x100000000000000000000000000000000) {

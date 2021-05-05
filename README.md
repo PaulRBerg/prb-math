@@ -1,8 +1,9 @@
 # PRBMath [![Coverage Status](https://coveralls.io/repos/github/hifi-finance/prb-math/badge.svg?branch=main)](https://coveralls.io/github/hifi-finance/prb-math?branch=main) [![Styled with Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io) [![Commitizen Friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![License: WTFPL](https://img.shields.io/badge/License-WTFPL-yellow.svg)](https://spdx.org/licenses/WTFPL.html)
 
 **Smart contract library for advanced fixed-point math**, which operates with signed 59.18-decimal fixed-point and unsigned
-60.18-decimal fixed-point numbers. The name stems from the fact that there can be up to 59/60 digits in the integer part and up to 18 decimals
-in the fractional part. The numbers are bound by the minimum and the maximum values permitted by the Solidity types int256 and uint256.
+60.18-decimal fixed-point numbers. The name of the number formats stems from the fact that there can be up to 59/60 digits
+in the integer part and up to 18 decimals in the fractional part. The numbers are bound by the minimum and the maximum
+values permitted by the Solidity types int256 and uint256.
 
 - Designed for Solidity >=0.8.0
 - Operates with signed and unsigned denary fixed-point numbers, with 18 trailing decimals
@@ -47,6 +48,7 @@ Once installed, you can use the libraries like this:
 ### PRBMathSD59x18.sol
 
 ```solidity
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.0;
 
 import "prb-math/contracts/PRBMathSD59x18.sol";
@@ -84,6 +86,7 @@ contract SignedConsumer {
 ### PRBMathUD60x18.sol
 
 ```solidity
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.0;
 
 import "prb-math/contracts/PRBMathUD60x18.sol";

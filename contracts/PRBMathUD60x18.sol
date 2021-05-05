@@ -88,7 +88,7 @@ library PRBMathUD60x18 {
     ///
     /// Requirements:
     /// - All from "log2".
-    /// - x must be less than 88722839111672999628.
+    /// - x must be less than 88.722839111672999628.
     ///
     /// @param x The exponent as an unsigned 60.18-decimal fixed-point number.
     /// @return result The result as an unsigned 60.18-decimal fixed-point number.
@@ -198,7 +198,7 @@ library PRBMathUD60x18 {
     ///
     /// Caveats:
     /// - All from "log2".
-    /// - This doesn't return exactly 1 for 2718281828459045235, for that we would need more fine-grained precision.
+    /// - This doesn't return exactly 1 for 2.718281828459045235, for that we would need more fine-grained precision.
     ///
     /// @param x The unsigned 60.18-decimal fixed-point number for which to calculate the natural logarithm.
     /// @return result The natural logarithm as an unsigned 60.18-decimal fixed-point number.
@@ -326,7 +326,7 @@ library PRBMathUD60x18 {
     /// - x must be greater than or equal to SCALE, otherwise the result would be negative.
     ///
     /// Caveats:
-    /// - The results are nor perfectly accurate to the last digit, due to the lossy precision of the iterative approximation.
+    /// - The results are nor perfectly accurate to the last decimal, due to the lossy precision of the iterative approximation.
     ///
     /// @param x The unsigned 60.18-decimal fixed-point number for which to calculate the binary logarithm.
     /// @return result The binary logarithm as an unsigned 60.18-decimal fixed-point number.

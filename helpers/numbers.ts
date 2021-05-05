@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { BigNumber, parseFixed } from "@ethersproject/bignumber";
 import fromExponential from "from-exponential";
 
