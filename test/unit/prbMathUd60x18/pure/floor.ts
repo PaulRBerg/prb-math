@@ -9,7 +9,7 @@ export default function shouldBehaveLikeFloor(): void {
   context("when x is zero", function () {
     it("retrieves zero", async function () {
       const x: BigNumber = ZERO;
-      const result: BigNumber = await this.contracts.prbMathUD60x18.doFloor(x);
+      const result: BigNumber = await this.contracts.prbMathUd60x18.doFloor(x);
       expect(ZERO).to.equal(result);
     });
   });
@@ -29,7 +29,7 @@ export default function shouldBehaveLikeFloor(): void {
     ];
 
     forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
-      const result: BigNumber = await this.contracts.prbMathUD60x18.doFloor(x);
+      const result: BigNumber = await this.contracts.prbMathUd60x18.doFloor(x);
       expect(expected).to.equal(result);
     });
   });

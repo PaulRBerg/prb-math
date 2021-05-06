@@ -16,7 +16,7 @@ export default function shouldBehaveLikeAbs(): void {
   context("when x is zero", function () {
     it("retrieves zero", async function () {
       const x: BigNumber = ZERO;
-      const result: BigNumber = await this.contracts.prbMathSD59x18.doAbs(x);
+      const result: BigNumber = await this.contracts.prbMathSd59x18.doAbs(x);
       expect(ZERO).to.equal(result);
     });
   });
@@ -26,7 +26,7 @@ export default function shouldBehaveLikeAbs(): void {
       context("when x = min sd59x18", function () {
         it("reverts", async function () {
           const x: BigNumber = MIN_SD59x18;
-          await expect(this.contracts.prbMathSD59x18.doAbs(x)).to.be.reverted;
+          await expect(this.contracts.prbMathSd59x18.doAbs(x)).to.be.reverted;
         });
       });
 
@@ -45,7 +45,7 @@ export default function shouldBehaveLikeAbs(): void {
         ];
 
         forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
-          const result: BigNumber = await this.contracts.prbMathSD59x18.doAbs(x);
+          const result: BigNumber = await this.contracts.prbMathSd59x18.doAbs(x);
           expect(expected).to.equal(result);
         });
       });
@@ -67,7 +67,7 @@ export default function shouldBehaveLikeAbs(): void {
         ];
 
         forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
-          const result: BigNumber = await this.contracts.prbMathSD59x18.doAbs(x);
+          const result: BigNumber = await this.contracts.prbMathSd59x18.doAbs(x);
           expect(expected).to.equal(result);
         });
       });

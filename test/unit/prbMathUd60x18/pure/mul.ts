@@ -23,7 +23,7 @@ export default function shouldBehaveLikeMul(): void {
     ];
 
     forEach(testSets).it("takes %e and %e and returns zero", async function (x: BigNumber, y: BigNumber) {
-      const result: BigNumber = await this.contracts.prbMathUD60x18.doMul(x, y);
+      const result: BigNumber = await this.contracts.prbMathUd60x18.doMul(x, y);
       expect(ZERO).to.equal(result);
     });
   });
@@ -37,7 +37,7 @@ export default function shouldBehaveLikeMul(): void {
       ];
 
       forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
-        await expect(this.contracts.prbMathUD60x18.doMul(x, y)).to.be.reverted;
+        await expect(this.contracts.prbMathUd60x18.doMul(x, y)).to.be.reverted;
       });
     });
 
@@ -70,7 +70,7 @@ export default function shouldBehaveLikeMul(): void {
       forEach(testSets).it(
         "takes %e and %e and returns %e",
         async function (x: BigNumber, y: BigNumber, expected: BigNumber) {
-          const result: BigNumber = await this.contracts.prbMathUD60x18.doMul(x, y);
+          const result: BigNumber = await this.contracts.prbMathUd60x18.doMul(x, y);
           expect(expected).to.equal(result);
         },
       );

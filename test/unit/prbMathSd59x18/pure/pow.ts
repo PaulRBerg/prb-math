@@ -12,7 +12,7 @@ export default function shouldBehaveLikePow(): void {
     context("when the exponent is zero", function () {
       it("retrieves 1", async function () {
         const y: BigNumber = ZERO;
-        const result: BigNumber = await this.contracts.prbMathSD59x18.doPow(x, y);
+        const result: BigNumber = await this.contracts.prbMathSd59x18.doPow(x, y);
         expect(fp("1")).to.equal(result);
       });
     });
@@ -21,7 +21,7 @@ export default function shouldBehaveLikePow(): void {
       const testSets = [fp("1"), E, PI];
 
       forEach(testSets).it("takes %e and returns zero", async function (y: BigNumber) {
-        const result: BigNumber = await this.contracts.prbMathSD59x18.doPow(x, y);
+        const result: BigNumber = await this.contracts.prbMathSd59x18.doPow(x, y);
         expect(ZERO).to.equal(result);
       });
     });
@@ -34,7 +34,7 @@ export default function shouldBehaveLikePow(): void {
 
       forEach(testSets).it("takes %e and returns 1", async function (x: BigNumber) {
         const y: BigNumber = ZERO;
-        const result: BigNumber = await this.contracts.prbMathSD59x18.doPow(x, y);
+        const result: BigNumber = await this.contracts.prbMathSd59x18.doPow(x, y);
         expect(expected).to.equal(result);
       });
     });
@@ -47,7 +47,7 @@ export default function shouldBehaveLikePow(): void {
         ];
 
         forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
-          await expect(this.contracts.prbMathSD59x18.doPow(x, y)).to.be.reverted;
+          await expect(this.contracts.prbMathSd59x18.doPow(x, y)).to.be.reverted;
         });
       });
 
@@ -59,7 +59,7 @@ export default function shouldBehaveLikePow(): void {
           ];
 
           forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
-            await expect(this.contracts.prbMathSD59x18.doPow(x, y)).to.be.reverted;
+            await expect(this.contracts.prbMathSd59x18.doPow(x, y)).to.be.reverted;
           });
         });
 
@@ -92,7 +92,7 @@ export default function shouldBehaveLikePow(): void {
           forEach(testSets).it(
             "takes %e and %e and returns %e",
             async function (x: BigNumber, y: BigNumber, expected: BigNumber) {
-              const result: BigNumber = await this.contracts.prbMathSD59x18.doPow(x, y);
+              const result: BigNumber = await this.contracts.prbMathSd59x18.doPow(x, y);
               expect(expected).to.equal(result);
             },
           );

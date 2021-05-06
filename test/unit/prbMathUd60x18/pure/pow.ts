@@ -11,7 +11,7 @@ export default function shouldBehaveLikePow(): void {
       it("retrieves 1", async function () {
         const x: BigNumber = ZERO;
         const y: BigNumber = ZERO;
-        const result: BigNumber = await this.contracts.prbMathUD60x18.doPow(x, y);
+        const result: BigNumber = await this.contracts.prbMathUd60x18.doPow(x, y);
         expect(fp("1")).to.equal(result);
       });
     });
@@ -21,7 +21,7 @@ export default function shouldBehaveLikePow(): void {
 
       forEach(testSets).it("takes %e and returns zero", async function (y: BigNumber) {
         const x: BigNumber = ZERO;
-        const result: BigNumber = await this.contracts.prbMathUD60x18.doPow(x, y);
+        const result: BigNumber = await this.contracts.prbMathUd60x18.doPow(x, y);
         expect(ZERO).to.equal(result);
       });
     });
@@ -34,7 +34,7 @@ export default function shouldBehaveLikePow(): void {
 
       forEach(testSets).it("takes %e and returns 1", async function (x: BigNumber) {
         const y: BigNumber = ZERO;
-        const result: BigNumber = await this.contracts.prbMathUD60x18.doPow(x, y);
+        const result: BigNumber = await this.contracts.prbMathUd60x18.doPow(x, y);
         expect(expected).to.equal(result);
       });
     });
@@ -49,7 +49,7 @@ export default function shouldBehaveLikePow(): void {
         ];
 
         forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
-          await expect(this.contracts.prbMathUD60x18.doPow(x, y)).to.be.reverted;
+          await expect(this.contracts.prbMathUd60x18.doPow(x, y)).to.be.reverted;
         });
       });
 
@@ -82,7 +82,7 @@ export default function shouldBehaveLikePow(): void {
         forEach(testSets).it(
           "takes %e and %e and returns %e",
           async function (x: BigNumber, y: BigNumber, expected: BigNumber) {
-            const result: BigNumber = await this.contracts.prbMathUD60x18.doPow(x, y);
+            const result: BigNumber = await this.contracts.prbMathUd60x18.doPow(x, y);
             expect(expected).to.equal(result);
           },
         );

@@ -16,7 +16,7 @@ export default function shouldBehaveLikeFrac(): void {
   context("when x is zero", function () {
     it("works", async function () {
       const x: BigNumber = ZERO;
-      const result: BigNumber = await this.contracts.prbMathSD59x18.doFrac(x);
+      const result: BigNumber = await this.contracts.prbMathSd59x18.doFrac(x);
       expect(ZERO).to.equal(result);
     });
   });
@@ -36,7 +36,7 @@ export default function shouldBehaveLikeFrac(): void {
     ];
 
     forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
-      const result: BigNumber = await this.contracts.prbMathSD59x18.doFrac(x);
+      const result: BigNumber = await this.contracts.prbMathSd59x18.doFrac(x);
       expect(expected).to.equal(result);
     });
   });
@@ -56,7 +56,7 @@ export default function shouldBehaveLikeFrac(): void {
     ];
 
     forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
-      const result: BigNumber = await this.contracts.prbMathSD59x18.doFrac(x);
+      const result: BigNumber = await this.contracts.prbMathSd59x18.doFrac(x);
       expect(expected).to.equal(result);
     });
   });

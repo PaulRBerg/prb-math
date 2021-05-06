@@ -8,7 +8,7 @@ import { fp, fps } from "../../../../helpers/numbers";
 export default function shouldBehaveLikeAvg(): void {
   context("when both operands are zero", function () {
     it("retrieves zero", async function () {
-      const result: BigNumber = await this.contracts.prbMathUD60x18.doAvg(ZERO, ZERO);
+      const result: BigNumber = await this.contracts.prbMathUd60x18.doAvg(ZERO, ZERO);
       expect(ZERO).to.equal(result);
     });
   });
@@ -22,7 +22,7 @@ export default function shouldBehaveLikeAvg(): void {
     forEach(testSets).it(
       "takes %e and %e and returns %e",
       async function (x: BigNumber, y: BigNumber, expected: BigNumber) {
-        const result: BigNumber = await this.contracts.prbMathUD60x18.doAvg(x, y);
+        const result: BigNumber = await this.contracts.prbMathUd60x18.doAvg(x, y);
         expect(expected).to.equal(result);
       },
     );
@@ -42,7 +42,7 @@ export default function shouldBehaveLikeAvg(): void {
       forEach(testSets).it(
         "takes %e and %e and returns %e",
         async function (x: BigNumber, y: BigNumber, expected: BigNumber) {
-          const result: BigNumber = await this.contracts.prbMathUD60x18.doAvg(x, y);
+          const result: BigNumber = await this.contracts.prbMathUd60x18.doAvg(x, y);
           expect(expected).to.equal(result);
         },
       );
@@ -60,7 +60,7 @@ export default function shouldBehaveLikeAvg(): void {
       forEach(testSets).it(
         "takes %e and %e and returns %e",
         async function (x: BigNumber, y: BigNumber, expected: BigNumber) {
-          const result: BigNumber = await this.contracts.prbMathUD60x18.doAvg(x, y);
+          const result: BigNumber = await this.contracts.prbMathUd60x18.doAvg(x, y);
           expect(expected).to.equal(result);
         },
       );
@@ -79,7 +79,7 @@ export default function shouldBehaveLikeAvg(): void {
       forEach(testSets).it(
         "takes %e and %e and returns %e",
         async function (x: BigNumber, y: BigNumber, expected: BigNumber) {
-          const result: BigNumber = await this.contracts.prbMathUD60x18.doAvg(x, y);
+          const result: BigNumber = await this.contracts.prbMathUd60x18.doAvg(x, y);
           expect(expected).to.equal(result);
         },
       );

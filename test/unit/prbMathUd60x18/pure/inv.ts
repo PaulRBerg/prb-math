@@ -9,7 +9,7 @@ export default function shouldBehaveLikeInv(): void {
   context("when x is zero", function () {
     it("reverts", async function () {
       const x: BigNumber = ZERO;
-      await expect(this.contracts.prbMathUD60x18.doInv(x)).to.be.reverted;
+      await expect(this.contracts.prbMathUd60x18.doInv(x)).to.be.reverted;
     });
   });
 
@@ -34,7 +34,7 @@ export default function shouldBehaveLikeInv(): void {
     ];
 
     forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
-      const result: BigNumber = await this.contracts.prbMathUD60x18.doInv(x);
+      const result: BigNumber = await this.contracts.prbMathUd60x18.doInv(x);
       expect(expected).to.equal(result);
     });
   });

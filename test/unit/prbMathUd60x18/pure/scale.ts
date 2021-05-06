@@ -5,7 +5,7 @@ import { SCALE } from "../../../../helpers/constants";
 
 export default function shouldBehaveLikeScaleGetter(): void {
   it("retrieves the scale number", async function () {
-    const result: BigNumber = await this.contracts.prbMathUD60x18.getScale();
+    const result: BigNumber = await this.contracts.prbMathUd60x18.getScale();
     expect(SCALE).to.equal(result);
   });
 }

@@ -17,7 +17,7 @@ export default function shouldBehaveLikeExp2(): void {
   context("when x is zero", function () {
     it("retrieves 1", async function () {
       const x: BigNumber = ZERO;
-      const result: BigNumber = await this.contracts.prbMathSD59x18.doExp2(x);
+      const result: BigNumber = await this.contracts.prbMathSd59x18.doExp2(x);
       expect(fp("1")).to.equal(result);
     });
   });
@@ -27,7 +27,7 @@ export default function shouldBehaveLikeExp2(): void {
       const testSets = [fp("-59.794705707972522262"), MIN_WHOLE_SD59x18, MIN_SD59x18];
 
       forEach(testSets).it("takes %e and returns zero", async function (x: BigNumber) {
-        const result: BigNumber = await this.contracts.prbMathSD59x18.doExp2(x);
+        const result: BigNumber = await this.contracts.prbMathSd59x18.doExp2(x);
         expect(ZERO).to.equal(result);
       });
     });
@@ -50,7 +50,7 @@ export default function shouldBehaveLikeExp2(): void {
       ];
 
       forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
-        const result: BigNumber = await this.contracts.prbMathSD59x18.doExp2(x);
+        const result: BigNumber = await this.contracts.prbMathSd59x18.doExp2(x);
         expect(expected).to.equal(result);
       });
     });
@@ -61,7 +61,7 @@ export default function shouldBehaveLikeExp2(): void {
       const testSets = [fp("128"), MAX_WHOLE_SD59x18, MAX_SD59x18];
 
       forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
-        await expect(this.contracts.prbMathSD59x18.doExp2(x)).to.be.reverted;
+        await expect(this.contracts.prbMathSd59x18.doExp2(x)).to.be.reverted;
       });
     });
 
@@ -88,7 +88,7 @@ export default function shouldBehaveLikeExp2(): void {
       ];
 
       forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
-        const result: BigNumber = await this.contracts.prbMathSD59x18.doExp2(x);
+        const result: BigNumber = await this.contracts.prbMathSd59x18.doExp2(x);
         expect(expected).to.equal(result);
       });
     });
