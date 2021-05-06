@@ -13,9 +13,9 @@ type UnitFixturePrbMathSd59x18ReturnType = {
 
 export async function unitFixturePrbMathSd59x18(signers: Signer[]): Promise<UnitFixturePrbMathSd59x18ReturnType> {
   const deployer: Signer = signers[0];
-  const prbMathSd59x18MockArtifact: Artifact = await hre.artifacts.readArtifact("PRBMathSD59x18Mock");
+  const prbMathSd59x18Artifact: Artifact = await hre.artifacts.readArtifact("PRBMathSD59x18Mock");
   const prbMathSd59x18: PRBMathSD59x18Mock = <PRBMathSD59x18Mock>(
-    await deployContract(deployer, prbMathSd59x18MockArtifact, [])
+    await deployContract(deployer, prbMathSd59x18Artifact, [])
   );
   return { prbMathSd59x18 };
 }
@@ -26,9 +26,9 @@ type UnitFixturePrbMathUd60x18ReturnType = {
 
 export async function unitFixturePrbMathUd60x18(signers: Signer[]): Promise<UnitFixturePrbMathUd60x18ReturnType> {
   const deployer: Signer = signers[0];
-  const prbMathUd60x18MockArtifact: Artifact = await hre.artifacts.readArtifact("PRBMathUD60x18Mock");
+  const prbMathUd60x18Artifact: Artifact = await hre.artifacts.readArtifact("PRBMathUD60x18Mock");
   const prbMathUd60x18: PRBMathUD60x18Mock = <PRBMathUD60x18Mock>(
-    await deployContract(deployer, prbMathUd60x18MockArtifact, [])
+    await deployContract(deployer, prbMathUd60x18Artifact, [])
   );
   return { prbMathUd60x18 };
 }
