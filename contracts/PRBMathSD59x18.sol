@@ -239,6 +239,22 @@ library PRBMathSD59x18 {
         unchecked { result = x % SCALE; }
     }
 
+    /// @notice Converts a number from basic integer form to signed 59.18-decimal fixed-point representation.
+    ///
+    /// @dev Requirements:
+    /// - x must be greater than or equal to MIN_SD59x18 divided by SCALE.
+    /// - x must be less than or equal to MAX_SD59x18 divided by SCALE.
+    ///
+    /// @param x The basic integer to convert.
+    /// @param result The same number in signed 59.18-decimal fixed-point representation.
+    function fromInt(int256 x) internal pure returns (int256 result) {
+        unchecked {
+            require(x >= MIN_SD59x18 / SCALE);
+            require(x <= MAX_SD59x18 / SCALE);
+            result = x * SCALE;
+        }
+    }
+
     /// @notice Calculates geometric mean of x and y, i.e. sqrt(x * y), rounding down.
     ///
     /// @dev Requirements:
@@ -578,5 +594,12 @@ library PRBMathSD59x18 {
             // 59.18-decimal fixed-point numbers together (in this case, those two numbers are both the square root).
             result = int256(PRBMathCommon.sqrt(uint256(x * SCALE)));
         }
+    }
+
+    /// @notice Converts a signed 59.18-decimal fixed-point number to basic integer form, rounding down in the process.
+    /// @param x The signed 59.18-decimal fixed-point number to convert.
+    /// @return result The same number in basic integer form.
+    function toInt(int256 x) internal pure returns (int256 result) {
+        unchecked { result = x / SCALE; }
     }
 }

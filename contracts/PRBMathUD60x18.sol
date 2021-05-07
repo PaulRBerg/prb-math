@@ -151,6 +151,20 @@ library PRBMathUD60x18 {
         }
     }
 
+    /// @notice Converts a number from basic integer form to unsigned 60.18-decimal fixed-point representation.
+    ///
+    /// @dev Requirements:
+    /// - x must be less than or equal to MAX_UD60x18 divided by SCALE.
+    ///
+    /// @param x The basic integer to convert.
+    /// @param result The same number in unsigned 60.18-decimal fixed-point representation.
+    function fromUint(uint256 x) internal pure returns (uint256 result) {
+        unchecked {
+            require(x <= MAX_UD60x18 / SCALE);
+            result = x * SCALE;
+        }
+    }
+
     /// @notice Calculates geometric mean of x and y, i.e. sqrt(x * y), rounding down.
     ///
     /// @dev Requirements:
@@ -433,5 +447,12 @@ library PRBMathUD60x18 {
             // 60.18-decimal fixed-point numbers together (in this case, those two numbers are both the square root).
             result = PRBMathCommon.sqrt(x * SCALE);
         }
+    }
+
+    /// @notice Converts a unsigned 60.18-decimal fixed-point number to basic integer form, rounding down in the process.
+    /// @param x The unsigned 60.18-decimal fixed-point number to convert.
+    /// @return result The same number in basic integer form.
+    function toUint(uint256 x) internal pure returns (uint256 result) {
+        unchecked { result = x / SCALE; }
     }
 }

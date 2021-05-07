@@ -36,6 +36,10 @@ contract PRBMathSD59x18Mock {
         result = PRBMathSD59x18.frac(x);
     }
 
+    function doFromInt(int256 x) external pure returns (int256 result) {
+        result = PRBMathSD59x18.fromInt(x);
+    }
+
     function doGm(int256 x, int256 y) external pure returns (int256 result) {
         result = PRBMathSD59x18.gm(x, y);
     }
@@ -66,6 +70,10 @@ contract PRBMathSD59x18Mock {
 
     function doSqrt(int256 x) external pure returns (int256 result) {
         result = PRBMathSD59x18.sqrt(x);
+    }
+
+    function doToInt(int256 x) external pure returns (int256 result) {
+        result = PRBMathSD59x18.toInt(x);
     }
 
     function getE() external pure returns (int256 result) {

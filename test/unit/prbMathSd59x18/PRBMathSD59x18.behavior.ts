@@ -7,6 +7,7 @@ import shouldBehaveLikeExp from "./pure/exp";
 import shouldBehaveLikeExp2 from "./pure/exp2";
 import shouldBehaveLikeFloor from "./pure/floor";
 import shouldBehaveLikeFrac from "./pure/frac";
+import shouldBehaveLikeFromInt from "./pure/fromInt";
 import shouldBehaveLikeGm from "./pure/gm";
 import shouldBehaveLikeInv from "./pure/inv";
 import shouldBehaveLikeLn from "./pure/ln";
@@ -17,6 +18,7 @@ import shouldBehaveLikePiGetter from "./pure/pi";
 import shouldBehaveLikePow from "./pure/pow";
 import shouldBehaveLikeScaleGetter from "./pure/scale";
 import shouldBehaveLikeSqrt from "./pure/sqrt";
+import shouldBehaveLikeToInt from "./pure/toInt";
 
 export function shouldBehaveLikePrbMathSd59x18(): void {
   describe("Pure Functions", function () {
@@ -54,6 +56,10 @@ export function shouldBehaveLikePrbMathSd59x18(): void {
 
     describe("frac", function () {
       shouldBehaveLikeFrac();
+    });
+
+    describe("fromInt", function () {
+      shouldBehaveLikeFromInt();
     });
 
     describe("gm", function () {
@@ -94,6 +100,10 @@ export function shouldBehaveLikePrbMathSd59x18(): void {
 
     describe("sqrt", function () {
       shouldBehaveLikeSqrt();
+    });
+
+    describe("toInt", function () {
+      shouldBehaveLikeToInt();
     });
   });
 }
