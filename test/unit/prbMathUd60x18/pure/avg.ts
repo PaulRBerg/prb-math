@@ -3,11 +3,11 @@ import { expect } from "chai";
 import forEach from "mocha-each";
 
 import { MAX_UD60x18, MAX_WHOLE_UD60x18, ZERO } from "../../../../helpers/constants";
-import { fp, fps } from "../../../../helpers/numbers";
+import { fp, sfp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeAvg(): void {
   context("when both operands are zero", function () {
-    it("retrieves zero", async function () {
+    it("returns zero", async function () {
       const result: BigNumber = await this.contracts.prbMathUd60x18.doAvg(ZERO, ZERO);
       expect(ZERO).to.equal(result);
     });
@@ -31,11 +31,11 @@ export default function shouldBehaveLikeAvg(): void {
   context("when both operands are positive", function () {
     context("when both operands are odd", function () {
       const testSets = [
-        [fp("0.000000000000000001"), fp("0.000000000000000003"), fp("0.000000000000000002")],
+        [sfp("1e-18"), fp("0.000000000000000003"), fp("0.000000000000000002")],
         [fp("1"), fp("1"), fp("1")],
         [fp("3"), fp("7"), fp("5")],
         [fp("99"), fp("199"), fp("149")],
-        [fps("1e18").add(1), fps("1e19").add(1), fps("5.5e18").add(1)],
+        [sfp("1e18").add(1), sfp("1e19").add(1), sfp("5.5e18").add(1)],
         [MAX_UD60x18, MAX_UD60x18, MAX_UD60x18],
       ];
 
@@ -54,7 +54,7 @@ export default function shouldBehaveLikeAvg(): void {
         [fp("2"), fp("2"), fp("2")],
         [fp("4"), fp("8"), fp("6")],
         [fp("100"), fp("200"), fp("150")],
-        [fps("1e18"), fps("1e19"), fps("5.5e18")],
+        [sfp("1e18"), sfp("1e19"), sfp("5.5e18")],
       ];
 
       forEach(testSets).it(
@@ -68,11 +68,11 @@ export default function shouldBehaveLikeAvg(): void {
 
     context("when one operand is even and the other is odd", function () {
       const testSets = [
-        [fp("0.000000000000000001"), fp("0.000000000000000002"), fp("0.000000000000000001")],
+        [sfp("1e-18"), fp("0.000000000000000002"), sfp("1e-18")],
         [fp("1"), fp("2"), fp("1.5")],
         [fp("3"), fp("8"), fp("5.5")],
         [fp("99"), fp("200"), fp("149.5")],
-        [fps("1e18"), fps("1e19").add(1), fps("5.5e18")],
+        [sfp("1e18"), sfp("1e19").add(1), sfp("5.5e18")],
         [MAX_WHOLE_UD60x18, MAX_UD60x18, MAX_UD60x18.add(MAX_WHOLE_UD60x18).div(2)],
       ];
 

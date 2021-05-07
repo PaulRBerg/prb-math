@@ -15,7 +15,7 @@ import {
   SQRT_MAX_SD59x18,
   ZERO,
 } from "../../../../helpers/constants";
-import { fp, fps } from "../../../../helpers/numbers";
+import { fp, sfp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeMul(): void {
   context("when one of the operands is zero", function () {
@@ -38,8 +38,8 @@ export default function shouldBehaveLikeMul(): void {
   context("when neither of the operands is zero", function () {
     context("when one of the operands is min sd59x18", function () {
       const testSets = [
-        [MIN_SD59x18, fp("0.000000000000000001")],
-        [fp("0.000000000000000001"), MIN_SD59x18],
+        [MIN_SD59x18, sfp("1e-18")],
+        [sfp("1e-18"), MIN_SD59x18],
       ];
 
       forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
@@ -70,9 +70,9 @@ export default function shouldBehaveLikeMul(): void {
         context("when the operands have the same sign", function () {
           const testSets = [
             // We need to add 1 because the absolute value of MIN_SD59x18 is greater by MAX_SD59x18 by 1.
-            [MIN_SD59x18.add(HALF_SCALE).add(1), fp("-0.000000000000000001"), MAX_SD59x18.div(SCALE)],
-            [MIN_WHOLE_SD59x18.add(HALF_SCALE), fp("-0.000000000000000001"), MAX_WHOLE_SD59x18.div(SCALE)],
-            [fps("-1e18"), fps("-1e6"), fps("1e24")],
+            [MIN_SD59x18.add(HALF_SCALE).add(1), sfp("-1e-18"), MAX_SD59x18.div(SCALE)],
+            [MIN_WHOLE_SD59x18.add(HALF_SCALE), sfp("-1e-18"), MAX_WHOLE_SD59x18.div(SCALE)],
+            [sfp("-1e18"), sfp("-1e6"), sfp("1e24")],
             [fp("-12983.989"), fp("-782.99"), fp("10166333.54711")],
             [fp("-9817"), fp("-2348"), fp("23050316")],
             [fp("-314.271"), fp("-188.19"), fp("59142.65949")],
@@ -81,16 +81,16 @@ export default function shouldBehaveLikeMul(): void {
             [fp("-2.098"), fp("-1.119"), fp("2.347662")],
             [fp("-1"), fp("-1"), fp("1")],
             [fp("-0.01"), fp("-0.05"), fp("0.0005")],
-            [fp("-0.001"), fp("-0.01"), fp("0.00001")],
-            [fp("-0.00001"), fp("-0.00001"), fp("0.0000000001")],
-            [fp("-0.000000000000000006"), fp("-0.1"), fp("0.000000000000000001")],
-            [fp("-0.000000000000000001"), fp("-0.000000000000000001"), ZERO],
+            [fp("-0.001"), fp("-0.01"), sfp("1e-5")],
+            [sfp("-1e-5"), sfp("-1e-5"), sfp("1e-10")],
+            [sfp("-6e-18"), fp("-0.1"), sfp("1e-18")],
+            [sfp("-1e-18"), sfp("-1e-18"), ZERO],
           ].concat([
-            [fp("0.000000000000000001"), fp("0.000000000000000001"), ZERO],
-            [fp("0.000000000000000006"), fp("0.1"), fp("0.000000000000000001")],
-            [fp("0.000000001"), fp("0.000000001"), fp("0.000000000000000001")],
-            [fp("0.00001"), fp("0.00001"), fp("0.0000000001")],
-            [fp("0.001"), fp("0.01"), fp("0.00001")],
+            [sfp("1e-18"), sfp("1e-18"), ZERO],
+            [sfp("6e-18"), fp("0.1"), sfp("1e-18")],
+            [sfp("1e-9"), sfp("1e-9"), sfp("1e-18")],
+            [sfp("1e-5"), sfp("1e-5"), sfp("1e-10")],
+            [fp("0.001"), fp("0.01"), sfp("1e-5")],
             [fp("0.01"), fp("0.05"), fp("0.0005")],
             [fp("1"), fp("1"), fp("1")],
             [fp("2.098"), fp("1.119"), fp("2.347662")],
@@ -99,9 +99,9 @@ export default function shouldBehaveLikeMul(): void {
             [fp("314.271"), fp("188.19"), fp("59142.65949")],
             [fp("9817"), fp("2348"), fp("23050316")],
             [fp("12983.989"), fp("782.99"), fp("10166333.54711")],
-            [fps("1e18"), fps("1e6"), fps("1e24")],
-            [MAX_WHOLE_SD59x18.sub(HALF_SCALE), fp("0.000000000000000001"), MAX_WHOLE_SD59x18.div(SCALE)],
-            [MAX_SD59x18.sub(HALF_SCALE), fp("0.000000000000000001"), MAX_SD59x18.div(SCALE)],
+            [sfp("1e18"), sfp("1e6"), sfp("1e24")],
+            [MAX_WHOLE_SD59x18.sub(HALF_SCALE), sfp("1e-18"), MAX_WHOLE_SD59x18.div(SCALE)],
+            [MAX_SD59x18.sub(HALF_SCALE), sfp("1e-18"), MAX_SD59x18.div(SCALE)],
           ]);
 
           forEach(testSets).it(
@@ -116,9 +116,9 @@ export default function shouldBehaveLikeMul(): void {
         context("when the operands do not have the same sign", function () {
           const testSets = [
             // Need to add 1 because the absolute value of MIN_SD59x18 is greater by MAX_SD59x18 by 1.
-            [MIN_SD59x18.add(HALF_SCALE).add(1), fp("0.000000000000000001"), MIN_SD59x18.div(SCALE)],
-            [MIN_WHOLE_SD59x18.add(HALF_SCALE), fp("0.000000000000000001"), MIN_WHOLE_SD59x18.div(SCALE)],
-            [fps("-1e18"), fps("1e6"), fps("-1e24")],
+            [MIN_SD59x18.add(HALF_SCALE).add(1), sfp("1e-18"), MIN_SD59x18.div(SCALE)],
+            [MIN_WHOLE_SD59x18.add(HALF_SCALE), sfp("1e-18"), MIN_WHOLE_SD59x18.div(SCALE)],
+            [sfp("-1e18"), sfp("1e6"), sfp("-1e24")],
             [fp("-12983.989"), fp("782.99"), fp("-10166333.54711")],
             [fp("-9817"), fp("2348"), fp("-23050316")],
             [fp("-314.271"), fp("188.19"), fp("-59142.65949")],
@@ -127,16 +127,16 @@ export default function shouldBehaveLikeMul(): void {
             [fp("-2.098"), fp("1.119"), fp("-2.347662")],
             [fp("-1"), fp("1"), fp("-1")],
             [fp("-0.01"), fp("0.05"), fp("-0.0005")],
-            [fp("-0.001"), fp("0.01"), fp("-0.00001")],
-            [fp("-0.00001"), fp("0.00001"), fp("-0.0000000001")],
-            [fp("-0.000000000000000006"), fp("0.1"), fp("-0.000000000000000001")],
-            [fp("-0.000000000000000001"), fp("0.000000000000000001"), ZERO],
+            [fp("-0.001"), fp("0.01"), sfp("-1e-5")],
+            [sfp("-1e-5"), sfp("1e-5"), sfp("-1e-10")],
+            [sfp("-6e-18"), fp("0.1"), sfp("-1e-18")],
+            [sfp("-1e-18"), sfp("1e-18"), ZERO],
           ].concat([
-            [fp("0.000000000000000001"), fp("-0.000000000000000001"), ZERO],
-            [fp("0.000000000000000006"), fp("-0.1"), fp("-0.000000000000000001")],
-            [fp("0.000000001"), fp("-0.000000001"), fp("-0.000000000000000001")],
-            [fp("0.00001"), fp("-0.00001"), fp("-0.0000000001")],
-            [fp("0.001"), fp("-0.01"), fp("-0.00001")],
+            [sfp("1e-18"), sfp("-1e-18"), ZERO],
+            [sfp("6e-18"), fp("-0.1"), sfp("-1e-18")],
+            [sfp("1e-9"), fp("-0.000000001"), sfp("-1e-18")],
+            [sfp("1e-5"), sfp("-1e-5"), sfp("-1e-10")],
+            [fp("0.001"), fp("-0.01"), sfp("-1e-5")],
             [fp("0.01"), fp("-0.05"), fp("-0.0005")],
             [fp("1"), fp("-1"), fp("-1")],
             [fp("2.098"), fp("-1.119"), fp("-2.347662")],
@@ -145,9 +145,9 @@ export default function shouldBehaveLikeMul(): void {
             [fp("314.271"), fp("-188.19"), fp("-59142.65949")],
             [fp("9817"), fp("-2348"), fp("-23050316")],
             [fp("12983.989"), fp("-782.99"), fp("-10166333.54711")],
-            [fps("1e18"), fps("-1e6"), fps("-1e24")],
-            [MAX_WHOLE_SD59x18.sub(HALF_SCALE), fp("-0.000000000000000001"), MIN_WHOLE_SD59x18.div(SCALE)],
-            [MAX_SD59x18.sub(HALF_SCALE), fp("-0.000000000000000001"), MIN_SD59x18.add(1).div(SCALE)],
+            [sfp("1e18"), sfp("-1e6"), sfp("-1e24")],
+            [MAX_WHOLE_SD59x18.sub(HALF_SCALE), sfp("-1e-18"), MIN_WHOLE_SD59x18.div(SCALE)],
+            [MAX_SD59x18.sub(HALF_SCALE), sfp("-1e-18"), MIN_SD59x18.add(1).div(SCALE)],
           ]);
 
           forEach(testSets).it(

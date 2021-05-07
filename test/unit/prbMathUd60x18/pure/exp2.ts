@@ -3,11 +3,11 @@ import { expect } from "chai";
 import forEach from "mocha-each";
 
 import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, ZERO } from "../../../../helpers/constants";
-import { fp, fpPowOfTwo } from "../../../../helpers/numbers";
+import { fp, fpPowOfTwo, sfp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeExp2(): void {
   context("when x is zero", function () {
-    it("retrieves 1", async function () {
+    it("returns 1", async function () {
       const x: BigNumber = ZERO;
       const result: BigNumber = await this.contracts.prbMathUd60x18.doExp2(x);
       expect(fp("1")).to.equal(result);
@@ -25,8 +25,8 @@ export default function shouldBehaveLikeExp2(): void {
 
     context("when x is less than 128", function () {
       const testSets = [
-        [fp("0.000000000000000001"), fp("1")], // because this is very close to zero
-        [fp("0.000000000000001"), fp("1.000000000000000693")],
+        [sfp("1e-18"), fp("1")], // because this is very close to zero
+        [sfp("1e-15"), fp("1.000000000000000693")],
         [fp("1"), fp("2")],
         [fp("2"), fp("4")],
         [E, fp("6.580885991017920969")],

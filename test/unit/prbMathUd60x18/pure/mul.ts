@@ -12,7 +12,7 @@ import {
   SQRT_MAX_UD60x18,
   ZERO,
 } from "../../../../helpers/constants";
-import { fp, fps } from "../../../../helpers/numbers";
+import { fp, sfp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeMul(): void {
   context("when one of the operands is zero", function () {
@@ -43,11 +43,11 @@ export default function shouldBehaveLikeMul(): void {
 
     context("when the double scaled product does not overflow", function () {
       const testSets = [
-        [fp("0.000000000000000001"), fp("0.000000000000000001"), ZERO],
-        [fp("0.000000000000000006"), fp("0.1"), fp("0.000000000000000001")],
-        [fp("0.000000001"), fp("0.000000001"), fp("0.000000000000000001")],
-        [fp("0.00001"), fp("0.00001"), fp("0.0000000001")],
-        [fp("0.001"), fp("0.01"), fp("0.00001")],
+        [sfp("1e-18"), sfp("1e-18"), ZERO],
+        [sfp("6e-18"), fp("0.1"), sfp("1e-18")],
+        [sfp("1e-9"), sfp("1e-9"), sfp("1e-18")],
+        [sfp("1e-5"), sfp("1e-5"), sfp("1e-10")],
+        [fp("0.001"), fp("0.01"), sfp("1e-5")],
         [fp("0.01"), fp("0.05"), fp("0.0005")],
         [fp("1"), fp("1"), fp("1")],
         [fp("2.098"), fp("1.119"), fp("2.347662")],
@@ -56,13 +56,13 @@ export default function shouldBehaveLikeMul(): void {
         [fp("314.271"), fp("188.19"), fp("59142.65949")],
         [fp("9817"), fp("2348"), fp("23050316")],
         [fp("12983.989"), fp("782.99"), fp("10166333.54711")],
-        [fps("1e18"), fps("1e6"), fps("1e24")],
+        [sfp("1e18"), sfp("1e6"), sfp("1e24")],
         // Precision errors makes the result not equal to MAX_UD60x18
         [SQRT_MAX_UD60x18, SQRT_MAX_UD60x18, MAX_UD60x18.sub(fp("680564733841.876926926749214863"))],
-        [MAX_WHOLE_UD60x18, fp("0.000000000000000001"), MAX_WHOLE_UD60x18.div(SCALE)],
+        [MAX_WHOLE_UD60x18, sfp("1e-18"), MAX_WHOLE_UD60x18.div(SCALE)],
         [MAX_WHOLE_UD60x18, fp("0.01"), MAX_WHOLE_UD60x18.div(100)],
         [MAX_WHOLE_UD60x18, fp("0.5"), MAX_WHOLE_UD60x18.div(2)],
-        [MAX_UD60x18.sub(HALF_SCALE), fp("0.000000000000000001"), MAX_UD60x18.div(SCALE)],
+        [MAX_UD60x18.sub(HALF_SCALE), sfp("1e-18"), MAX_UD60x18.div(SCALE)],
         [MAX_UD60x18, fp("0.01"), MAX_UD60x18.div(100)],
         [MAX_UD60x18, fp("0.5"), MAX_UD60x18.div(2).add(1)],
       ];

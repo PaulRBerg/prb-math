@@ -3,7 +3,7 @@ import { expect } from "chai";
 import forEach from "mocha-each";
 
 import { E, LN_E, LN_MAX_SD59x18, MAX_SD59x18, MAX_WHOLE_SD59x18, PI, ZERO } from "../../../../helpers/constants";
-import { fp, fps } from "../../../../helpers/numbers";
+import { fp, sfp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeLn(): void {
   context("when x is zero", function () {
@@ -38,7 +38,7 @@ export default function shouldBehaveLikeLn(): void {
       [PI, fp("1.144729885849400163")],
       [fp("4"), fp("1.386294361119890619")],
       [fp("8"), fp("2.079441541679835928")],
-      [fps("1e18"), fp("41.446531673892822311")],
+      [sfp("1e18"), fp("41.446531673892822311")],
       [MAX_WHOLE_SD59x18, LN_MAX_SD59x18],
       [MAX_SD59x18, LN_MAX_SD59x18],
     ];

@@ -11,11 +11,11 @@ import {
   PI,
   ZERO,
 } from "../../../../helpers/constants";
-import { fp, fpPowOfTwo } from "../../../../helpers/numbers";
+import { fp, fpPowOfTwo, sfp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeExp2(): void {
   context("when x is zero", function () {
-    it("retrieves 1", async function () {
+    it("returns 1", async function () {
       const x: BigNumber = ZERO;
       const result: BigNumber = await this.contracts.prbMathSd59x18.doExp2(x);
       expect(fp("1")).to.equal(result);
@@ -34,7 +34,7 @@ export default function shouldBehaveLikeExp2(): void {
 
     context("when x is greater than or equal to -59.794705707972522261", function () {
       const testSets = [
-        [fp("-59.794705707972522261"), fp("0.000000000000000001")],
+        [fp("-59.794705707972522261"), sfp("1e-18")],
         [fp("-33.333333"), fp("0.000000000092398923")],
         [fp("-20.82"), fp("0.000000540201132438")],
         [fp("-16"), fp("0.0000152587890625")],
@@ -45,8 +45,8 @@ export default function shouldBehaveLikeExp2(): void {
         [E.mul(-1), fp("0.151955223257912965")],
         [fp("-2"), fp("0.25")],
         [fp("-1"), fp("0.5")],
-        [fp("-0.000000000000001"), fp("0.999999999999999307")],
-        [fp("-0.000000000000000001"), fp("1")], // because this is very close to zero
+        [sfp("-1e-15"), fp("0.999999999999999307")],
+        [sfp("-1e-18"), fp("1")], // because this is very close to zero
       ];
 
       forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
@@ -67,8 +67,8 @@ export default function shouldBehaveLikeExp2(): void {
 
     context("when x is less than 128", function () {
       const testSets = [
-        [fp("0.000000000000000001"), fp("1")], // because this is very close to zero
-        [fp("0.000000000000001"), fp("1.000000000000000693")],
+        [sfp("1e-18"), fp("1")], // because this is very close to zero
+        [sfp("1e-15"), fp("1.000000000000000693")],
         [fp("1"), fp("2")],
         [fp("2"), fp("4")],
         [E, fp("6.580885991017920969")],

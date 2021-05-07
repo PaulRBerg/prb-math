@@ -10,11 +10,11 @@ import {
   PI,
   ZERO,
 } from "../../../../helpers/constants";
-import { fp, fps } from "../../../../helpers/numbers";
+import { fp, sfp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeFloor(): void {
   context("when x is zero", function () {
-    it("retrieves zero", async function () {
+    it("returns zero", async function () {
       const x: BigNumber = ZERO;
       const result: BigNumber = await this.contracts.prbMathSd59x18.doFloor(x);
       expect(ZERO).to.equal(result);
@@ -34,7 +34,7 @@ export default function shouldBehaveLikeFloor(): void {
       context("when x >= min whole sd59x18", function () {
         const testSets = [
           [MIN_WHOLE_SD59x18, MIN_WHOLE_SD59x18],
-          [fps("-1e18"), fps("-1e18")],
+          [sfp("-1e18"), sfp("-1e18")],
           [fp("-4.2"), fp("-5")],
           [fp("-2"), fp("-2")],
           [fp("-1.125"), fp("-2")],
@@ -59,7 +59,7 @@ export default function shouldBehaveLikeFloor(): void {
         [fp("2"), fp("2")],
         [PI, fp("3")],
         [fp("4.2"), fp("4")],
-        [fps("1e18"), fps("1e18")],
+        [sfp("1e18"), sfp("1e18")],
         [MAX_WHOLE_SD59x18, MAX_WHOLE_SD59x18],
         [MAX_SD59x18, MAX_WHOLE_SD59x18],
       ];

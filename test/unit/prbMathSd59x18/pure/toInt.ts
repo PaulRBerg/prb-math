@@ -12,7 +12,7 @@ import {
   SCALE,
   ZERO,
 } from "../../../../helpers/constants";
-import { bn, fp, fps } from "../../../../helpers/numbers";
+import { bn, fp, sfp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeToInt(): void {
   context("when x is less the absolute value of scale", function () {
@@ -28,7 +28,7 @@ export default function shouldBehaveLikeToInt(): void {
     const testSets = [
       [MIN_SD59x18, MIN_SD59x18.div(SCALE)],
       [MIN_WHOLE_SD59x18, MIN_WHOLE_SD59x18.div(SCALE)],
-      [fps("-4.2e27"), fps("-4.2e9")],
+      [sfp("-4.2e27"), sfp("-4.2e9")],
       [fp("-1729"), bn("-1729")],
       [PI.mul(-1), bn("-3")],
       [E.mul(-1), bn("-2")],
@@ -44,7 +44,7 @@ export default function shouldBehaveLikeToInt(): void {
       [E, bn("2")],
       [PI, bn("3")],
       [fp("1729"), bn("1729")],
-      [fps("4.2e27"), fps("4.2e9")],
+      [sfp("4.2e27"), sfp("4.2e9")],
       [MAX_WHOLE_SD59x18, MAX_WHOLE_SD59x18.div(SCALE)],
       [MAX_SD59x18, MAX_SD59x18.div(SCALE)],
     ]);

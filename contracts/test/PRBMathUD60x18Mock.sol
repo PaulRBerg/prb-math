@@ -64,6 +64,10 @@ contract PRBMathUD60x18Mock {
         result = PRBMathUD60x18.pow(x, y);
     }
 
+    function doPowu(uint256 x, uint256 y) external pure returns (uint256 result) {
+        result = PRBMathUD60x18.powu(x, y);
+    }
+
     function doSqrt(uint256 x) external pure returns (uint256 result) {
         result = PRBMathUD60x18.sqrt(x);
     }

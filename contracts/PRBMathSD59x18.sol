@@ -249,8 +249,7 @@ library PRBMathSD59x18 {
     /// @param result The same number in signed 59.18-decimal fixed-point representation.
     function fromInt(int256 x) internal pure returns (int256 result) {
         unchecked {
-            require(x >= MIN_SD59x18 / SCALE);
-            require(x <= MAX_SD59x18 / SCALE);
+            require(x >= MIN_SD59x18 / SCALE && x <= MAX_SD59x18 / SCALE);
             result = x * SCALE;
         }
     }
@@ -524,9 +523,32 @@ library PRBMathSD59x18 {
         }
     }
 
-    /// @notice Retrieves PI as a signed 59.18-decimal fixed-point number.
+    /// @notice Returns PI as a signed 59.18-decimal fixed-point number.
     function pi() internal pure returns (int256 result) {
         result = 3141592653589793238;
+    }
+
+    /// @notice Raises x to the power of y.
+    ///
+    /// @dev Based on the insight that x^y = 2^(log2(x) * y).
+    ///
+    /// Requirements:
+    /// - All from "exp2", "log2" and "mul".
+    /// - z cannot be zero.
+    ///
+    /// Caveats:
+    /// - All from "exp2", "log2" and "mul".
+    /// - Assumes 0^0 is 1.
+    ///
+    /// @param x Number to raise to given power y, as a signed 59.18-decimal fixed-point number.
+    /// @param y Exponent to raise x to, as a signed 59.18-decimal fixed-point number.
+    /// @return result x raised to power y, as a signed 59.18-decimal fixed-point number.
+    function pow(int256 x, int256 y) internal pure returns (int256 result) {
+        if (x == 0) {
+            return y == 0 ? SCALE : int256(0);
+        } else {
+            result = exp2(mul(log2(x), y));
+        }
     }
 
     /// @notice Raises x (signed 59.18-decimal fixed-point number) to the power of y (basic unsigned integer) using the
@@ -545,7 +567,7 @@ library PRBMathSD59x18 {
     /// @param x The base as a signed 59.18-decimal fixed-point number.
     /// @param y The exponent as an uint256.
     /// @return result The result as a signed 59.18-decimal fixed-point number.
-    function pow(int256 x, uint256 y) internal pure returns (int256 result) {
+    function powu(int256 x, uint256 y) internal pure returns (int256 result) {
         uint256 absX = uint256(abs(x));
 
         // Calculate the first iteration of the loop in advance.

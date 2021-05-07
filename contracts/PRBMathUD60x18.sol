@@ -389,9 +389,31 @@ library PRBMathUD60x18 {
         result = PRBMathCommon.mulDivFixedPoint(x, y);
     }
 
-    /// @notice Retrieves PI as an unsigned 60.18-decimal fixed-point number.
+    /// @notice Returns PI as an unsigned 60.18-decimal fixed-point number.
     function pi() internal pure returns (uint256 result) {
         result = 3141592653589793238;
+    }
+
+    /// @notice Raises x to the power of y.
+    ///
+    /// @dev Based on the insight that x^y = 2^(log2(x) * y).
+    ///
+    /// Requirements:
+    /// - All from "exp2", "log2" and "mul".
+    ///
+    /// Caveats:
+    /// - All from "exp2", "log2" and "mul".
+    /// - Assumes 0^0 is 1.
+    ///
+    /// @param x Number to raise to given power y, as a signed 59.18-decimal fixed-point number.
+    /// @param y Exponent to raise x to, as a signed 59.18-decimal fixed-point number.
+    /// @return result x raised to power y, as a signed 59.18-decimal fixed-point number.
+    function pow(uint256 x, uint256 y) internal pure returns (uint256 result) {
+        if (x == 0) {
+            return y == 0 ? SCALE : uint256(0);
+        } else {
+            result = exp2(mul(log2(x), y));
+        }
     }
 
     /// @notice Raises x (unsigned 60.18-decimal fixed-point number) to the power of y (basic unsigned integer) using the
@@ -409,7 +431,7 @@ library PRBMathUD60x18 {
     /// @param x The base as an unsigned 60.18-decimal fixed-point number.
     /// @param y The exponent as an uint256.
     /// @return result The result as an unsigned 60.18-decimal fixed-point number.
-    function pow(uint256 x, uint256 y) internal pure returns (uint256 result) {
+    function powu(uint256 x, uint256 y) internal pure returns (uint256 result) {
         // Calculate the first iteration of the loop in advance.
         result = y & 1 > 0 ? x : SCALE;
 

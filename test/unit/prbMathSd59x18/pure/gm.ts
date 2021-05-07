@@ -12,7 +12,7 @@ import {
   SQRT_MAX_SD59x18_DIV_BY_SCALE,
   ZERO,
 } from "../../../../helpers/constants";
-import { fp } from "../../../../helpers/numbers";
+import { fp, sfp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeGm(): void {
   context("when the product of x and y is zero", function () {
@@ -43,13 +43,13 @@ export default function shouldBehaveLikeGm(): void {
   context("when the product of x and y is positive", function () {
     context("when the product of x and y overflows", function () {
       const testSets = [
-        [MIN_SD59x18, fp("0.000000000000000001")],
-        [MIN_SD59x18, fp("0.000000000000000002")],
-        [MIN_WHOLE_SD59x18, fp("0.000000000000000003")],
+        [MIN_SD59x18, sfp("1e-18")],
+        [MIN_SD59x18, sfp("2e-18")],
+        [MIN_WHOLE_SD59x18, sfp("3e-18")],
         [SQRT_MAX_SD59x18_DIV_BY_SCALE.mul(-1), SQRT_MAX_SD59x18_DIV_BY_SCALE.mul(-1).sub(1)],
         [SQRT_MAX_SD59x18_DIV_BY_SCALE.add(1), SQRT_MAX_SD59x18_DIV_BY_SCALE.add(1)],
-        [MAX_WHOLE_SD59x18, fp("0.000000000000000003")],
-        [MAX_SD59x18, fp("0.000000000000000002")],
+        [MAX_WHOLE_SD59x18, sfp("3e-18")],
+        [MAX_SD59x18, sfp("2e-18")],
       ];
 
       forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
@@ -59,7 +59,7 @@ export default function shouldBehaveLikeGm(): void {
 
     context("when the product of x and y does not overflow", function () {
       const testSets = [
-        [MIN_WHOLE_SD59x18, fp("-0.000000000000000001"), SQRT_MAX_SD59x18_DIV_BY_SCALE],
+        [MIN_WHOLE_SD59x18, sfp("-1e-18"), SQRT_MAX_SD59x18_DIV_BY_SCALE],
         [SQRT_MAX_SD59x18_DIV_BY_SCALE.mul(-1), SQRT_MAX_SD59x18_DIV_BY_SCALE.mul(-1), SQRT_MAX_SD59x18_DIV_BY_SCALE],
         [fp("-2404.8"), fp("-7899.210662"), fp("4358.442588812843362311")],
         [fp("-322.47"), fp("-674.77"), fp("466.468736251423392217")],
@@ -77,8 +77,8 @@ export default function shouldBehaveLikeGm(): void {
         [fp("322.47"), fp("674.77"), fp("466.468736251423392217")],
         [fp("2404.8"), fp("7899.210662"), fp("4358.442588812843362311")],
         [SQRT_MAX_SD59x18_DIV_BY_SCALE, SQRT_MAX_SD59x18_DIV_BY_SCALE, SQRT_MAX_SD59x18_DIV_BY_SCALE],
-        [MAX_WHOLE_SD59x18, fp("0.000000000000000001"), SQRT_MAX_SD59x18_DIV_BY_SCALE],
-        [MAX_SD59x18, fp("0.000000000000000001"), SQRT_MAX_SD59x18_DIV_BY_SCALE],
+        [MAX_WHOLE_SD59x18, sfp("1e-18"), SQRT_MAX_SD59x18_DIV_BY_SCALE],
+        [MAX_SD59x18, sfp("1e-18"), SQRT_MAX_SD59x18_DIV_BY_SCALE],
       ]);
 
       forEach(testSets).it(

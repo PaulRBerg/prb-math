@@ -11,11 +11,11 @@ import {
   PI,
   ZERO,
 } from "../../../../helpers/constants";
-import { fp } from "../../../../helpers/numbers";
+import { fp, sfp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeExp(): void {
   context("when x is zero", function () {
-    it("retrieves 1", async function () {
+    it("returns 1", async function () {
       const x: BigNumber = ZERO;
       const result: BigNumber = await this.contracts.prbMathSd59x18.doExp(x);
       expect(fp("1")).to.equal(result);
@@ -34,19 +34,19 @@ export default function shouldBehaveLikeExp(): void {
 
     context("when x is greater than or equal to -41.446531673892822322", function () {
       const testSets = [
-        [fp("-41.446531673892822322"), fp("0.000000000000000001")],
-        [fp("-33.333333"), fp("0.000000000000003338")],
-        [fp("-20.82"), fp("0.0000000009077973")],
-        [fp("-16"), fp("0.000000112535174719")],
-        [fp("-11.89215"), fp("0.000006843919254514")],
+        [fp("-41.446531673892822322"), sfp("1e-18")],
+        [fp("-33.333333"), sfp("3.338e-15")],
+        [fp("-20.82"), sfp("9.077973e-10")],
+        [fp("-16"), sfp("1.12535174719e-7")],
+        [fp("-11.89215"), sfp("6.843919254514e-6")],
         [fp("-4"), fp("0.01831563888873418")],
         [PI.mul(-1), fp("0.043213918263772249")],
         [fp("-3"), fp("0.049787068367863943")],
         [E.mul(-1), fp("0.065988035845312537")],
         [fp("-2"), fp("0.135335283236612692")],
         [fp("-1"), fp("0.367879441171442322")],
-        [fp("-0.000000000000001"), fp("0.999999999999999001")],
-        [fp("-0.000000000000000001"), fp("1")], // because this is very close to zero
+        [sfp("-1e-15"), fp("0.999999999999999001")],
+        [sfp("-1e-18"), fp("1")], // because this is very close to zero
       ];
 
       forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
@@ -67,8 +67,8 @@ export default function shouldBehaveLikeExp(): void {
 
     context("when x is less than 88.722839111672999628", function () {
       const testSets = [
-        [fp("0.000000000000000001"), fp("1")], // because this is very close to zero
-        [fp("0.000000000000001"), fp("1.000000000000001")],
+        [sfp("1e-18"), fp("1")], // because this is very close to zero
+        [sfp("1e-15"), fp("1.000000000000001")],
         [fp("1"), E.sub(1)], // precision errors
         [fp("2"), fp("7.389056098930650223")],
         [E, fp("15.154262241479264173")],

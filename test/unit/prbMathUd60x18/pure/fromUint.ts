@@ -3,7 +3,7 @@ import { expect } from "chai";
 import forEach from "mocha-each";
 
 import { MAX_UD60x18, MAX_WHOLE_UD60x18, SCALE } from "../../../../helpers/constants";
-import { bn, fp, fps } from "../../../../helpers/numbers";
+import { bn, fp, sfp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeFromUint(): void {
   context("when x is greater than max ud60x18 divided by scale", function () {
@@ -19,11 +19,11 @@ export default function shouldBehaveLikeFromUint(): void {
       [bn("1"), fp("1")],
       [bn("2"), fp("2")],
       [bn("1729"), fp("1729")],
-      [fp("1"), fps("1e18")],
-      [fp("5"), fps("5e18")],
-      [fps("1e18"), fps("1e36")],
-      [fps("2.7182e20"), fps("2.7182e38")],
-      [fps("3.1415e24"), fps("3.1415e42")],
+      [fp("1"), sfp("1e18")],
+      [fp("5"), sfp("5e18")],
+      [sfp("1e18"), sfp("1e36")],
+      [sfp("2.7182e20"), sfp("2.7182e38")],
+      [sfp("3.1415e24"), sfp("3.1415e42")],
       [MAX_WHOLE_UD60x18.div(SCALE), MAX_WHOLE_UD60x18],
     ];
 

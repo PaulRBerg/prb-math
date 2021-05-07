@@ -70,11 +70,6 @@ contract SignedConsumer {
     result = x.mul(y);
   }
 
-  /// @dev Note that "y" is a basic uint256 integer, not a fixed-point number.
-  function signedPow(int256 x, uint256 y) external pure returns (int256 result) {
-    result = x.pow(y);
-  }
-
   /// @dev Assuming that 1e18 = 100% and 1e16 = 1%.
   function signedYield(int256 principal, int256 apr) external pure returns (int256 result) {
     result = principal.mul(apr);
@@ -110,11 +105,6 @@ contract UnsignedConsumer {
     result = x.mul(y);
   }
 
-  /// @dev Note that "y" is a basic uint256 integer, not a fixed-point number.
-  function unsignedPow(uint256 x, uint256 y) external pure returns (uint256 result) {
-    result = x.pow(y);
-  }
-
   /// @dev Assuming that 1e18 = 100% and 1e16 = 1%.
   function unsignedYield(uint256 principal, uint256 apr) external pure returns (uint256 result) {
     result = principal.mul(apr);
@@ -126,7 +116,7 @@ contract UnsignedConsumer {
 ## Gas Efficiency
 
 PRBMath is faster than ABDKMath for `abs`, `exp`, `exp2`, `gm`, `inv`, `ln`,
-`log2`. Conversely, PRBMath is slower than ABDKMath for `avg`, `div`, `mul`, `pow` and `sqrt`. There are
+`log2`. Conversely, PRBMath is slower than ABDKMath for `avg`, `div`, `mul`, `powu` and `sqrt`. There are
 two technical reasons why PRBMath lags behind ABDKMath's `mul` and `div` functions:
 
 1. PRBMath operates with 256-bit word sizes, so it has to account for possible intermediary overflow. ABDKMath operates with
@@ -154,7 +144,7 @@ Based on v1.0.0 of the library.
 | log10   | 104 | 9074  | 4337 |     | log10   | 503  | 8695  | 4571 |
 | log2    | 377 | 7241  | 4243 |     | log2    | 330  | 6825  | 3426 |
 | mul     | 455 | 463   | 459  |     | mul     | 219  | 275   | 247  |
-| pow     | 293 | 24745 | 5681 |     | pow     | 83   | 24535 | 5471 |
+| powu    | 293 | 24745 | 5681 |     | powu    | 83   | 24535 | 5471 |
 | sqrt    | 140 | 839   | 716  |     | sqrt    | 114  | 846   | 710  |
 
 ### ABDKMath64x64

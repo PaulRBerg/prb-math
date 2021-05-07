@@ -3,7 +3,7 @@ import { expect } from "chai";
 import forEach from "mocha-each";
 
 import { E, LOG10_MAX_SD59x18, MAX_SD59x18, MAX_WHOLE_SD59x18, PI, ZERO } from "../../../../helpers/constants";
-import { fp, fps } from "../../../../helpers/numbers";
+import { fp, sfp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeLog10(): void {
   context("when x is zero", function () {
@@ -23,21 +23,21 @@ export default function shouldBehaveLikeLog10(): void {
   context("when x is positive", function () {
     context("when x is a power of ten", function () {
       const testSets = [
-        [fp("0.000000000000000001"), fp("-18")],
-        [fp("0.00000000000000001"), fp("-17")],
-        [fp("0.00000000000001"), fp("-14")],
-        [fp("0.0000000001"), fp("-10")],
-        [fp("0.00000001"), fp("-8")],
-        [fp("0.0000001"), fp("-7")],
+        [sfp("1e-18"), fp("-18")],
+        [sfp("1e-17"), fp("-17")],
+        [sfp("1e-14"), fp("-14")],
+        [sfp("1e-10"), fp("-10")],
+        [sfp("1e-8"), fp("-8")],
+        [sfp("1e-7"), fp("-7")],
         [fp("0.001"), fp("-3")],
         [fp("0.1"), fp("-1")],
         [fp("1"), ZERO],
         [fp("10"), fp("1")],
         [fp("100"), fp("2")],
-        [fps("1e18"), fp("18")],
-        [fps("1e49"), fp("49")],
-        [fps("1e57"), fp("57")],
-        [fps("1e58"), fp("58")],
+        [sfp("1e18"), fp("18")],
+        [sfp("1e49"), fp("49")],
+        [sfp("1e57"), fp("57")],
+        [sfp("1e58"), fp("58")],
       ];
 
       forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
@@ -54,7 +54,7 @@ export default function shouldBehaveLikeLog10(): void {
         [fp("0.1982"), fp("-7.028963498507434743")],
         [fp("0.313"), fp("-5.044556624535515126")],
         [fp("0.4666"), fp("-3.310552655422661758")],
-        [fp("1.000000000000010000"), fp("0.000000000000043414")],
+        [fp("1.000000000000010000"), sfp("4.3414e-14")],
         [E, fp("4.342944819032518246")],
         [PI, fp("4.971498726941338506")],
         [fp("4"), fp("6.020599913279623918")],

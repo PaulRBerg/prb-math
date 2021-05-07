@@ -3,7 +3,7 @@ import { expect } from "chai";
 import forEach from "mocha-each";
 
 import { MAX_UD60x18, MAX_WHOLE_UD60x18, PI, SCALE, ZERO } from "../../../../helpers/constants";
-import { fp, fps } from "../../../../helpers/numbers";
+import { fp, sfp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeDiv(): void {
   context("when the denominator is zero", function () {
@@ -16,7 +16,7 @@ export default function shouldBehaveLikeDiv(): void {
 
   context("when the denominator is not zero", function () {
     context("when the numerator is zero", function () {
-      const testSets = [fp("0.000000000000000001"), fp("1"), PI, fps("1e18")];
+      const testSets = [sfp("1e-18"), fp("1"), PI, sfp("1e18")];
 
       forEach(testSets).it("takes %e and returns zero", async function (y: BigNumber) {
         const result: BigNumber = await this.contracts.prbMathUd60x18.doDiv(ZERO, y);
@@ -27,8 +27,8 @@ export default function shouldBehaveLikeDiv(): void {
     context("when the numerator is not zero", function () {
       context("when the scaled numerator overflows", function () {
         const testSets = [
-          [MAX_UD60x18.div(SCALE).add(1), fp("0.000000000000000001")],
-          [MAX_UD60x18.div(SCALE).add(1), fp("0.000000000000000001")],
+          [MAX_UD60x18.div(SCALE).add(1), sfp("1e-18")],
+          [MAX_UD60x18.div(SCALE).add(1), sfp("1e-18")],
         ];
 
         forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
@@ -38,11 +38,11 @@ export default function shouldBehaveLikeDiv(): void {
 
       context("when the scaled numerator does not overflow", function () {
         const testSets = [
-          [fp("0.000000000000000001"), MAX_UD60x18, ZERO],
-          [fp("0.000000000000000001"), fp("1").add(1), ZERO],
-          [fp("0.000000000000000001"), fp("1"), fp("0.000000000000000001")],
-          [fp("0.00001"), fp("0.00001"), fp("1")],
-          [fp("0.00001"), fp("0.00002"), fp("0.5")],
+          [sfp("1e-18"), MAX_UD60x18, ZERO],
+          [sfp("1e-18"), fp("1").add(1), ZERO],
+          [sfp("1e-18"), fp("1"), sfp("1e-18")],
+          [sfp("1e-5"), sfp("1e-5"), fp("1")],
+          [sfp("1e-5"), fp("0.00002"), fp("0.5")],
           [fp("0.05"), fp("0.02"), fp("2.5")],
           [fp("0.1"), fp("0.01"), fp("10")],
           [fp("2"), fp("2"), fp("1")],
@@ -52,8 +52,8 @@ export default function shouldBehaveLikeDiv(): void {
           [fp("100.135"), fp("100.134"), fp("1.000009986617931971")],
           [fp("772.05"), fp("199.98"), fp("3.860636063606360636")],
           [fp("2503"), fp("918882.11"), fp("0.002723962054283546")],
-          [fps("1e18"), fp("1"), fps("1e18")],
-          [MAX_UD60x18.div(SCALE), fp("0.000000000000000001"), MAX_WHOLE_UD60x18],
+          [sfp("1e18"), fp("1"), sfp("1e18")],
+          [MAX_UD60x18.div(SCALE), sfp("1e-18"), MAX_WHOLE_UD60x18],
         ];
 
         forEach(testSets).it(

@@ -10,7 +10,7 @@ import {
   PI,
   ZERO,
 } from "../../../../helpers/constants";
-import { fp, fps } from "../../../../helpers/numbers";
+import { fp, sfp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeInv(): void {
   context("when x is zero", function () {
@@ -25,8 +25,8 @@ export default function shouldBehaveLikeInv(): void {
       const testSets = [
         [MIN_SD59x18, ZERO],
         [MIN_WHOLE_SD59x18, ZERO],
-        [fps("-1e18").sub(1), ZERO],
-        [fps("-1e18"), fp("-0.000000000000000001")],
+        [sfp("-1e18").sub(1), ZERO],
+        [sfp("-1e18"), sfp("-1e-18")],
         [fp("-2503"), fp("-0.000399520575309628")],
         [fp("-772.05"), fp("-0.001295252898128359")],
         [fp("-100.135"), fp("-0.00998651820042942")],
@@ -37,8 +37,8 @@ export default function shouldBehaveLikeInv(): void {
         [fp("-1"), fp("-1")],
         [fp("-0.1"), fp("-10")],
         [fp("-0.05"), fp("-20")],
-        [fp("-0.00001"), fps("-1e5")],
-        [fp("-0.000000000000000001"), fps("-1e18")],
+        [sfp("-1e-5"), sfp("-1e5")],
+        [sfp("-1e-18"), sfp("-1e18")],
       ];
 
       forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
@@ -49,8 +49,8 @@ export default function shouldBehaveLikeInv(): void {
 
     context("when x is positive", function () {
       const testSets = [
-        [fp("0.000000000000000001"), fps("1e18")],
-        [fp("0.00001"), fps("1e5")],
+        [sfp("1e-18"), sfp("1e18")],
+        [sfp("1e-5"), sfp("1e5")],
         [fp("0.05"), fp("20")],
         [fp("0.1"), fp("10")],
         [fp("1"), fp("1")],
@@ -61,8 +61,8 @@ export default function shouldBehaveLikeInv(): void {
         [fp("100.135"), fp("0.00998651820042942")],
         [fp("772.05"), fp("0.001295252898128359")],
         [fp("2503"), fp("0.000399520575309628")],
-        [fps("1e18"), fp("0.000000000000000001")],
-        [fps("1e18").add(1), ZERO],
+        [sfp("1e18"), sfp("1e-18")],
+        [sfp("1e18").add(1), ZERO],
         [MAX_WHOLE_SD59x18, ZERO],
         [MAX_SD59x18, ZERO],
       ];

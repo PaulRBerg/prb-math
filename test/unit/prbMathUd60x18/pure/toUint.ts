@@ -3,10 +3,10 @@ import { expect } from "chai";
 import forEach from "mocha-each";
 
 import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, SCALE, ZERO } from "../../../../helpers/constants";
-import { bn, fp, fps } from "../../../../helpers/numbers";
+import { bn, fp, sfp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeToUint(): void {
-  context("when x is less than scale", function () {
+  context("when x is less than the scale", function () {
     const testSets = [[ZERO], [bn("1")], [SCALE.sub(1)]];
 
     forEach(testSets).it("takes %e and returns 0", async function (x: BigNumber) {
@@ -15,7 +15,7 @@ export default function shouldBehaveLikeToUint(): void {
     });
   });
 
-  context("when x is greater than or equal to scale", function () {
+  context("when x is greater than or equal to the scale", function () {
     const testSets = [
       [SCALE, bn("1")],
       [SCALE.add(1), bn("1")],
@@ -24,7 +24,7 @@ export default function shouldBehaveLikeToUint(): void {
       [E, bn("2")],
       [PI, bn("3")],
       [fp("1729"), bn("1729")],
-      [fps("4.2e27"), fps("4.2e9")],
+      [sfp("4.2e27"), sfp("4.2e9")],
       [MAX_WHOLE_UD60x18, MAX_WHOLE_UD60x18.div(SCALE)],
       [MAX_UD60x18, MAX_UD60x18.div(SCALE)],
     ];

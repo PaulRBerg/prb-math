@@ -3,11 +3,11 @@ import { expect } from "chai";
 import forEach from "mocha-each";
 
 import { MAX_SD59x18, MAX_WHOLE_SD59x18, MIN_SD59x18, MIN_WHOLE_SD59x18, ZERO } from "../../../../helpers/constants";
-import { fp, fps } from "../../../../helpers/numbers";
+import { fp, sfp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeAvg(): void {
   context("when both operands are zero", function () {
-    it("retrieves zero", async function () {
+    it("returns zero", async function () {
       const result: BigNumber = await this.contracts.prbMathSd59x18.doAvg(ZERO, ZERO);
       expect(ZERO).to.equal(result);
     });
@@ -37,7 +37,7 @@ export default function shouldBehaveLikeAvg(): void {
       [fp("-2"), fp("8"), fp("3")],
       [fp("4"), fp("-4"), ZERO],
       [fp("8"), fp("-2"), fp("3")],
-      [MIN_SD59x18, MAX_SD59x18, fp("-0.000000000000000001")],
+      [MIN_SD59x18, MAX_SD59x18, sfp("-1e-18")],
     ];
 
     forEach(testSets).it(
@@ -52,7 +52,7 @@ export default function shouldBehaveLikeAvg(): void {
   context("when both operands are negative", function () {
     const testSets = [
       [MIN_WHOLE_SD59x18, MIN_SD59x18, MIN_SD59x18.add(MIN_WHOLE_SD59x18).div(2)],
-      [fp("0.000000000000000001"), fp("0.000000000000000003"), fp("0.000000000000000002")],
+      [sfp("1e-18"), sfp("3e-18"), sfp("2e-18")],
       [fp("100"), fp("200"), fp("150")],
       [fp("4"), fp("8"), fp("6")],
       [fp("1"), fp("1"), fp("1")],
@@ -71,11 +71,11 @@ export default function shouldBehaveLikeAvg(): void {
   context("when both operands are positive", function () {
     context("when both operands are odd", function () {
       const testSets = [
-        [fp("0.000000000000000001"), fp("0.000000000000000003"), fp("0.000000000000000002")],
+        [sfp("1e-18"), sfp("3e-18"), sfp("2e-18")],
         [fp("1"), fp("1"), fp("1")],
         [fp("3"), fp("7"), fp("5")],
         [fp("99"), fp("199"), fp("149")],
-        [fps("1e18").add(1), fps("1e19").add(1), fps("5.5e18").add(1)],
+        [sfp("1e18").add(1), sfp("1e19").add(1), sfp("5.5e18").add(1)],
         [MAX_SD59x18, MAX_SD59x18, MAX_SD59x18],
       ];
 
@@ -90,11 +90,11 @@ export default function shouldBehaveLikeAvg(): void {
 
     context("when both operands are even", function () {
       const testSets = [
-        [fp("0.000000000000000002"), fp("0.000000000000000004"), fp("0.000000000000000003")],
+        [sfp("2e-18"), sfp("4e-18"), sfp("3e-18")],
         [fp("2"), fp("2"), fp("2")],
         [fp("4"), fp("8"), fp("6")],
         [fp("100"), fp("200"), fp("150")],
-        [fps("1e18"), fps("1e19"), fps("5.5e18")],
+        [sfp("1e18"), sfp("1e19"), sfp("5.5e18")],
         [MIN_WHOLE_SD59x18, MIN_WHOLE_SD59x18, MIN_WHOLE_SD59x18],
       ];
 
@@ -109,11 +109,11 @@ export default function shouldBehaveLikeAvg(): void {
 
     context("when one operand is even and the other is odd", function () {
       const testSets = [
-        [fp("0.000000000000000001"), fp("0.000000000000000002"), fp("0.000000000000000001")],
+        [sfp("1e-18"), sfp("2e-18"), sfp("1e-18")],
         [fp("1"), fp("2"), fp("1.5")],
         [fp("3"), fp("8"), fp("5.5")],
         [fp("99"), fp("200"), fp("149.5")],
-        [fps("1e18"), fps("1e19").add(1), fps("5.5e18")],
+        [sfp("1e18"), sfp("1e19").add(1), sfp("5.5e18")],
         [MAX_WHOLE_SD59x18, MAX_SD59x18, MAX_SD59x18.add(MAX_WHOLE_SD59x18).div(2)],
       ];
 

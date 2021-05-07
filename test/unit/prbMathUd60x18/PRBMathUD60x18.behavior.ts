@@ -15,6 +15,7 @@ import shouldBehaveLikeLog2 from "./pure/log2";
 import shouldBehaveLikeMul from "./pure/mul";
 import shouldBehaveLikePiGetter from "./pure/pi";
 import shouldBehaveLikePow from "./pure/pow";
+import shouldBehaveLikePowu from "./pure/powu";
 import shouldBehaveLikeScaleGetter from "./pure/scale";
 import shouldBehaveLikeSqrt from "./pure/sqrt";
 import shouldBehaveLikeToUint from "./pure/toUint";
@@ -87,6 +88,10 @@ export function shouldBehaveLikePrbMathUd60x18(): void {
 
     describe("pow", function () {
       shouldBehaveLikePow();
+    });
+
+    describe("powu", function () {
+      shouldBehaveLikePowu();
     });
 
     describe("scale", function () {

@@ -3,11 +3,11 @@ import { expect } from "chai";
 import forEach from "mocha-each";
 
 import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, ZERO } from "../../../../helpers/constants";
-import { fp } from "../../../../helpers/numbers";
+import { fp, sfp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeExp(): void {
   context("when x is zero", function () {
-    it("retrieves 1", async function () {
+    it("returns 1", async function () {
       const x: BigNumber = ZERO;
       const result: BigNumber = await this.contracts.prbMathUd60x18.doExp(x);
       expect(fp("1")).to.equal(result);
@@ -25,8 +25,8 @@ export default function shouldBehaveLikeExp(): void {
 
     context("when x is less than 88.722839111672999628", function () {
       const testSets = [
-        [fp("0.000000000000000001"), fp("1")], // because this is very close to zero
-        [fp("0.000000000000001"), fp("1.000000000000001")],
+        [sfp("1e-18"), fp("1")], // because this is very close to zero
+        [sfp("1e-15"), fp("1.000000000000001")],
         [fp("1"), E.sub(1)], // precision errors
         [fp("2"), fp("7.389056098930650223")],
         [E, fp("15.154262241479264173")],

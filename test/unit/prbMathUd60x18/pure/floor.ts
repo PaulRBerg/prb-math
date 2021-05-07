@@ -3,11 +3,11 @@ import { expect } from "chai";
 import forEach from "mocha-each";
 
 import { MAX_UD60x18, MAX_WHOLE_UD60x18, PI, ZERO } from "../../../../helpers/constants";
-import { fp, fps } from "../../../../helpers/numbers";
+import { fp, sfp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeFloor(): void {
   context("when x is zero", function () {
-    it("retrieves zero", async function () {
+    it("returns zero", async function () {
       const x: BigNumber = ZERO;
       const result: BigNumber = await this.contracts.prbMathUd60x18.doFloor(x);
       expect(ZERO).to.equal(result);
@@ -23,7 +23,7 @@ export default function shouldBehaveLikeFloor(): void {
       [fp("2"), fp("2")],
       [PI, fp("3")],
       [fp("4.2"), fp("4")],
-      [fps("1e18"), fps("1e18")],
+      [sfp("1e18"), sfp("1e18")],
       [MAX_WHOLE_UD60x18, MAX_WHOLE_UD60x18],
       [MAX_UD60x18, MAX_WHOLE_UD60x18],
     ];

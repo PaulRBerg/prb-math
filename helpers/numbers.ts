@@ -15,7 +15,7 @@ export function fp(x: string): BigNumber {
   return parseFixed(x, precision);
 }
 
-export function fps(x: string): BigNumber {
+export function sfp(x: string): BigNumber {
   // Check if the input is in scientific notation.
   if (!/^(-?\d+)(\.\d+)?(e|e-)(\d+)$/.test(x)) {
     throw new Error(`Unknown format for fixed-point number in scientific notation: ${x}`);

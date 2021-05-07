@@ -10,11 +10,11 @@ import {
   PI,
   ZERO,
 } from "../../../../helpers/constants";
-import { fp, fps } from "../../../../helpers/numbers";
+import { fp, sfp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeCeil(): void {
   context("when x is zero", function () {
-    it("retrieves zero", async function () {
+    it("returns zero", async function () {
       const x: BigNumber = ZERO;
       const result: BigNumber = await this.contracts.prbMathSd59x18.doCeil(x);
       expect(ZERO).to.equal(result);
@@ -26,7 +26,7 @@ export default function shouldBehaveLikeCeil(): void {
       const testSets = [
         [MIN_SD59x18, MIN_WHOLE_SD59x18],
         [MIN_WHOLE_SD59x18, MIN_WHOLE_SD59x18],
-        [fps("-1e18"), fps("-1e18")],
+        [sfp("-1e18"), sfp("-1e18")],
         [fp("-4.2"), fp("-4")],
         [PI.mul(-1), fp("-3")],
         [fp("-2"), fp("-2")],
@@ -60,7 +60,7 @@ export default function shouldBehaveLikeCeil(): void {
           [fp("2"), fp("2")],
           [PI, fp("4")],
           [fp("4.2"), fp("5")],
-          [fps("1e18"), fps("1e18")],
+          [sfp("1e18"), sfp("1e18")],
           [MAX_WHOLE_SD59x18, MAX_WHOLE_SD59x18],
         ];
 
