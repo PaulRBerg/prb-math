@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2021-05-07
+
+### Added
+
+- New convertor functions `fromInt` and `toInt` in `PRBMathSD59x18.sol`.
+- New convertor functions `fromUint` and `toUint` in `PRBMathUD60x18.sol`.
+- New function `mulDivSigned` in `PRBMathCommon.sol`.
+- New function `pow` in `PRBMathSD59x18.sol` and `PRBMathUD60x18.sol`
+
+### Changed
+
+- Rename the previous `pow` function to `powu`
+- Use the fixed-point format in NatSpec comments.
+
+### Fixed
+
+- Minor typos in NatSpec comments.
+
 ## [1.0.5] - 2021-04-24
 
 ### Added
@@ -50,6 +68,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - First release of the library.
 
+[1.1.0]: https://github.com/hifi-finance/prb-math/compare/v1.0.5...v1.1.0
 [1.0.5]: https://github.com/hifi-finance/prb-math/compare/v1.0.4...v1.0.5
 [1.0.4]: https://github.com/hifi-finance/prb-math/compare/v1.0.3...v1.0.4
 [1.0.3]: https://github.com/hifi-finance/prb-math/compare/v1.0.2...v1.0.3

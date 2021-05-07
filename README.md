@@ -39,8 +39,6 @@ Or npm:
 npm install prb-math
 ```
 
-I adhere to [semver](https://semver.org/), so your contracts won't break unexpectedly when upgrading to a newer minor version of `prb-math`.
-
 ## Usage
 
 Once installed, you can use the libraries like this:
