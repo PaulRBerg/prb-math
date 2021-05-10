@@ -15,7 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 
-- Rename the previous `pow` function to `powu`
+- Rename the previous `pow` function to `powu`.
 - Use the fixed-point format in NatSpec comments.
 
 ### Fixed
