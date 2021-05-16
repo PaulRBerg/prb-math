@@ -405,9 +405,9 @@ library PRBMathUD60x18 {
     /// - All from "exp2", "log2" and "mul".
     /// - Assumes 0^0 is 1.
     ///
-    /// @param x Number to raise to given power y, as a signed 59.18-decimal fixed-point number.
-    /// @param y Exponent to raise x to, as a signed 59.18-decimal fixed-point number.
-    /// @return result x raised to power y, as a signed 59.18-decimal fixed-point number.
+    /// @param x Number to raise to given power y, as an unsigned 60.18-decimal fixed-point number.
+    /// @param y Exponent to raise x to, as an unsigned 60.18-decimal fixed-point number.
+    /// @return result x raised to power y, as an unsigned 60.18-decimal fixed-point number.
     function pow(uint256 x, uint256 y) internal pure returns (uint256 result) {
         if (x == 0) {
             return y == 0 ? SCALE : uint256(0);

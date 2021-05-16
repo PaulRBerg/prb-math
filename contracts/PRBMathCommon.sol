@@ -91,15 +91,15 @@ library PRBMathCommon {
             if (x & 0x20000000000000000 > 0) result = (result * 0x1000000000000000162E42FEFA39EF359) >> 128;
             if (x & 0x10000000000000000 > 0) result = (result * 0x10000000000000000B17217F7D1CF79AC) >> 128;
 
-            // We do two things at the same time below:
+            // We're doing two things at the same time:
             //
-            //     1. Multiply the result by 2^n + 1, where 2^n is the integer part and 1 is an extra bit to account
-            //        for the fact that we initially set the result to 0.5 We implement this by subtracting from 127
-            //        instead of 128.
-            //     2. Convert the result to the unsigned 60.18-decimal fixed-point format.
+            //   1. Multiply the result by 2^n + 1, where 2^n is the integer part and 1 is an extra bit to account
+            //      for the fact that we initially set the result to 0.5 We implement this by subtracting from 127
+            //      instead of 128.
+            //   2. Convert the result to the unsigned 60.18-decimal fixed-point format.
             //
             // This works because result * SCALE * 2^ip / 2^127 = result * SCALE / 2^(127 - ip), where ip is the integer
-            // part and SCALE / 2^128 is what converts the result to our unsigned fixed-point format.
+            // part and SCALE / 2^128 is what converts the result to the unsigned fixed-point format.
             result *= SCALE;
             result >>= (127 - (x >> 128));
         }
