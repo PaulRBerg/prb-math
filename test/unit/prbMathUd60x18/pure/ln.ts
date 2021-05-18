@@ -2,15 +2,7 @@ import { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
 import forEach from "mocha-each";
 
-import {
-  E,
-  EPSILON,
-  EPSILON_MAGNITUDE,
-  MAX_UD60x18,
-  MAX_WHOLE_UD60x18,
-  PI,
-  SCALE,
-} from "../../../../helpers/constants";
+import { E, EPSILON, EPSILON_MAGNITUDE, MAX_UD60x18, MAX_WHOLE_UD60x18, PI } from "../../../../helpers/constants";
 import { max } from "../../../../helpers/ethers.math";
 import { ln } from "../../../../helpers/math";
 import { bn, fp } from "../../../../helpers/numbers";

@@ -27,7 +27,7 @@ export default function shouldBehaveLikePow(): void {
     });
 
     context("when the exponent is not zero", function () {
-      const testSets = [fp("1"), fp(E), fp(PI)];
+      const testSets = [[fp("1")], [fp(E)], [fp(PI)]];
 
       forEach(testSets).it("takes %e and returns 0", async function (y: BigNumber) {
         const x: BigNumber = bn("0");
@@ -39,7 +39,7 @@ export default function shouldBehaveLikePow(): void {
 
   context("when the base is not zero", function () {
     context("when the exponent is zero", function () {
-      const testSets = [fp("1"), fp(E), fp(PI), fp(MAX_UD60x18)];
+      const testSets = [[fp("1")], [fp(E)], [fp(PI)], [fp(MAX_UD60x18)]];
       const expected: BigNumber = fp("1");
 
       forEach(testSets).it("takes %e and returns 1", async function (x: BigNumber) {
