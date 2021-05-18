@@ -2,7 +2,7 @@ import { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
 import forEach from "mocha-each";
 
-import { EPSILON, MAX_UD60x18, PI, SCALE } from "../../../../helpers/constants";
+import { MAX_UD60x18, PI, SCALE } from "../../../../helpers/constants";
 import { mbn } from "../../../../helpers/math";
 import { bn, fp } from "../../../../helpers/numbers";
 
@@ -61,8 +61,7 @@ export default function shouldBehaveLikeDiv(): void {
         forEach(testSets).it("takes %e and %e and returns the correct value", async function (x: string, y: string) {
           const result: BigNumber = await this.contracts.prbMathUd60x18.doDiv(fp(x), fp(y));
           const expected: BigNumber = fp(mbn(x).div(mbn(y)));
-          const delta: BigNumber = expected.sub(result).abs();
-          expect(delta).to.be.lte(EPSILON);
+          expect(expected).to.equal(result);
         });
       });
     });

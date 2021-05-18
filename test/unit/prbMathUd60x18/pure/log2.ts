@@ -2,7 +2,7 @@ import { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
 import forEach from "mocha-each";
 
-import { E, EPSILON, MAX_UD60x18, MAX_WHOLE_UD60x18, PI } from "../../../../helpers/constants";
+import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI } from "../../../../helpers/constants";
 import { log2 } from "../../../../helpers/math";
 import { bn, fp } from "../../../../helpers/numbers";
 
@@ -23,8 +23,7 @@ export default function shouldBehaveLikeLog2(): void {
       forEach(testSets).it("takes %e and returns the correct value", async function (x: string) {
         const result: BigNumber = await this.contracts.prbMathUd60x18.doLog2(fp(x));
         const expected: BigNumber = fp(log2(x));
-        const delta: BigNumber = expected.sub(result).abs();
-        expect(delta).to.be.lte(EPSILON);
+        expect(expected).to.be.near(result);
       });
     });
 
@@ -34,8 +33,7 @@ export default function shouldBehaveLikeLog2(): void {
       forEach(testSets).it("takes %e and returns the correct value", async function (x: string) {
         const result: BigNumber = await this.contracts.prbMathUd60x18.doLog2(fp(x));
         const expected: BigNumber = fp(log2(x));
-        const delta: BigNumber = expected.sub(result).abs();
-        expect(delta).to.be.lte(EPSILON);
+        expect(expected).to.be.near(result);
       });
     });
   });

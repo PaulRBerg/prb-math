@@ -56,8 +56,7 @@ export default function shouldBehaveLikeLog2(): void {
       forEach(testSets).it("takes %e and returns the correct value", async function (x: string) {
         const result: BigNumber = await this.contracts.prbMathSd59x18.doLog2(fp(x));
         const expected: BigNumber = fp(log2(x));
-        const delta: BigNumber = expected.sub(result).abs();
-        expect(delta).to.be.lte(EPSILON);
+        expect(expected).to.be.near(result);
       });
     });
   });

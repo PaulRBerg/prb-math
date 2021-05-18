@@ -2,10 +2,13 @@
 import { Signer } from "@ethersproject/abstract-signer";
 import { Wallet } from "@ethersproject/wallet";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
+import chai from "chai";
 import { ethers, waffle } from "hardhat";
 
 import { Contracts, Signers } from "../types/index";
+import { near } from "./assertions";
 
+chai.use(near);
 const { createFixtureLoader } = waffle;
 
 export function baseContext(description: string, hooks: () => void): void {

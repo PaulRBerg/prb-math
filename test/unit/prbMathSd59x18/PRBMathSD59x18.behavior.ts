@@ -75,7 +75,7 @@ export function shouldBehaveLikePrbMathSd59x18(): void {
       shouldBehaveLikeLn();
     });
 
-    describe.only("log10", function () {
+    describe("log10", function () {
       shouldBehaveLikeLog10();
     });
 

@@ -2,8 +2,7 @@ import { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
 import forEach from "mocha-each";
 
-import { E, EPSILON, EPSILON_MAGNITUDE, MAX_SD59x18, MAX_WHOLE_SD59x18, PI } from "../../../../helpers/constants";
-import { max } from "../../../../helpers/ethers.math";
+import { E, MAX_SD59x18, MAX_WHOLE_SD59x18, PI } from "../../../../helpers/constants";
 import { ln } from "../../../../helpers/math";
 import { bn, fp } from "../../../../helpers/numbers";
 
@@ -48,8 +47,7 @@ export default function shouldBehaveLikeLn(): void {
     forEach(testSets).it("takes %e and returns the correct value", async function (x: string) {
       const result: BigNumber = await this.contracts.prbMathSd59x18.doLn(fp(x));
       const expected: BigNumber = fp(ln(x));
-      const delta: BigNumber = expected.sub(result).abs();
-      expect(delta).to.be.lte(max(EPSILON, expected.div(EPSILON_MAGNITUDE)));
+      expect(expected).to.be.near(result);
     });
   });
 }

@@ -2,8 +2,7 @@ import { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
 import forEach from "mocha-each";
 
-import { E, EPSILON, EPSILON_MAGNITUDE, PI } from "../../../../helpers/constants";
-import { max } from "../../../../helpers/ethers.math";
+import { E, PI } from "../../../../helpers/constants";
 import { pow } from "../../../../helpers/math";
 import { bn, fp } from "../../../../helpers/numbers";
 
@@ -65,8 +64,7 @@ export default function shouldBehaveLikePow(): void {
         forEach(testSets).it("takes %e and %e and returns the correct value", async function (x: string, y: string) {
           const result: BigNumber = await this.contracts.prbMathUd60x18.doPow(fp(x), fp(y));
           const expected: BigNumber = fp(pow(x, y));
-          const delta: BigNumber = expected.sub(result).abs();
-          expect(delta).to.be.lte(max(EPSILON, expected.div(EPSILON_MAGNITUDE)));
+          expect(expected).to.be.near(result);
         });
       });
     });

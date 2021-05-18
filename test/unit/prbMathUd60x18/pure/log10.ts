@@ -2,16 +2,7 @@ import { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
 import forEach from "mocha-each";
 
-import {
-  E,
-  EPSILON,
-  EPSILON_MAGNITUDE,
-  MAX_UD60x18,
-  MAX_WHOLE_UD60x18,
-  PI,
-  SCALE,
-} from "../../../../helpers/constants";
-import { max } from "../../../../helpers/ethers.math";
+import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, SCALE } from "../../../../helpers/constants";
 import { log10 } from "../../../../helpers/math";
 import { bn, fp } from "../../../../helpers/numbers";
 
@@ -32,8 +23,7 @@ export default function shouldBehaveLikeLog10(): void {
       forEach(testSets).it("takes %e and returns the correct value", async function (x: string) {
         const result: BigNumber = await this.contracts.prbMathUd60x18.doLog10(fp(x));
         const expected: BigNumber = fp(log10(x));
-        const delta: BigNumber = expected.sub(result).abs();
-        expect(delta).to.be.lte(max(EPSILON, expected.div(EPSILON_MAGNITUDE)));
+        expect(expected).to.be.near(result);
       });
     });
 
@@ -56,8 +46,7 @@ export default function shouldBehaveLikeLog10(): void {
       forEach(testSets).it("takes %e and returns the correct value", async function (x: string) {
         const result: BigNumber = await this.contracts.prbMathUd60x18.doLog10(fp(x));
         const expected: BigNumber = fp(log10(x));
-        const delta: BigNumber = expected.sub(result).abs();
-        expect(delta).to.be.lte(max(EPSILON, expected.div(EPSILON_MAGNITUDE)));
+        expect(expected).to.be.near(result);
       });
     });
   });
