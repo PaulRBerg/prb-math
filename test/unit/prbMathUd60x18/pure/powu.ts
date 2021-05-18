@@ -68,7 +68,7 @@ export default function shouldBehaveLikePow(): void {
           ["478.77", "20"],
           ["6452.166", "7"],
           ["1e18", "2"],
-          ["38685626227668133590.597631999999999999", "3"], // Biggest number whose cube fits within MAX_SD59x18
+          ["48740834812604276470.692694885616578541", "3"], // Biggest number whose cube fits within MAX_UD60x18
           [SQRT_MAX_UD60x18, "2"],
           [MAX_WHOLE_UD60x18, "1"],
           [MAX_UD60x18, "1"],
