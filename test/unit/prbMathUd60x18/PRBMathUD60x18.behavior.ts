@@ -10,7 +10,6 @@ import shouldBehaveLikeFromUint from "./pure/fromUint";
 import shouldBehaveLikeGm from "./pure/gm";
 import shouldBehaveLikeInv from "./pure/inv";
 import shouldBehaveLikeLn from "./pure/ln";
-import shouldBehaveLikeLog10 from "./pure/log10";
 import shouldBehaveLikeLog2 from "./pure/log2";
 import shouldBehaveLikeMul from "./pure/mul";
 import shouldBehaveLikePiGetter from "./pure/pi";
@@ -68,10 +67,6 @@ export function shouldBehaveLikePrbMathUd60x18(): void {
 
     describe("ln", function () {
       shouldBehaveLikeLn();
-    });
-
-    describe("log10", function () {
-      shouldBehaveLikeLog10();
     });
 
     describe("log2", function () {

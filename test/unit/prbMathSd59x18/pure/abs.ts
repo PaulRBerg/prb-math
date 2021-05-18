@@ -2,22 +2,15 @@ import { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
 import forEach from "mocha-each";
 
-import {
-  MAX_SD59x18,
-  MAX_WHOLE_SD59x18,
-  MIN_SD59x18,
-  MIN_WHOLE_SD59x18,
-  PI,
-  ZERO,
-} from "../../../../helpers/constants";
-import { fp, sfp } from "../../../../helpers/numbers";
+import { MAX_SD59x18, MAX_WHOLE_SD59x18, MIN_SD59x18, MIN_WHOLE_SD59x18, PI } from "../../../../helpers/constants";
+import { bn, fp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeAbs(): void {
   context("when x is zero", function () {
-    it("returns zero", async function () {
-      const x: BigNumber = ZERO;
+    it("returns 0", async function () {
+      const x: BigNumber = bn("0");
       const result: BigNumber = await this.contracts.prbMathSd59x18.doAbs(x);
-      expect(ZERO).to.equal(result);
+      expect(bn("0")).to.equal(result);
     });
   });
 
@@ -25,27 +18,28 @@ export default function shouldBehaveLikeAbs(): void {
     context("when x is negative", function () {
       context("when x = min sd59x18", function () {
         it("reverts", async function () {
-          const x: BigNumber = MIN_SD59x18;
+          const x: BigNumber = fp(MIN_SD59x18);
           await expect(this.contracts.prbMathSd59x18.doAbs(x)).to.be.reverted;
         });
       });
 
       context("when x > min sd59x18", function () {
         const testSets = [
-          [MIN_SD59x18.add(1), MAX_SD59x18],
-          [MIN_WHOLE_SD59x18, MAX_WHOLE_SD59x18],
-          [sfp("-1e18"), sfp("1e18")],
-          [fp("-4.2"), fp("4.2")],
-          [fp("-2"), fp("2")],
-          [PI.mul(-1), PI],
-          [fp("-1.125"), fp("1.125")],
-          [fp("-1"), fp("1")],
-          [fp("-0.5"), fp("0.5")],
-          [fp("-0.1"), fp("0.1")],
+          [fp(MIN_SD59x18).add(1)],
+          [fp(MIN_WHOLE_SD59x18)],
+          [fp("-1e18")],
+          [fp("-4.2")],
+          [fp("-2")],
+          [fp(PI).mul(-1)],
+          [fp("-1.125")],
+          [fp("-1")],
+          [fp("-0.5")],
+          [fp("-0.1")],
         ];
 
-        forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
+        forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
           const result: BigNumber = await this.contracts.prbMathSd59x18.doAbs(x);
+          const expected: BigNumber = x.abs();
           expect(expected).to.equal(result);
         });
       });
@@ -54,20 +48,21 @@ export default function shouldBehaveLikeAbs(): void {
     context("when x is positive", function () {
       context("when x > min sd59x18", function () {
         const testSets = [
-          [fp("0.1"), fp("0.1")],
-          [fp("0.5"), fp("0.5")],
-          [fp("1"), fp("1")],
-          [fp("1.125"), fp("1.125")],
-          [fp("2"), fp("2")],
-          [PI, PI],
-          [fp("4.2"), fp("4.2")],
-          [sfp("1e18"), sfp("1e18")],
-          [MAX_WHOLE_SD59x18, MAX_WHOLE_SD59x18],
-          [MAX_SD59x18, MAX_SD59x18],
+          [fp("0.1")],
+          [fp("0.5")],
+          [fp("1")],
+          [fp("1.125")],
+          [fp("2")],
+          [fp(PI).mul(-1)],
+          [fp("4.2")],
+          [fp("1e18")],
+          [fp(MAX_WHOLE_SD59x18)],
+          [fp(MAX_SD59x18)],
         ];
 
-        forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
+        forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
           const result: BigNumber = await this.contracts.prbMathSd59x18.doAbs(x);
+          const expected: BigNumber = x.abs();
           expect(expected).to.equal(result);
         });
       });

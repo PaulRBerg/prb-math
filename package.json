@@ -21,6 +21,7 @@
     "@typechain/hardhat": "^1.0.1",
     "@types/chai": "^4.2.13",
     "@types/fs-extra": "^9.0.1",
+    "@types/mathjs": "^6.0.12",
     "@types/mocha": "^7.0.2",
     "@types/mocha-each": "^2.0.0",
     "@types/node": "^14.11.8",
@@ -42,6 +43,7 @@
     "husky": "^4.3.0",
     "import-sort-parser-typescript": "^6.0.0",
     "import-sort-style-module": "^6.0.0",
+    "mathjs": "^9.4.0",
     "mocha": "^8.1.3",
     "mocha-each": "^2.0.1",
     "prettier": "^2.1.2",
@@ -58,13 +60,6 @@
   "files": [
     "/contracts"
   ],
-  "keywords": [
-    "blockchain",
-    "ethereum",
-    "hardhat",
-    "smart-contracts",
-    "solidity"
-  ],
   "homepage": "https://github.com/hifi-finance/prb-math#readme",
   "importSort": {
     ".js, .jsx": {
@@ -76,6 +71,13 @@
       "style": "module"
     }
   },
+  "keywords": [
+    "blockchain",
+    "ethereum",
+    "hardhat",
+    "smart-contracts",
+    "solidity"
+  ],
   "license": "WTFPL",
   "publishConfig": {
     "access": "public"

@@ -1,61 +1,42 @@
 import { BigNumber, parseFixed } from "@ethersproject/bignumber";
 import fromExponential from "from-exponential";
+import { BigNumber as MathjsBigNumber } from "mathjs";
 
 export function bn(x: string): BigNumber {
-  return BigNumber.from(x);
+  let xs: string = x;
+  if (x.includes("e")) {
+    xs = fromExponential(x);
+  }
+  return BigNumber.from(xs);
 }
 
-export function fp(x: string): BigNumber {
-  // Check if x is either a whole number with up to 60 digits or a fixed-point number with up to 60 digits and up to 18 decimals.
-  if (!/^[-+]?(\d{1,60}|(?=\d+\.\d+)\d{1,60}\.\d{1,18})$/.test(x)) {
-    throw new Error(`Unknown format for fixed-point number: ${x}`);
+/// 1. Get the stringified value of x, but limit the number of decimals to 18.
+/// 2. Check if x is a whole number with up to 60 digits or a fixed-point number with up to 60 digits and up to 18
+///    decimals. If yes, convert the number to fixed-point representation and return it.
+/// 3. Otherwise, throw an error.
+export function fp(x: string | MathjsBigNumber): BigNumber {
+  let xs: string;
+  if (typeof x === "string") {
+    xs = x;
+    if (xs.includes("e")) {
+      xs = fromExponential(xs);
+    }
+  } else {
+    xs = String(x);
+    if (xs.includes("e")) {
+      xs = fromExponential(xs);
+    }
+    if (xs.includes(".")) {
+      const parts: string[] = xs.split(".");
+      parts[1] = parts[1].slice(0, 18);
+      xs = parts[0] + "." + parts[1];
+    }
   }
 
   const precision: number = 18;
-  return parseFixed(x, precision);
-}
-
-export function sfp(x: string): BigNumber {
-  // Check if the input is in scientific notation.
-  if (!/^(-?\d+)(\.\d+)?(e|e-)(\d+)$/.test(x)) {
-    throw new Error(`Unknown format for fixed-point number in scientific notation: ${x}`);
+  if (/^[-+]?(\d{1,60}|(?=\d+\.\d+)\d{1,60}\.\d{1,18})$/.test(xs)) {
+    return parseFixed(xs, precision);
+  } else {
+    throw new Error(`Unknown format for fixed-point number: ${xs}`);
   }
-
-  const precision: number = 18;
-  return parseFixed(fromExponential(x), precision);
-}
-
-export function fpPowOfTwo(exp: number | BigNumber): BigNumber {
-  const scale: BigNumber = BigNumber.from(10).pow(18);
-  return powOfTwo(exp).mul(scale);
-}
-
-export function maxInt(exp: number): BigNumber {
-  return powOfTwo(exp - 1).sub(1);
-}
-
-export function minInt(exp: number): BigNumber {
-  return powOfTwo(exp - 1).mul(-1);
-}
-
-export function maxUint(exp: number): BigNumber {
-  return BigNumber.from(2).pow(exp).sub(1);
-}
-
-export function powOfTwo(exp: number | BigNumber): BigNumber {
-  return BigNumber.from(2).pow(BigNumber.from(exp));
-}
-
-export function solidityMod(x: BigNumber, n: BigNumber): BigNumber {
-  let result = x.mod(n);
-  if (x.isNegative()) {
-    result = result.sub(n);
-  }
-  return result;
-}
-
-// See https://github.com/ethers-io/ethers.js/issues/1402.
-export function solidityModByScale(x: BigNumber): BigNumber {
-  const scale: BigNumber = BigNumber.from(10).pow(18);
-  return solidityMod(x, scale);
 }

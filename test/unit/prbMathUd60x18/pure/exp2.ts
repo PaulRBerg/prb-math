@@ -2,13 +2,15 @@ import { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
 import forEach from "mocha-each";
 
-import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, ZERO } from "../../../../helpers/constants";
-import { fp, fpPowOfTwo, sfp } from "../../../../helpers/numbers";
+import { E, EPSILON, EPSILON_MAGNITUDE, MAX_UD60x18, MAX_WHOLE_UD60x18, PI } from "../../../../helpers/constants";
+import { max } from "../../../../helpers/ethers.math";
+import { exp2 } from "../../../../helpers/math";
+import { bn, fp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeExp2(): void {
   context("when x is zero", function () {
     it("returns 1", async function () {
-      const x: BigNumber = ZERO;
+      const x: BigNumber = bn("0");
       const result: BigNumber = await this.contracts.prbMathUd60x18.doExp2(x);
       expect(fp("1")).to.equal(result);
     });
@@ -16,7 +18,7 @@ export default function shouldBehaveLikeExp2(): void {
 
   context("when x is positive", function () {
     context("when x is greater than or equal to 128", function () {
-      const testSets = [fp("128"), MAX_WHOLE_UD60x18, MAX_UD60x18];
+      const testSets = [fp("128"), fp(MAX_WHOLE_UD60x18), fp(MAX_UD60x18)];
 
       forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
         await expect(this.contracts.prbMathUd60x18.doExp2(x)).to.be.reverted;
@@ -25,29 +27,31 @@ export default function shouldBehaveLikeExp2(): void {
 
     context("when x is less than 128", function () {
       const testSets = [
-        [sfp("1e-18"), fp("1")], // because this is very close to zero
-        [sfp("1e-15"), fp("1.000000000000000693")],
-        [fp("1"), fp("2")],
-        [fp("2"), fp("4")],
-        [E, fp("6.580885991017920969")],
-        [fp("3"), fp("8")],
-        [PI, fp("8.82497782707628762")],
-        [fp("4"), fp("16")],
-        [fp("11.89215"), fp("3800.964933301542754554")],
-        [fp("16"), fpPowOfTwo(16)],
-        [fp("20.82"), fp("1851162.354076939434676257")],
-        [fp("33.333333"), fp("10822636909.12055349146569519")],
-        [fp("64"), fpPowOfTwo(64)],
-        [fp("71.002"), fp("2364458806372010440788.092434583131235911")],
-        [fp("88.7494"), fp("520273250104929479199852775.847460806142407818")],
-        [fp("95"), fpPowOfTwo(95)],
-        [fp("127"), fpPowOfTwo(127)],
-        [fp("128").sub(1), fp("340282366920938463220434743172917753977")],
+        ["1e-18"],
+        ["1e-15"],
+        ["1"],
+        ["2"],
+        [E],
+        ["3"],
+        [PI],
+        ["4"],
+        ["11.89215"],
+        ["16"],
+        ["20.82"],
+        ["33.333333"],
+        ["64"],
+        ["71.002"],
+        ["88.7494"],
+        ["95"],
+        ["127"],
+        ["127.999999999999999999"],
       ];
 
-      forEach(testSets).it("takes %e and returns %e", async function (x: BigNumber, expected: BigNumber) {
-        const result: BigNumber = await this.contracts.prbMathUd60x18.doExp2(x);
-        expect(expected).to.equal(result);
+      forEach(testSets).it("takes %e and returns the correct value", async function (x: string) {
+        const result: BigNumber = await this.contracts.prbMathUd60x18.doExp2(fp(x));
+        const expected: BigNumber = fp(exp2(x));
+        const delta: BigNumber = expected.sub(result).abs();
+        expect(delta).to.be.lte(max(EPSILON, expected.div(EPSILON_MAGNITUDE)));
       });
     });
   });

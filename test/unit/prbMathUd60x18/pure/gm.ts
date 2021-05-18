@@ -2,35 +2,29 @@ import { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
 import forEach from "mocha-each";
 
-import {
-  E,
-  MAX_UD60x18,
-  MAX_WHOLE_UD60x18,
-  PI,
-  SQRT_MAX_UD60x18_DIV_BY_SCALE,
-  ZERO,
-} from "../../../../helpers/constants";
-import { fp, sfp } from "../../../../helpers/numbers";
+import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, SQRT_MAX_UD60x18_DIV_BY_SCALE } from "../../../../helpers/constants";
+import { gm } from "../../../../helpers/math";
+import { bn, fp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeGm(): void {
   context("when the product of x and y is zero", function () {
     const testSets = [
-      [ZERO, PI],
-      [PI, ZERO],
+      [bn("0"), fp(PI)],
+      [fp(PI), bn("0")],
     ];
 
-    forEach(testSets).it("takes %e and %e and returns zero", async function (x: BigNumber, y: BigNumber) {
+    forEach(testSets).it("takes %e and %e and returns 0", async function (x: BigNumber, y: BigNumber) {
       const result: BigNumber = await this.contracts.prbMathUd60x18.doGm(x, y);
-      expect(ZERO).to.equal(result);
+      expect(bn("0")).to.equal(result);
     });
   });
 
   context("when the product of x and y is not zero", function () {
     context("when the product of x and y overflows", function () {
       const testSets = [
-        [SQRT_MAX_UD60x18_DIV_BY_SCALE.add(1), SQRT_MAX_UD60x18_DIV_BY_SCALE.add(1)],
-        [MAX_WHOLE_UD60x18, sfp("3e-18")],
-        [MAX_UD60x18, sfp("2e-18")],
+        [fp(SQRT_MAX_UD60x18_DIV_BY_SCALE).add(1), fp(SQRT_MAX_UD60x18_DIV_BY_SCALE).add(1)],
+        [fp(MAX_WHOLE_UD60x18), fp("3e-18")],
+        [fp(MAX_UD60x18), fp("2e-18")],
       ];
 
       forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
@@ -40,25 +34,23 @@ export default function shouldBehaveLikeGm(): void {
 
     context("when the product of x and y does not overflow", function () {
       const testSets = [
-        [fp("1"), fp("1"), fp("1")],
-        [fp("1"), fp("4"), fp("2")],
-        [fp("2"), fp("8"), fp("4")],
-        [E, fp("89.01"), fp("15.554879155787087514")],
-        [PI, fp("8.2"), fp("5.075535416036056441")],
-        [fp("322.47"), fp("674.77"), fp("466.468736251423392217")],
-        [fp("2404.8"), fp("7899.210662"), fp("4358.442588812843362311")],
-        [SQRT_MAX_UD60x18_DIV_BY_SCALE, SQRT_MAX_UD60x18_DIV_BY_SCALE, SQRT_MAX_UD60x18_DIV_BY_SCALE],
-        [MAX_WHOLE_UD60x18, sfp("1e-18"), SQRT_MAX_UD60x18_DIV_BY_SCALE],
-        [MAX_UD60x18, sfp("1e-18"), SQRT_MAX_UD60x18_DIV_BY_SCALE],
+        ["1", "1"],
+        ["1", "4"],
+        ["2", "8"],
+        [E, "89.01"],
+        [PI, "8.2"],
+        ["322.47", "674.77"],
+        ["2404.8", "7899.210662"],
+        [SQRT_MAX_UD60x18_DIV_BY_SCALE, SQRT_MAX_UD60x18_DIV_BY_SCALE],
+        [MAX_WHOLE_UD60x18, "1e-18"],
+        [MAX_UD60x18, "1e-18"],
       ];
 
-      forEach(testSets).it(
-        "takes %e and %e and returns %e",
-        async function (x: BigNumber, y: BigNumber, expected: BigNumber) {
-          const result = await this.contracts.prbMathUd60x18.doGm(x, y);
-          expect(expected).to.equal(result);
-        },
-      );
+      forEach(testSets).it("takes %e and %e and returns the correct value", async function (x: string, y: string) {
+        const result = await this.contracts.prbMathUd60x18.doGm(fp(x), fp(y));
+        const expected: BigNumber = fp(gm(x, y));
+        expect(expected).to.equal(result);
+      });
     });
   });
 }
