@@ -22,7 +22,7 @@ export function baseContext(description: string, hooks: () => void): void {
       this.signers.alice = signers[1];
 
       // Get rid of this when https://github.com/nomiclabs/hardhat/issues/849 gets fixed.
-      this.loadFixture = createFixtureLoader((signers as Signer[]) as Wallet[]);
+      this.loadFixture = createFixtureLoader(signers as Signer[] as Wallet[]);
     });
 
     hooks();
