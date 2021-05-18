@@ -11,6 +11,7 @@ import shouldBehaveLikeFromInt from "./pure/fromInt";
 import shouldBehaveLikeGm from "./pure/gm";
 import shouldBehaveLikeInv from "./pure/inv";
 import shouldBehaveLikeLn from "./pure/ln";
+import shouldBehaveLikeLog10 from "./pure/log10";
 import shouldBehaveLikeLog2 from "./pure/log2";
 import shouldBehaveLikeMul from "./pure/mul";
 import shouldBehaveLikePiGetter from "./pure/pi";
@@ -72,6 +73,10 @@ export function shouldBehaveLikePrbMathSd59x18(): void {
 
     describe("ln", function () {
       shouldBehaveLikeLn();
+    });
+
+    describe.only("log10", function () {
+      shouldBehaveLikeLog10();
     });
 
     describe("log2", function () {

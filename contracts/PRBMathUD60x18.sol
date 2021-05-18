@@ -327,7 +327,7 @@ library PRBMathUD60x18 {
 
         if (result == MAX_UD60x18) {
             // Do the fixed-point division inline to save gas. The denominator is log2(10).
-            unchecked { result = (log2(x) * SCALE) / 332192809488736234; }
+            unchecked { result = (log2(x) * SCALE) / 3321928094887362347; }
         }
     }
 
