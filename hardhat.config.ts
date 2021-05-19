@@ -1,6 +1,5 @@
 import "@nomiclabs/hardhat-waffle";
 import "@typechain/hardhat";
-import "hardhat-gas-reporter";
 import "solidity-coverage";
 
 import "./tasks/clean";
@@ -54,11 +53,6 @@ function createTestnetConfig(network: keyof typeof chainIds): NetworkUserConfig 
 
 const config: HardhatUserConfig = {
   defaultNetwork: "hardhat",
-  gasReporter: {
-    currency: "USD",
-    enabled: process.env.REPORT_GAS ? true : false,
-    src: "./contracts",
-  },
   networks: {
     hardhat: {
       accounts: {

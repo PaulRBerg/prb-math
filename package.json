@@ -42,7 +42,6 @@
     "from-exponential": "^1.0.0",
     "fs-extra": "^10.0.0",
     "hardhat": "^2.3.0",
-    "hardhat-gas-reporter": "^1.0.4",
     "husky": "^6.0.0",
     "import-sort-parser-typescript": "^6.0.0",
     "import-sort-style-module": "^6.0.0",
