@@ -1,5 +1,6 @@
 import { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
+import fp from "evm-fp";
 import forEach from "mocha-each";
 
 import {
@@ -11,7 +12,7 @@ import {
   PI,
   SCALE,
 } from "../../../../helpers/constants";
-import { bn, fp } from "../../../../helpers/numbers";
+import { bn } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeToInt(): void {
   context("when x is less the absolute value of scale", function () {

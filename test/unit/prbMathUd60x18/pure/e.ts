@@ -1,8 +1,8 @@
 import { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
+import fp from "evm-fp";
 
 import { E } from "../../../../helpers/constants";
-import { fp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeEGetter(): void {
   it("returns the e number", async function () {

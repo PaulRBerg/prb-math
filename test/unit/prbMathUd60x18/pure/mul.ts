@@ -1,10 +1,11 @@
 import { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
+import fp from "evm-fp";
 import forEach from "mocha-each";
 
 import { E, HALF_SCALE, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, SQRT_MAX_UD60x18 } from "../../../../helpers/constants";
 import { mul } from "../../../../helpers/ethers.math";
-import { bn, fp } from "../../../../helpers/numbers";
+import { bn } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeMul(): void {
   context("when one of the operands is zero", function () {

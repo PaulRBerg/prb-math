@@ -1,9 +1,10 @@
 import { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
+import fp from "evm-fp";
 import forEach from "mocha-each";
 
 import { MAX_UD60x18, MAX_WHOLE_UD60x18, SCALE } from "../../../../helpers/constants";
-import { bn, fp } from "../../../../helpers/numbers";
+import { bn } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeFromUint(): void {
   context("when x is greater than max ud60x18 divided by scale", function () {

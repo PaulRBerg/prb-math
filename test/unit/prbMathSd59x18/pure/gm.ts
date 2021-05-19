@@ -1,5 +1,6 @@
 import { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
+import fp from "evm-fp";
 import forEach from "mocha-each";
 
 import {
@@ -12,7 +13,7 @@ import {
   SQRT_MAX_SD59x18_DIV_BY_SCALE,
 } from "../../../../helpers/constants";
 import { gm } from "../../../../helpers/math";
-import { bn, fp } from "../../../../helpers/numbers";
+import { bn } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeGm(): void {
   context("when the product of x and y is zero", function () {

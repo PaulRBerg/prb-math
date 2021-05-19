@@ -1,8 +1,8 @@
 import { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
+import fp from "evm-fp";
 
 import { SCALE } from "../../../../helpers/constants";
-import { fp } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeScaleGetter(): void {
   it("returns the scale number", async function () {

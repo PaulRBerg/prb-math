@@ -1,6 +1,7 @@
 import { BigNumber } from "@ethersproject/bignumber";
+import fp from "evm-fp";
 
-import { bn, fp } from "./numbers";
+import { bn } from "./numbers";
 
 export const E: string = "2.718281828459045235";
 export const EPSILON: BigNumber = fp("1e-6");

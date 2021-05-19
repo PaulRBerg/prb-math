@@ -1,10 +1,11 @@
 import { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
+import fp from "evm-fp";
 import forEach from "mocha-each";
 
 import { E, EPSILON, MAX_SD59x18, MAX_WHOLE_SD59x18, PI } from "../../../../helpers/constants";
 import { log2 } from "../../../../helpers/math";
-import { bn, fp } from "../../../../helpers/numbers";
+import { bn } from "../../../../helpers/numbers";
 
 export default function shouldBehaveLikeLog2(): void {
   context("when x is zero", function () {
