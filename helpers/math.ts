@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { all, create } from "mathjs";
-import { BigNumber as MathjsBigNumber } from "mathjs";
+import { BigNumber as MathjsBigNumber, all, create } from "mathjs";
 
 const config = {
   number: "BigNumber",

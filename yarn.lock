@@ -5862,15 +5862,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"evm-fp@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "evm-fp@npm:1.0.0"
+"evm-fp@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "evm-fp@npm:1.0.1"
   dependencies:
     "@ethersproject/bignumber": ^5.1.1
     from-exponential: ^1.1.0
   peerDependencies:
     "@ethersproject/bignumber": ^5.1.1
-  checksum: 213a2b5952289e69e610cb8116411a4d9aa8489e1e5138ea080c2cbff9bedb0c33a717c04ec595f3b45d4fc7cfd8a5919933eaa56f98aba2ddfaf3da8cc105a6
+  checksum: 6422094d9f7c2a20a66d1e7c65047c316411d16cb022ed39067d751d83f5f436d065847f9bec2b9f7e5bb01300e9ae398501b4c4f9bb4253d15ca977c907a082
   languageName: node
   linkType: hard
 
@@ -10664,7 +10664,7 @@ fsevents@~2.3.1:
     eslint-config-prettier: ^8.3.0
     ethereum-waffle: ^3.3.0
     ethers: ^5.1.4
-    evm-fp: ^1.0.0
+    evm-fp: ^1.0.1
     from-exponential: ^1.0.0
     fs-extra: ^10.0.0
     hardhat: ^2.3.0
