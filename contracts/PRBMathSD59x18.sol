@@ -10,6 +10,8 @@ import "./PRBMath.sol";
 /// a sign and there can be up to 59 digits in the integer part and up to 18 decimals in the fractional part. The numbers
 /// are bound by the minimum and the maximum values permitted by the Solidity type int256.
 library PRBMathSD59x18 {
+    /// STORAGE ///
+
     /// @dev log2(e) as a signed 59.18-decimal fixed-point number.
     int256 internal constant LOG2_E = 1442695040888963407;
 
@@ -45,6 +47,15 @@ library PRBMathSD59x18 {
             require(x.value > MIN_SD59x18);
             result = PRBMath.SD59x18({ value: x.value < 0 ? -x.value : x.value });
         }
+    }
+
+    /// @notice Adds two signed 59.18-decimal fixed-point numbers together, returning a new signed 59.18-decimal
+    /// fixed-point number.
+    /// @param x The first signed 59.18-decimal fixed-point number to add.
+    /// @param y The second signed 59.18-decimal fixed-point number to add.
+    /// @param result The result as a signed 59.18 decimal fixed-point number.
+    function add(PRBMath.SD59x18 memory x, PRBMath.SD59x18 memory y) internal pure returns (PRBMath.SD59x18 memory result) {
+        result = PRBMath.SD59x18({ value: x.value + y.value });
     }
 
     /// @notice Calculates arithmetic average of x and y, rounding down.
@@ -641,6 +652,15 @@ library PRBMathSD59x18 {
             int256 rValue = int256(PRBMath.sqrt(uint256(x.value * SCALE)));
             result = PRBMath.SD59x18({ value: rValue });
         }
+    }
+
+    /// @notice Subtracts one signed 59.18-decimal fixed-point number from another one, returning a new signed 59.18-decimal
+    /// fixed-point number.
+    /// @param x The signed 59.18-decimal fixed-point number from which to subtract the other one.
+    /// @param y The signed 59.18-decimal fixed-point number to subtract from the other one.
+    /// @param result The result as a signed 59.18 decimal fixed-point number.
+    function sub(PRBMath.SD59x18 memory x, PRBMath.SD59x18 memory y) internal pure returns (PRBMath.SD59x18 memory result) {
+        result = PRBMath.SD59x18({ value: x.value - y.value });
     }
 
     /// @notice Converts a signed 59.18-decimal fixed-point number to basic integer form, rounding down in the process.

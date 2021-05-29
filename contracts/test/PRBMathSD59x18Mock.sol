@@ -10,6 +10,12 @@ contract PRBMathSD59x18Mock {
         result = PRBMathSD59x18.abs(xsd).value;
     }
 
+    function doAdd(int256 x, int256 y) external pure returns (int256 result) {
+        PRBMath.SD59x18 memory xsd = PRBMath.SD59x18({ value: x });
+        PRBMath.SD59x18 memory ysd = PRBMath.SD59x18({ value: y });
+        result = PRBMathSD59x18.add(xsd, ysd).value;
+    }
+
     function doAvg(int256 x, int256 y) external pure returns (int256 result) {
         PRBMath.SD59x18 memory xsd = PRBMath.SD59x18({ value: x });
         PRBMath.SD59x18 memory ysd = PRBMath.SD59x18({ value: y });
@@ -97,6 +103,12 @@ contract PRBMathSD59x18Mock {
     function doSqrt(int256 x) external pure returns (int256 result) {
         PRBMath.SD59x18 memory xsd = PRBMath.SD59x18({ value: x });
         result = PRBMathSD59x18.sqrt(xsd).value;
+    }
+
+    function doSub(int256 x, int256 y) external pure returns (int256 result) {
+        PRBMath.SD59x18 memory xsd = PRBMath.SD59x18({ value: x });
+        PRBMath.SD59x18 memory ysd = PRBMath.SD59x18({ value: y });
+        result = PRBMathSD59x18.sub(xsd, ysd).value;
     }
 
     function doToInt(int256 x) external pure returns (int256 result) {

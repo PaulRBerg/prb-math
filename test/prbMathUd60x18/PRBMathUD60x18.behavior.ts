@@ -1,3 +1,4 @@
+import shouldBehaveLikeAdd from "./pure/add";
 import shouldBehaveLikeAvg from "./pure/avg";
 import shouldBehaveLikeCeil from "./pure/ceil";
 import shouldBehaveLikeDiv from "./pure/div";
@@ -18,10 +19,15 @@ import shouldBehaveLikePow from "./pure/pow";
 import shouldBehaveLikePowu from "./pure/powu";
 import shouldBehaveLikeScaleGetter from "./pure/scale";
 import shouldBehaveLikeSqrt from "./pure/sqrt";
+import shouldBehaveLikeSub from "./pure/sub";
 import shouldBehaveLikeToUint from "./pure/toUint";
 
 export function shouldBehaveLikePrbMathUd60x18(): void {
   describe("Pure Functions", function () {
+    describe("add", function () {
+      shouldBehaveLikeAdd();
+    });
+
     describe("avg", function () {
       shouldBehaveLikeAvg();
     });
@@ -100,6 +106,10 @@ export function shouldBehaveLikePrbMathUd60x18(): void {
 
     describe("sqrt", function () {
       shouldBehaveLikeSqrt();
+    });
+
+    describe("sub", function () {
+      shouldBehaveLikeSub();
     });
 
     describe("toUint", function () {

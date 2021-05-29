@@ -10,6 +10,8 @@ import "./PRBMath.sol";
 /// digits in the integer part and up to 18 decimals in the fractional part. The numbers are bound by the minimum and the
 /// maximum values permitted by the Solidity type uint256.
 library PRBMathUD60x18 {
+    /// STORAGE ///
+
     /// @dev Half the SCALE number.
     uint256 internal constant HALF_SCALE = 5e17;
 
@@ -24,6 +26,19 @@ library PRBMathUD60x18 {
 
     /// @dev How many trailing decimals can be represented.
     uint256 internal constant SCALE = 1e18;
+
+    /// @notice Adds two unsigned 60.18-decimal fixed-point numbers together, returning a new unsigned 60.18-decimal
+    /// fixed-point number.
+    /// @param x The first unsigned 60.18-decimal fixed-point number to add.
+    /// @param y The second unsigned 60.18-decimal fixed-point number to add.
+    /// @param result The result as an unsigned 59.18 decimal fixed-point number.
+    function add(PRBMath.UD60x18 memory x, PRBMath.UD60x18 memory y) internal pure returns (PRBMath.UD60x18 memory result) {
+        unchecked {
+            uint256 rValue = x.value + y.value;
+            require(rValue >= x.value);
+            result = PRBMath.UD60x18({ value: rValue });
+        }
+    }
 
     /// @notice Calculates arithmetic average of x and y, rounding down.
     /// @param x The first operand as an unsigned 60.18-decimal fixed-point number.
@@ -495,6 +510,18 @@ library PRBMathUD60x18 {
             // Multiply x by the SCALE to account for the factor of SCALE that is picked up when multiplying two unsigned
             // 60.18-decimal fixed-point numbers together (in this case, those two numbers are both the square root).
             result = PRBMath.UD60x18({ value: PRBMath.sqrt(x.value * SCALE) });
+        }
+    }
+
+    /// @notice Subtracts one unsigned 60.18-decimal fixed-point number from another one, returning a new unsigned 60.18-decimal
+    /// fixed-point number.
+    /// @param x The unsigned 60.18-decimal fixed-point number to subtract from.
+    /// @param y The unsigned 60.18-decimal fixed-point number to subtract.
+    /// @param result The result as an unsigned 60.18 decimal fixed-point number.
+    function sub(PRBMath.UD60x18 memory x, PRBMath.UD60x18 memory y) internal pure returns (PRBMath.UD60x18 memory result) {
+        unchecked {
+            require(x.value >= y.value);
+            result = PRBMath.UD60x18({ value: x.value - y.value });
         }
     }
 

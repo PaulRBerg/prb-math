@@ -5,6 +5,12 @@ import "../PRBMath.sol";
 import "../PRBMathUD60x18.sol";
 
 contract PRBMathUD60x18Mock {
+    function doAdd(uint256 x, uint256 y) external pure returns (uint256 result) {
+        PRBMath.UD60x18 memory xud = PRBMath.UD60x18({ value: x });
+        PRBMath.UD60x18 memory yud = PRBMath.UD60x18({ value: y });
+        result = PRBMathUD60x18.add(xud, yud).value;
+    }
+
     function doAvg(uint256 x, uint256 y) external pure returns (uint256 result) {
         PRBMath.UD60x18 memory xud = PRBMath.UD60x18({ value: x });
         PRBMath.UD60x18 memory yud = PRBMath.UD60x18({ value: y });
@@ -92,6 +98,12 @@ contract PRBMathUD60x18Mock {
     function doSqrt(uint256 x) external pure returns (uint256 result) {
         PRBMath.UD60x18 memory xud = PRBMath.UD60x18({ value: x });
         result = PRBMathUD60x18.sqrt(xud).value;
+    }
+
+    function doSub(uint256 x, uint256 y) external pure returns (uint256 result) {
+        PRBMath.UD60x18 memory xud = PRBMath.UD60x18({ value: x });
+        PRBMath.UD60x18 memory yud = PRBMath.UD60x18({ value: y });
+        result = PRBMathUD60x18.sub(xud, yud).value;
     }
 
     function doToUint(uint256 x) external pure returns (uint256 result) {
