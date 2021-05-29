@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: WTFPL
 pragma solidity >=0.8.0;
 
-import "./PRBMathCommon.sol";
+import "./PRBMath.sol";
 
 /// @title PRBMathSD59x18
 /// @author Paul Razvan Berg
@@ -40,10 +40,10 @@ library PRBMathSD59x18 {
     ///
     /// @param x The number to calculate the absolute value for.
     /// @param result The absolute value of x.
-    function abs(int256 x) internal pure returns (int256 result) {
+    function abs(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
         unchecked {
-            require(x > MIN_SD59x18);
-            result = x < 0 ? -x : x;
+            require(x.value > MIN_SD59x18);
+            result = PRBMath.SD59x18({ value: x.value < 0 ? -x.value : x.value });
         }
     }
 
@@ -51,12 +51,13 @@ library PRBMathSD59x18 {
     /// @param x The first operand as a signed 59.18-decimal fixed-point number.
     /// @param y The second operand as a signed 59.18-decimal fixed-point number.
     /// @return result The arithmetic average as a signed 59.18-decimal fixed-point number.
-    function avg(int256 x, int256 y) internal pure returns (int256 result) {
+    function avg(PRBMath.SD59x18 memory x, PRBMath.SD59x18 memory y) internal pure returns (PRBMath.SD59x18 memory result) {
         // The operations can never overflow.
         unchecked {
             // The last operand checks if both x and y are odd and if that is the case, we add 1 to the result. We need
             // to do this because if both numbers are odd, the 0.5 remainder gets truncated twice.
-            result = (x >> 1) + (y >> 1) + (x & y & 1);
+            int256 rValue = (x.value >> 1) + (y.value >> 1) + (x.value & y.value & 1);
+            result = PRBMath.SD59x18({ value: rValue });
         }
     }
 
@@ -70,18 +71,19 @@ library PRBMathSD59x18 {
     ///
     /// @param x The signed 59.18-decimal fixed-point number to ceil.
     /// @param result The least integer greater than or equal to x, as a signed 58.18-decimal fixed-point number.
-    function ceil(int256 x) internal pure returns (int256 result) {
-        require(x <= MAX_WHOLE_SD59x18);
+    function ceil(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
+        require(x.value <= MAX_WHOLE_SD59x18);
         unchecked {
-            int256 remainder = x % SCALE;
+            int256 remainder = x.value % SCALE;
             if (remainder == 0) {
                 result = x;
             } else {
                 // Solidity uses C fmod style, which returns a modulus with the same sign as x.
-                result = x - remainder;
-                if (x > 0) {
-                    result += SCALE;
+                int256 rValue = x.value - remainder;
+                if (x.value > 0) {
+                    rValue += SCALE;
                 }
+                result = PRBMath.SD59x18({ value: rValue });
             }
         }
     }
@@ -91,50 +93,52 @@ library PRBMathSD59x18 {
     /// @dev Variant of "mulDiv" that works with signed numbers. Works by computing the signs and the absolute values separately.
     ///
     /// Requirements:
-    /// - All from "PRBMathCommon.mulDiv".
+    /// - All from "PRBMath.mulDiv".
     /// - None of the inputs can be type(int256).min.
     /// - y cannot be zero.
     /// - The result must fit within int256.
     ///
     /// Caveats:
-    /// - All from "PRBMathCommon.mulDiv".
+    /// - All from "PRBMath.mulDiv".
     ///
     /// @param x The numerator as a signed 59.18-decimal fixed-point number.
     /// @param y The denominator as a signed 59.18-decimal fixed-point number.
     /// @param result The quotient as a signed 59.18-decimal fixed-point number.
-    function div(int256 x, int256 y) internal pure returns (int256 result) {
-        require(x > type(int256).min);
-        require(y > type(int256).min);
+    function div(PRBMath.SD59x18 memory x, PRBMath.SD59x18 memory y) internal pure returns (PRBMath.SD59x18 memory result) {
+        int256 xValue = x.value;
+        int256 yValue = y.value;
+        require(xValue > type(int256).min);
+        require(yValue > type(int256).min);
 
         // Get hold of the absolute values of x and y.
         uint256 ax;
         uint256 ay;
         unchecked {
-            ax = x < 0 ? uint256(-x) : uint256(x);
-            ay = y < 0 ? uint256(-y) : uint256(y);
+            ax = xValue < 0 ? uint256(-xValue) : uint256(xValue);
+            ay = yValue < 0 ? uint256(-yValue) : uint256(yValue);
         }
 
         // Compute the absolute value of (x*SCALE)÷y. The result must fit within int256.
-        uint256 resultUnsigned = PRBMathCommon.mulDiv(ax, uint256(SCALE), ay);
-        require(resultUnsigned <= uint256(type(int256).max));
+        uint256 rUnsigned = PRBMath.mulDiv(ax, uint256(SCALE), ay);
+        require(rUnsigned <= uint256(type(int256).max));
 
         // Get the signs of x and y.
         uint256 sx;
         uint256 sy;
         assembly {
-            sx := sgt(x, sub(0, 1))
-            sy := sgt(y, sub(0, 1))
+            sx := sgt(xValue, sub(0, 1))
+            sy := sgt(yValue, sub(0, 1))
         }
 
         // XOR over sx and sy. This is basically checking whether the inputs have the same sign. If yes, the result
         // should be positive. Otherwise, it should be negative.
-        result = sx ^ sy == 1 ? -int256(resultUnsigned) : int256(resultUnsigned);
+        result = PRBMath.SD59x18({ value: sx ^ sy == 1 ? -int256(rUnsigned) : int256(rUnsigned) });
     }
 
     /// @notice Returns Euler's number as a signed 59.18-decimal fixed-point number.
     /// @dev See https://en.wikipedia.org/wiki/E_(mathematical_constant).
-    function e() internal pure returns (int256 result) {
-        result = 2718281828459045235;
+    function e() internal pure returns (PRBMath.SD59x18 memory result) {
+        result = PRBMath.SD59x18({ value: 2718281828459045235 });
     }
 
     /// @notice Calculates the natural exponent of x.
@@ -151,19 +155,20 @@ library PRBMathSD59x18 {
     ///
     /// @param x The exponent as a signed 59.18-decimal fixed-point number.
     /// @return result The result as a signed 59.18-decimal fixed-point number.
-    function exp(int256 x) internal pure returns (int256 result) {
+    function exp(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
         // Without this check, the value passed to "exp2" would be less than -59.794705707972522261.
-        if (x < -41446531673892822322) {
-            return 0;
+        if (x.value < -41446531673892822322) {
+            return PRBMath.SD59x18({ value: 0 });
         }
 
         // Without this check, the value passed to "exp2" would be greater than 128e18.
-        require(x < 88722839111672999628);
+        require(x.value < 88722839111672999628);
 
         // Do the fixed-point multiplication inline to save gas.
         unchecked {
-            int256 doubleScaleProduct = x * LOG2_E;
-            result = exp2((doubleScaleProduct + HALF_SCALE) / SCALE);
+            int256 doubleScaleProduct = x.value * LOG2_E;
+            PRBMath.SD59x18 memory exponent = PRBMath.SD59x18({ value: (doubleScaleProduct + HALF_SCALE) / SCALE });
+            result = exp2(exponent);
         }
     }
 
@@ -180,26 +185,29 @@ library PRBMathSD59x18 {
     ///
     /// @param x The exponent as a signed 59.18-decimal fixed-point number.
     /// @return result The result as a signed 59.18-decimal fixed-point number.
-    function exp2(int256 x) internal pure returns (int256 result) {
+    function exp2(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
         // This works because 2^(-x) = 1/2^x.
-        if (x < 0) {
+        if (x.value < 0) {
             // 2**59.794705707972522262 is the maximum number whose inverse does not truncate down to zero.
-            if (x < -59794705707972522261) {
-                return 0;
+            if (x.value < -59794705707972522261) {
+                return PRBMath.SD59x18({ value: 0 });
             }
 
             // Do the fixed-point inversion inline to save gas. The numerator is SCALE * SCALE.
-            unchecked { result = 1e36 / exp2(-x); }
+            unchecked {
+                PRBMath.SD59x18 memory exponent = PRBMath.SD59x18({ value: -x.value });
+                result = PRBMath.SD59x18({ value: 1e36 / exp2(exponent).value });
+            }
         } else {
             // 2**128 doesn't fit within the 128.128-bit fixed-point representation.
-            require(x < 128e18);
+            require(x.value < 128e18);
 
             unchecked {
                 // Convert x to the 128.128-bit fixed-point format.
-                uint256 x128x128 = (uint256(x) << 128) / uint256(SCALE);
+                uint256 x128x128 = (uint256(x.value) << 128) / uint256(SCALE);
 
                 // Safe to convert the result to int256 directly because the maximum input allowed is 128e18.
-                result = int256(PRBMathCommon.exp2(x128x128));
+                result = PRBMath.SD59x18({ value: int256(PRBMath.exp2(x128x128)) });
             }
         }
     }
@@ -214,18 +222,19 @@ library PRBMathSD59x18 {
     ///
     /// @param x The signed 59.18-decimal fixed-point number to floor.
     /// @param result The greatest integer less than or equal to x, as a signed 58.18-decimal fixed-point number.
-    function floor(int256 x) internal pure returns (int256 result) {
-        require(x >= MIN_WHOLE_SD59x18);
+    function floor(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
+        require(x.value >= MIN_WHOLE_SD59x18);
         unchecked {
-            int256 remainder = x % SCALE;
+            int256 remainder = x.value % SCALE;
             if (remainder == 0) {
                 result = x;
             } else {
                 // Solidity uses C fmod style, which returns a modulus with the same sign as x.
-                result = x - remainder;
-                if (x < 0) {
-                    result -= SCALE;
+                int256 rValue = x.value - remainder;
+                if (x.value < 0) {
+                    rValue -= SCALE;
                 }
+                result = PRBMath.SD59x18({ value: rValue });
             }
         }
     }
@@ -235,8 +244,8 @@ library PRBMathSD59x18 {
     /// @dev Based on the odd function definition. https://en.wikipedia.org/wiki/Fractional_part
     /// @param x The signed 59.18-decimal fixed-point number to get the fractional part of.
     /// @param result The fractional part of x as a signed 59.18-decimal fixed-point number.
-    function frac(int256 x) internal pure returns (int256 result) {
-        unchecked { result = x % SCALE; }
+    function frac(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
+        unchecked { result = PRBMath.SD59x18({ value: x.value % SCALE }); }
     }
 
     /// @notice Converts a number from basic integer form to signed 59.18-decimal fixed-point representation.
@@ -247,10 +256,10 @@ library PRBMathSD59x18 {
     ///
     /// @param x The basic integer to convert.
     /// @param result The same number in signed 59.18-decimal fixed-point representation.
-    function fromInt(int256 x) internal pure returns (int256 result) {
+    function fromInt(int256 x) internal pure returns (PRBMath.SD59x18 memory result) {
         unchecked {
             require(x >= MIN_SD59x18 / SCALE && x <= MAX_SD59x18 / SCALE);
-            result = x * SCALE;
+            result = PRBMath.SD59x18({ value: x * SCALE });
         }
     }
 
@@ -263,22 +272,22 @@ library PRBMathSD59x18 {
     /// @param x The first operand as a signed 59.18-decimal fixed-point number.
     /// @param y The second operand as a signed 59.18-decimal fixed-point number.
     /// @return result The result as a signed 59.18-decimal fixed-point number.
-    function gm(int256 x, int256 y) internal pure returns (int256 result) {
-        if (x == 0) {
-            return 0;
+    function gm(PRBMath.SD59x18 memory x, PRBMath.SD59x18 memory y) internal pure returns (PRBMath.SD59x18 memory result) {
+        if (x.value == 0) {
+            return PRBMath.SD59x18({ value: 0 });
         }
 
         unchecked {
             // Checking for overflow this way is faster than letting Solidity do it.
-            int256 xy = x * y;
-            require(xy / x == y);
+            int256 xy = x.value * y.value;
+            require(xy / x.value == y.value);
 
             // The product cannot be negative.
             require(xy >= 0);
 
             // We don't need to multiply by the SCALE here because the x*y product had already picked up a factor of SCALE
             // during multiplication. See the comments within the "sqrt" function.
-            result = int256(PRBMathCommon.sqrt(uint256(xy)));
+            result = PRBMath.SD59x18({ value: int256(PRBMath.sqrt(uint256(xy))) });
         }
     }
 
@@ -289,10 +298,10 @@ library PRBMathSD59x18 {
     ///
     /// @param x The signed 59.18-decimal fixed-point number for which to calculate the inverse.
     /// @return result The inverse as a signed 59.18-decimal fixed-point number.
-    function inv(int256 x) internal pure returns (int256 result) {
+    function inv(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
         unchecked {
             // 1e36 is SCALE * SCALE.
-            result = 1e36 / x;
+            result = PRBMath.SD59x18({ value: 1e36 / x.value });
         }
     }
 
@@ -309,10 +318,13 @@ library PRBMathSD59x18 {
     ///
     /// @param x The signed 59.18-decimal fixed-point number for which to calculate the natural logarithm.
     /// @return result The natural logarithm as a signed 59.18-decimal fixed-point number.
-    function ln(int256 x) internal pure returns (int256 result) {
+    function ln(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
         // Do the fixed-point multiplication inline to save gas. This is overflow-safe because the maximum value that log2(x)
         // can return is 195205294292027477728.
-        unchecked { result = (log2(x) * SCALE) / LOG2_E; }
+        unchecked {
+            int256 rValue = (log2(x).value * SCALE) / LOG2_E;
+            result = PRBMath.SD59x18({ value: rValue });
+        }
     }
 
     /// @notice Calculates the common logarithm of x.
@@ -328,98 +340,107 @@ library PRBMathSD59x18 {
     ///
     /// @param x The signed 59.18-decimal fixed-point number for which to calculate the common logarithm.
     /// @return result The common logarithm as a signed 59.18-decimal fixed-point number.
-    function log10(int256 x) internal pure returns (int256 result) {
-        require(x > 0);
+    function log10(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
+        int256 xValue = x.value;
+        require(xValue > 0);
 
-        // Note that the "mul" in this block is the assembly mul operation, not the "mul" function defined in this contract.
+        // Note that the "mul" in this block is the assembly mul operation, not the "mul" function defined in this
+        // contract.
+        int256 rValue;
+
         // prettier-ignore
         assembly {
-            switch x
-            case 1 { result := mul(SCALE, sub(0, 18)) }
-            case 10 { result := mul(SCALE, sub(1, 18)) }
-            case 100 { result := mul(SCALE, sub(2, 18)) }
-            case 1000 { result := mul(SCALE, sub(3, 18)) }
-            case 10000 { result := mul(SCALE, sub(4, 18)) }
-            case 100000 { result := mul(SCALE, sub(5, 18)) }
-            case 1000000 { result := mul(SCALE, sub(6, 18)) }
-            case 10000000 { result := mul(SCALE, sub(7, 18)) }
-            case 100000000 { result := mul(SCALE, sub(8, 18)) }
-            case 1000000000 { result := mul(SCALE, sub(9, 18)) }
-            case 10000000000 { result := mul(SCALE, sub(10, 18)) }
-            case 100000000000 { result := mul(SCALE, sub(11, 18)) }
-            case 1000000000000 { result := mul(SCALE, sub(12, 18)) }
-            case 10000000000000 { result := mul(SCALE, sub(13, 18)) }
-            case 100000000000000 { result := mul(SCALE, sub(14, 18)) }
-            case 1000000000000000 { result := mul(SCALE, sub(15, 18)) }
-            case 10000000000000000 { result := mul(SCALE, sub(16, 18)) }
-            case 100000000000000000 { result := mul(SCALE, sub(17, 18)) }
-            case 1000000000000000000 { result := 0 }
-            case 10000000000000000000 { result := SCALE }
-            case 100000000000000000000 { result := mul(SCALE, 2) }
-            case 1000000000000000000000 { result := mul(SCALE, 3) }
-            case 10000000000000000000000 { result := mul(SCALE, 4) }
-            case 100000000000000000000000 { result := mul(SCALE, 5) }
-            case 1000000000000000000000000 { result := mul(SCALE, 6) }
-            case 10000000000000000000000000 { result := mul(SCALE, 7) }
-            case 100000000000000000000000000 { result := mul(SCALE, 8) }
-            case 1000000000000000000000000000 { result := mul(SCALE, 9) }
-            case 10000000000000000000000000000 { result := mul(SCALE, 10) }
-            case 100000000000000000000000000000 { result := mul(SCALE, 11) }
-            case 1000000000000000000000000000000 { result := mul(SCALE, 12) }
-            case 10000000000000000000000000000000 { result := mul(SCALE, 13) }
-            case 100000000000000000000000000000000 { result := mul(SCALE, 14) }
-            case 1000000000000000000000000000000000 { result := mul(SCALE, 15) }
-            case 10000000000000000000000000000000000 { result := mul(SCALE, 16) }
-            case 100000000000000000000000000000000000 { result := mul(SCALE, 17) }
-            case 1000000000000000000000000000000000000 { result := mul(SCALE, 18) }
-            case 10000000000000000000000000000000000000 { result := mul(SCALE, 19) }
-            case 100000000000000000000000000000000000000 { result := mul(SCALE, 20) }
-            case 1000000000000000000000000000000000000000 { result := mul(SCALE, 21) }
-            case 10000000000000000000000000000000000000000 { result := mul(SCALE, 22) }
-            case 100000000000000000000000000000000000000000 { result := mul(SCALE, 23) }
-            case 1000000000000000000000000000000000000000000 { result := mul(SCALE, 24) }
-            case 10000000000000000000000000000000000000000000 { result := mul(SCALE, 25) }
-            case 100000000000000000000000000000000000000000000 { result := mul(SCALE, 26) }
-            case 1000000000000000000000000000000000000000000000 { result := mul(SCALE, 27) }
-            case 10000000000000000000000000000000000000000000000 { result := mul(SCALE, 28) }
-            case 100000000000000000000000000000000000000000000000 { result := mul(SCALE, 29) }
-            case 1000000000000000000000000000000000000000000000000 { result := mul(SCALE, 30) }
-            case 10000000000000000000000000000000000000000000000000 { result := mul(SCALE, 31) }
-            case 100000000000000000000000000000000000000000000000000 { result := mul(SCALE, 32) }
-            case 1000000000000000000000000000000000000000000000000000 { result := mul(SCALE, 33) }
-            case 10000000000000000000000000000000000000000000000000000 { result := mul(SCALE, 34) }
-            case 100000000000000000000000000000000000000000000000000000 { result := mul(SCALE, 35) }
-            case 1000000000000000000000000000000000000000000000000000000 { result := mul(SCALE, 36) }
-            case 10000000000000000000000000000000000000000000000000000000 { result := mul(SCALE, 37) }
-            case 100000000000000000000000000000000000000000000000000000000 { result := mul(SCALE, 38) }
-            case 1000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE, 39) }
-            case 10000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE, 40) }
-            case 100000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE, 41) }
-            case 1000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE, 42) }
-            case 10000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE, 43) }
-            case 100000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE, 44) }
-            case 1000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE, 45) }
-            case 10000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE, 46) }
-            case 100000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE, 47) }
-            case 1000000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE, 48) }
-            case 10000000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE, 49) }
-            case 100000000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE, 50) }
-            case 1000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE, 51) }
-            case 10000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE, 52) }
-            case 100000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE, 53) }
-            case 1000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE, 54) }
-            case 10000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE, 55) }
-            case 100000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE, 56) }
-            case 1000000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE, 57) }
-            case 10000000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE, 58) }
+            switch xValue
+            case 1 { rValue := mul(SCALE, sub(0, 18)) }
+            case 10 { rValue := mul(SCALE, sub(1, 18)) }
+            case 100 { rValue := mul(SCALE, sub(2, 18)) }
+            case 1000 { rValue := mul(SCALE, sub(3, 18)) }
+            case 10000 { rValue := mul(SCALE, sub(4, 18)) }
+            case 100000 { rValue := mul(SCALE, sub(5, 18)) }
+            case 1000000 { rValue := mul(SCALE, sub(6, 18)) }
+            case 10000000 { rValue := mul(SCALE, sub(7, 18)) }
+            case 100000000 { rValue := mul(SCALE, sub(8, 18)) }
+            case 1000000000 { rValue := mul(SCALE, sub(9, 18)) }
+            case 10000000000 { rValue := mul(SCALE, sub(10, 18)) }
+            case 100000000000 { rValue := mul(SCALE, sub(11, 18)) }
+            case 1000000000000 { rValue := mul(SCALE, sub(12, 18)) }
+            case 10000000000000 { rValue := mul(SCALE, sub(13, 18)) }
+            case 100000000000000 { rValue := mul(SCALE, sub(14, 18)) }
+            case 1000000000000000 { rValue := mul(SCALE, sub(15, 18)) }
+            case 10000000000000000 { rValue := mul(SCALE, sub(16, 18)) }
+            case 100000000000000000 { rValue := mul(SCALE, sub(17, 18)) }
+            case 1000000000000000000 { rValue := 0 }
+            case 10000000000000000000 { rValue := SCALE }
+            case 100000000000000000000 { rValue := mul(SCALE, 2) }
+            case 1000000000000000000000 { rValue := mul(SCALE, 3) }
+            case 10000000000000000000000 { rValue := mul(SCALE, 4) }
+            case 100000000000000000000000 { rValue := mul(SCALE, 5) }
+            case 1000000000000000000000000 { rValue := mul(SCALE, 6) }
+            case 10000000000000000000000000 { rValue := mul(SCALE, 7) }
+            case 100000000000000000000000000 { rValue := mul(SCALE, 8) }
+            case 1000000000000000000000000000 { rValue := mul(SCALE, 9) }
+            case 10000000000000000000000000000 { rValue := mul(SCALE, 10) }
+            case 100000000000000000000000000000 { rValue := mul(SCALE, 11) }
+            case 1000000000000000000000000000000 { rValue := mul(SCALE, 12) }
+            case 10000000000000000000000000000000 { rValue := mul(SCALE, 13) }
+            case 100000000000000000000000000000000 { rValue := mul(SCALE, 14) }
+            case 1000000000000000000000000000000000 { rValue := mul(SCALE, 15) }
+            case 10000000000000000000000000000000000 { rValue := mul(SCALE, 16) }
+            case 100000000000000000000000000000000000 { rValue := mul(SCALE, 17) }
+            case 1000000000000000000000000000000000000 { rValue := mul(SCALE, 18) }
+            case 10000000000000000000000000000000000000 { rValue := mul(SCALE, 19) }
+            case 100000000000000000000000000000000000000 { rValue := mul(SCALE, 20) }
+            case 1000000000000000000000000000000000000000 { rValue := mul(SCALE, 21) }
+            case 10000000000000000000000000000000000000000 { rValue := mul(SCALE, 22) }
+            case 100000000000000000000000000000000000000000 { rValue := mul(SCALE, 23) }
+            case 1000000000000000000000000000000000000000000 { rValue := mul(SCALE, 24) }
+            case 10000000000000000000000000000000000000000000 { rValue := mul(SCALE, 25) }
+            case 100000000000000000000000000000000000000000000 { rValue := mul(SCALE, 26) }
+            case 1000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 27) }
+            case 10000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 28) }
+            case 100000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 29) }
+            case 1000000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 30) }
+            case 10000000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 31) }
+            case 100000000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 32) }
+            case 1000000000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 33) }
+            case 10000000000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 34) }
+            case 100000000000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 35) }
+            case 1000000000000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 36) }
+            case 10000000000000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 37) }
+            case 100000000000000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 38) }
+            case 1000000000000000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 39) }
+            case 10000000000000000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 40) }
+            case 100000000000000000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 41) }
+            case 1000000000000000000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 42) }
+            case 10000000000000000000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 43) }
+            case 100000000000000000000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 44) }
+            case 1000000000000000000000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 45) }
+            case 10000000000000000000000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 46) }
+            case 100000000000000000000000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 47) }
+            case 1000000000000000000000000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 48) }
+            case 10000000000000000000000000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 49) }
+            case 100000000000000000000000000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 50) }
+            case 1000000000000000000000000000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 51) }
+            case 10000000000000000000000000000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 52) }
+            case 100000000000000000000000000000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 53) }
+            case 1000000000000000000000000000000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 54) }
+            case 10000000000000000000000000000000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 55) }
+            case 100000000000000000000000000000000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 56) }
+            case 1000000000000000000000000000000000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 57) }
+            case 10000000000000000000000000000000000000000000000000000000000000000000000000000 { rValue := mul(SCALE, 58) }
             default {
-                result := MAX_SD59x18
+                rValue := MAX_SD59x18
             }
         }
 
-        if (result == MAX_SD59x18) {
+        if (rValue != MAX_SD59x18) {
+            result = PRBMath.SD59x18({ value: rValue });
+        } else {
             // Do the fixed-point division inline to save gas. The denominator is log2(10).
-            unchecked { result = (log2(x) * SCALE) / 3321928094887362347; }
+            unchecked {
+                rValue = (log2(x).value * SCALE) / 3321928094887362347;
+                result = PRBMath.SD59x18({ value: rValue });
+            }
         }
     }
 
@@ -436,34 +457,35 @@ library PRBMathSD59x18 {
     ///
     /// @param x The signed 59.18-decimal fixed-point number for which to calculate the binary logarithm.
     /// @return result The binary logarithm as a signed 59.18-decimal fixed-point number.
-    function log2(int256 x) internal pure returns (int256 result) {
-        require(x > 0);
+    function log2(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
+        int256 xValue = x.value;
+        require(xValue > 0);
         unchecked {
             // This works because log2(x) = -log2(1/x).
             int256 sign;
-            if (x >= SCALE) {
+            if (xValue >= SCALE) {
                 sign = 1;
             } else {
                 sign = -1;
                 // Do the fixed-point inversion inline to save gas. The numerator is SCALE * SCALE.
                 assembly {
-                    x := div(1000000000000000000000000000000000000, x)
+                    xValue := div(1000000000000000000000000000000000000, xValue)
                 }
             }
 
             // Calculate the integer part of the logarithm and add it to the result and finally calculate y = x * 2^(-n).
-            uint256 n = PRBMathCommon.mostSignificantBit(uint256(x / SCALE));
+            uint256 n = PRBMath.mostSignificantBit(uint256(xValue / SCALE));
 
             // The integer part of the logarithm as a signed 59.18-decimal fixed-point number. The operation can't overflow
             // because n is maximum 255, SCALE is 1e18 and sign is either 1 or -1.
-            result = int256(n) * SCALE;
+            int256 rValue = int256(n) * SCALE;
 
             // This is y = x * 2^(-n).
-            int256 y = x >> n;
+            int256 y = xValue >> n;
 
             // If y = 1, the fractional part is zero.
             if (y == SCALE) {
-                return result * sign;
+                return PRBMath.SD59x18({ value: rValue * sign });
             }
 
             // Calculate the fractional part via the iterative approximation.
@@ -474,13 +496,13 @@ library PRBMathSD59x18 {
                 // Is y^2 > 2 and so in the range [2,4)?
                 if (y >= 2 * SCALE) {
                     // Add the 2^(-m) factor to the logarithm.
-                    result += delta;
+                    rValue += delta;
 
                     // Corresponds to z/2 on Wikipedia.
                     y >>= 1;
                 }
             }
-            result *= sign;
+            result = PRBMath.SD59x18({ value: rValue * sign });
         }
     }
 
@@ -491,41 +513,43 @@ library PRBMathSD59x18 {
     /// alawys 1e18.
     ///
     /// Requirements:
-    /// - All from "PRBMathCommon.mulDivFixedPoint".
+    /// - All from "PRBMath.mulDivFixedPoint".
     /// - The result must fit within MAX_SD59x18.
     ///
     /// Caveats:
-    /// - The body is purposely left uncommented; see the NatSpec comments in "PRBMathCommon.mulDiv" to understand how this works.
+    /// - The body is purposely left uncommented; see the NatSpec comments in "PRBMath.mulDiv" to understand how this works.
     ///
     /// @param x The multiplicand as a signed 59.18-decimal fixed-point number.
     /// @param y The multiplier as a signed 59.18-decimal fixed-point number.
     /// @return result The result as a signed 59.18-decimal fixed-point number.
-    function mul(int256 x, int256 y) internal pure returns (int256 result) {
-        require(x > MIN_SD59x18);
-        require(y > MIN_SD59x18);
+    function mul(PRBMath.SD59x18 memory x, PRBMath.SD59x18 memory y) internal pure returns (PRBMath.SD59x18 memory result) {
+        int256 xValue = x.value;
+        int256 yValue = y.value;
+        require(xValue > MIN_SD59x18);
+        require(yValue > MIN_SD59x18);
 
         unchecked {
             uint256 ax;
             uint256 ay;
-            ax = x < 0 ? uint256(-x) : uint256(x);
-            ay = y < 0 ? uint256(-y) : uint256(y);
+            ax = xValue < 0 ? uint256(-xValue) : uint256(xValue);
+            ay = yValue < 0 ? uint256(-yValue) : uint256(yValue);
 
-            uint256 resultUnsigned = PRBMathCommon.mulDivFixedPoint(ax, ay);
-            require(resultUnsigned <= uint256(MAX_SD59x18));
+            uint256 rUnsigned = PRBMath.mulDivFixedPoint(ax, ay);
+            require(rUnsigned <= uint256(MAX_SD59x18));
 
             uint256 sx;
             uint256 sy;
             assembly {
-                sx := sgt(x, sub(0, 1))
-                sy := sgt(y, sub(0, 1))
+                sx := sgt(xValue, sub(0, 1))
+                sy := sgt(yValue, sub(0, 1))
             }
-            result = sx ^ sy == 1 ? -int256(resultUnsigned) : int256(resultUnsigned);
+            result = PRBMath.SD59x18({ value: sx ^ sy == 1 ? -int256(rUnsigned) : int256(rUnsigned) });
         }
     }
 
     /// @notice Returns PI as a signed 59.18-decimal fixed-point number.
-    function pi() internal pure returns (int256 result) {
-        result = 3141592653589793238;
+    function pi() internal pure returns (PRBMath.SD59x18 memory result) {
+        result = PRBMath.SD59x18({ value: 3141592653589793238 });
     }
 
     /// @notice Raises x to the power of y.
@@ -543,9 +567,9 @@ library PRBMathSD59x18 {
     /// @param x Number to raise to given power y, as a signed 59.18-decimal fixed-point number.
     /// @param y Exponent to raise x to, as a signed 59.18-decimal fixed-point number.
     /// @return result x raised to power y, as a signed 59.18-decimal fixed-point number.
-    function pow(int256 x, int256 y) internal pure returns (int256 result) {
-        if (x == 0) {
-            return y == 0 ? SCALE : int256(0);
+    function pow(PRBMath.SD59x18 memory x, PRBMath.SD59x18 memory y) internal pure returns (PRBMath.SD59x18 memory result) {
+        if (x.value == 0) {
+            return PRBMath.SD59x18({ value: y.value == 0 ? SCALE : int256(0) });
         } else {
             result = exp2(mul(log2(x), y));
         }
@@ -557,43 +581,43 @@ library PRBMathSD59x18 {
     /// @dev See https://en.wikipedia.org/wiki/Exponentiation_by_squaring
     ///
     /// Requirements:
-    /// - All from "abs" and "PRBMathCommon.mulDivFixedPoint".
+    /// - All from "abs" and "PRBMath.mulDivFixedPoint".
     /// - The result must fit within MAX_SD59x18.
     ///
     /// Caveats:
-    /// - All from "PRBMathCommon.mulDivFixedPoint".
+    /// - All from "PRBMath.mulDivFixedPoint".
     /// - Assumes 0^0 is 1.
     ///
     /// @param x The base as a signed 59.18-decimal fixed-point number.
     /// @param y The exponent as an uint256.
     /// @return result The result as a signed 59.18-decimal fixed-point number.
-    function powu(int256 x, uint256 y) internal pure returns (int256 result) {
-        uint256 absX = uint256(abs(x));
+    function powu(PRBMath.SD59x18 memory x, uint256 y) internal pure returns (PRBMath.SD59x18 memory result) {
+        uint256 xAbs = uint256(abs(x).value);
 
         // Calculate the first iteration of the loop in advance.
-        uint256 absResult = y & 1 > 0 ? absX : uint256(SCALE);
+        uint256 rAbs = y & 1 > 0 ? xAbs : uint256(SCALE);
 
         // Equivalent to "for(y /= 2; y > 0; y /= 2)" but faster.
         for (y >>= 1; y > 0; y >>= 1) {
-            absX = PRBMathCommon.mulDivFixedPoint(absX, absX);
+            xAbs = PRBMath.mulDivFixedPoint(xAbs, xAbs);
 
             // Equivalent to "y % 2 == 1" but faster.
             if (y & 1 > 0) {
-                absResult = PRBMathCommon.mulDivFixedPoint(absResult, absX);
+                rAbs = PRBMath.mulDivFixedPoint(rAbs, xAbs);
             }
         }
 
         // The result must fit within the 59.18-decimal fixed-point representation.
-        require(absResult <= uint256(MAX_SD59x18));
+        require(rAbs <= uint256(MAX_SD59x18));
 
         // Is the base negative and the exponent an odd number?
-        bool isNegative = x < 0 && y & 1 == 1;
-        result = isNegative ? -int256(absResult) : int256(absResult);
+        bool isNegative = x.value < 0 && y & 1 == 1;
+        result = PRBMath.SD59x18({ value: isNegative ? -int256(rAbs) : int256(rAbs) });
     }
 
     /// @notice Returns 1 as a signed 59.18-decimal fixed-point number.
-    function scale() internal pure returns (int256 result) {
-        result = SCALE;
+    function scale() internal pure returns (PRBMath.SD59x18 memory result) {
+        result = PRBMath.SD59x18({ value: SCALE });
     }
 
     /// @notice Calculates the square root of x, rounding down.
@@ -608,20 +632,21 @@ library PRBMathSD59x18 {
     ///
     /// @param x The signed 59.18-decimal fixed-point number for which to calculate the square root.
     /// @return result The result as a signed 59.18-decimal fixed-point .
-    function sqrt(int256 x) internal pure returns (int256 result) {
-        require(x >= 0);
-        require(x < 57896044618658097711785492504343953926634992332820282019729);
+    function sqrt(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
+        require(x.value >= 0);
+        require(x.value < 57896044618658097711785492504343953926634992332820282019729);
         unchecked {
             // Multiply x by the SCALE to account for the factor of SCALE that is picked up when multiplying two signed
             // 59.18-decimal fixed-point numbers together (in this case, those two numbers are both the square root).
-            result = int256(PRBMathCommon.sqrt(uint256(x * SCALE)));
+            int256 rValue = int256(PRBMath.sqrt(uint256(x.value * SCALE)));
+            result = PRBMath.SD59x18({ value: rValue });
         }
     }
 
     /// @notice Converts a signed 59.18-decimal fixed-point number to basic integer form, rounding down in the process.
     /// @param x The signed 59.18-decimal fixed-point number to convert.
     /// @return result The same number in basic integer form.
-    function toInt(int256 x) internal pure returns (int256 result) {
-        unchecked { result = x / SCALE; }
+    function toInt(PRBMath.SD59x18 memory x) internal pure returns (int256 result) {
+        unchecked { result = x.value / SCALE; }
     }
 }
