@@ -52,15 +52,15 @@ export default function shouldBehaveLikeExp(): void {
   });
 
   context("when x is positive", function () {
-    context("when x is greater than or equal to 88.722839111672999628", function () {
-      const testSets = [fp("88.722839111672999628"), MAX_WHOLE_SD59x18, MAX_SD59x18];
+    context("when x is greater than or equal to 133.084258667509499440", function () {
+      const testSets = [fp("133.084258667509499441"), MAX_WHOLE_SD59x18, MAX_SD59x18];
 
       forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
         await expect(this.contracts.prbMathSd59x18.doExp(x)).to.be.reverted;
       });
     });
 
-    context("when x is less than 88.722839111672999628", function () {
+    context("when x is less than or equal to 133.084258667509499440", function () {
       const testSets = [
         ["1e-18"],
         ["1e-15"],
@@ -77,6 +77,7 @@ export default function shouldBehaveLikeExp(): void {
         ["64"],
         ["71.002"],
         ["88.722839111672999627"],
+        ["133.084258667509499440"],
       ];
 
       forEach(testSets).it("takes %e and returns the correct value", async function (x: string) {

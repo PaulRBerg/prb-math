@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: WTFPL
 pragma solidity >=0.8.0;
 
+import "hardhat/console.sol";
 import "./PRBMath.sol";
 
 /// @title PRBMathUD60x18
@@ -113,8 +114,8 @@ library PRBMathUD60x18 {
     /// @param x The exponent as an unsigned 60.18-decimal fixed-point number.
     /// @return result The result as an unsigned 60.18-decimal fixed-point number.
     function exp(PRBMath.UD60x18 memory x) internal pure returns (PRBMath.UD60x18 memory result) {
-        // Without this check, the value passed to "exp2" would be greater than 128e18.
-        require(x.value < 88722839111672999628);
+        // Without this check, the value passed to "exp2" would be greater than 192.
+        require(x.value < 133084258667509499441);
 
         // Do the fixed-point multiplication inline to save gas.
         unchecked {
@@ -129,21 +130,21 @@ library PRBMathUD60x18 {
     /// @dev See https://ethereum.stackexchange.com/q/79903/24693.
     ///
     /// Requirements:
-    /// - x must be 128e18 or less.
+    /// - x must be 192 or less.
     /// - The result must fit within MAX_UD60x18.
     ///
     /// @param x The exponent as an unsigned 60.18-decimal fixed-point number.
     /// @return result The result as an unsigned 60.18-decimal fixed-point number.
     function exp2(PRBMath.UD60x18 memory x) internal pure returns (PRBMath.UD60x18 memory result) {
-        // 2**128 doesn't fit within the 128.128-bit format used internally in this function.
-        require(x.value < 128e18);
+        // 2**192 doesn't fit within the 192.64-bit format used internally in this function.
+        require(x.value < 192e18);
 
         unchecked {
-            // Convert x to the 128.128-bit fixed-point format.
-            uint256 x128x128 = (x.value << 128) / SCALE;
+            // Convert x to the 192.64-bit fixed-point format.
+            uint256 x192x64 = (x.value << 64) / SCALE;
 
-            // Pass x to the PRBMath.exp2 function, which uses the 128.128-bit fixed-point number representation.
-            result = PRBMath.UD60x18({ value: PRBMath.exp2(x128x128) });
+            // Pass x to the PRBMath.exp2 function, which uses the 192.64-bit fixed-point number representation.
+            result = PRBMath.UD60x18({ value: PRBMath.exp2(x192x64) });
         }
     }
 

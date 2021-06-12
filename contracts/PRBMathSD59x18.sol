@@ -158,7 +158,7 @@ library PRBMathSD59x18 {
     ///
     /// Requirements:
     /// - All from "log2".
-    /// - x must be less than 88.722839111672999628.
+    /// - x must be less than 133.084258667509499441.
     ///
     /// Caveats:
     /// - All from "exp2".
@@ -172,8 +172,8 @@ library PRBMathSD59x18 {
             return PRBMath.SD59x18({ value: 0 });
         }
 
-        // Without this check, the value passed to "exp2" would be greater than 128e18.
-        require(x.value < 88722839111672999628);
+        // Without this check, the value passed to "exp2" would be greater than 192.
+        require(x.value < 133084258667509499441);
 
         // Do the fixed-point multiplication inline to save gas.
         unchecked {
@@ -188,7 +188,7 @@ library PRBMathSD59x18 {
     /// @dev See https://ethereum.stackexchange.com/q/79903/24693.
     ///
     /// Requirements:
-    /// - x must be 128e18 or less.
+    /// - x must be 192 or less.
     /// - The result must fit within MAX_SD59x18.
     ///
     /// Caveats:
@@ -210,15 +210,15 @@ library PRBMathSD59x18 {
                 result = PRBMath.SD59x18({ value: 1e36 / exp2(exponent).value });
             }
         } else {
-            // 2**128 doesn't fit within the 128.128-bit fixed-point representation.
-            require(x.value < 128e18);
+            // 2**192 doesn't fit within the 192.64-bit fixed-point representation.
+            require(x.value < 192e18);
 
             unchecked {
-                // Convert x to the 128.128-bit fixed-point format.
-                uint256 x128x128 = (uint256(x.value) << 128) / uint256(SCALE);
+                // Convert x to the 192-64-bit fixed-point format.
+                uint256 x192x64 = (uint256(x.value) << 64) / uint256(SCALE);
 
-                // Safe to convert the result to int256 directly because the maximum input allowed is 128e18.
-                result = PRBMath.SD59x18({ value: int256(PRBMath.exp2(x128x128)) });
+                // Safe to convert the result to int256 directly because the maximum input allowed is 192.
+                result = PRBMath.SD59x18({ value: int256(PRBMath.exp2(x192x64)) });
             }
         }
     }
