@@ -15,7 +15,7 @@ export default function shouldBehaveLikeSub(): void {
     ];
 
     forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
-      await expect(this.contracts.prbMathSd59x18.doSub(x, y)).to.be.reverted;
+      await expect(this.contracts.prbMathSd59x18Typed.doSub(x, y)).to.be.reverted;
     });
   });
 
@@ -28,7 +28,7 @@ export default function shouldBehaveLikeSub(): void {
       ];
 
       forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
-        await expect(this.contracts.prbMathSd59x18.doSub(x, y)).to.be.reverted;
+        await expect(this.contracts.prbMathSd59x18Typed.doSub(x, y)).to.be.reverted;
       });
     });
 
@@ -62,7 +62,7 @@ export default function shouldBehaveLikeSub(): void {
         forEach(testSets).it(
           "takes %e and %e and returns the correct value",
           async function (x: BigNumber, y: BigNumber) {
-            const result: BigNumber = await this.contracts.prbMathSd59x18.doSub(x, y);
+            const result: BigNumber = await this.contracts.prbMathSd59x18Typed.doSub(x, y);
             const expected: BigNumber = x.sub(y);
             expect(expected).to.equal(result);
           },

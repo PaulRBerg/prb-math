@@ -16,7 +16,7 @@ export default function shouldBehaveLikeAdd(): void {
     ];
 
     forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
-      await expect(this.contracts.prbMathUd60x18.doAdd(x, y)).to.be.reverted;
+      await expect(this.contracts.prbMathUd60x18Typed.doAdd(x, y)).to.be.reverted;
     });
   });
 
@@ -37,7 +37,7 @@ export default function shouldBehaveLikeAdd(): void {
     ];
 
     forEach(testSets).it("takes %e and %e and returns the correct value", async function (x: BigNumber, y: BigNumber) {
-      const result: BigNumber = await this.contracts.prbMathUd60x18.doAdd(x, y);
+      const result: BigNumber = await this.contracts.prbMathUd60x18Typed.doAdd(x, y);
       const expected: BigNumber = x.add(y);
       expect(expected).to.equal(result);
     });

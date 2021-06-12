@@ -12,6 +12,7 @@ export default function shouldBehaveLikeFromInt(): void {
 
     forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
       await expect(this.contracts.prbMathSd59x18.doFromInt(x)).to.be.reverted;
+      await expect(this.contracts.prbMathSd59x18Typed.doFromInt(x)).to.be.reverted;
     });
   });
 
@@ -21,6 +22,7 @@ export default function shouldBehaveLikeFromInt(): void {
 
       forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
         await expect(this.contracts.prbMathSd59x18.doFromInt(x)).to.be.reverted;
+        await expect(this.contracts.prbMathSd59x18Typed.doFromInt(x)).to.be.reverted;
       });
     });
 
@@ -48,9 +50,9 @@ export default function shouldBehaveLikeFromInt(): void {
       ]);
 
       forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
-        const result: BigNumber = await this.contracts.prbMathSd59x18.doFromInt(x);
         const expected: BigNumber = x.mul(fp(SCALE));
-        expect(expected).to.equal(result);
+        expect(expected).to.equal(await this.contracts.prbMathSd59x18.doFromInt(x));
+        expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doFromInt(x));
       });
     });
   });

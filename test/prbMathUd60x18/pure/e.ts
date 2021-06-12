@@ -6,7 +6,8 @@ import { E } from "../../../helpers/constants";
 
 export default function shouldBehaveLikeEGetter(): void {
   it("returns the e number", async function () {
-    const result: BigNumber = await this.contracts.prbMathUd60x18.getE();
-    expect(fp(E)).to.equal(result);
+    const expected: BigNumber = fp(E);
+    expect(expected).to.equal(await this.contracts.prbMathUd60x18.getE());
+    expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.getE());
   });
 }

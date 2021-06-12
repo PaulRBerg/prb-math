@@ -11,8 +11,9 @@ export default function shouldBehaveLikeFloor(): void {
   context("when x is zero", function () {
     it("returns 0", async function () {
       const x: BigNumber = bn("0");
-      const result: BigNumber = await this.contracts.prbMathUd60x18.doFloor(x);
-      expect(bn("0")).to.equal(result);
+      const expected: BigNumber = bn("0");
+      expect(expected).to.equal(await this.contracts.prbMathUd60x18.doFloor(x));
+      expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doFloor(x));
     });
   });
 
@@ -31,9 +32,9 @@ export default function shouldBehaveLikeFloor(): void {
     ];
 
     forEach(testSets).it("takes %e and returns the correct value", async function (x: string) {
-      const result: BigNumber = await this.contracts.prbMathUd60x18.doFloor(fp(x));
       const expected: BigNumber = fp(floor(x));
-      expect(expected).to.equal(result);
+      expect(expected).to.equal(await this.contracts.prbMathUd60x18.doFloor(fp(x)));
+      expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doFloor(fp(x)));
     });
   });
 }

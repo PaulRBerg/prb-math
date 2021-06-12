@@ -12,6 +12,7 @@ export default function shouldBehaveLikeLn(): void {
     it("reverts", async function () {
       const x: BigNumber = bn("0");
       await expect(this.contracts.prbMathSd59x18.doLn(x)).to.be.reverted;
+      await expect(this.contracts.prbMathSd59x18Typed.doLn(x)).to.be.reverted;
     });
   });
 
@@ -19,6 +20,7 @@ export default function shouldBehaveLikeLn(): void {
     it("reverts", async function () {
       const x: BigNumber = fp("-0.1");
       await expect(this.contracts.prbMathSd59x18.doLn(x)).to.be.reverted;
+      await expect(this.contracts.prbMathSd59x18Typed.doLn(x)).to.be.reverted;
     });
   });
 
@@ -46,9 +48,9 @@ export default function shouldBehaveLikeLn(): void {
     ];
 
     forEach(testSets).it("takes %e and returns the correct value", async function (x: string) {
-      const result: BigNumber = await this.contracts.prbMathSd59x18.doLn(fp(x));
       const expected: BigNumber = fp(ln(x));
-      expect(expected).to.be.near(result);
+      expect(expected).to.be.near(await this.contracts.prbMathSd59x18.doLn(fp(x)));
+      expect(expected).to.be.near(await this.contracts.prbMathSd59x18Typed.doLn(fp(x)));
     });
   });
 }

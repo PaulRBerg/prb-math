@@ -12,6 +12,7 @@ export default function shouldBehaveLikeLog10(): void {
     it("reverts", async function () {
       const x: BigNumber = bn("0");
       await expect(this.contracts.prbMathSd59x18.doLog10(x)).to.be.reverted;
+      await expect(this.contracts.prbMathSd59x18Typed.doLog10(x)).to.be.reverted;
     });
   });
 
@@ -19,6 +20,7 @@ export default function shouldBehaveLikeLog10(): void {
     it("reverts", async function () {
       const x: BigNumber = fp("-0.1");
       await expect(this.contracts.prbMathSd59x18.doLog10(x)).to.be.reverted;
+      await expect(this.contracts.prbMathSd59x18Typed.doLog10(x)).to.be.reverted;
     });
   });
 
@@ -43,9 +45,9 @@ export default function shouldBehaveLikeLog10(): void {
       ];
 
       forEach(testSets).it("takes %e and returns the correct value", async function (x: string) {
-        const result: BigNumber = await this.contracts.prbMathSd59x18.doLog10(fp(x));
         const expected: BigNumber = fp(log10(x));
-        expect(expected).to.be.near(result);
+        expect(expected).to.be.near(await this.contracts.prbMathSd59x18.doLog10(fp(x)));
+        expect(expected).to.be.near(await this.contracts.prbMathSd59x18Typed.doLog10(fp(x)));
       });
     });
 
@@ -72,9 +74,9 @@ export default function shouldBehaveLikeLog10(): void {
       ];
 
       forEach(testSets).it("takes %e and returns the correct value", async function (x: string) {
-        const result: BigNumber = await this.contracts.prbMathSd59x18.doLog10(fp(x));
         const expected: BigNumber = fp(log10(x));
-        expect(expected).to.be.near(result);
+        expect(expected).to.be.near(await this.contracts.prbMathSd59x18.doLog10(fp(x)));
+        expect(expected).to.be.near(await this.contracts.prbMathSd59x18Typed.doLog10(fp(x)));
       });
     });
   });

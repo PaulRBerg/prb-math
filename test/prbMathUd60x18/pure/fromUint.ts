@@ -12,6 +12,7 @@ export default function shouldBehaveLikeFromUint(): void {
 
     forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
       await expect(this.contracts.prbMathUd60x18.doFromUint(x)).to.be.reverted;
+      await expect(this.contracts.prbMathUd60x18Typed.doFromUint(x)).to.be.reverted;
     });
   });
 
@@ -29,9 +30,9 @@ export default function shouldBehaveLikeFromUint(): void {
     ];
 
     forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
-      const result: BigNumber = await this.contracts.prbMathUd60x18.doFromUint(x);
       const expected: BigNumber = x.mul(fp(SCALE));
-      expect(expected).to.equal(result);
+      expect(expected).to.equal(await this.contracts.prbMathUd60x18.doFromUint(x));
+      expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doFromUint(x));
     });
   });
 }

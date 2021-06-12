@@ -11,8 +11,9 @@ export default function shouldBehaveLikeFrac(): void {
   context("when x is zero", function () {
     it("works", async function () {
       const x: BigNumber = bn("0");
-      const result: BigNumber = await this.contracts.prbMathUd60x18.doFrac(x);
-      expect(bn("0")).to.equal(result);
+      const expected: BigNumber = bn("0");
+      expect(expected).to.equal(await this.contracts.prbMathUd60x18.doFrac(x));
+      expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doFrac(x));
     });
   });
 
@@ -31,9 +32,9 @@ export default function shouldBehaveLikeFrac(): void {
     ];
 
     forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
-      const result: BigNumber = await this.contracts.prbMathUd60x18.doFrac(x);
       const expected: BigNumber = frac(x);
-      expect(expected).to.equal(result);
+      expect(expected).to.equal(await this.contracts.prbMathUd60x18.doFrac(x));
+      expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doFrac(x));
     });
   });
 }

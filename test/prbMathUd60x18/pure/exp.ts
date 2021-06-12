@@ -11,8 +11,9 @@ export default function shouldBehaveLikeExp(): void {
   context("when x is zero", function () {
     it("returns 1", async function () {
       const x: BigNumber = bn("0");
-      const result: BigNumber = await this.contracts.prbMathUd60x18.doExp(x);
-      expect(fp("1")).to.equal(result);
+      const expected: BigNumber = fp("1");
+      expect(expected).to.equal(await this.contracts.prbMathUd60x18.doExp(x));
+      expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doExp(x));
     });
   });
 
@@ -22,6 +23,7 @@ export default function shouldBehaveLikeExp(): void {
 
       forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
         await expect(this.contracts.prbMathUd60x18.doExp(x)).to.be.reverted;
+        await expect(this.contracts.prbMathUd60x18Typed.doExp(x)).to.be.reverted;
       });
     });
 
@@ -46,9 +48,9 @@ export default function shouldBehaveLikeExp(): void {
       ];
 
       forEach(testSets).it("takes %e and returns the correct value", async function (x: string) {
-        const result: BigNumber = await this.contracts.prbMathUd60x18.doExp(fp(x));
         const expected: BigNumber = fp(exp(x));
-        expect(expected).to.be.near(result);
+        expect(expected).to.be.near(await this.contracts.prbMathUd60x18.doExp(fp(x)));
+        expect(expected).to.be.near(await this.contracts.prbMathUd60x18Typed.doExp(fp(x)));
       });
     });
   });

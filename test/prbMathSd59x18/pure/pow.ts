@@ -15,8 +15,9 @@ export default function shouldBehaveLikePow(): void {
       const y: BigNumber = bn("0");
 
       it("takes 0 and 0 and returns 1", async function () {
-        const result: BigNumber = await this.contracts.prbMathSd59x18.doPow(x, y);
-        expect(fp("1")).to.equal(result);
+        const expected: BigNumber = fp("1");
+        expect(expected).to.equal(await this.contracts.prbMathSd59x18.doPow(x, y));
+        expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doPow(x, y));
       });
     });
 
@@ -24,8 +25,9 @@ export default function shouldBehaveLikePow(): void {
       const testSets = [[fp("1")], [fp(E)], [fp(PI)]];
 
       forEach(testSets).it("takes 0 and %e and returns 0", async function (y: BigNumber) {
-        const result: BigNumber = await this.contracts.prbMathSd59x18.doPow(x, y);
-        expect(bn("0")).to.equal(result);
+        const expected: BigNumber = bn("0");
+        expect(expected).to.equal(await this.contracts.prbMathSd59x18.doPow(x, y));
+        expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doPow(x, y));
       });
     });
   });
@@ -37,6 +39,7 @@ export default function shouldBehaveLikePow(): void {
       forEach(testSets).it("takes %e and 1 and reverts", async function (x: BigNumber) {
         const y: BigNumber = fp("1");
         await expect(this.contracts.prbMathSd59x18.doPow(x, y)).to.be.reverted;
+        await expect(this.contracts.prbMathSd59x18Typed.doPow(x, y)).to.be.reverted;
       });
     });
 
@@ -46,8 +49,9 @@ export default function shouldBehaveLikePow(): void {
         const testSets = [[fp("1")], [fp(E)], [fp(PI)]];
 
         forEach(testSets).it("takes %e and 0 and returns 1", async function (x: BigNumber) {
-          const result: BigNumber = await this.contracts.prbMathSd59x18.doPow(x, y);
-          expect(fp("1")).to.equal(result);
+          const expected: BigNumber = fp("1");
+          expect(expected).to.equal(await this.contracts.prbMathSd59x18.doPow(x, y));
+          expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doPow(x, y));
         });
       });
 
@@ -93,9 +97,9 @@ export default function shouldBehaveLikePow(): void {
         ]);
 
         forEach(testSets).it("takes %e and %e and returns the correct value", async function (x: string, y: string) {
-          const result: BigNumber = await this.contracts.prbMathSd59x18.doPow(fp(x), fp(y));
           const expected: BigNumber = fp(pow(x, y));
-          expect(expected).to.be.near(result);
+          expect(expected).to.be.near(await this.contracts.prbMathSd59x18.doPow(fp(x), fp(y)));
+          expect(expected).to.be.near(await this.contracts.prbMathSd59x18Typed.doPow(fp(x), fp(y)));
         });
       });
     });

@@ -19,8 +19,9 @@ export default function shouldBehaveLikeToInt(): void {
     const testSets = [[fp("1").mul(-1).add(1)], [bn("-1")]].concat([[bn("0")], [bn("1")], [fp("1").sub(1)]]);
 
     forEach(testSets).it("takes %e and returns 0", async function (x: BigNumber) {
-      const result: BigNumber = await this.contracts.prbMathSd59x18.doToInt(x);
-      expect(bn("0")).to.equal(result);
+      const expected: BigNumber = bn("0");
+      expect(expected).to.equal(await this.contracts.prbMathSd59x18.doToInt(x));
+      expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doToInt(x));
     });
   });
 
@@ -50,9 +51,9 @@ export default function shouldBehaveLikeToInt(): void {
     ]);
 
     forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
-      const result: BigNumber = await this.contracts.prbMathSd59x18.doToInt(x);
       const expected: BigNumber = x.div(fp(SCALE));
-      expect(expected).to.equal(result);
+      expect(expected).to.equal(await this.contracts.prbMathSd59x18.doToInt(x));
+      expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doToInt(x));
     });
   });
 }

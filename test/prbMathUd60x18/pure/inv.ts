@@ -12,6 +12,7 @@ export default function shouldBehaveLikeInv(): void {
     it("reverts", async function () {
       const x: BigNumber = bn("0");
       await expect(this.contracts.prbMathUd60x18.doInv(x)).to.be.reverted;
+      await expect(this.contracts.prbMathUd60x18Typed.doInv(x)).to.be.reverted;
     });
   });
 
@@ -36,9 +37,9 @@ export default function shouldBehaveLikeInv(): void {
     ];
 
     forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
-      const result: BigNumber = await this.contracts.prbMathUd60x18.doInv(x);
       const expected: BigNumber = inv(x);
-      expect(expected).to.equal(result);
+      expect(expected).to.equal(await this.contracts.prbMathUd60x18.doInv(x));
+      expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doInv(x));
     });
   });
 }

@@ -3,7 +3,7 @@ import { expect } from "chai";
 import fp from "evm-fp";
 import forEach from "mocha-each";
 
-import { E, EPSILON, MAX_SD59x18, MAX_WHOLE_SD59x18, PI } from "../../../helpers/constants";
+import { E, MAX_SD59x18, MAX_WHOLE_SD59x18, PI } from "../../../helpers/constants";
 import { log2 } from "../../../helpers/math";
 import { bn } from "../../../helpers/numbers";
 
@@ -12,6 +12,7 @@ export default function shouldBehaveLikeLog2(): void {
     it("reverts", async function () {
       const x: BigNumber = bn("0");
       await expect(this.contracts.prbMathSd59x18.doLog2(x)).to.be.reverted;
+      await expect(this.contracts.prbMathSd59x18Typed.doLog2(x)).to.be.reverted;
     });
   });
 
@@ -19,6 +20,7 @@ export default function shouldBehaveLikeLog2(): void {
     it("reverts", async function () {
       const x: BigNumber = fp("-0.1");
       await expect(this.contracts.prbMathSd59x18.doLog2(x)).to.be.reverted;
+      await expect(this.contracts.prbMathSd59x18Typed.doLog2(x)).to.be.reverted;
     });
   });
 
@@ -27,10 +29,9 @@ export default function shouldBehaveLikeLog2(): void {
       const testSets = [["0.0625"], ["0.125"], ["0.25"], ["0.5"], ["1"], ["2"], ["4"], ["8"], ["16"], ["195"]];
 
       forEach(testSets).it("takes %e and returns the correct value", async function (x: string) {
-        const result: BigNumber = await this.contracts.prbMathSd59x18.doLog2(fp(x));
         const expected: BigNumber = fp(log2(x));
-        const delta: BigNumber = expected.sub(result).abs();
-        expect(delta).to.be.lte(EPSILON);
+        expect(expected).to.be.near(await this.contracts.prbMathSd59x18.doLog2(fp(x)));
+        expect(expected).to.be.near(await this.contracts.prbMathSd59x18Typed.doLog2(fp(x)));
       });
     });
 
@@ -55,9 +56,9 @@ export default function shouldBehaveLikeLog2(): void {
       ];
 
       forEach(testSets).it("takes %e and returns the correct value", async function (x: string) {
-        const result: BigNumber = await this.contracts.prbMathSd59x18.doLog2(fp(x));
         const expected: BigNumber = fp(log2(x));
-        expect(expected).to.be.near(result);
+        expect(expected).to.be.near(await this.contracts.prbMathSd59x18.doLog2(fp(x)));
+        expect(expected).to.be.near(await this.contracts.prbMathSd59x18Typed.doLog2(fp(x)));
       });
     });
   });

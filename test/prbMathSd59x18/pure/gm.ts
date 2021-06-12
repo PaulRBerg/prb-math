@@ -23,8 +23,9 @@ export default function shouldBehaveLikeGm(): void {
     ];
 
     forEach(testSets).it("takes %e and %e and returns 0", async function (x: BigNumber, y: BigNumber) {
-      const result: BigNumber = await this.contracts.prbMathSd59x18.doGm(x, y);
-      expect(bn("0")).to.equal(result);
+      const expected: BigNumber = bn("0");
+      expect(expected).to.equal(await this.contracts.prbMathSd59x18.doGm(x, y));
+      expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doGm(x, y));
     });
   });
 
@@ -38,6 +39,7 @@ export default function shouldBehaveLikeGm(): void {
 
     forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
       await expect(this.contracts.prbMathSd59x18.doGm(x, y)).to.be.reverted;
+      await expect(this.contracts.prbMathSd59x18Typed.doGm(x, y)).to.be.reverted;
     });
   });
 
@@ -56,6 +58,7 @@ export default function shouldBehaveLikeGm(): void {
 
       forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
         await expect(this.contracts.prbMathSd59x18.doGm(x, y)).to.be.reverted;
+        await expect(this.contracts.prbMathSd59x18Typed.doGm(x, y)).to.be.reverted;
       });
     });
 
@@ -84,9 +87,9 @@ export default function shouldBehaveLikeGm(): void {
       ]);
 
       forEach(testSets).it("takes %e and %e and returns the correct value", async function (x: string, y: string) {
-        const result: BigNumber = await this.contracts.prbMathSd59x18.doGm(fp(x), fp(y));
         const expected: BigNumber = fp(gm(x, y));
-        expect(expected).to.equal(result);
+        expect(expected).to.equal(await this.contracts.prbMathSd59x18.doGm(fp(x), fp(y)));
+        expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doGm(fp(x), fp(y)));
       });
     });
   });

@@ -30,8 +30,9 @@ export default function shouldBehaveLikeMul(): void {
     ]);
 
     forEach(testSets).it("takes %e and %e and returns 0", async function (x: BigNumber, y: BigNumber) {
-      const result: BigNumber = await this.contracts.prbMathSd59x18.doMul(x, y);
-      expect(bn("0")).to.equal(result);
+      const expected: BigNumber = bn("0");
+      expect(expected).to.equal(await this.contracts.prbMathSd59x18.doMul(x, y));
+      expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doMul(x, y));
     });
   });
 
@@ -44,6 +45,7 @@ export default function shouldBehaveLikeMul(): void {
 
       forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
         await expect(this.contracts.prbMathSd59x18.doMul(x, y)).to.be.reverted;
+        await expect(this.contracts.prbMathSd59x18Typed.doMul(x, y)).to.be.reverted;
       });
     });
 
@@ -63,6 +65,7 @@ export default function shouldBehaveLikeMul(): void {
 
         forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
           await expect(this.contracts.prbMathSd59x18.doMul(x, y)).to.be.reverted;
+          await expect(this.contracts.prbMathSd59x18Typed.doMul(x, y)).to.be.reverted;
         });
       });
 
@@ -106,9 +109,9 @@ export default function shouldBehaveLikeMul(): void {
           forEach(testSets).it(
             "takes %e and %e and returns the correct value",
             async function (x: BigNumber, y: BigNumber) {
-              const result: BigNumber = await this.contracts.prbMathSd59x18.doMul(x, y);
               const expected: BigNumber = mul(x, y);
-              expect(expected).to.equal(result);
+              expect(expected).to.equal(await this.contracts.prbMathSd59x18.doMul(x, y));
+              expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doMul(x, y));
             },
           );
         });
@@ -152,9 +155,9 @@ export default function shouldBehaveLikeMul(): void {
           forEach(testSets).it(
             "takes %e and %e and returns the correct value",
             async function (x: BigNumber, y: BigNumber) {
-              const result: BigNumber = await this.contracts.prbMathSd59x18.doMul(x, y);
               const expected: BigNumber = mul(x, y);
-              expect(expected).to.equal(result);
+              expect(expected).to.equal(await this.contracts.prbMathSd59x18.doMul(x, y));
+              expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doMul(x, y));
             },
           );
         });

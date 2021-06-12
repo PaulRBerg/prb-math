@@ -11,8 +11,9 @@ export default function shouldBehaveLikeFloor(): void {
   context("when x is zero", function () {
     it("returns 0", async function () {
       const x: BigNumber = bn("0");
-      const result: BigNumber = await this.contracts.prbMathSd59x18.doFloor(x);
-      expect(bn("0")).to.equal(result);
+      const expected: BigNumber = bn("0");
+      expect(expected).to.equal(await this.contracts.prbMathSd59x18.doFloor(x));
+      expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doFloor(x));
     });
   });
 
@@ -23,6 +24,7 @@ export default function shouldBehaveLikeFloor(): void {
 
         forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
           await expect(this.contracts.prbMathSd59x18.doFloor(x)).to.be.reverted;
+          await expect(this.contracts.prbMathSd59x18Typed.doFloor(x)).to.be.reverted;
         });
       });
 
@@ -30,9 +32,9 @@ export default function shouldBehaveLikeFloor(): void {
         const testSets = [[MIN_WHOLE_SD59x18], ["-1e18"], ["-4.2"], ["-2"], ["-1.125"], ["-1"], ["-0.5"], ["-0.1"]];
 
         forEach(testSets).it("takes %e and returns the correct value", async function (x: string) {
-          const result: BigNumber = await this.contracts.prbMathSd59x18.doFloor(fp(x));
           const expected: BigNumber = fp(floor(x));
-          expect(expected).to.equal(result);
+          expect(expected).to.equal(await this.contracts.prbMathSd59x18.doFloor(fp(x)));
+          expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doFloor(fp(x)));
         });
       });
     });
@@ -52,9 +54,9 @@ export default function shouldBehaveLikeFloor(): void {
       ];
 
       forEach(testSets).it("takes %e and returns the correct value", async function (x: string) {
-        const result: BigNumber = await this.contracts.prbMathSd59x18.doFloor(fp(x));
         const expected: BigNumber = fp(floor(x));
-        expect(expected).to.equal(result);
+        expect(expected).to.equal(await this.contracts.prbMathSd59x18.doFloor(fp(x)));
+        expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doFloor(fp(x)));
       });
     });
   });
