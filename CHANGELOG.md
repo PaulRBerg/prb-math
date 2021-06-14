@@ -4,7 +4,28 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.0] - 2021-05-07
+## [2.0.0] - 2021-06-14
+
+### Added
+
+- Addition and subtraction functions in the typed libraries.
+- Gas estimates for `fromInt`, `fromUint`, `pow`, `toInt` and `toUInt`.
+- Structs `PRBMath.SD59x18` and `PRBMath.UD60x18`, simple wrappers to indicate that the variables are fixed-point numbers.
+- Typed versions of the library: `PRBMathSD59x18Typed.sol` and `PRBMathUD60x18Typed.sol`.
+
+### Changed
+
+- Increase the accuracy of `exp2` by using the 192.64-bit format instead of 128.128-bit.
+- Rename `PRBMathCommon.sol` to `PRBMath.sol`.
+- Set named parameter instead of returning result in `pow` functions.
+- Update gas estimates for `exp` and `exp2`.
+
+### Fixed
+
+- Bug in `log10` which made the result incorrect when the input was not a multiple of 10.
+- Typos in NatSpec comments.
+
+## [1.1.0] - 2021-05-07 [YANKED]
 
 ### Added
 
@@ -16,6 +37,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 
 - Rename the previous `pow` function to `powu`.
+- Speed up `exp2`by simplifying the integer part calculations.
 - Use the fixed-point format in NatSpec comments.
 
 ### Fixed
@@ -31,7 +53,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 
 - Speed up the `exp2` function in PRBMathCommon.sol by simplifying the integer part calculation.
-- Use the SCALE constant instead of the 1e18 literal in PRBMathCommon.sol.
+- Use `SCALE` instead of the 1e18 literal in `PRBMathCommon.sol`.
 
 ## [1.0.4] - 2021-04-20
 
@@ -68,6 +90,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - First release of the library.
 
+[2.0.0]: https://github.com/hifi-finance/prb-math/compare/v1.1.0...v2.0.0
 [1.1.0]: https://github.com/hifi-finance/prb-math/compare/v1.0.5...v1.1.0
 [1.0.5]: https://github.com/hifi-finance/prb-math/compare/v1.0.4...v1.0.5
 [1.0.4]: https://github.com/hifi-finance/prb-math/compare/v1.0.3...v1.0.4

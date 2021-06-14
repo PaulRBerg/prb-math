@@ -6932,13 +6932,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"from-exponential@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "from-exponential@npm:1.1.0"
-  checksum: b4174dea21190a737d5f4c979874088bd108cd8e6f71f1c9627b5c2e7a67cf4deb7fd49bdcc93d5f8fa6588953b446d76099038bc3ca1aba1eb52640f293932c
-  languageName: node
-  linkType: hard
-
 "from-exponential@npm:^1.1.1":
   version: 1.1.1
   resolution: "from-exponential@npm:1.1.1"
@@ -11327,14 +11320,13 @@ fsevents@~2.3.1:
     chai: ^4.3.4
     commitizen: ^4.2.4
     cz-conventional-changelog: ^3.3.0
-    decimal.js: ^10.2.1
     dotenv: ^10.0.0
     eslint: ^7.27.0
     eslint-config-prettier: ^8.3.0
     ethereum-waffle: ^3.3.0
     ethers: ^5.2.0
     evm-fp: ^1.1.2
-    from-exponential: ^1.1.0
+    from-exponential: ^1.1.1
     fs-extra: ^10.0.0
     hardhat: ^2.3.0
     husky: ^6.0.0
