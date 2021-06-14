@@ -545,7 +545,7 @@ library PRBMathSD59x18 {
     /// @return result x raised to power y, as a signed 59.18-decimal fixed-point number.
     function pow(int256 x, int256 y) internal pure returns (int256 result) {
         if (x == 0) {
-            return y == 0 ? SCALE : int256(0);
+            result = y == 0 ? SCALE : int256(0);
         } else {
             result = exp2(mul(log2(x), y));
         }

@@ -410,7 +410,7 @@ library PRBMathUD60x18 {
     /// @return result x raised to power y, as an unsigned 60.18-decimal fixed-point number.
     function pow(uint256 x, uint256 y) internal pure returns (uint256 result) {
         if (x == 0) {
-            return y == 0 ? SCALE : uint256(0);
+            result = y == 0 ? SCALE : uint256(0);
         } else {
             result = exp2(mul(log2(x), y));
         }
