@@ -41,7 +41,7 @@ npm install prb-math
 
 ## Usage
 
-Once installed, you can use the libraries like this:
+PRBMath comes in four flavours: basic signed, typed signed, basic unsigned and typed unsigned.
 
 ### PRBMathSD59x18.sol
 
