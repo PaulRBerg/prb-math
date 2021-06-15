@@ -522,7 +522,7 @@ library PRBMathSD59x18Typed {
     /// fixed-point number.
     ///
     /// @dev Variant of "mulDiv" that works with signed numbers and employs constant folding, i.e. the denominator is
-    /// alawys 1e18.
+    /// always 1e18.
     ///
     /// Requirements:
     /// - All from "PRBMath.mulDivFixedPoint".

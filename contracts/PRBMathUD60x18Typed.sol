@@ -45,7 +45,7 @@ library PRBMathUD60x18Typed {
     /// @notice Calculates arithmetic average of x and y, rounding down.
     /// @param x The first operand as an unsigned 60.18-decimal fixed-point number.
     /// @param y The second operand as an unsigned 60.18-decimal fixed-point number.
-    /// @return result The arithmetic average as an usigned 60.18-decimal fixed-point number.
+    /// @return result The arithmetic average as an unsigned 60.18-decimal fixed-point number.
     function avg(PRBMath.UD60x18 memory x, PRBMath.UD60x18 memory y) internal pure returns (PRBMath.UD60x18 memory result) {
         // The operations can never overflow.
         unchecked {
