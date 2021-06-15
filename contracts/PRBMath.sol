@@ -3,7 +3,7 @@ pragma solidity >=0.8.0;
 
 /// @dev Common mathematical functions used in both PRBMathSD59x18 and PRBMathUD60x18. Note that this shared library
 /// does not always assume the signed 59.18-decimal fixed-point or the unsigned 60.18-decimal fixed-point
-// representation. When it does not, it is annonated in the function's NatSpec documentation.
+// representation. When it does not, it is annotated in the function's NatSpec documentation.
 library PRBMath {
     /// STRUCTS ///
 
@@ -375,7 +375,7 @@ library PRBMath {
             inverse *= 2 - denominator * inverse; // inverse mod 2^256
 
             // Because the division is now exact we can divide by multiplying with the modular inverse of denominator.
-            // This will give us the correct result modulo 2^256. Since the precoditions guarantee that the outcome is
+            // This will give us the correct result modulo 2^256. Since the preconditions guarantee that the outcome is
             // less than 2^256, this is the final result. We don't need to compute the high bits of the result and prod1
             // is no longer required.
             result = prod0 * inverse;
@@ -394,7 +394,7 @@ library PRBMath {
     ///
     /// Caveats:
     /// - The body is purposely left uncommented; see the NatSpec comments in "PRBMath.mulDiv" to understand how this works.
-    /// - It is assumed that the result can never be type(uint256).max when x and y solve the following two queations:
+    /// - It is assumed that the result can never be type(uint256).max when x and y solve the following two equations:
     ///     1. x * y = type(uint256).max * SCALE
     ///     2. (x * y) % SCALE >= SCALE / 2
     ///
