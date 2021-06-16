@@ -23,6 +23,7 @@ export default function shouldBehaveLikeCeil(): void {
 
       forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
         await expect(this.contracts.prbMathUd60x18.doCeil(x)).to.be.reverted;
+        await expect(this.contracts.prbMathUd60x18Typed.doCeil(x)).to.be.reverted;
       });
     });
 

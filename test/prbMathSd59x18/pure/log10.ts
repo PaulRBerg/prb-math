@@ -46,8 +46,8 @@ export default function shouldBehaveLikeLog10(): void {
 
       forEach(testSets).it("takes %e and returns the correct value", async function (x: string) {
         const expected: BigNumber = fp(log10(x));
-        expect(expected).to.be.near(await this.contracts.prbMathSd59x18.doLog10(fp(x)));
-        expect(expected).to.be.near(await this.contracts.prbMathSd59x18Typed.doLog10(fp(x)));
+        expect(expected).to.equal(await this.contracts.prbMathSd59x18.doLog10(fp(x)));
+        expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doLog10(fp(x)));
       });
     });
 

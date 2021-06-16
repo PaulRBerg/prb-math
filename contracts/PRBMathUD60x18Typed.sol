@@ -277,7 +277,7 @@ library PRBMathUD60x18Typed {
 
         // prettier-ignore
         assembly {
-            switch x
+            switch xValue
             case 1 { rValue := mul(SCALE, sub(0, 18)) }
             case 10 { rValue := mul(SCALE, sub(1, 18)) }
             case 100 { rValue := mul(SCALE, sub(2, 18)) }
