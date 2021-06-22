@@ -10,6 +10,7 @@
     "url": "https://github.com/hifi-finance/prb-math/issues"
   },
   "devDependencies": {
+    "@codechecks/client": "^0.1.10",
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",
     "@ethersproject/abi": "^5.2.0",
