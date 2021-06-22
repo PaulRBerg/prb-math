@@ -1673,33 +1673,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@solidity-parser/parser@npm:^0.11.0":
-  version: 0.11.1
-  resolution: "@solidity-parser/parser@npm:0.11.1"
-  checksum: 0a172138cffa3de4594f6b74d815c7a1e8f5cc3a89bb72441f05a79d72c312913b0fac0591b19a9d84ccd12a3a52067b5121b6e5023ed5264a516ee50804d830
-  languageName: node
-  linkType: hard
-
-"@solidity-parser/parser@npm:^0.12.0":
-  version: 0.12.0
-  resolution: "@solidity-parser/parser@npm:0.12.0"
-  checksum: a46e2a3b28bd9cd541595f1fa2ba423d6df6b0b4be6184682163ad55d71764411ae611cb225369004734c3a25afe6b116e5141437832fdefe101d5d2c4451edf
-  languageName: node
-  linkType: hard
-
-"@solidity-parser/parser@npm:^0.12.1":
-  version: 0.12.1
-  resolution: "@solidity-parser/parser@npm:0.12.1"
-  checksum: 2be0f9ae18d84841a25548abb15160772b0b8f3905a78a738c112fd27d344ea2b2eaa5d2df6ff0c5489957fff7b8b5d4faf0a4638a400e9b443c79fffe597096
-  languageName: node
-  linkType: hard
-
-"@solidity-parser/parser@npm:^0.13.0-rc.8":
-  version: 0.13.1
-  resolution: "@solidity-parser/parser@npm:0.13.1"
+"@solidity-parser/parser@npm:^0.13.2":
+  version: 0.13.2
+  resolution: "@solidity-parser/parser@npm:0.13.2"
   dependencies:
     antlr4ts: ^0.5.0-alpha.4
-  checksum: 4622bc227fdd0039f08d4574f03344ffb38ede15561af768e6c239ac4832bc86c12c594f9dea3a1fcfe7ae83aadb5bca7264a889f9d53b75aef6effe95ff34cf
+  checksum: ad2f8ca981bf7564711e5d9e709c79d3a44116419b21391692b356387c9528fc8056178378a5118d08389d2c73b93ca30cca9df2bd06de17bb0092b433077b33
   languageName: node
   linkType: hard
 

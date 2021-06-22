@@ -80,6 +80,7 @@
     "blockchain",
     "ethereum",
     "hardhat",
+    "math",
     "smart-contracts",
     "solidity"
   ],
@@ -92,7 +93,8 @@
     "url": "https://github.com/hifi-finance/prb-math"
   },
   "resolutions": {
-    "@ethersproject/wallet": "^5.2.0"
+    "@ethersproject/wallet": "^5.2.0",
+    "@solidity-parser/parser": "^0.13.2"
   },
   "scripts": {
     "clean": "hardhat clean",
