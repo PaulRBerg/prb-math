@@ -31,9 +31,9 @@ library PRBMathUD60x18Typed {
 
     /// @notice Adds two unsigned 60.18-decimal fixed-point numbers together, returning a new unsigned 60.18-decimal
     /// fixed-point number.
-    /// @param x The first unsigned 60.18-decimal fixed-point number to add.
-    /// @param y The second unsigned 60.18-decimal fixed-point number to add.
-    /// @param result The result as an unsigned 59.18 decimal fixed-point number.
+    /// @param x The first summand as an unsigned 60.18-decimal fixed-point number.
+    /// @param y The second summand as an unsigned 60.18-decimal fixed-point number.
+    /// @param result The sum as an unsigned 59.18 decimal fixed-point number.
     function add(PRBMath.UD60x18 memory x, PRBMath.UD60x18 memory y) internal pure returns (PRBMath.UD60x18 memory result) {
         unchecked {
             uint256 rValue = x.value + y.value;
@@ -517,9 +517,9 @@ library PRBMathUD60x18Typed {
 
     /// @notice Subtracts one unsigned 60.18-decimal fixed-point number from another one, returning a new unsigned 60.18-decimal
     /// fixed-point number.
-    /// @param x The unsigned 60.18-decimal fixed-point number to subtract from.
-    /// @param y The unsigned 60.18-decimal fixed-point number to subtract.
-    /// @param result The result as an unsigned 60.18 decimal fixed-point number.
+    /// @param x The minuend as an unsigned 60.18-decimal fixed-point number.
+    /// @param y The subtrahend as an unsigned 60.18-decimal fixed-point number.
+    /// @param result The difference as an unsigned 60.18 decimal fixed-point number.
     function sub(PRBMath.UD60x18 memory x, PRBMath.UD60x18 memory y) internal pure returns (PRBMath.UD60x18 memory result) {
         unchecked {
             require(x.value >= y.value);

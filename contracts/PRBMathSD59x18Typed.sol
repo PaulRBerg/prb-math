@@ -52,9 +52,9 @@ library PRBMathSD59x18Typed {
 
     /// @notice Adds two signed 59.18-decimal fixed-point numbers together, returning a new signed 59.18-decimal
     /// fixed-point number.
-    /// @param x The first signed 59.18-decimal fixed-point number to add.
-    /// @param y The second signed 59.18-decimal fixed-point number to add.
-    /// @param result The result as a signed 59.18 decimal fixed-point number.
+    /// @param x The first summand as a signed 59.18-decimal fixed-point number.
+    /// @param y The second summand as a signed 59.18-decimal fixed-point number.
+    /// @param result The sum as a signed 59.18 decimal fixed-point number.
     function add(PRBMath.SD59x18 memory x, PRBMath.SD59x18 memory y) internal pure returns (PRBMath.SD59x18 memory result) {
         result = PRBMath.SD59x18({ value: x.value + y.value });
     }
@@ -657,9 +657,9 @@ library PRBMathSD59x18Typed {
 
     /// @notice Subtracts one signed 59.18-decimal fixed-point number from another one, returning a new signed 59.18-decimal
     /// fixed-point number.
-    /// @param x The signed 59.18-decimal fixed-point number from which to subtract the other one.
-    /// @param y The signed 59.18-decimal fixed-point number to subtract from the other one.
-    /// @param result The result as a signed 59.18 decimal fixed-point number.
+    /// @param x The minuend as a signed 59.18-decimal fixed-point number.
+    /// @param y The subtrahend as a signed 59.18-decimal fixed-point number.
+    /// @param result The difference as a signed 59.18 decimal fixed-point number.
     function sub(PRBMath.SD59x18 memory x, PRBMath.SD59x18 memory y) internal pure returns (PRBMath.SD59x18 memory result) {
         result = PRBMath.SD59x18({ value: x.value - y.value });
     }
