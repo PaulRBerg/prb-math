@@ -14,6 +14,7 @@ import {
 } from "../../../helpers/constants";
 import { gm } from "../../../helpers/math";
 import { bn } from "../../../helpers/numbers";
+import { PRBMathErrors } from "../../shared/errors";
 
 export default function shouldBehaveLikeGm(): void {
   context("when the product of x and y is zero", function () {
@@ -38,15 +39,14 @@ export default function shouldBehaveLikeGm(): void {
     ];
 
     forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
-      await expect(this.contracts.prbMathSd59x18.doGm(x, y)).to.be.reverted;
-      await expect(this.contracts.prbMathSd59x18Typed.doGm(x, y)).to.be.reverted;
+      await expect(this.contracts.prbMathSd59x18.doGm(x, y)).to.be.revertedWith(PRBMathErrors.GmNegativeProduct);
+      await expect(this.contracts.prbMathSd59x18Typed.doGm(x, y)).to.be.revertedWith(PRBMathErrors.GmNegativeProduct);
     });
   });
 
   context("when the product of x and y is positive", function () {
     context("when the product of x and y overflows", function () {
       const testSets = [
-        [fp(MIN_SD59x18), fp("1e-18")],
         [fp(MIN_SD59x18), fp("2e-18")],
         [fp(MIN_WHOLE_SD59x18), fp("3e-18")],
         [fp(SQRT_MAX_SD59x18_DIV_BY_SCALE).mul(-1), fp(SQRT_MAX_SD59x18_DIV_BY_SCALE).mul(-1).sub(1)],
@@ -57,8 +57,8 @@ export default function shouldBehaveLikeGm(): void {
       ]);
 
       forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
-        await expect(this.contracts.prbMathSd59x18.doGm(x, y)).to.be.reverted;
-        await expect(this.contracts.prbMathSd59x18Typed.doGm(x, y)).to.be.reverted;
+        await expect(this.contracts.prbMathSd59x18.doGm(x, y)).to.be.revertedWith(PRBMathErrors.GmSd59x18Overflow);
+        await expect(this.contracts.prbMathSd59x18Typed.doGm(x, y)).to.be.revertedWith(PRBMathErrors.GmSd59x18Overflow);
       });
     });
 

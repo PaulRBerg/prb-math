@@ -6,6 +6,7 @@ import forEach from "mocha-each";
 import { E, MAX_SD59x18, MAX_WHOLE_SD59x18, MIN_SD59x18, MIN_WHOLE_SD59x18, PI } from "../../../helpers/constants";
 import { exp } from "../../../helpers/math";
 import { bn } from "../../../helpers/numbers";
+import { PRBMathErrors } from "../../shared/errors";
 
 export default function shouldBehaveLikeExp(): void {
   context("when x is zero", function () {
@@ -55,11 +56,11 @@ export default function shouldBehaveLikeExp(): void {
 
   context("when x is positive", function () {
     context("when x is greater than or equal to 133.084258667509499440", function () {
-      const testSets = [fp("133.084258667509499441"), MAX_WHOLE_SD59x18, MAX_SD59x18];
+      const testSets = [fp("133.084258667509499441"), fp(MAX_WHOLE_SD59x18), fp(MAX_SD59x18)];
 
       forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
-        await expect(this.contracts.prbMathSd59x18.doExp(x)).to.be.reverted;
-        await expect(this.contracts.prbMathSd59x18Typed.doExp(x)).to.be.reverted;
+        await expect(this.contracts.prbMathSd59x18.doExp(x)).to.be.revertedWith(PRBMathErrors.ExpInputTooBig);
+        await expect(this.contracts.prbMathSd59x18Typed.doExp(x)).to.be.revertedWith(PRBMathErrors.ExpInputTooBig);
       });
     });
 

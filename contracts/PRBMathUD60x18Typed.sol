@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: WTFPL
-pragma solidity >=0.8.0;
+pragma solidity >=0.8.4;
 
-import "hardhat/console.sol";
 import "./PRBMath.sol";
 
 /// @title PRBMathUD60x18Typed
@@ -37,7 +36,9 @@ library PRBMathUD60x18Typed {
     function add(PRBMath.UD60x18 memory x, PRBMath.UD60x18 memory y) internal pure returns (PRBMath.UD60x18 memory result) {
         unchecked {
             uint256 rValue = x.value + y.value;
-            require(rValue >= x.value);
+            if (rValue < x.value) {
+                revert AddUd60x18Overflow(x.value, y.value);
+            }
             result = PRBMath.UD60x18({ value: rValue });
         }
     }
@@ -68,7 +69,9 @@ library PRBMathUD60x18Typed {
     /// @param result The least integer greater than or equal to x, as an unsigned 60.18-decimal fixed-point number.
     function ceil(PRBMath.UD60x18 memory x) internal pure returns (PRBMath.UD60x18 memory result) {
         uint256 xValue = x.value;
-        require(xValue <= MAX_WHOLE_UD60x18);
+        if (xValue > MAX_WHOLE_UD60x18) {
+            revert CeilUd60x18Overflow(xValue);
+        }
 
         uint256 rValue;
         assembly {
@@ -89,7 +92,7 @@ library PRBMathUD60x18Typed {
     /// @dev Uses mulDiv to enable overflow-safe multiplication and division.
     ///
     /// Requirements:
-    /// - y cannot be zero.
+    /// - The denominator cannot be zero.
     ///
     /// @param x The numerator as an unsigned 60.18-decimal fixed-point number.
     /// @param y The denominator as an unsigned 60.18-decimal fixed-point number.
@@ -115,8 +118,12 @@ library PRBMathUD60x18Typed {
     /// @param x The exponent as an unsigned 60.18-decimal fixed-point number.
     /// @return result The result as an unsigned 60.18-decimal fixed-point number.
     function exp(PRBMath.UD60x18 memory x) internal pure returns (PRBMath.UD60x18 memory result) {
+        uint256 xValue = x.value;
+
         // Without this check, the value passed to "exp2" would be greater than 192.
-        require(x.value < 133084258667509499441);
+        if (xValue >= 133084258667509499441) {
+            revert ExpInputTooBig(xValue);
+        }
 
         // Do the fixed-point multiplication inline to save gas.
         unchecked {
@@ -138,7 +145,9 @@ library PRBMathUD60x18Typed {
     /// @return result The result as an unsigned 60.18-decimal fixed-point number.
     function exp2(PRBMath.UD60x18 memory x) internal pure returns (PRBMath.UD60x18 memory result) {
         // 2^192 doesn't fit within the 192.64-bit format used internally in this function.
-        require(x.value < 192e18);
+        if (x.value >= 192e18) {
+            revert Exp2InputTooBig(x.value);
+        }
 
         unchecked {
             // Convert x to the 192.64-bit fixed-point format.
@@ -189,7 +198,9 @@ library PRBMathUD60x18Typed {
     /// @param result The same number in unsigned 60.18-decimal fixed-point representation.
     function fromUint(uint256 x) internal pure returns (PRBMath.UD60x18 memory result) {
         unchecked {
-            require(x <= MAX_UD60x18 / SCALE);
+            if (x > MAX_UD60x18 / SCALE) {
+                revert FromUintOverflow(x);
+            }
             result = PRBMath.UD60x18({ value: x * SCALE });
         }
     }
@@ -210,7 +221,9 @@ library PRBMathUD60x18Typed {
         unchecked {
             // Checking for overflow this way is faster than letting Solidity do it.
             uint256 xy = x.value * y.value;
-            require(xy / x.value == y.value);
+            if (xy / x.value != y.value) {
+                revert GmUd60x18Overflow(x.value, y.value);
+            }
 
             // We don't need to multiply by the SCALE here because the x*y product had already picked up a factor of SCALE
             // during multiplication. See the comments within the "sqrt" function.
@@ -269,10 +282,12 @@ library PRBMathUD60x18Typed {
     /// @return result The common logarithm as an unsigned 60.18-decimal fixed-point number.
     function log10(PRBMath.UD60x18 memory x) internal pure returns (PRBMath.UD60x18 memory result) {
         uint256 xValue = x.value;
-        require(xValue >= SCALE);
+        if (xValue < SCALE) {
+            revert LogUd60x18InputTooSmall(xValue);
+        }
 
-        // Note that the "mul" in this block is the assembly mul operation, not the "mul" function defined in this
-        // contract.
+        // Note that the "mul" in this block is the assembly multiplication operation, not the "mul" function defined
+        // in this contract.
         uint256 rValue;
 
         // prettier-ignore
@@ -386,17 +401,20 @@ library PRBMathUD60x18Typed {
     /// @param x The unsigned 60.18-decimal fixed-point number for which to calculate the binary logarithm.
     /// @return result The binary logarithm as an unsigned 60.18-decimal fixed-point number.
     function log2(PRBMath.UD60x18 memory x) internal pure returns (PRBMath.UD60x18 memory result) {
-        require(x.value >= SCALE);
+        uint256 xValue = x.value;
+        if (xValue < SCALE) {
+            revert LogUd60x18InputTooSmall(xValue);
+        }
         unchecked {
             // Calculate the integer part of the logarithm and add it to the result and finally calculate y = x * 2^(-n).
-            uint256 n = PRBMath.mostSignificantBit(x.value / SCALE);
+            uint256 n = PRBMath.mostSignificantBit(xValue / SCALE);
 
             // The integer part of the logarithm as an unsigned 60.18-decimal fixed-point number. The operation can't overflow
             // because n is maximum 255 and SCALE is 1e18.
             uint256 rValue = n * SCALE;
 
             // This is y = x * 2^(-n).
-            uint256 y = x.value >> n;
+            uint256 y = xValue >> n;
 
             // If y = 1, the fractional part is zero.
             if (y == SCALE) {
@@ -426,7 +444,7 @@ library PRBMathUD60x18Typed {
     /// @dev See the documentation for the "PRBMath.mulDivFixedPoint" function.
     /// @param x The multiplicand as an unsigned 60.18-decimal fixed-point number.
     /// @param y The multiplier as an unsigned 60.18-decimal fixed-point number.
-    /// @return result The result as an unsigned 60.18-decimal fixed-point number.
+    /// @return result The product as an unsigned 60.18-decimal fixed-point number.
     function mul(PRBMath.UD60x18 memory x, PRBMath.UD60x18 memory y) internal pure returns (PRBMath.UD60x18 memory result) {
         result = PRBMath.UD60x18({ value: PRBMath.mulDivFixedPoint(x.value, y.value) });
     }
@@ -501,14 +519,13 @@ library PRBMathUD60x18Typed {
     /// Requirements:
     /// - x must be less than MAX_UD60x18 / SCALE.
     ///
-    /// Caveats:
-    /// - The maximum fixed-point number permitted is 115792089237316195423570985008687907853269.984665640564039458.
-    ///
     /// @param x The unsigned 60.18-decimal fixed-point number for which to calculate the square root.
     /// @return result The result as an unsigned 60.18-decimal fixed-point .
     function sqrt(PRBMath.UD60x18 memory x) internal pure returns (PRBMath.UD60x18 memory result) {
-        require(x.value < 115792089237316195423570985008687907853269984665640564039458);
         unchecked {
+            if (x.value > MAX_UD60x18 / SCALE) {
+                revert SqrtUd60x18Overflow(x.value);
+            }
             // Multiply x by the SCALE to account for the factor of SCALE that is picked up when multiplying two unsigned
             // 60.18-decimal fixed-point numbers together (in this case, those two numbers are both the square root).
             result = PRBMath.UD60x18({ value: PRBMath.sqrt(x.value * SCALE) });
@@ -522,7 +539,9 @@ library PRBMathUD60x18Typed {
     /// @param result The difference as an unsigned 60.18 decimal fixed-point number.
     function sub(PRBMath.UD60x18 memory x, PRBMath.UD60x18 memory y) internal pure returns (PRBMath.UD60x18 memory result) {
         unchecked {
-            require(x.value >= y.value);
+            if (x.value < y.value) {
+                revert SubUnderflowUd60x18(x.value, y.value);
+            }
             result = PRBMath.UD60x18({ value: x.value - y.value });
         }
     }
@@ -531,6 +550,8 @@ library PRBMathUD60x18Typed {
     /// @param x The unsigned 60.18-decimal fixed-point number to convert.
     /// @return result The same number in basic integer form.
     function toUint(PRBMath.UD60x18 memory x) internal pure returns (uint256 result) {
-        unchecked { result = x.value / SCALE; }
+        unchecked {
+            result = x.value / SCALE;
+        }
     }
 }

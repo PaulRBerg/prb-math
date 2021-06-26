@@ -5,7 +5,7 @@
 in the integer part and up to 18 decimals in the fractional part. The numbers are bound by the minimum and the maximum
 values permitted by the Solidity types int256 and uint256.
 
-- Designed for Solidity >=0.8.0
+- Designed for Solidity >=0.8.4
 - Operates with signed and unsigned denary fixed-point numbers, with 18 trailing decimals
 - Offers advanced math functions like logarithms, exponentials, powers and square roots
 - Gas efficient, but still user-friendly
@@ -47,7 +47,7 @@ PRBMath comes in four flavours: basic signed, typed signed, basic unsigned and t
 
 ```solidity
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity >=0.8.0;
+pragma solidity >=0.8.4;
 
 import "prb-math/contracts/PRBMathSD59x18.sol";
 
@@ -76,7 +76,7 @@ contract SignedConsumer {
 
 ```solidity
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity >=0.8.0;
+pragma solidity >=0.8.4;
 
 import "prb-math/contracts/PRBMathSD59x18Typed.sol";
 
@@ -110,7 +110,7 @@ contract SignedConsumerTyped {
 
 ```solidity
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity >=0.8.0;
+pragma solidity >=0.8.4;
 
 import "prb-math/contracts/PRBMathUD60x18.sol";
 
@@ -141,7 +141,7 @@ contract UnsignedConsumer {
 
 ```solidity
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity >=0.8.0;
+pragma solidity >=0.8.4;
 
 import "prb-math/contracts/PRBMathUD60x18Typed.sol";
 

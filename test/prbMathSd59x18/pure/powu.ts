@@ -6,6 +6,7 @@ import forEach from "mocha-each";
 import { E, MAX_SD59x18, MAX_WHOLE_SD59x18, PI, SQRT_MAX_SD59x18 } from "../../../helpers/constants";
 import { pow } from "../../../helpers/math";
 import { bn } from "../../../helpers/numbers";
+import { PRBMathErrors } from "../../shared/errors";
 
 export default function shouldBehaveLikePowu(): void {
   context("when the base is zero", function () {
@@ -51,8 +52,12 @@ export default function shouldBehaveLikePowu(): void {
         ];
 
         forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
-          await expect(this.contracts.prbMathSd59x18.doPowu(x, y)).to.be.reverted;
-          await expect(this.contracts.prbMathSd59x18Typed.doPowu(x, y)).to.be.reverted;
+          await expect(this.contracts.prbMathSd59x18.doPowu(x, y)).to.be.revertedWith(
+            PRBMathErrors.MulDivFixedPointOverflow,
+          );
+          await expect(this.contracts.prbMathSd59x18Typed.doPowu(x, y)).to.be.revertedWith(
+            PRBMathErrors.MulDivFixedPointOverflow,
+          );
         });
       });
 
@@ -64,8 +69,12 @@ export default function shouldBehaveLikePowu(): void {
           ];
 
           forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
-            await expect(this.contracts.prbMathSd59x18.doPowu(x, y)).to.be.reverted;
-            await expect(this.contracts.prbMathSd59x18Typed.doPowu(x, y)).to.be.reverted;
+            await expect(this.contracts.prbMathSd59x18.doPowu(x, y)).to.be.revertedWith(
+              PRBMathErrors.PowuSd59x18Overflow,
+            );
+            await expect(this.contracts.prbMathSd59x18Typed.doPowu(x, y)).to.be.revertedWith(
+              PRBMathErrors.PowuSd59x18Overflow,
+            );
           });
         });
 

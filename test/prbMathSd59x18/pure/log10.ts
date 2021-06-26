@@ -6,21 +6,26 @@ import forEach from "mocha-each";
 import { E, MAX_SD59x18, MAX_WHOLE_SD59x18, PI } from "../../../helpers/constants";
 import { log10 } from "../../../helpers/math";
 import { bn } from "../../../helpers/numbers";
+import { PRBMathErrors } from "../../shared/errors";
 
 export default function shouldBehaveLikeLog10(): void {
   context("when x is zero", function () {
     it("reverts", async function () {
       const x: BigNumber = bn("0");
-      await expect(this.contracts.prbMathSd59x18.doLog10(x)).to.be.reverted;
-      await expect(this.contracts.prbMathSd59x18Typed.doLog10(x)).to.be.reverted;
+      await expect(this.contracts.prbMathSd59x18.doLog10(x)).to.be.revertedWith(PRBMathErrors.LogSd59x18InputTooSmall);
+      await expect(this.contracts.prbMathSd59x18Typed.doLog10(x)).to.be.revertedWith(
+        PRBMathErrors.LogSd59x18InputTooSmall,
+      );
     });
   });
 
   context("when x is negative", function () {
     it("reverts", async function () {
       const x: BigNumber = fp("-0.1");
-      await expect(this.contracts.prbMathSd59x18.doLog10(x)).to.be.reverted;
-      await expect(this.contracts.prbMathSd59x18Typed.doLog10(x)).to.be.reverted;
+      await expect(this.contracts.prbMathSd59x18.doLog10(x)).to.be.revertedWith(PRBMathErrors.LogSd59x18InputTooSmall);
+      await expect(this.contracts.prbMathSd59x18Typed.doLog10(x)).to.be.revertedWith(
+        PRBMathErrors.LogSd59x18InputTooSmall,
+      );
     });
   });
 

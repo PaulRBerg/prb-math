@@ -6,6 +6,7 @@ import forEach from "mocha-each";
 import { E, MAX_SD59x18, MAX_WHOLE_SD59x18, MIN_SD59x18, MIN_WHOLE_SD59x18, PI } from "../../../helpers/constants";
 import { exp2 } from "../../../helpers/math";
 import { bn } from "../../../helpers/numbers";
+import { PRBMathErrors } from "../../shared/errors";
 
 export default function shouldBehaveLikeExp2(): void {
   context("when x is zero", function () {
@@ -58,8 +59,8 @@ export default function shouldBehaveLikeExp2(): void {
       const testSets = [fp("192"), fp(MAX_WHOLE_SD59x18), fp(MAX_SD59x18)];
 
       forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
-        await expect(this.contracts.prbMathSd59x18.doExp2(x)).to.be.reverted;
-        await expect(this.contracts.prbMathSd59x18Typed.doExp2(x)).to.be.reverted;
+        await expect(this.contracts.prbMathSd59x18.doExp2(x)).to.be.revertedWith(PRBMathErrors.Exp2InputTooBig);
+        await expect(this.contracts.prbMathSd59x18Typed.doExp2(x)).to.be.revertedWith(PRBMathErrors.Exp2InputTooBig);
       });
     });
 

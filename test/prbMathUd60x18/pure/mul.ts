@@ -6,6 +6,7 @@ import forEach from "mocha-each";
 import { E, HALF_SCALE, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, SQRT_MAX_UD60x18 } from "../../../helpers/constants";
 import { mul } from "../../../helpers/ethers.math";
 import { bn } from "../../../helpers/numbers";
+import { PRBMathErrors } from "../../shared/errors";
 
 export default function shouldBehaveLikeMul(): void {
   context("when one of the operands is zero", function () {
@@ -23,7 +24,7 @@ export default function shouldBehaveLikeMul(): void {
   });
 
   context("when neither of the operands is zero", function () {
-    context("when the double scaled product overflows", function () {
+    context("when the result overflows", function () {
       const testSets = [
         [fp(SQRT_MAX_UD60x18).add(1), fp(SQRT_MAX_UD60x18).add(1)],
         [fp(MAX_WHOLE_UD60x18), fp(MAX_WHOLE_UD60x18)],
@@ -31,12 +32,16 @@ export default function shouldBehaveLikeMul(): void {
       ];
 
       forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
-        await expect(this.contracts.prbMathUd60x18.doMul(x, y)).to.be.reverted;
-        await expect(this.contracts.prbMathUd60x18Typed.doMul(x, y)).to.be.reverted;
+        await expect(this.contracts.prbMathUd60x18.doMul(x, y)).to.be.revertedWith(
+          PRBMathErrors.MulDivFixedPointOverflow,
+        );
+        await expect(this.contracts.prbMathUd60x18Typed.doMul(x, y)).to.be.revertedWith(
+          PRBMathErrors.MulDivFixedPointOverflow,
+        );
       });
     });
 
-    context("when the double scaled product does not overflow", function () {
+    context("when the result does not overflow", function () {
       const testSets = [
         [fp("1e-18"), fp("1e-18")],
         [fp("6e-18"), fp("0.1")],

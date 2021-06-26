@@ -1,9 +1,119 @@
 // SPDX-License-Identifier: WTFPL
-pragma solidity >=0.8.0;
+pragma solidity >=0.8.4;
+
+/// @notice Emitted when the input is MIN_SD59x18.
+error AbsInputTooSmall();
+
+/// @notice Emitted when addition overflows UD60x18.
+/// @param x The first summand.
+/// @param y The second summand.
+error AddUd60x18Overflow(uint256 x, uint256 y);
+
+/// @notice Emitted when ceiling a number overflows SD59x18.
+/// @notice x The number to ceil.
+error CeilSd59x18Overflow(int256 x);
+
+/// @notice Emitted when ceiling a number overflows UD60x18.
+/// @notice x The number to ceil.
+error CeilUd60x18Overflow(uint256 x);
+
+/// @notice Emitted when one of the inputs is MIN_SD59x18.
+error DivSd59x18InputTooSmall();
+
+/// @notice Emitted when one of the intermediary unsigned results overflows SD59x18.
+/// @param rUnsigned The intermediary unsigned result.
+error DivSd59x18Overflow(uint256 rUnsigned);
+
+/// @notice Emitted when the input is greater than 133.084258667509499441.
+/// @param x The number to calculate the natural exponent for.
+error ExpInputTooBig(uint256 x);
+
+/// @notice Emitted when the input is greater than 192.
+/// @param x The number to calculate the binary exponent for.
+error Exp2InputTooBig(uint256 x);
+
+/// @notice Emitted when converting a basic integer to the fixed-point format overflows SD59x18.
+/// @param x The basic integer to convert to SD59x18.
+error FromIntOverflow(int256 x);
+
+/// @notice Emitted when converting a basic integer to the fixed-point format underflows SD59x18.
+/// @param x The basic integer to convert to SD59x18.
+error FromIntUnderflow(int256 x);
+
+/// @notice Emitted when converting a basic integer to the fixed-point format format overflows UD60x18.
+/// @param x The basic integer to convert to UD60x18.
+error FromUintOverflow(uint256 x);
+
+/// @notice Emitted when flooring a number underflows SD59x18.
+/// @param x The number to floor.
+error FloorSd59x18Underflow(int256 x);
+
+/// @notice Emitted when the product of the inputs is negative.
+/// @param x The first operand.
+/// @param x The second operand.
+error GmNegativeProduct(int256 x, int256 y);
+
+/// @notice Emitted when multiplying the inputs overflows SD59x18.
+/// @param x The first operand.
+/// @param x The second operand.
+error GmSd59x18Overflow(int256 x, int256 y);
+
+/// @notice Emitted when multiplying the inputs overflows UD60x18.
+/// @param x The first operand.
+/// @param x The second operand.
+error GmUd60x18Overflow(uint256 x, uint256 y);
+
+/// @notice Emitted when the input is less than or equal to zero.
+/// @param x The number for which to calculate the logarithm.
+error LogSd59x18InputTooSmall(int256 x);
+
+/// @notice Emitted when the input is less than 1.
+/// @param x The number for which to calculate the logarithm.
+error LogUd60x18InputTooSmall(uint256 x);
+
+/// @notice Emitted when the result overflows uint256.
+error MulDivFixedPointOverflow(uint256 prod1);
+
+// @notice Emitted when the result overflows uint256.
+error MulDivOverflow(uint256 prod1, uint256 denominator);
+
+// @notice Emitted when the intermediary absolute result overflows int256.
+error MulDivSignedOverflow(uint256 rAbs);
+
+/// @notice Emitted when one of the inputs is type(int256).min.
+error MulDivSignedInputTooSmall();
+
+/// @notice Emitted when one of the inputs is MIN_SD59x18.
+error MulSd59x18InputTooSmall();
+
+/// @notice Emitted when the intermediary absolute result overflows SD59x18.
+/// @param rAbs The intermediary absolute result.
+error MulSd59x18Overflow(uint256 rAbs);
+
+/// @notice Emitted when the intermediary absolute result overflows SD59x18.
+/// @param rAbs The intermediary absolute result.
+error PowuSd59x18Overflow(uint256 rAbs);
+
+/// @notice Emitted when the input is negative.
+/// @param x The number for which to calculate the square root.
+error SqrtSd59x18NegativeInput(int256 x);
+
+/// @notice Emitted when the calculting the square root overflows SD59x18.
+/// @param x The number for which to calculate the square root.
+error SqrtSd59x18Overflow(int256 x);
+
+/// @notice Emitted when the calculting the square root overflows UD60x18.
+/// @param x The number for which to calculate the square root.
+error SqrtUd60x18Overflow(uint256 x);
+
+/// @notice Emitted when subtraction underflows UD60x18.
+/// @param x The minuend.
+/// @param y The subtrahend.
+error SubUnderflowUd60x18(uint256 x, uint256 y);
 
 /// @dev Common mathematical functions used in both PRBMathSD59x18 and PRBMathUD60x18. Note that this shared library
 /// does not always assume the signed 59.18-decimal fixed-point or the unsigned 60.18-decimal fixed-point
-// representation. When it does not, it is annotated in the function's NatSpec documentation.
+/// representation. When it does not, it is explictly mentioned in the NatSpec documentation.
 library PRBMath {
     /// STRUCTS ///
 
@@ -25,6 +135,8 @@ library PRBMath {
 
     /// @dev SCALE inverted mod 2^256.
     uint256 internal constant SCALE_INVERSE = 78156646155174841979727994598816262306175212592076161876661508869554232690281;
+
+    /// FUNCTIONS ///
 
     /// @notice Calculates the binary exponent of x using the binary fraction method.
     /// @dev Has to use 192.64-bit fixed-point numbers.
@@ -314,17 +426,18 @@ library PRBMath {
             prod1 := sub(sub(mm, prod0), lt(mm, prod0))
         }
 
-        // Handle non-overflow cases, 256 by 256 division
+        // Handle non-overflow cases, 256 by 256 division.
         if (prod1 == 0) {
-            require(denominator > 0);
-            assembly {
-                result := div(prod0, denominator)
+            unchecked {
+                result = prod0 / denominator;
             }
             return result;
         }
 
         // Make sure the result is less than 2^256. Also prevents denominator == 0.
-        require(denominator > prod1);
+        if (prod1 >= denominator) {
+            revert MulDivOverflow(prod1, denominator);
+        }
 
         ///////////////////////////////////////////////
         // 512 by 256 division.
@@ -336,7 +449,7 @@ library PRBMath {
             // Compute remainder using mulmod.
             remainder := mulmod(x, y, denominator)
 
-            // Subtract 256 bit number from 512 bit number
+            // Subtract 256 bit number from 512 bit number.
             prod1 := sub(prod1, gt(remainder, prod0))
             prod0 := sub(prod0, remainder)
         }
@@ -362,7 +475,7 @@ library PRBMath {
 
             // Invert denominator mod 2^256. Now that denominator is an odd number, it has an inverse modulo 2^256 such
             // that denominator * inv = 1 mod 2^256. Compute the inverse by starting with a seed that is correct for
-            // four bits. That is, denominator * inv = 1 mod 2^4
+            // four bits. That is, denominator * inv = 1 mod 2^4.
             uint256 inverse = (3 * denominator) ^ 2;
 
             // Now use Newton-Raphson iteration to improve the precision. Thanks to Hensel's lifting lemma, this also works
@@ -410,6 +523,10 @@ library PRBMath {
             prod1 := sub(sub(mm, prod0), lt(mm, prod0))
         }
 
+        if (prod1 >= SCALE) {
+            revert MulDivFixedPointOverflow(prod1);
+        }
+
         uint256 remainder;
         uint256 roundUpUnit;
         assembly {
@@ -423,8 +540,6 @@ library PRBMath {
                 return result;
             }
         }
-
-        require(SCALE > prod1);
 
         assembly {
             result := add(
@@ -457,9 +572,9 @@ library PRBMath {
         int256 y,
         int256 denominator
     ) internal pure returns (int256 result) {
-        require(x > type(int256).min);
-        require(y > type(int256).min);
-        require(denominator > type(int256).min);
+        if (x == type(int256).min || y == type(int256).min || denominator == type(int256).min) {
+            revert MulDivSignedInputTooSmall();
+        }
 
         // Get hold of the absolute values of x, y and the denominator.
         uint256 ax;
@@ -472,8 +587,10 @@ library PRBMath {
         }
 
         // Compute the absolute value of (x*y)÷denominator. The result must fit within int256.
-        uint256 resultUnsigned = mulDiv(ax, ay, ad);
-        require(resultUnsigned <= uint256(type(int256).max));
+        uint256 rAbs = mulDiv(ax, ay, ad);
+        if (rAbs > uint256(type(int256).max)) {
+            revert MulDivSignedOverflow(rAbs);
+        }
 
         // Get the signs of x, y and the denominator.
         uint256 sx;
@@ -487,7 +604,7 @@ library PRBMath {
 
         // XOR over sx, sy and sd. This is checking whether there are one or three negative signs in the inputs.
         // If yes, the result should be negative.
-        result = sx ^ sy ^ sd == 0 ? -int256(resultUnsigned) : int256(resultUnsigned);
+        result = sx ^ sy ^ sd == 0 ? -int256(rAbs) : int256(rAbs);
     }
 
     /// @notice Calculates the square root of x, rounding down.

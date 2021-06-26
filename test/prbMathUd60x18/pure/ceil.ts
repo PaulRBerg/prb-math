@@ -6,6 +6,7 @@ import forEach from "mocha-each";
 import { MAX_UD60x18, MAX_WHOLE_UD60x18, PI } from "../../../helpers/constants";
 import { ceil } from "../../../helpers/math";
 import { bn } from "../../../helpers/numbers";
+import { PRBMathErrors } from "../../shared/errors";
 
 export default function shouldBehaveLikeCeil(): void {
   context("when x is zero", function () {
@@ -22,8 +23,10 @@ export default function shouldBehaveLikeCeil(): void {
       const testSets = [[fp(MAX_WHOLE_UD60x18).add(1)], [fp(MAX_UD60x18)]];
 
       forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
-        await expect(this.contracts.prbMathUd60x18.doCeil(x)).to.be.reverted;
-        await expect(this.contracts.prbMathUd60x18Typed.doCeil(x)).to.be.reverted;
+        await expect(this.contracts.prbMathUd60x18.doCeil(x)).to.be.revertedWith(PRBMathErrors.CeilUd60x18Overflow);
+        await expect(this.contracts.prbMathUd60x18Typed.doCeil(x)).to.be.revertedWith(
+          PRBMathErrors.CeilUd60x18Overflow,
+        );
       });
     });
 

@@ -6,14 +6,15 @@ import forEach from "mocha-each";
 import { MAX_UD60x18, PI, SCALE } from "../../../helpers/constants";
 import { mbn } from "../../../helpers/math";
 import { bn } from "../../../helpers/numbers";
+import { PRBMathErrors, PanicCodes } from "../../shared/errors";
 
 export default function shouldBehaveLikeDiv(): void {
   context("when the denominator is zero", function () {
     it("reverts", async function () {
       const x: BigNumber = fp("1");
       const y: BigNumber = bn("0");
-      await expect(this.contracts.prbMathUd60x18.doDiv(x, y)).to.be.reverted;
-      await expect(this.contracts.prbMathUd60x18Typed.doDiv(x, y)).to.be.reverted;
+      await expect(this.contracts.prbMathUd60x18.doDiv(x, y)).to.be.revertedWith(PanicCodes.DivisionByZero);
+      await expect(this.contracts.prbMathUd60x18Typed.doDiv(x, y)).to.be.revertedWith(PanicCodes.DivisionByZero);
     });
   });
 
@@ -30,19 +31,19 @@ export default function shouldBehaveLikeDiv(): void {
     });
 
     context("when the numerator is not zero", function () {
-      context("when the scaled numerator overflows", function () {
+      context("when the result overflows ud60x18", function () {
         const testSets = [
           [fp(MAX_UD60x18).div(fp(SCALE)).add(1), fp("1e-18")],
           [fp(MAX_UD60x18).div(fp(SCALE)).add(1), fp("1e-18")],
         ];
 
         forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
-          await expect(this.contracts.prbMathUd60x18.doDiv(x, y)).to.be.reverted;
-          await expect(this.contracts.prbMathUd60x18Typed.doDiv(x, y)).to.be.reverted;
+          await expect(this.contracts.prbMathUd60x18.doDiv(x, y)).to.be.revertedWith(PRBMathErrors.MulDivOverflow);
+          await expect(this.contracts.prbMathUd60x18Typed.doDiv(x, y)).to.be.revertedWith(PRBMathErrors.MulDivOverflow);
         });
       });
 
-      context("when the scaled numerator does not overflow", function () {
+      context("when the result does not overflow ud60x18", function () {
         const testSets = [
           ["1e-18", MAX_UD60x18],
           ["1e-18", "1.000000000000000001"],

@@ -5,18 +5,19 @@ import forEach from "mocha-each";
 
 import { E, MAX_UD60x18, PI } from "../../../helpers/constants";
 import { bn } from "../../../helpers/numbers";
+import { PRBMathErrors } from "../../shared/errors";
 
 export default function shouldBehaveLikeAdd(): void {
   context("when the sum overflows", function () {
     const testSets = [
-      [bn("1"), MAX_UD60x18],
+      [bn("1"), fp(MAX_UD60x18)],
       [fp(MAX_UD60x18).div(2), fp(MAX_UD60x18).div(2).add(2)],
       [fp(MAX_UD60x18).div(2).add(2), fp(MAX_UD60x18).div(2)],
       [fp(MAX_UD60x18), bn("1")],
     ];
 
     forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
-      await expect(this.contracts.prbMathUd60x18Typed.doAdd(x, y)).to.be.reverted;
+      await expect(this.contracts.prbMathUd60x18Typed.doAdd(x, y)).to.be.revertedWith(PRBMathErrors.AddUd60x18Overflow);
     });
   });
 

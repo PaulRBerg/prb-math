@@ -6,6 +6,7 @@ import forEach from "mocha-each";
 import { E, MAX_UD60x18, PI } from "../../../helpers/constants";
 import { pow } from "../../../helpers/math";
 import { bn } from "../../../helpers/numbers";
+import { PRBMathErrors } from "../../shared/errors";
 
 export default function shouldBehaveLikePow(): void {
   context("when the base is zero", function () {
@@ -34,7 +35,7 @@ export default function shouldBehaveLikePow(): void {
   });
 
   context("when the base is not zero", function () {
-    context("when the base is lower than the scale", function () {
+    context("when the base is less than the scale", function () {
       const testSets = [
         [fp("1e-18"), fp("1")],
         [fp("1e-11"), fp("1")],
@@ -42,8 +43,12 @@ export default function shouldBehaveLikePow(): void {
       ];
 
       forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
-        await expect(this.contracts.prbMathUd60x18.doPow(x, y)).to.be.reverted;
-        await expect(this.contracts.prbMathUd60x18Typed.doPow(x, y)).to.be.reverted;
+        await expect(this.contracts.prbMathUd60x18.doPow(x, y)).to.be.revertedWith(
+          PRBMathErrors.LogUd60x18InputTooSmall,
+        );
+        await expect(this.contracts.prbMathUd60x18Typed.doPow(x, y)).to.be.revertedWith(
+          PRBMathErrors.LogUd60x18InputTooSmall,
+        );
       });
     });
 
@@ -67,8 +72,10 @@ export default function shouldBehaveLikePow(): void {
           ];
 
           forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
-            await expect(this.contracts.prbMathUd60x18.doPow(x, y)).to.be.reverted;
-            await expect(this.contracts.prbMathUd60x18Typed.doPow(x, y)).to.be.reverted;
+            await expect(this.contracts.prbMathUd60x18.doPow(x, y)).to.be.revertedWith(PRBMathErrors.Exp2InputTooBig);
+            await expect(this.contracts.prbMathUd60x18Typed.doPow(x, y)).to.be.revertedWith(
+              PRBMathErrors.Exp2InputTooBig,
+            );
           });
         });
 

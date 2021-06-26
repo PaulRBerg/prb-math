@@ -6,6 +6,7 @@ import forEach from "mocha-each";
 import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI } from "../../../helpers/constants";
 import { sqrt } from "../../../helpers/math";
 import { bn } from "../../../helpers/numbers";
+import { PRBMathErrors } from "../../shared/errors";
 
 export default function shouldBehaveLikeSqrt(): void {
   context("when x is zero", function () {
@@ -28,8 +29,10 @@ export default function shouldBehaveLikeSqrt(): void {
         ];
 
         forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
-          await expect(this.contracts.prbMathUd60x18.doSqrt(x)).to.be.reverted;
-          await expect(this.contracts.prbMathUd60x18Typed.doSqrt(x)).to.be.reverted;
+          await expect(this.contracts.prbMathUd60x18.doSqrt(x)).to.be.revertedWith(PRBMathErrors.SqrtUd60x18Overflow);
+          await expect(this.contracts.prbMathUd60x18Typed.doSqrt(x)).to.be.revertedWith(
+            PRBMathErrors.SqrtUd60x18Overflow,
+          );
         });
       },
     );

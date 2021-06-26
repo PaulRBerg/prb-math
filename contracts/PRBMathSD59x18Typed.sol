@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: WTFPL
-pragma solidity >=0.8.0;
+pragma solidity >=0.8.4;
 
 import "./PRBMath.sol";
 
@@ -44,9 +44,12 @@ library PRBMathSD59x18Typed {
     /// @param x The number to calculate the absolute value for.
     /// @param result The absolute value of x.
     function abs(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
+        int256 xValue = x.value;
+        if (xValue == MIN_SD59x18) {
+            revert AbsInputTooSmall();
+        }
         unchecked {
-            require(x.value > MIN_SD59x18);
-            result = PRBMath.SD59x18({ value: x.value < 0 ? -x.value : x.value });
+            result = PRBMath.SD59x18({ value: x.value < 0 ? -xValue : xValue });
         }
     }
 
@@ -84,15 +87,18 @@ library PRBMathSD59x18Typed {
     /// @param x The signed 59.18-decimal fixed-point number to ceil.
     /// @param result The least integer greater than or equal to x, as a signed 58.18-decimal fixed-point number.
     function ceil(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
-        require(x.value <= MAX_WHOLE_SD59x18);
+        int256 xValue = x.value;
+        if (xValue > MAX_WHOLE_SD59x18) {
+            revert CeilSd59x18Overflow(xValue);
+        }
         unchecked {
-            int256 remainder = x.value % SCALE;
+            int256 remainder = xValue % SCALE;
             if (remainder == 0) {
                 result = x;
             } else {
                 // Solidity uses C fmod style, which returns a modulus with the same sign as x.
-                int256 rValue = x.value - remainder;
-                if (x.value > 0) {
+                int256 rValue = xValue - remainder;
+                if (xValue > 0) {
                     rValue += SCALE;
                 }
                 result = PRBMath.SD59x18({ value: rValue });
@@ -107,7 +113,7 @@ library PRBMathSD59x18Typed {
     /// Requirements:
     /// - All from "PRBMath.mulDiv".
     /// - None of the inputs can be type(int256).min.
-    /// - y cannot be zero.
+    /// - The denominator cannot be zero.
     /// - The result must fit within int256.
     ///
     /// Caveats:
@@ -119,8 +125,9 @@ library PRBMathSD59x18Typed {
     function div(PRBMath.SD59x18 memory x, PRBMath.SD59x18 memory y) internal pure returns (PRBMath.SD59x18 memory result) {
         int256 xValue = x.value;
         int256 yValue = y.value;
-        require(xValue > type(int256).min);
-        require(yValue > type(int256).min);
+        if (xValue == MIN_SD59x18 || yValue == MIN_SD59x18) {
+            revert DivSd59x18InputTooSmall();
+        }
 
         // Get hold of the absolute values of x and y.
         uint256 ax;
@@ -131,8 +138,10 @@ library PRBMathSD59x18Typed {
         }
 
         // Compute the absolute value of (x*SCALE)÷y. The result must fit within int256.
-        uint256 rUnsigned = PRBMath.mulDiv(ax, uint256(SCALE), ay);
-        require(rUnsigned <= uint256(type(int256).max));
+        uint256 rAbs = PRBMath.mulDiv(ax, uint256(SCALE), ay);
+        if (rAbs > uint256(MAX_SD59x18)) {
+            revert DivSd59x18Overflow(rAbs);
+        }
 
         // Get the signs of x and y.
         uint256 sx;
@@ -144,7 +153,7 @@ library PRBMathSD59x18Typed {
 
         // XOR over sx and sy. This is basically checking whether the inputs have the same sign. If yes, the result
         // should be positive. Otherwise, it should be negative.
-        result = PRBMath.SD59x18({ value: sx ^ sy == 1 ? -int256(rUnsigned) : int256(rUnsigned) });
+        result = PRBMath.SD59x18({ value: sx ^ sy == 1 ? -int256(rAbs) : int256(rAbs) });
     }
 
     /// @notice Returns Euler's number as a signed 59.18-decimal fixed-point number.
@@ -168,17 +177,20 @@ library PRBMathSD59x18Typed {
     /// @param x The exponent as a signed 59.18-decimal fixed-point number.
     /// @return result The result as a signed 59.18-decimal fixed-point number.
     function exp(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
+        int256 xValue = x.value;
         // Without this check, the value passed to "exp2" would be less than -59.794705707972522261.
-        if (x.value < -41446531673892822322) {
+        if (xValue < -41446531673892822322) {
             return PRBMath.SD59x18({ value: 0 });
         }
 
         // Without this check, the value passed to "exp2" would be greater than 192.
-        require(x.value < 133084258667509499441);
+        if (xValue >= 133084258667509499441) {
+            revert ExpInputTooBig(uint256(xValue));
+        }
 
         // Do the fixed-point multiplication inline to save gas.
         unchecked {
-            int256 doubleScaleProduct = x.value * LOG2_E;
+            int256 doubleScaleProduct = xValue * LOG2_E;
             PRBMath.SD59x18 memory exponent = PRBMath.SD59x18({ value: (doubleScaleProduct + HALF_SCALE) / SCALE });
             result = exp2(exponent);
         }
@@ -198,25 +210,29 @@ library PRBMathSD59x18Typed {
     /// @param x The exponent as a signed 59.18-decimal fixed-point number.
     /// @return result The result as a signed 59.18-decimal fixed-point number.
     function exp2(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
+        int256 xValue = x.value;
+
         // This works because 2^(-x) = 1/2^x.
-        if (x.value < 0) {
+        if (xValue < 0) {
             // 2^59.794705707972522262 is the maximum number whose inverse does not truncate down to zero.
-            if (x.value < -59794705707972522261) {
+            if (xValue < -59794705707972522261) {
                 return PRBMath.SD59x18({ value: 0 });
             }
 
             // Do the fixed-point inversion inline to save gas. The numerator is SCALE * SCALE.
             unchecked {
-                PRBMath.SD59x18 memory exponent = PRBMath.SD59x18({ value: -x.value });
+                PRBMath.SD59x18 memory exponent = PRBMath.SD59x18({ value: -xValue });
                 result = PRBMath.SD59x18({ value: 1e36 / exp2(exponent).value });
             }
         } else {
-            // 2^192 doesn't fit within the 192.64-bit fixed-point representation.
-            require(x.value < 192e18);
+            // 2^192 doesn't fit within the 192.64-bit format used internally in this function.
+            if (xValue >= 192e18) {
+                revert Exp2InputTooBig(uint256(xValue));
+            }
 
             unchecked {
                 // Convert x to the 192-64-bit fixed-point format.
-                uint256 x192x64 = (uint256(x.value) << 64) / uint256(SCALE);
+                uint256 x192x64 = (uint256(xValue) << 64) / uint256(SCALE);
 
                 // Safe to convert the result to int256 directly because the maximum input allowed is 192.
                 result = PRBMath.SD59x18({ value: int256(PRBMath.exp2(x192x64)) });
@@ -235,15 +251,18 @@ library PRBMathSD59x18Typed {
     /// @param x The signed 59.18-decimal fixed-point number to floor.
     /// @param result The greatest integer less than or equal to x, as a signed 58.18-decimal fixed-point number.
     function floor(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
-        require(x.value >= MIN_WHOLE_SD59x18);
+        int256 xValue = x.value;
+        if (xValue < MIN_WHOLE_SD59x18) {
+            revert FloorSd59x18Underflow(xValue);
+        }
         unchecked {
-            int256 remainder = x.value % SCALE;
+            int256 remainder = xValue % SCALE;
             if (remainder == 0) {
                 result = x;
             } else {
                 // Solidity uses C fmod style, which returns a modulus with the same sign as x.
-                int256 rValue = x.value - remainder;
-                if (x.value < 0) {
+                int256 rValue = xValue - remainder;
+                if (xValue < 0) {
                     rValue -= SCALE;
                 }
                 result = PRBMath.SD59x18({ value: rValue });
@@ -257,7 +276,9 @@ library PRBMathSD59x18Typed {
     /// @param x The signed 59.18-decimal fixed-point number to get the fractional part of.
     /// @param result The fractional part of x as a signed 59.18-decimal fixed-point number.
     function frac(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
-        unchecked { result = PRBMath.SD59x18({ value: x.value % SCALE }); }
+        unchecked {
+            result = PRBMath.SD59x18({ value: x.value % SCALE });
+        }
     }
 
     /// @notice Converts a number from basic integer form to signed 59.18-decimal fixed-point representation.
@@ -270,7 +291,12 @@ library PRBMathSD59x18Typed {
     /// @param result The same number in signed 59.18-decimal fixed-point representation.
     function fromInt(int256 x) internal pure returns (PRBMath.SD59x18 memory result) {
         unchecked {
-            require(x >= MIN_SD59x18 / SCALE && x <= MAX_SD59x18 / SCALE);
+            if (x < MIN_SD59x18 / SCALE) {
+                revert FromIntUnderflow(x);
+            }
+            if (x > MAX_SD59x18 / SCALE) {
+                revert FromIntOverflow(x);
+            }
             result = PRBMath.SD59x18({ value: x * SCALE });
         }
     }
@@ -292,10 +318,14 @@ library PRBMathSD59x18Typed {
         unchecked {
             // Checking for overflow this way is faster than letting Solidity do it.
             int256 xy = x.value * y.value;
-            require(xy / x.value == y.value);
+            if (xy / x.value != y.value) {
+                revert GmSd59x18Overflow(x.value, y.value);
+            }
 
             // The product cannot be negative.
-            require(xy >= 0);
+            if (xy < 0) {
+                revert GmNegativeProduct(x.value, y.value);
+            }
 
             // We don't need to multiply by the SCALE here because the x*y product had already picked up a factor of SCALE
             // during multiplication. See the comments within the "sqrt" function.
@@ -354,7 +384,9 @@ library PRBMathSD59x18Typed {
     /// @return result The common logarithm as a signed 59.18-decimal fixed-point number.
     function log10(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
         int256 xValue = x.value;
-        require(xValue > 0);
+        if (xValue <= 0) {
+            revert LogSd59x18InputTooSmall(xValue);
+        }
 
         // Note that the "mul" in this block is the assembly mul operation, not the "mul" function defined in this
         // contract.
@@ -471,7 +503,10 @@ library PRBMathSD59x18Typed {
     /// @return result The binary logarithm as a signed 59.18-decimal fixed-point number.
     function log2(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
         int256 xValue = x.value;
-        require(xValue > 0);
+        if (xValue <= 0) {
+            revert LogSd59x18InputTooSmall(xValue);
+        }
+
         unchecked {
             // This works because log2(x) = -log2(1/x).
             int256 sign;
@@ -526,6 +561,7 @@ library PRBMathSD59x18Typed {
     ///
     /// Requirements:
     /// - All from "PRBMath.mulDivFixedPoint".
+    /// - None of the inputs can be MIN_SD59x18
     /// - The result must fit within MAX_SD59x18.
     ///
     /// Caveats:
@@ -533,12 +569,13 @@ library PRBMathSD59x18Typed {
     ///
     /// @param x The multiplicand as a signed 59.18-decimal fixed-point number.
     /// @param y The multiplier as a signed 59.18-decimal fixed-point number.
-    /// @return result The result as a signed 59.18-decimal fixed-point number.
+    /// @return result The product as a signed 59.18-decimal fixed-point number.
     function mul(PRBMath.SD59x18 memory x, PRBMath.SD59x18 memory y) internal pure returns (PRBMath.SD59x18 memory result) {
         int256 xValue = x.value;
         int256 yValue = y.value;
-        require(xValue > MIN_SD59x18);
-        require(yValue > MIN_SD59x18);
+        if (xValue == MIN_SD59x18 || yValue == MIN_SD59x18) {
+            revert MulSd59x18InputTooSmall();
+        }
 
         unchecked {
             uint256 ax;
@@ -546,8 +583,10 @@ library PRBMathSD59x18Typed {
             ax = xValue < 0 ? uint256(-xValue) : uint256(xValue);
             ay = yValue < 0 ? uint256(-yValue) : uint256(yValue);
 
-            uint256 rUnsigned = PRBMath.mulDivFixedPoint(ax, ay);
-            require(rUnsigned <= uint256(MAX_SD59x18));
+            uint256 rAbs = PRBMath.mulDivFixedPoint(ax, ay);
+            if (rAbs > uint256(MAX_SD59x18)) {
+                revert MulSd59x18Overflow(rAbs);
+            }
 
             uint256 sx;
             uint256 sy;
@@ -555,7 +594,7 @@ library PRBMathSD59x18Typed {
                 sx := sgt(xValue, sub(0, 1))
                 sy := sgt(yValue, sub(0, 1))
             }
-            result = PRBMath.SD59x18({ value: sx ^ sy == 1 ? -int256(rUnsigned) : int256(rUnsigned) });
+            result = PRBMath.SD59x18({ value: sx ^ sy == 1 ? -int256(rAbs) : int256(rAbs) });
         }
     }
 
@@ -620,7 +659,9 @@ library PRBMathSD59x18Typed {
         }
 
         // The result must fit within the 59.18-decimal fixed-point representation.
-        require(rAbs <= uint256(MAX_SD59x18));
+        if (rAbs > uint256(MAX_SD59x18)) {
+            revert PowuSd59x18Overflow(rAbs);
+        }
 
         // Is the base negative and the exponent an odd number?
         bool isNegative = x.value < 0 && y & 1 == 1;
@@ -639,18 +680,20 @@ library PRBMathSD59x18Typed {
     /// - x cannot be negative.
     /// - x must be less than MAX_SD59x18 / SCALE.
     ///
-    /// Caveats:
-    /// - The maximum fixed-point number permitted is 57896044618658097711785492504343953926634.992332820282019729.
-    ///
     /// @param x The signed 59.18-decimal fixed-point number for which to calculate the square root.
     /// @return result The result as a signed 59.18-decimal fixed-point .
     function sqrt(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
-        require(x.value >= 0);
-        require(x.value < 57896044618658097711785492504343953926634992332820282019729);
+        int256 xValue = x.value;
         unchecked {
+            if (xValue < 0) {
+                revert SqrtSd59x18NegativeInput(xValue);
+            }
+            if (xValue > MAX_SD59x18 / SCALE) {
+                revert SqrtSd59x18Overflow(xValue);
+            }
             // Multiply x by the SCALE to account for the factor of SCALE that is picked up when multiplying two signed
             // 59.18-decimal fixed-point numbers together (in this case, those two numbers are both the square root).
-            int256 rValue = int256(PRBMath.sqrt(uint256(x.value * SCALE)));
+            int256 rValue = int256(PRBMath.sqrt(uint256(xValue * SCALE)));
             result = PRBMath.SD59x18({ value: rValue });
         }
     }
@@ -668,6 +711,8 @@ library PRBMathSD59x18Typed {
     /// @param x The signed 59.18-decimal fixed-point number to convert.
     /// @return result The same number in basic integer form.
     function toInt(PRBMath.SD59x18 memory x) internal pure returns (int256 result) {
-        unchecked { result = x.value / SCALE; }
+        unchecked {
+            result = x.value / SCALE;
+        }
     }
 }

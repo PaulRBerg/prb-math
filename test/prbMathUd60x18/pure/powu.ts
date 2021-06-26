@@ -6,6 +6,7 @@ import forEach from "mocha-each";
 import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, SQRT_MAX_UD60x18 } from "../../../helpers/constants";
 import { pow } from "../../../helpers/math";
 import { bn } from "../../../helpers/numbers";
+import { PRBMathErrors } from "../../shared/errors";
 
 export default function shouldBehaveLikePow(): void {
   context("when the base is zero", function () {
@@ -53,8 +54,12 @@ export default function shouldBehaveLikePow(): void {
         ];
 
         forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
-          await expect(this.contracts.prbMathUd60x18.doPowu(x, y)).to.be.reverted;
-          await expect(this.contracts.prbMathUd60x18Typed.doPowu(x, y)).to.be.reverted;
+          await expect(this.contracts.prbMathUd60x18.doPowu(x, y)).to.be.revertedWith(
+            PRBMathErrors.MulDivFixedPointOverflow,
+          );
+          await expect(this.contracts.prbMathUd60x18Typed.doPowu(x, y)).to.be.revertedWith(
+            PRBMathErrors.MulDivFixedPointOverflow,
+          );
         });
       });
 

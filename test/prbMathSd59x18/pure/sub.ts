@@ -5,6 +5,7 @@ import forEach from "mocha-each";
 
 import { E, MAX_SD59x18, MIN_SD59x18, PI } from "../../../helpers/constants";
 import { bn } from "../../../helpers/numbers";
+import { PanicCodes } from "../../shared/errors";
 
 export default function shouldBehaveLikeSub(): void {
   context("when the difference underflows", function () {
@@ -15,7 +16,9 @@ export default function shouldBehaveLikeSub(): void {
     ];
 
     forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
-      await expect(this.contracts.prbMathSd59x18Typed.doSub(x, y)).to.be.reverted;
+      await expect(this.contracts.prbMathSd59x18Typed.doSub(x, y)).to.be.revertedWith(
+        PanicCodes.ArithmeticOverflowOrUnderflow,
+      );
     });
   });
 
@@ -28,7 +31,9 @@ export default function shouldBehaveLikeSub(): void {
       ];
 
       forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
-        await expect(this.contracts.prbMathSd59x18Typed.doSub(x, y)).to.be.reverted;
+        await expect(this.contracts.prbMathSd59x18Typed.doSub(x, y)).to.be.revertedWith(
+          PanicCodes.ArithmeticOverflowOrUnderflow,
+        );
       });
     });
 

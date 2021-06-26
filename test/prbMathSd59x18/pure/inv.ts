@@ -6,13 +6,14 @@ import forEach from "mocha-each";
 import { MAX_SD59x18, MAX_WHOLE_SD59x18, MIN_SD59x18, MIN_WHOLE_SD59x18, PI } from "../../../helpers/constants";
 import { inv } from "../../../helpers/ethers.math";
 import { bn } from "../../../helpers/numbers";
+import { PanicCodes } from "../../shared/errors";
 
 export default function shouldBehaveLikeInv(): void {
   context("when x is zero", function () {
     it("reverts", async function () {
       const x: BigNumber = bn("0");
-      await expect(this.contracts.prbMathSd59x18.doInv(x)).to.be.reverted;
-      await expect(this.contracts.prbMathSd59x18Typed.doInv(x)).to.be.reverted;
+      await expect(this.contracts.prbMathSd59x18.doInv(x)).to.be.revertedWith(PanicCodes.DivisionByZero);
+      await expect(this.contracts.prbMathSd59x18Typed.doInv(x)).to.be.revertedWith(PanicCodes.DivisionByZero);
     });
   });
 

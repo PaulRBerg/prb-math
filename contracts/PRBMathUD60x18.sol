@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: WTFPL
-pragma solidity >=0.8.0;
+pragma solidity >=0.8.4;
 
 import "./PRBMath.sol";
 
 /// @title PRBMathUD60x18
 /// @author Paul Razvan Berg
-/// @notice Smart contract library for advanced fixed-point math. It works with uint256 numbers considered to have 18
+/// @notice Smart contract library for advanced fixed-point math that works with uint256 numbers considered to have 18
 /// trailing decimals. We call this number representation unsigned 60.18-decimal fixed-point, since there can be up to 60
 /// digits in the integer part and up to 18 decimals in the fractional part. The numbers are bound by the minimum and the
 /// maximum values permitted by the Solidity type uint256.
@@ -49,7 +49,9 @@ library PRBMathUD60x18 {
     /// @param x The unsigned 60.18-decimal fixed-point number to ceil.
     /// @param result The least integer greater than or equal to x, as an unsigned 60.18-decimal fixed-point number.
     function ceil(uint256 x) internal pure returns (uint256 result) {
-        require(x <= MAX_WHOLE_UD60x18);
+        if (x > MAX_WHOLE_UD60x18) {
+            revert CeilUd60x18Overflow(x);
+        }
         assembly {
             // Equivalent to "x % SCALE" but faster.
             let remainder := mod(x, SCALE)
@@ -67,7 +69,7 @@ library PRBMathUD60x18 {
     /// @dev Uses mulDiv to enable overflow-safe multiplication and division.
     ///
     /// Requirements:
-    /// - y cannot be zero.
+    /// - The denominator cannot be zero.
     ///
     /// @param x The numerator as an unsigned 60.18-decimal fixed-point number.
     /// @param y The denominator as an unsigned 60.18-decimal fixed-point number.
@@ -94,7 +96,9 @@ library PRBMathUD60x18 {
     /// @return result The result as an unsigned 60.18-decimal fixed-point number.
     function exp(uint256 x) internal pure returns (uint256 result) {
         // Without this check, the value passed to "exp2" would be greater than 192.
-        require(x < 133084258667509499441);
+        if (x >= 133084258667509499441) {
+            revert ExpInputTooBig(x);
+        }
 
         // Do the fixed-point multiplication inline to save gas.
         unchecked {
@@ -115,7 +119,9 @@ library PRBMathUD60x18 {
     /// @return result The result as an unsigned 60.18-decimal fixed-point number.
     function exp2(uint256 x) internal pure returns (uint256 result) {
         // 2^192 doesn't fit within the 192.64-bit format used internally in this function.
-        require(x < 192e18);
+        if (x >= 192e18) {
+            revert Exp2InputTooBig(x);
+        }
 
         unchecked {
             // Convert x to the 192.64-bit fixed-point format.
@@ -160,7 +166,9 @@ library PRBMathUD60x18 {
     /// @param result The same number in unsigned 60.18-decimal fixed-point representation.
     function fromUint(uint256 x) internal pure returns (uint256 result) {
         unchecked {
-            require(x <= MAX_UD60x18 / SCALE);
+            if (x > MAX_UD60x18 / SCALE) {
+                revert FromUintOverflow(x);
+            }
             result = x * SCALE;
         }
     }
@@ -181,7 +189,9 @@ library PRBMathUD60x18 {
         unchecked {
             // Checking for overflow this way is faster than letting Solidity do it.
             uint256 xy = x * y;
-            require(xy / x == y);
+            if (xy / x != y) {
+                revert GmUd60x18Overflow(x, y);
+            }
 
             // We don't need to multiply by the SCALE here because the x*y product had already picked up a factor of SCALE
             // during multiplication. See the comments within the "sqrt" function.
@@ -219,7 +229,9 @@ library PRBMathUD60x18 {
     function ln(uint256 x) internal pure returns (uint256 result) {
         // Do the fixed-point multiplication inline to save gas. This is overflow-safe because the maximum value that log2(x)
         // can return is 196205294292027477728.
-        unchecked { result = (log2(x) * SCALE) / LOG2_E; }
+        unchecked {
+            result = (log2(x) * SCALE) / LOG2_E;
+        }
     }
 
     /// @notice Calculates the common logarithm of x.
@@ -236,9 +248,12 @@ library PRBMathUD60x18 {
     /// @param x The unsigned 60.18-decimal fixed-point number for which to calculate the common logarithm.
     /// @return result The common logarithm as an unsigned 60.18-decimal fixed-point number.
     function log10(uint256 x) internal pure returns (uint256 result) {
-        require(x >= SCALE);
+        if (x < SCALE) {
+            revert LogUd60x18InputTooSmall(x);
+        }
 
-        // Note that the "mul" in this block is the assembly mul operation, not the "mul" function defined in this contract.
+        // Note that the "mul" in this block is the assembly multiplication operation, not the "mul" function defined
+        // in this contract.
         // prettier-ignore
         assembly {
             switch x
@@ -327,7 +342,9 @@ library PRBMathUD60x18 {
 
         if (result == MAX_UD60x18) {
             // Do the fixed-point division inline to save gas. The denominator is log2(10).
-            unchecked { result = (log2(x) * SCALE) / 3321928094887362347; }
+            unchecked {
+                result = (log2(x) * SCALE) / 3321928094887362347;
+            }
         }
     }
 
@@ -345,7 +362,9 @@ library PRBMathUD60x18 {
     /// @param x The unsigned 60.18-decimal fixed-point number for which to calculate the binary logarithm.
     /// @return result The binary logarithm as an unsigned 60.18-decimal fixed-point number.
     function log2(uint256 x) internal pure returns (uint256 result) {
-        require(x >= SCALE);
+        if (x < SCALE) {
+            revert LogUd60x18InputTooSmall(x);
+        }
         unchecked {
             // Calculate the integer part of the logarithm and add it to the result and finally calculate y = x * 2^(-n).
             uint256 n = PRBMath.mostSignificantBit(x / SCALE);
@@ -384,7 +403,7 @@ library PRBMathUD60x18 {
     /// @dev See the documentation for the "PRBMath.mulDivFixedPoint" function.
     /// @param x The multiplicand as an unsigned 60.18-decimal fixed-point number.
     /// @param y The multiplier as an unsigned 60.18-decimal fixed-point number.
-    /// @return result The result as an unsigned 60.18-decimal fixed-point number.
+    /// @return result The product as an unsigned 60.18-decimal fixed-point number.
     function mul(uint256 x, uint256 y) internal pure returns (uint256 result) {
         result = PRBMath.mulDivFixedPoint(x, y);
     }
@@ -457,14 +476,13 @@ library PRBMathUD60x18 {
     /// Requirements:
     /// - x must be less than MAX_UD60x18 / SCALE.
     ///
-    /// Caveats:
-    /// - The maximum fixed-point number permitted is 115792089237316195423570985008687907853269.984665640564039458.
-    ///
     /// @param x The unsigned 60.18-decimal fixed-point number for which to calculate the square root.
     /// @return result The result as an unsigned 60.18-decimal fixed-point .
     function sqrt(uint256 x) internal pure returns (uint256 result) {
-        require(x < 115792089237316195423570985008687907853269984665640564039458);
         unchecked {
+            if (x > MAX_UD60x18 / SCALE) {
+                revert SqrtUd60x18Overflow(x);
+            }
             // Multiply x by the SCALE to account for the factor of SCALE that is picked up when multiplying two unsigned
             // 60.18-decimal fixed-point numbers together (in this case, those two numbers are both the square root).
             result = PRBMath.sqrt(x * SCALE);
@@ -475,6 +493,8 @@ library PRBMathUD60x18 {
     /// @param x The unsigned 60.18-decimal fixed-point number to convert.
     /// @return result The same number in basic integer form.
     function toUint(uint256 x) internal pure returns (uint256 result) {
-        unchecked { result = x / SCALE; }
+        unchecked {
+            result = x / SCALE;
+        }
     }
 }

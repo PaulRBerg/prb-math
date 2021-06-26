@@ -6,6 +6,7 @@ import forEach from "mocha-each";
 import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, SQRT_MAX_UD60x18_DIV_BY_SCALE } from "../../../helpers/constants";
 import { gm } from "../../../helpers/math";
 import { bn } from "../../../helpers/numbers";
+import { PRBMathErrors } from "../../shared/errors";
 
 export default function shouldBehaveLikeGm(): void {
   context("when the product of x and y is zero", function () {
@@ -30,8 +31,8 @@ export default function shouldBehaveLikeGm(): void {
       ];
 
       forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
-        await expect(this.contracts.prbMathUd60x18.doGm(x, y)).to.be.reverted;
-        await expect(this.contracts.prbMathUd60x18Typed.doGm(x, y)).to.be.reverted;
+        await expect(this.contracts.prbMathUd60x18.doGm(x, y)).to.be.revertedWith(PRBMathErrors.GmUd60x18Overflow);
+        await expect(this.contracts.prbMathUd60x18Typed.doGm(x, y)).to.be.revertedWith(PRBMathErrors.GmUd60x18Overflow);
       });
     });
 
