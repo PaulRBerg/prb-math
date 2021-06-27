@@ -184,7 +184,7 @@ two technical reasons why PRBMath lags behind ABDKMath's `mul` and `div` functio
 
 ### PRBMath
 
-Based on the latest version of the library.
+Based on the v2.0.1 of the library.
 
 | SD59x18 | Min | Max   | Avg  |     | UD60x18  | Min  | Max   | Avg  |
 | ------- | --- | ----- | ---- | --- | -------- | ---- | ----- | ---- |
@@ -210,7 +210,7 @@ Based on the latest version of the library.
 
 ### PRBMathTyped
 
-Based on the latest version of the library.
+Based on the v2.0.1 of the library.
 
 | SD59x18 | Min | Max   | Avg  |     | UD60x18  | Min  | Max   | Avg  |
 | ------- | --- | ----- | ---- | --- | -------- | ---- | ----- | ---- |

@@ -4,6 +4,28 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2021-06-27
+
+### Added
+
+- Solidity v0.8.4 custom errors.
+
+### Changed
+
+- Define the upper limit as `MAX_UD60x18 / SCALE` in the `sqrt` function.
+- Define `xValue` var to avoid reading `x.value` multiple times.
+- Move `SCALE > prod1` check at the top of the `mulDivFixedPoint` function.
+- Refer to `add` function operands as summands.
+- Refer to `sub` function operands as minuend and subtrahend.
+- Rename `rUnsigned` var to `rAbs`.
+- Set minimum compiler version to 0.8.4.
+- Use `MIN_SD59x18` instead of `type(int256).min` where appropriate.
+
+### Removed
+
+- `hardhat/console.sol` import.
+- Stale caveat in `sqrt` function NatSpec.
+
 ## [2.0.1] - 2021-06-16
 
 ### Changed
@@ -12,7 +34,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Fixed
 
-- Code snippet for the UD60x18Typed consumer in the README
+- Code snippet for the UD60x18Typed consumer in the README.
 - English typos in NatSpec comments.
 - Minor bug in `log10` in `PRBMathUD60x18Typed.sol` which made the result inaccurate when the input was a multiple of 10.
 
@@ -102,6 +124,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - First release of the library.
 
+[2.1.0]: https://github.com/hifi-finance/prb-math/compare/v2.0.1...v2.1.0
 [2.0.1]: https://github.com/hifi-finance/prb-math/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/hifi-finance/prb-math/compare/v1.1.0...v2.0.0
 [1.1.0]: https://github.com/hifi-finance/prb-math/compare/v1.0.5...v1.1.0
