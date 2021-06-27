@@ -6,7 +6,7 @@ import forEach from "mocha-each";
 import { MAX_SD59x18, MIN_SD59x18, PI, SCALE } from "../../../helpers/constants";
 import { mbn } from "../../../helpers/math";
 import { bn } from "../../../helpers/numbers";
-import { PRBMathErrors, PanicCodes } from "../../shared/errors";
+import { PRBMathSD59x18Errors, PanicCodes } from "../../shared/errors";
 
 export default function shouldBehaveLikeDiv(): void {
   context("when the denominator is zero", function () {
@@ -24,10 +24,10 @@ export default function shouldBehaveLikeDiv(): void {
         const x: BigNumber = fp("1");
         const y: BigNumber = fp(MIN_SD59x18);
         await expect(this.contracts.prbMathSd59x18.doDiv(x, y)).to.be.revertedWith(
-          PRBMathErrors.DivSd59x18InputTooSmall,
+          PRBMathSD59x18Errors.DivInputTooSmall,
         );
         await expect(this.contracts.prbMathSd59x18Typed.doDiv(x, y)).to.be.revertedWith(
-          PRBMathErrors.DivSd59x18InputTooSmall,
+          PRBMathSD59x18Errors.DivInputTooSmall,
         );
       });
     });
@@ -50,10 +50,10 @@ export default function shouldBehaveLikeDiv(): void {
             const x: BigNumber = fp(MIN_SD59x18);
             const y: BigNumber = fp("1");
             await expect(this.contracts.prbMathSd59x18.doDiv(x, y)).to.be.revertedWith(
-              PRBMathErrors.DivSd59x18InputTooSmall,
+              PRBMathSD59x18Errors.DivInputTooSmall,
             );
             await expect(this.contracts.prbMathSd59x18Typed.doDiv(x, y)).to.be.revertedWith(
-              PRBMathErrors.DivSd59x18InputTooSmall,
+              PRBMathSD59x18Errors.DivInputTooSmall,
             );
           });
         });
@@ -70,10 +70,10 @@ export default function shouldBehaveLikeDiv(): void {
 
             forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
               await expect(this.contracts.prbMathSd59x18.doDiv(x, y)).to.be.revertedWith(
-                PRBMathErrors.DivSd59x18Overflow,
+                PRBMathSD59x18Errors.DivOverflow,
               );
               await expect(this.contracts.prbMathSd59x18Typed.doDiv(x, y)).to.be.revertedWith(
-                PRBMathErrors.DivSd59x18Overflow,
+                PRBMathSD59x18Errors.DivOverflow,
               );
             });
           });

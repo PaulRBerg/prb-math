@@ -14,7 +14,7 @@ import {
 } from "../../../helpers/constants";
 import { gm } from "../../../helpers/math";
 import { bn } from "../../../helpers/numbers";
-import { PRBMathErrors } from "../../shared/errors";
+import { PRBMathSD59x18Errors } from "../../shared/errors";
 
 export default function shouldBehaveLikeGm(): void {
   context("when the product of x and y is zero", function () {
@@ -39,8 +39,10 @@ export default function shouldBehaveLikeGm(): void {
     ];
 
     forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
-      await expect(this.contracts.prbMathSd59x18.doGm(x, y)).to.be.revertedWith(PRBMathErrors.GmNegativeProduct);
-      await expect(this.contracts.prbMathSd59x18Typed.doGm(x, y)).to.be.revertedWith(PRBMathErrors.GmNegativeProduct);
+      await expect(this.contracts.prbMathSd59x18.doGm(x, y)).to.be.revertedWith(PRBMathSD59x18Errors.GmNegativeProduct);
+      await expect(this.contracts.prbMathSd59x18Typed.doGm(x, y)).to.be.revertedWith(
+        PRBMathSD59x18Errors.GmNegativeProduct,
+      );
     });
   });
 
@@ -57,8 +59,8 @@ export default function shouldBehaveLikeGm(): void {
       ]);
 
       forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
-        await expect(this.contracts.prbMathSd59x18.doGm(x, y)).to.be.revertedWith(PRBMathErrors.GmSd59x18Overflow);
-        await expect(this.contracts.prbMathSd59x18Typed.doGm(x, y)).to.be.revertedWith(PRBMathErrors.GmSd59x18Overflow);
+        await expect(this.contracts.prbMathSd59x18.doGm(x, y)).to.be.revertedWith(PRBMathSD59x18Errors.GmOverflow);
+        await expect(this.contracts.prbMathSd59x18Typed.doGm(x, y)).to.be.revertedWith(PRBMathSD59x18Errors.GmOverflow);
       });
     });
 

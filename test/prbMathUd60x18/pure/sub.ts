@@ -5,7 +5,7 @@ import forEach from "mocha-each";
 
 import { E, MAX_UD60x18, PI } from "../../../helpers/constants";
 import { bn } from "../../../helpers/numbers";
-import { PRBMathErrors } from "../../shared/errors";
+import { PRBMathUD60x18Errors } from "../../shared/errors";
 
 export default function shouldBehaveLikeSub(): void {
   context("when the difference underflows", function () {
@@ -17,7 +17,7 @@ export default function shouldBehaveLikeSub(): void {
 
     forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
       await expect(this.contracts.prbMathUd60x18Typed.doSub(x, y)).to.be.revertedWith(
-        PRBMathErrors.SubUnderflowUd60x18,
+        PRBMathUD60x18Errors.SubUnderflow,
       );
     });
   });

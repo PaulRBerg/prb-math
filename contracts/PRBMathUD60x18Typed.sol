@@ -37,7 +37,7 @@ library PRBMathUD60x18Typed {
         unchecked {
             uint256 rValue = x.value + y.value;
             if (rValue < x.value) {
-                revert AddUd60x18Overflow(x.value, y.value);
+                revert PRBMathUD60x18__AddOverflow(x.value, y.value);
             }
             result = PRBMath.UD60x18({ value: rValue });
         }
@@ -70,7 +70,7 @@ library PRBMathUD60x18Typed {
     function ceil(PRBMath.UD60x18 memory x) internal pure returns (PRBMath.UD60x18 memory result) {
         uint256 xValue = x.value;
         if (xValue > MAX_WHOLE_UD60x18) {
-            revert CeilUd60x18Overflow(xValue);
+            revert PRBMathUD60x18__CeilOverflow(xValue);
         }
 
         uint256 rValue;
@@ -122,7 +122,7 @@ library PRBMathUD60x18Typed {
 
         // Without this check, the value passed to "exp2" would be greater than 192.
         if (xValue >= 133084258667509499441) {
-            revert ExpInputTooBig(xValue);
+            revert PRBMathUD60x18__ExpInputTooBig(xValue);
         }
 
         // Do the fixed-point multiplication inline to save gas.
@@ -146,7 +146,7 @@ library PRBMathUD60x18Typed {
     function exp2(PRBMath.UD60x18 memory x) internal pure returns (PRBMath.UD60x18 memory result) {
         // 2^192 doesn't fit within the 192.64-bit format used internally in this function.
         if (x.value >= 192e18) {
-            revert Exp2InputTooBig(x.value);
+            revert PRBMathUD60x18__Exp2InputTooBig(x.value);
         }
 
         unchecked {
@@ -199,7 +199,7 @@ library PRBMathUD60x18Typed {
     function fromUint(uint256 x) internal pure returns (PRBMath.UD60x18 memory result) {
         unchecked {
             if (x > MAX_UD60x18 / SCALE) {
-                revert FromUintOverflow(x);
+                revert PRBMathUD60x18__FromUintOverflow(x);
             }
             result = PRBMath.UD60x18({ value: x * SCALE });
         }
@@ -222,7 +222,7 @@ library PRBMathUD60x18Typed {
             // Checking for overflow this way is faster than letting Solidity do it.
             uint256 xy = x.value * y.value;
             if (xy / x.value != y.value) {
-                revert GmUd60x18Overflow(x.value, y.value);
+                revert PRBMathUD60x18__GmOverflow(x.value, y.value);
             }
 
             // We don't need to multiply by the SCALE here because the x*y product had already picked up a factor of SCALE
@@ -283,7 +283,7 @@ library PRBMathUD60x18Typed {
     function log10(PRBMath.UD60x18 memory x) internal pure returns (PRBMath.UD60x18 memory result) {
         uint256 xValue = x.value;
         if (xValue < SCALE) {
-            revert LogUd60x18InputTooSmall(xValue);
+            revert PRBMathUD60x18__LogInputTooSmall(xValue);
         }
 
         // Note that the "mul" in this block is the assembly multiplication operation, not the "mul" function defined
@@ -403,7 +403,7 @@ library PRBMathUD60x18Typed {
     function log2(PRBMath.UD60x18 memory x) internal pure returns (PRBMath.UD60x18 memory result) {
         uint256 xValue = x.value;
         if (xValue < SCALE) {
-            revert LogUd60x18InputTooSmall(xValue);
+            revert PRBMathUD60x18__LogInputTooSmall(xValue);
         }
         unchecked {
             // Calculate the integer part of the logarithm and add it to the result and finally calculate y = x * 2^(-n).
@@ -524,7 +524,7 @@ library PRBMathUD60x18Typed {
     function sqrt(PRBMath.UD60x18 memory x) internal pure returns (PRBMath.UD60x18 memory result) {
         unchecked {
             if (x.value > MAX_UD60x18 / SCALE) {
-                revert SqrtUd60x18Overflow(x.value);
+                revert PRBMathUD60x18__SqrtOverflow(x.value);
             }
             // Multiply x by the SCALE to account for the factor of SCALE that is picked up when multiplying two unsigned
             // 60.18-decimal fixed-point numbers together (in this case, those two numbers are both the square root).
@@ -540,7 +540,7 @@ library PRBMathUD60x18Typed {
     function sub(PRBMath.UD60x18 memory x, PRBMath.UD60x18 memory y) internal pure returns (PRBMath.UD60x18 memory result) {
         unchecked {
             if (x.value < y.value) {
-                revert SubUnderflowUd60x18(x.value, y.value);
+                revert PRBMathUD60x18__SubUnderflow(x.value, y.value);
             }
             result = PRBMath.UD60x18({ value: x.value - y.value });
         }

@@ -46,7 +46,7 @@ library PRBMathSD59x18Typed {
     function abs(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
         int256 xValue = x.value;
         if (xValue == MIN_SD59x18) {
-            revert AbsInputTooSmall();
+            revert PRBMathSD59x18__AbsInputTooSmall();
         }
         unchecked {
             result = PRBMath.SD59x18({ value: x.value < 0 ? -xValue : xValue });
@@ -89,7 +89,7 @@ library PRBMathSD59x18Typed {
     function ceil(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
         int256 xValue = x.value;
         if (xValue > MAX_WHOLE_SD59x18) {
-            revert CeilSd59x18Overflow(xValue);
+            revert PRBMathSD59x18__CeilOverflow(xValue);
         }
         unchecked {
             int256 remainder = xValue % SCALE;
@@ -126,7 +126,7 @@ library PRBMathSD59x18Typed {
         int256 xValue = x.value;
         int256 yValue = y.value;
         if (xValue == MIN_SD59x18 || yValue == MIN_SD59x18) {
-            revert DivSd59x18InputTooSmall();
+            revert PRBMathSD59x18__DivInputTooSmall();
         }
 
         // Get hold of the absolute values of x and y.
@@ -140,7 +140,7 @@ library PRBMathSD59x18Typed {
         // Compute the absolute value of (x*SCALE)÷y. The result must fit within int256.
         uint256 rAbs = PRBMath.mulDiv(ax, uint256(SCALE), ay);
         if (rAbs > uint256(MAX_SD59x18)) {
-            revert DivSd59x18Overflow(rAbs);
+            revert PRBMathSD59x18__DivOverflow(rAbs);
         }
 
         // Get the signs of x and y.
@@ -185,7 +185,7 @@ library PRBMathSD59x18Typed {
 
         // Without this check, the value passed to "exp2" would be greater than 192.
         if (xValue >= 133084258667509499441) {
-            revert ExpInputTooBig(uint256(xValue));
+            revert PRBMathSD59x18__ExpInputTooBig(xValue);
         }
 
         // Do the fixed-point multiplication inline to save gas.
@@ -227,7 +227,7 @@ library PRBMathSD59x18Typed {
         } else {
             // 2^192 doesn't fit within the 192.64-bit format used internally in this function.
             if (xValue >= 192e18) {
-                revert Exp2InputTooBig(uint256(xValue));
+                revert PRBMathSD59x18__Exp2InputTooBig(xValue);
             }
 
             unchecked {
@@ -253,7 +253,7 @@ library PRBMathSD59x18Typed {
     function floor(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
         int256 xValue = x.value;
         if (xValue < MIN_WHOLE_SD59x18) {
-            revert FloorSd59x18Underflow(xValue);
+            revert PRBMathSD59x18__FloorUnderflow(xValue);
         }
         unchecked {
             int256 remainder = xValue % SCALE;
@@ -292,10 +292,10 @@ library PRBMathSD59x18Typed {
     function fromInt(int256 x) internal pure returns (PRBMath.SD59x18 memory result) {
         unchecked {
             if (x < MIN_SD59x18 / SCALE) {
-                revert FromIntUnderflow(x);
+                revert PRBMathSD59x18__FromIntUnderflow(x);
             }
             if (x > MAX_SD59x18 / SCALE) {
-                revert FromIntOverflow(x);
+                revert PRBMathSD59x18__FromIntOverflow(x);
             }
             result = PRBMath.SD59x18({ value: x * SCALE });
         }
@@ -319,12 +319,12 @@ library PRBMathSD59x18Typed {
             // Checking for overflow this way is faster than letting Solidity do it.
             int256 xy = x.value * y.value;
             if (xy / x.value != y.value) {
-                revert GmSd59x18Overflow(x.value, y.value);
+                revert PRBMathSD59x18__GmOverflow(x.value, y.value);
             }
 
             // The product cannot be negative.
             if (xy < 0) {
-                revert GmNegativeProduct(x.value, y.value);
+                revert PRBMathSD59x18__GmNegativeProduct(x.value, y.value);
             }
 
             // We don't need to multiply by the SCALE here because the x*y product had already picked up a factor of SCALE
@@ -385,7 +385,7 @@ library PRBMathSD59x18Typed {
     function log10(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
         int256 xValue = x.value;
         if (xValue <= 0) {
-            revert LogSd59x18InputTooSmall(xValue);
+            revert PRBMathSD59x18__LogInputTooSmall(xValue);
         }
 
         // Note that the "mul" in this block is the assembly mul operation, not the "mul" function defined in this
@@ -504,7 +504,7 @@ library PRBMathSD59x18Typed {
     function log2(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
         int256 xValue = x.value;
         if (xValue <= 0) {
-            revert LogSd59x18InputTooSmall(xValue);
+            revert PRBMathSD59x18__LogInputTooSmall(xValue);
         }
 
         unchecked {
@@ -574,7 +574,7 @@ library PRBMathSD59x18Typed {
         int256 xValue = x.value;
         int256 yValue = y.value;
         if (xValue == MIN_SD59x18 || yValue == MIN_SD59x18) {
-            revert MulSd59x18InputTooSmall();
+            revert PRBMathSD59x18__MulInputTooSmall();
         }
 
         unchecked {
@@ -585,7 +585,7 @@ library PRBMathSD59x18Typed {
 
             uint256 rAbs = PRBMath.mulDivFixedPoint(ax, ay);
             if (rAbs > uint256(MAX_SD59x18)) {
-                revert MulSd59x18Overflow(rAbs);
+                revert PRBMathSD59x18__MulOverflow(rAbs);
             }
 
             uint256 sx;
@@ -660,7 +660,7 @@ library PRBMathSD59x18Typed {
 
         // The result must fit within the 59.18-decimal fixed-point representation.
         if (rAbs > uint256(MAX_SD59x18)) {
-            revert PowuSd59x18Overflow(rAbs);
+            revert PRBMathSD59x18__PowuOverflow(rAbs);
         }
 
         // Is the base negative and the exponent an odd number?
@@ -686,10 +686,10 @@ library PRBMathSD59x18Typed {
         int256 xValue = x.value;
         unchecked {
             if (xValue < 0) {
-                revert SqrtSd59x18NegativeInput(xValue);
+                revert PRBMathSD59x18__SqrtNegativeInput(xValue);
             }
             if (xValue > MAX_SD59x18 / SCALE) {
-                revert SqrtSd59x18Overflow(xValue);
+                revert PRBMathSD59x18__SqrtOverflow(xValue);
             }
             // Multiply x by the SCALE to account for the factor of SCALE that is picked up when multiplying two signed
             // 59.18-decimal fixed-point numbers together (in this case, those two numbers are both the square root).

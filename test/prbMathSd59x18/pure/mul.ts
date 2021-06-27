@@ -16,7 +16,7 @@ import {
 } from "../../../helpers/constants";
 import { mul } from "../../../helpers/ethers.math";
 import { bn } from "../../../helpers/numbers";
-import { PRBMathErrors } from "../../shared/errors";
+import { PRBMathErrors, PRBMathSD59x18Errors } from "../../shared/errors";
 
 export default function shouldBehaveLikeMul(): void {
   context("when one of the operands is zero", function () {
@@ -46,10 +46,10 @@ export default function shouldBehaveLikeMul(): void {
 
       forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
         await expect(this.contracts.prbMathSd59x18.doMul(x, y)).to.be.revertedWith(
-          PRBMathErrors.MulSd59x18InputTooSmall,
+          PRBMathSD59x18Errors.MulInputTooSmall,
         );
         await expect(this.contracts.prbMathSd59x18Typed.doMul(x, y)).to.be.revertedWith(
-          PRBMathErrors.MulSd59x18InputTooSmall,
+          PRBMathSD59x18Errors.MulInputTooSmall,
         );
       });
     });
@@ -65,9 +65,9 @@ export default function shouldBehaveLikeMul(): void {
         ]);
 
         forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
-          await expect(this.contracts.prbMathSd59x18.doMul(x, y)).to.be.revertedWith(PRBMathErrors.MulSd59x18Overflow);
+          await expect(this.contracts.prbMathSd59x18.doMul(x, y)).to.be.revertedWith(PRBMathSD59x18Errors.MulOverflow);
           await expect(this.contracts.prbMathSd59x18Typed.doMul(x, y)).to.be.revertedWith(
-            PRBMathErrors.MulSd59x18Overflow,
+            PRBMathSD59x18Errors.MulOverflow,
           );
         });
       });

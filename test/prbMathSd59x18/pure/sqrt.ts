@@ -6,7 +6,7 @@ import forEach from "mocha-each";
 import { E, MAX_SD59x18, MAX_WHOLE_SD59x18, PI } from "../../../helpers/constants";
 import { sqrt } from "../../../helpers/math";
 import { bn } from "../../../helpers/numbers";
-import { PRBMathErrors } from "../../shared/errors";
+import { PRBMathSD59x18Errors } from "../../shared/errors";
 
 export default function shouldBehaveLikeSqrt(): void {
   context("when x is zero", function () {
@@ -21,9 +21,9 @@ export default function shouldBehaveLikeSqrt(): void {
   context("when x is negative", function () {
     it("reverts", async function () {
       const x: BigNumber = fp("-1");
-      await expect(this.contracts.prbMathSd59x18.doSqrt(x)).to.be.revertedWith(PRBMathErrors.SqrtSd59x18NegativeInput);
+      await expect(this.contracts.prbMathSd59x18.doSqrt(x)).to.be.revertedWith(PRBMathSD59x18Errors.SqrtNegativeInput);
       await expect(this.contracts.prbMathSd59x18Typed.doSqrt(x)).to.be.revertedWith(
-        PRBMathErrors.SqrtSd59x18NegativeInput,
+        PRBMathSD59x18Errors.SqrtNegativeInput,
       );
     });
   });
@@ -39,9 +39,9 @@ export default function shouldBehaveLikeSqrt(): void {
         ];
 
         forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
-          await expect(this.contracts.prbMathSd59x18.doSqrt(x)).to.be.revertedWith(PRBMathErrors.SqrtSd59x18Overflow);
+          await expect(this.contracts.prbMathSd59x18.doSqrt(x)).to.be.revertedWith(PRBMathSD59x18Errors.SqrtOverflow);
           await expect(this.contracts.prbMathSd59x18Typed.doSqrt(x)).to.be.revertedWith(
-            PRBMathErrors.SqrtSd59x18Overflow,
+            PRBMathSD59x18Errors.SqrtOverflow,
           );
         });
       },

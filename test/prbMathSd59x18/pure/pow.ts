@@ -6,7 +6,7 @@ import forEach from "mocha-each";
 import { E, MAX_SD59x18, PI } from "../../../helpers/constants";
 import { pow } from "../../../helpers/math";
 import { bn } from "../../../helpers/numbers";
-import { PRBMathErrors } from "../../shared/errors";
+import { PRBMathSD59x18Errors } from "../../shared/errors";
 
 export default function shouldBehaveLikePow(): void {
   context("when the base is zero", function () {
@@ -40,10 +40,10 @@ export default function shouldBehaveLikePow(): void {
       forEach(testSets).it("takes %e and 1 and reverts", async function (x: BigNumber) {
         const y: BigNumber = fp("1");
         await expect(this.contracts.prbMathSd59x18.doPow(x, y)).to.be.revertedWith(
-          PRBMathErrors.LogSd59x18InputTooSmall,
+          PRBMathSD59x18Errors.LogInputTooSmall,
         );
         await expect(this.contracts.prbMathSd59x18Typed.doPow(x, y)).to.be.revertedWith(
-          PRBMathErrors.LogSd59x18InputTooSmall,
+          PRBMathSD59x18Errors.LogInputTooSmall,
         );
       });
     });
@@ -68,9 +68,11 @@ export default function shouldBehaveLikePow(): void {
           ];
 
           forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
-            await expect(this.contracts.prbMathSd59x18.doPow(x, y)).to.be.revertedWith(PRBMathErrors.Exp2InputTooBig);
+            await expect(this.contracts.prbMathSd59x18.doPow(x, y)).to.be.revertedWith(
+              PRBMathSD59x18Errors.Exp2InputTooBig,
+            );
             await expect(this.contracts.prbMathSd59x18Typed.doPow(x, y)).to.be.revertedWith(
-              PRBMathErrors.Exp2InputTooBig,
+              PRBMathSD59x18Errors.Exp2InputTooBig,
             );
           });
         });

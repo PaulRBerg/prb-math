@@ -6,7 +6,7 @@ import forEach from "mocha-each";
 import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI } from "../../../helpers/constants";
 import { log2 } from "../../../helpers/math";
 import { bn } from "../../../helpers/numbers";
-import { PRBMathErrors } from "../../shared/errors";
+import { PRBMathUD60x18Errors } from "../../shared/errors";
 
 export default function shouldBehaveLikeLog2(): void {
   context("when x is less than 1", function () {
@@ -14,9 +14,9 @@ export default function shouldBehaveLikeLog2(): void {
 
     forEach(testSets).it("takes %e and reverts", async function () {
       const x: BigNumber = bn("0");
-      await expect(this.contracts.prbMathUd60x18.doLog2(x)).to.be.revertedWith(PRBMathErrors.LogUd60x18InputTooSmall);
+      await expect(this.contracts.prbMathUd60x18.doLog2(x)).to.be.revertedWith(PRBMathUD60x18Errors.LogInputTooSmall);
       await expect(this.contracts.prbMathUd60x18Typed.doLog2(x)).to.be.revertedWith(
-        PRBMathErrors.LogUd60x18InputTooSmall,
+        PRBMathUD60x18Errors.LogInputTooSmall,
       );
     });
   });

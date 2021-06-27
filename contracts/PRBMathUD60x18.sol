@@ -50,7 +50,7 @@ library PRBMathUD60x18 {
     /// @param result The least integer greater than or equal to x, as an unsigned 60.18-decimal fixed-point number.
     function ceil(uint256 x) internal pure returns (uint256 result) {
         if (x > MAX_WHOLE_UD60x18) {
-            revert CeilUd60x18Overflow(x);
+            revert PRBMathUD60x18__CeilOverflow(x);
         }
         assembly {
             // Equivalent to "x % SCALE" but faster.
@@ -97,7 +97,7 @@ library PRBMathUD60x18 {
     function exp(uint256 x) internal pure returns (uint256 result) {
         // Without this check, the value passed to "exp2" would be greater than 192.
         if (x >= 133084258667509499441) {
-            revert ExpInputTooBig(x);
+            revert PRBMathUD60x18__ExpInputTooBig(x);
         }
 
         // Do the fixed-point multiplication inline to save gas.
@@ -120,7 +120,7 @@ library PRBMathUD60x18 {
     function exp2(uint256 x) internal pure returns (uint256 result) {
         // 2^192 doesn't fit within the 192.64-bit format used internally in this function.
         if (x >= 192e18) {
-            revert Exp2InputTooBig(x);
+            revert PRBMathUD60x18__Exp2InputTooBig(x);
         }
 
         unchecked {
@@ -167,7 +167,7 @@ library PRBMathUD60x18 {
     function fromUint(uint256 x) internal pure returns (uint256 result) {
         unchecked {
             if (x > MAX_UD60x18 / SCALE) {
-                revert FromUintOverflow(x);
+                revert PRBMathUD60x18__FromUintOverflow(x);
             }
             result = x * SCALE;
         }
@@ -190,7 +190,7 @@ library PRBMathUD60x18 {
             // Checking for overflow this way is faster than letting Solidity do it.
             uint256 xy = x * y;
             if (xy / x != y) {
-                revert GmUd60x18Overflow(x, y);
+                revert PRBMathUD60x18__GmOverflow(x, y);
             }
 
             // We don't need to multiply by the SCALE here because the x*y product had already picked up a factor of SCALE
@@ -249,7 +249,7 @@ library PRBMathUD60x18 {
     /// @return result The common logarithm as an unsigned 60.18-decimal fixed-point number.
     function log10(uint256 x) internal pure returns (uint256 result) {
         if (x < SCALE) {
-            revert LogUd60x18InputTooSmall(x);
+            revert PRBMathUD60x18__LogInputTooSmall(x);
         }
 
         // Note that the "mul" in this block is the assembly multiplication operation, not the "mul" function defined
@@ -363,7 +363,7 @@ library PRBMathUD60x18 {
     /// @return result The binary logarithm as an unsigned 60.18-decimal fixed-point number.
     function log2(uint256 x) internal pure returns (uint256 result) {
         if (x < SCALE) {
-            revert LogUd60x18InputTooSmall(x);
+            revert PRBMathUD60x18__LogInputTooSmall(x);
         }
         unchecked {
             // Calculate the integer part of the logarithm and add it to the result and finally calculate y = x * 2^(-n).
@@ -481,7 +481,7 @@ library PRBMathUD60x18 {
     function sqrt(uint256 x) internal pure returns (uint256 result) {
         unchecked {
             if (x > MAX_UD60x18 / SCALE) {
-                revert SqrtUd60x18Overflow(x);
+                revert PRBMathUD60x18__SqrtOverflow(x);
             }
             // Multiply x by the SCALE to account for the factor of SCALE that is picked up when multiplying two unsigned
             // 60.18-decimal fixed-point numbers together (in this case, those two numbers are both the square root).

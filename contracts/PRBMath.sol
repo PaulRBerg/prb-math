@@ -1,115 +1,95 @@
 // SPDX-License-Identifier: WTFPL
 pragma solidity >=0.8.4;
 
-/// @notice Emitted when the input is MIN_SD59x18.
-error AbsInputTooSmall();
-
-/// @notice Emitted when addition overflows UD60x18.
-/// @param x The first summand.
-/// @param y The second summand.
-error AddUd60x18Overflow(uint256 x, uint256 y);
-
-/// @notice Emitted when ceiling a number overflows SD59x18.
-/// @notice x The number to ceil.
-error CeilSd59x18Overflow(int256 x);
-
-/// @notice Emitted when ceiling a number overflows UD60x18.
-/// @notice x The number to ceil.
-error CeilUd60x18Overflow(uint256 x);
-
-/// @notice Emitted when one of the inputs is MIN_SD59x18.
-error DivSd59x18InputTooSmall();
-
-/// @notice Emitted when one of the intermediary unsigned results overflows SD59x18.
-/// @param rUnsigned The intermediary unsigned result.
-error DivSd59x18Overflow(uint256 rUnsigned);
-
-/// @notice Emitted when the input is greater than 133.084258667509499441.
-/// @param x The number to calculate the natural exponent for.
-error ExpInputTooBig(uint256 x);
-
-/// @notice Emitted when the input is greater than 192.
-/// @param x The number to calculate the binary exponent for.
-error Exp2InputTooBig(uint256 x);
-
-/// @notice Emitted when converting a basic integer to the fixed-point format overflows SD59x18.
-/// @param x The basic integer to convert to SD59x18.
-error FromIntOverflow(int256 x);
-
-/// @notice Emitted when converting a basic integer to the fixed-point format underflows SD59x18.
-/// @param x The basic integer to convert to SD59x18.
-error FromIntUnderflow(int256 x);
-
-/// @notice Emitted when converting a basic integer to the fixed-point format format overflows UD60x18.
-/// @param x The basic integer to convert to UD60x18.
-error FromUintOverflow(uint256 x);
-
-/// @notice Emitted when flooring a number underflows SD59x18.
-/// @param x The number to floor.
-error FloorSd59x18Underflow(int256 x);
-
-/// @notice Emitted when the product of the inputs is negative.
-/// @param x The first operand.
-/// @param x The second operand.
-error GmNegativeProduct(int256 x, int256 y);
-
-/// @notice Emitted when multiplying the inputs overflows SD59x18.
-/// @param x The first operand.
-/// @param x The second operand.
-error GmSd59x18Overflow(int256 x, int256 y);
-
-/// @notice Emitted when multiplying the inputs overflows UD60x18.
-/// @param x The first operand.
-/// @param x The second operand.
-error GmUd60x18Overflow(uint256 x, uint256 y);
-
-/// @notice Emitted when the input is less than or equal to zero.
-/// @param x The number for which to calculate the logarithm.
-error LogSd59x18InputTooSmall(int256 x);
-
-/// @notice Emitted when the input is less than 1.
-/// @param x The number for which to calculate the logarithm.
-error LogUd60x18InputTooSmall(uint256 x);
+/// @notice Emitted when the result overflows uint256.
+error PRBMath__MulDivFixedPointOverflow(uint256 prod1);
 
 /// @notice Emitted when the result overflows uint256.
-error MulDivFixedPointOverflow(uint256 prod1);
-
-// @notice Emitted when the result overflows uint256.
-error MulDivOverflow(uint256 prod1, uint256 denominator);
-
-// @notice Emitted when the intermediary absolute result overflows int256.
-error MulDivSignedOverflow(uint256 rAbs);
+error PRBMath__MulDivOverflow(uint256 prod1, uint256 denominator);
 
 /// @notice Emitted when one of the inputs is type(int256).min.
-error MulDivSignedInputTooSmall();
+error PRBMath__MulDivSignedInputTooSmall();
+
+/// @notice Emitted when the intermediary absolute result overflows int256.
+error PRBMath__MulDivSignedOverflow(uint256 rAbs);
+
+/// @notice Emitted when the input is MIN_SD59x18.
+error PRBMathSD59x18__AbsInputTooSmall();
+
+/// @notice Emitted when ceiling a number overflows SD59x18.
+error PRBMathSD59x18__CeilOverflow(int256 x);
 
 /// @notice Emitted when one of the inputs is MIN_SD59x18.
-error MulSd59x18InputTooSmall();
+error PRBMathSD59x18__DivInputTooSmall();
+
+/// @notice Emitted when one of the intermediary unsigned results overflows SD59x18.
+error PRBMathSD59x18__DivOverflow(uint256 rAbs);
+
+/// @notice Emitted when the input is greater than 133.084258667509499441.
+error PRBMathSD59x18__ExpInputTooBig(int256 x);
+
+/// @notice Emitted when the input is greater than 192.
+error PRBMathSD59x18__Exp2InputTooBig(int256 x);
+
+/// @notice Emitted when flooring a number underflows SD59x18.
+error PRBMathSD59x18__FloorUnderflow(int256 x);
+
+/// @notice Emitted when converting a basic integer to the fixed-point format overflows SD59x18.
+error PRBMathSD59x18__FromIntOverflow(int256 x);
+
+/// @notice Emitted when converting a basic integer to the fixed-point format underflows SD59x18.
+error PRBMathSD59x18__FromIntUnderflow(int256 x);
+
+/// @notice Emitted when the product of the inputs is negative.
+error PRBMathSD59x18__GmNegativeProduct(int256 x, int256 y);
+
+/// @notice Emitted when multiplying the inputs overflows SD59x18.
+error PRBMathSD59x18__GmOverflow(int256 x, int256 y);
+
+/// @notice Emitted when the input is less than or equal to zero.
+error PRBMathSD59x18__LogInputTooSmall(int256 x);
+
+/// @notice Emitted when one of the inputs is MIN_SD59x18.
+error PRBMathSD59x18__MulInputTooSmall();
 
 /// @notice Emitted when the intermediary absolute result overflows SD59x18.
-/// @param rAbs The intermediary absolute result.
-error MulSd59x18Overflow(uint256 rAbs);
+error PRBMathSD59x18__MulOverflow(uint256 rAbs);
 
 /// @notice Emitted when the intermediary absolute result overflows SD59x18.
-/// @param rAbs The intermediary absolute result.
-error PowuSd59x18Overflow(uint256 rAbs);
+error PRBMathSD59x18__PowuOverflow(uint256 rAbs);
 
 /// @notice Emitted when the input is negative.
-/// @param x The number for which to calculate the square root.
-error SqrtSd59x18NegativeInput(int256 x);
+error PRBMathSD59x18__SqrtNegativeInput(int256 x);
 
 /// @notice Emitted when the calculting the square root overflows SD59x18.
-/// @param x The number for which to calculate the square root.
-error SqrtSd59x18Overflow(int256 x);
+error PRBMathSD59x18__SqrtOverflow(int256 x);
+
+/// @notice Emitted when addition overflows UD60x18.
+error PRBMathUD60x18__AddOverflow(uint256 x, uint256 y);
+
+/// @notice Emitted when ceiling a number overflows UD60x18.
+error PRBMathUD60x18__CeilOverflow(uint256 x);
+
+/// @notice Emitted when the input is greater than 133.084258667509499441.
+error PRBMathUD60x18__ExpInputTooBig(uint256 x);
+
+/// @notice Emitted when the input is greater than 192.
+error PRBMathUD60x18__Exp2InputTooBig(uint256 x);
+
+/// @notice Emitted when converting a basic integer to the fixed-point format format overflows UD60x18.
+error PRBMathUD60x18__FromUintOverflow(uint256 x);
+
+/// @notice Emitted when multiplying the inputs overflows UD60x18.
+error PRBMathUD60x18__GmOverflow(uint256 x, uint256 y);
+
+/// @notice Emitted when the input is less than 1.
+error PRBMathUD60x18__LogInputTooSmall(uint256 x);
 
 /// @notice Emitted when the calculting the square root overflows UD60x18.
-/// @param x The number for which to calculate the square root.
-error SqrtUd60x18Overflow(uint256 x);
+error PRBMathUD60x18__SqrtOverflow(uint256 x);
 
 /// @notice Emitted when subtraction underflows UD60x18.
-/// @param x The minuend.
-/// @param y The subtrahend.
-error SubUnderflowUd60x18(uint256 x, uint256 y);
+error PRBMathUD60x18__SubUnderflow(uint256 x, uint256 y);
 
 /// @dev Common mathematical functions used in both PRBMathSD59x18 and PRBMathUD60x18. Note that this shared library
 /// does not always assume the signed 59.18-decimal fixed-point or the unsigned 60.18-decimal fixed-point
@@ -436,7 +416,7 @@ library PRBMath {
 
         // Make sure the result is less than 2^256. Also prevents denominator == 0.
         if (prod1 >= denominator) {
-            revert MulDivOverflow(prod1, denominator);
+            revert PRBMath__MulDivOverflow(prod1, denominator);
         }
 
         ///////////////////////////////////////////////
@@ -524,7 +504,7 @@ library PRBMath {
         }
 
         if (prod1 >= SCALE) {
-            revert MulDivFixedPointOverflow(prod1);
+            revert PRBMath__MulDivFixedPointOverflow(prod1);
         }
 
         uint256 remainder;
@@ -573,7 +553,7 @@ library PRBMath {
         int256 denominator
     ) internal pure returns (int256 result) {
         if (x == type(int256).min || y == type(int256).min || denominator == type(int256).min) {
-            revert MulDivSignedInputTooSmall();
+            revert PRBMath__MulDivSignedInputTooSmall();
         }
 
         // Get hold of the absolute values of x, y and the denominator.
@@ -589,7 +569,7 @@ library PRBMath {
         // Compute the absolute value of (x*y)÷denominator. The result must fit within int256.
         uint256 rAbs = mulDiv(ax, ay, ad);
         if (rAbs > uint256(type(int256).max)) {
-            revert MulDivSignedOverflow(rAbs);
+            revert PRBMath__MulDivSignedOverflow(rAbs);
         }
 
         // Get the signs of x, y and the denominator.
