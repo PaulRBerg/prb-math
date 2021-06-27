@@ -863,7 +863,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/providers@npm:5.4.0":
+"@ethersproject/providers@npm:5.4.0, @ethersproject/providers@npm:^5.4.0":
   version: 5.4.0
   resolution: "@ethersproject/providers@npm:5.4.0"
   dependencies:
@@ -10949,8 +10949,11 @@ fsevents@~2.3.1:
     "@codechecks/client": ^0.1.10
     "@commitlint/cli": ^12.1.4
     "@commitlint/config-conventional": ^12.1.4
+    "@ethersproject/abi": ^5.4.0
     "@ethersproject/abstract-signer": ^5.4.0
     "@ethersproject/bignumber": ^5.4.0
+    "@ethersproject/bytes": ^5.4.0
+    "@ethersproject/providers": ^5.4.0
     "@ethersproject/wallet": ^5.4.0
     "@nomiclabs/hardhat-ethers": ^2.0.2
     "@nomiclabs/hardhat-waffle": ^2.0.1
