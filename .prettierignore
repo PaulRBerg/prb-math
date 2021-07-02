@@ -1,4 +1,5 @@
 # folders
+.yarn/
 artifacts/
 build/
 cache/
