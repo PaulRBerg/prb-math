@@ -2,7 +2,6 @@ name: "Continuous Integration"
 
 env:
   COVERAGE_GIT_BRANCH: "main"
-  COVERAGE_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
   COVERAGE_SERVICE_NAME: "github-actions-ci"
   INFURA_API_KEY: ${{ secrets.INFURA_API_KEY }}
   MNEMONIC: ${{ secrets.MNEMONIC }}
@@ -34,7 +33,7 @@ jobs:
       - name: "Lint Solidity and TypeScript code"
         run: "yarn run lint"
 
-      - name: "Compile the contracts and generate TypeChain artifacts"
+      - name: "Compile the contracts and generate TypeChain bindings"
         run: "yarn run typechain"
 
       - name: "Test the contracts and run code coverage"
