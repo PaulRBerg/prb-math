@@ -5,8 +5,8 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-wit
 import chai from "chai";
 import { ethers, waffle } from "hardhat";
 
-import { Contracts, Signers } from "../../types";
 import { near } from "./assertions";
+import { Contracts, Signers } from "./types";
 
 chai.use(near);
 const { createFixtureLoader } = waffle;
