@@ -92,9 +92,6 @@
     "type": "git",
     "url": "https://github.com/hifi-finance/prb-math"
   },
-  "resolutions": {
-    "@solidity-parser/parser": "^0.13.2"
-  },
   "scripts": {
     "clean": "hardhat clean",
     "commit": "git-cz",
