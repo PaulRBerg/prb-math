@@ -15,10 +15,8 @@ rules:
     - ignoreIIFE: true
       ignoreVoid: true
   "@typescript-eslint/no-inferrable-types": "off"
-  "@typescript-eslint/no-namespace":
-    - error
-    - allowDeclarations: true
+  "@typescript-eslint/no-namespace": "off"
   "@typescript-eslint/no-unused-vars":
     - error
-    - argsIgnorePattern: _
-      varsIgnorePattern: _
+    - argsIgnorePattern: "_"
+      varsIgnorePattern: "_"
