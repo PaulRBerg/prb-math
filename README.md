@@ -1,15 +1,15 @@
-# PRBMath [![Coverage Status](https://coveralls.io/repos/github/hifi-finance/prb-math/badge.svg?branch=main)](https://coveralls.io/github/hifi-finance/prb-math?branch=main) [![Styled with Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io) [![Commitizen Friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![License: WTFPL](https://img.shields.io/badge/License-WTFPL-yellow.svg)](https://spdx.org/licenses/WTFPL.html)
+# PRBMath [![Coverage Status](https://coveralls.io/repos/github/hifi-finance/prb-math/badge.svg?branch=main)](https://coveralls.io/github/hifi-finance/prb-math?branch=main) [![Styled with Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io) [![Commitizen Friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![license: WTFPL](https://img.shields.io/badge/license-WTFPL-yellow.svg)](https://spdx.org/licenses/WTFPL.html)
 
 **Smart contract library for advanced fixed-point math** that operates with signed 59.18-decimal fixed-point and unsigned
 60.18-decimal fixed-point numbers. The name of the number formats stems from the fact that there can be up to 59/60 digits
 in the integer part and up to 18 decimals in the fractional part. The numbers are bound by the minimum and the maximum
 values permitted by the Solidity types int256 and uint256.
 
-- Designed for Solidity >=0.8.4
 - Operates with signed and unsigned denary fixed-point numbers, with 18 trailing decimals
 - Offers advanced math functions like logarithms, exponentials, powers and square roots
 - Gas efficient, but still user-friendly
 - Bakes in overflow-safe multiplication and division
+- Reverts with custom errors instead of reason strings
 - Well-documented via NatSpec comments
 - Thoroughly tested with Hardhat and Waffle
 
@@ -29,13 +29,13 @@ and will not be liable for any loss, direct or indirect through continued use of
 
 With yarn:
 
-```sh
+```bash
 $ yarn add prb-math
 ```
 
 Or npm:
 
-```sh
+```bash
 npm install prb-math
 ```
 
@@ -46,7 +46,7 @@ PRBMath comes in four flavours: basic signed, typed signed, basic unsigned and t
 ### PRBMathSD59x18.sol
 
 ```solidity
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: Unlicense
 pragma solidity >=0.8.4;
 
 import "prb-math/contracts/PRBMathSD59x18.sol";
@@ -75,7 +75,7 @@ contract SignedConsumer {
 ### PRBMathSD59x18Typed.sol
 
 ```solidity
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: Unlicense
 pragma solidity >=0.8.4;
 
 import "prb-math/contracts/PRBMathSD59x18Typed.sol";
@@ -109,7 +109,7 @@ contract SignedConsumerTyped {
 ### PRBMathUD60x18.sol
 
 ```solidity
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: Unlicense
 pragma solidity >=0.8.4;
 
 import "prb-math/contracts/PRBMathUD60x18.sol";
@@ -140,7 +140,7 @@ contract UnsignedConsumer {
 ### PRBMathUD60x18Typed.sol
 
 ```solidity
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: Unlicense
 pragma solidity >=0.8.4;
 
 import "prb-math/contracts/PRBMathUD60x18Typed.sol";
@@ -263,7 +263,7 @@ Familiarity with Hardhat, Ethers, Waffle and TypeScript is requisite.
 
 Before running any command, make sure to install dependencies:
 
-```sh
+```bash
 $ yarn install
 ```
 
@@ -271,7 +271,7 @@ $ yarn install
 
 Compile the smart contracts with Hardhat:
 
-```sh
+```bash
 $ yarn compile
 ```
 
@@ -279,7 +279,7 @@ $ yarn compile
 
 Compile the smart contracts and generate TypeChain artifacts:
 
-```sh
+```bash
 $ yarn typechain
 ```
 
@@ -287,7 +287,7 @@ $ yarn typechain
 
 Lint the Solidity code:
 
-```sh
+```bash
 $ yarn lint:sol
 ```
 
@@ -295,7 +295,7 @@ $ yarn lint:sol
 
 Lint the TypeScript code:
 
-```sh
+```bash
 $ yarn lint:ts
 ```
 
@@ -303,7 +303,7 @@ $ yarn lint:ts
 
 Run the Mocha tests:
 
-```sh
+```bash
 $ yarn test
 ```
 
@@ -311,7 +311,7 @@ $ yarn test
 
 Generate the code coverage report:
 
-```sh
+```bash
 $ yarn coverage
 ```
 
@@ -319,7 +319,7 @@ $ yarn coverage
 
 Delete the smart contract artifacts, the coverage reports and the Hardhat cache:
 
-```sh
+```bash
 $ yarn clean
 ```
 
