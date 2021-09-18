@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0] - 2021-09-18
+
+### Added
+
+- The CHANGELOG file in the npm package bundle.
+
+### Changed
+
+- License from "WTFPL" to "Unlicense".
+- Polish README.
+
+### Fixed
+
+- Typos in comments.
+
+### Removed
+
+- Stale "resolutions" field in `package.json`.
+
 ## [2.2.0] - 2021-06-27
 
 ### Changed
@@ -134,6 +153,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - First release of the library.
 
+[2.3.0]: https://github.com/hifi-finance/prb-math/compare/v2.2.0...v2.3.0
 [2.2.0]: https://github.com/hifi-finance/prb-math/compare/v2.1.0...v2.2.0
 [2.1.0]: https://github.com/hifi-finance/prb-math/compare/v2.0.1...v2.1.0
 [2.0.1]: https://github.com/hifi-finance/prb-math/compare/v2.0.0...v2.0.1
