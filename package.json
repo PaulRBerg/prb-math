@@ -84,7 +84,7 @@
     "smart-contracts",
     "solidity"
   ],
-  "license": "WTFPL",
+  "license": "Unlicense",
   "publishConfig": {
     "access": "public"
   },

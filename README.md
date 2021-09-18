@@ -1,4 +1,4 @@
-# PRBMath [![Coverage Status](https://coveralls.io/repos/github/hifi-finance/prb-math/badge.svg?branch=main)](https://coveralls.io/github/hifi-finance/prb-math?branch=main) [![Styled with Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io) [![Commitizen Friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![license: WTFPL](https://img.shields.io/badge/license-WTFPL-yellow.svg)](https://spdx.org/licenses/WTFPL.html)
+# PRBMath [![Coverage Status](https://coveralls.io/repos/github/hifi-finance/prb-math/badge.svg?branch=main)](https://coveralls.io/github/hifi-finance/prb-math?branch=main) [![Styled with Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io) [![Commitizen Friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![license: Unlicense](https://img.shields.io/badge/license-Unlicense-yellow.svg)](https://unlicense.org/)
 
 **Smart contract library for advanced fixed-point math** that operates with signed 59.18-decimal fixed-point and unsigned
 60.18-decimal fixed-point numbers. The name of the number formats stems from the fact that there can be up to 59/60 digits
@@ -19,11 +19,6 @@ I looked at
 which is fast, but I didn't like that it operates with binary numbers and it limits the precision to int128. I then looked at
 [Fixidity](https://github.com/CementDAO/Fixidity), which operates with denary numbers and has wide precision, but is slow
 and susceptible to phantom overflow.
-
-## Caveat Emptor
-
-This is experimental software and is provided on an "as is" and "as available" basis. I do not give any warranties
-and will not be liable for any loss, direct or indirect through continued use of this codebase.
 
 ## Installation
 
@@ -257,76 +252,42 @@ Based on v3.0 of the library. See [abdk-gas-estimations](https://github.com/paul
 
 ## Contributing
 
-Familiarity with Hardhat, Ethers, Waffle and TypeScript is requisite.
+Feel free to dive in! [Open](https://github.com/paulrberg/prb-proxy/issues/new) an issue,
+[start](https://github.com/paulrberg/prb-proxy/discussions/new) a discussion or submit a PR.
 
 ### Pre Requisites
 
-Before running any command, make sure to install dependencies:
+You will need the following software on your machine:
+
+- [x] [Git](https://git-scm.com/downloads)
+- [x] [Node.Js](https://nodejs.org/en/download/)
+- [x] [Yarn](https://yarnpkg.com/getting-started/install)
+
+In addition, familiarity with [Solidity](https://soliditylang.org/), [TypeScript](https://typescriptlang.org/) and [Hardhat](https://hardhat.org) is requisite.
+
+### Set Up
+
+Install the dependencies:
 
 ```bash
 $ yarn install
 ```
 
-### Compile
-
-Compile the smart contracts with Hardhat:
-
-```bash
-$ yarn compile
-```
-
-### TypeChain
-
-Compile the smart contracts and generate TypeChain artifacts:
-
-```bash
-$ yarn typechain
-```
-
-### Lint Solidity
-
-Lint the Solidity code:
-
-```bash
-$ yarn lint:sol
-```
-
-### Lint TypeScript
-
-Lint the TypeScript code:
-
-```bash
-$ yarn lint:ts
-```
-
-### Test
-
-Run the Mocha tests:
-
-```bash
-$ yarn test
-```
-
-### Coverage
-
-Generate the code coverage report:
-
-```bash
-$ yarn coverage
-```
-
-### Clean
-
-Delete the smart contract artifacts, the coverage reports and the Hardhat cache:
-
-```bash
-$ yarn clean
-```
+Then, follow the `.env.example` file to add the requisite environment variables in the `.env` file. Now you can start making changes.
 
 ## Security
 
-While I set a high bar for code quality and test coverage, you shouldn't assume that this library is completely safe to use. The contracts
-have not been audited by a security researcher. If you discover any security issues, please report them via [Keybase](https://keybase.io/paulrberg).
+While I set a high bar for code quality and test coverage, you shouldn't assume that this project is completely safe to use. The contracts
+have not been audited by a security researcher.
+
+### Caveat Emptor
+
+This is experimental software and is provided on an "as is" and "as available" basis. I do not give any warranties
+and will not be liable for any loss, direct or indirect through continued use of this codebase.
+
+### Contact
+
+If you discover any security issues, please report them via [Keybase](https://keybase.io/paulrberg).
 
 ## Acknowledgements
 
@@ -339,4 +300,4 @@ I am grateful to:
 
 ## License
 
-The library is released under the [WTFPL License](./LICENSE.md).
+[Unlicense](./LICENSE.md) © Paul Razvan Berg
