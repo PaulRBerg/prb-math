@@ -4,9 +4,9 @@ import fp from "evm-fp";
 import forEach from "mocha-each";
 
 import { E, HALF_SCALE, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, SQRT_MAX_UD60x18 } from "../../../helpers/constants";
-import { mul } from "../../../helpers/ethers.math";
 import { bn } from "../../../helpers/numbers";
 import { PRBMathErrors } from "../../shared/errors";
+import { mul } from "../../shared/mirrors";
 
 export default function shouldBehaveLikeMul(): void {
   context("when one of the operands is zero", function () {

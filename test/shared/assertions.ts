@@ -1,7 +1,7 @@
 import { BigNumber } from "@ethersproject/bignumber";
 
 import { EPSILON, EPSILON_MAGNITUDE } from "../../helpers/constants";
-import { max } from "../../helpers/ethers.math";
+import { max } from "./mirrors";
 
 export function near(chai: Chai.ChaiStatic): void {
   const Assertion = chai.Assertion;

@@ -14,9 +14,9 @@ import {
   SQRT_MAX_SD59x18,
   SQRT_MAX_UD60x18,
 } from "../../../helpers/constants";
-import { mul } from "../../../helpers/ethers.math";
 import { bn } from "../../../helpers/numbers";
 import { PRBMathErrors, PRBMathSD59x18Errors } from "../../shared/errors";
+import { mul } from "../../shared/mirrors";
 
 export default function shouldBehaveLikeMul(): void {
   context("when one of the operands is zero", function () {

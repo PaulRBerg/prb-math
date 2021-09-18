@@ -4,8 +4,8 @@ import fp from "evm-fp";
 import forEach from "mocha-each";
 
 import { MAX_UD60x18, MAX_WHOLE_UD60x18 } from "../../../helpers/constants";
-import { avg } from "../../../helpers/ethers.math";
 import { bn } from "../../../helpers/numbers";
+import { avg } from "../../shared/mirrors";
 
 export default function shouldBehaveLikeAvg(): void {
   context("when both operands are zero", function () {

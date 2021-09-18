@@ -1,7 +1,7 @@
 import { BigNumber } from "@ethersproject/bignumber";
 import fp from "evm-fp";
 
-import { HALF_SCALE, SCALE } from "./constants";
+import { HALF_SCALE, SCALE } from "../../helpers/constants";
 
 export function avg(x: BigNumber, y: BigNumber): BigNumber {
   let result: BigNumber = x.div(2).add(y.div(2));

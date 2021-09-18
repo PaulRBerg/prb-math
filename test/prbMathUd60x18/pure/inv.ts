@@ -4,9 +4,9 @@ import fp from "evm-fp";
 import forEach from "mocha-each";
 
 import { MAX_UD60x18, MAX_WHOLE_UD60x18, PI } from "../../../helpers/constants";
-import { inv } from "../../../helpers/ethers.math";
 import { bn } from "../../../helpers/numbers";
 import { PanicCodes } from "../../shared/errors";
+import { inv } from "../../shared/mirrors";
 
 export default function shouldBehaveLikeInv(): void {
   context("when x is zero", function () {
