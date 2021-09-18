@@ -61,7 +61,7 @@ error PRBMathSD59x18__PowuOverflow(uint256 rAbs);
 /// @notice Emitted when the input is negative.
 error PRBMathSD59x18__SqrtNegativeInput(int256 x);
 
-/// @notice Emitted when the calculting the square root overflows SD59x18.
+/// @notice Emitted when the calculating the square root overflows SD59x18.
 error PRBMathSD59x18__SqrtOverflow(int256 x);
 
 /// @notice Emitted when addition overflows UD60x18.
@@ -85,7 +85,7 @@ error PRBMathUD60x18__GmOverflow(uint256 x, uint256 y);
 /// @notice Emitted when the input is less than 1.
 error PRBMathUD60x18__LogInputTooSmall(uint256 x);
 
-/// @notice Emitted when the calculting the square root overflows UD60x18.
+/// @notice Emitted when the calculating the square root overflows UD60x18.
 error PRBMathUD60x18__SqrtOverflow(uint256 x);
 
 /// @notice Emitted when subtraction underflows UD60x18.
@@ -93,7 +93,7 @@ error PRBMathUD60x18__SubUnderflow(uint256 x, uint256 y);
 
 /// @dev Common mathematical functions used in both PRBMathSD59x18 and PRBMathUD60x18. Note that this shared library
 /// does not always assume the signed 59.18-decimal fixed-point or the unsigned 60.18-decimal fixed-point
-/// representation. When it does not, it is explictly mentioned in the NatSpec documentation.
+/// representation. When it does not, it is explicitly mentioned in the NatSpec documentation.
 library PRBMath {
     /// STRUCTS ///
 
@@ -458,7 +458,7 @@ library PRBMath {
             // four bits. That is, denominator * inv = 1 mod 2^4.
             uint256 inverse = (3 * denominator) ^ 2;
 
-            // Now use Newton-Raphson iteration to improve the precision. Thanks to Hensel's lifting lemma, this also works
+            // Use the Newton-Raphson iteration to improve the precision. Thanks to Hensel's lifting lemma, this also works
             // in modular arithmetic, doubling the correct bits in each step.
             inverse *= 2 - denominator * inverse; // inverse mod 2^8
             inverse *= 2 - denominator * inverse; // inverse mod 2^16

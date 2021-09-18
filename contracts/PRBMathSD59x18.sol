@@ -64,7 +64,7 @@ library PRBMathSD59x18 {
 
     /// @notice Yields the least greatest signed 59.18 decimal fixed-point number greater than or equal to x.
     ///
-    /// @dev Optimised for fractional value inputs, because for every whole value there are (1e18 - 1) fractional counterparts.
+    /// @dev Optimized for fractional value inputs, because for every whole value there are (1e18 - 1) fractional counterparts.
     /// See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions.
     ///
     /// Requirements:
@@ -219,7 +219,7 @@ library PRBMathSD59x18 {
 
     /// @notice Yields the greatest signed 59.18 decimal fixed-point number less than or equal to x.
     ///
-    /// @dev Optimised for fractional value inputs, because for every whole value there are (1e18 - 1) fractional counterparts.
+    /// @dev Optimized for fractional value inputs, because for every whole value there are (1e18 - 1) fractional counterparts.
     /// See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions.
     ///
     /// Requirements:
