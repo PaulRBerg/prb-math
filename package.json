@@ -47,6 +47,7 @@
     "import-sort-parser-typescript": "^6.0.0",
     "import-sort-style-module": "^6.0.0",
     "lint-staged": "^11.1.2",
+    "lodash": "^4.17.21",
     "mathjs": "^9.4.5",
     "mocha": "^9.1.1",
     "mocha-each": "^2.0.1",
