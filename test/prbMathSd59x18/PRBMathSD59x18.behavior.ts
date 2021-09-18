@@ -23,7 +23,7 @@ import shouldBehaveLikeSqrt from "./pure/sqrt";
 import shouldBehaveLikeSub from "./pure/sub";
 import shouldBehaveLikeToInt from "./pure/toInt";
 
-export function shouldBehaveLikePrbMathSd59x18(): void {
+export function shouldBehaveLikePRBMathSd59x18(): void {
   describe("Pure Functions", function () {
     describe("abs", function () {
       shouldBehaveLikeAbs();

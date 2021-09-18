@@ -7,12 +7,12 @@ import { PRBMathSD59x18TypedMock } from "../../typechain/PRBMathSD59x18TypedMock
 import { PRBMathUD60x18Mock } from "../../typechain/PRBMathUD60x18Mock";
 import { PRBMathUD60x18TypedMock } from "../../typechain/PRBMathUD60x18TypedMock";
 
-type UnitFixturePrbMathSd59x18ReturnType = {
+type UnitFixturePRBMathSd59x18ReturnType = {
   prbMathSd59x18: PRBMathSD59x18Mock;
   prbMathSd59x18Typed: PRBMathSD59x18TypedMock;
 };
 
-export async function unitFixturePrbMathSd59x18(signers: Signer[]): Promise<UnitFixturePrbMathSd59x18ReturnType> {
+export async function unitFixturePRBMathSd59x18(signers: Signer[]): Promise<UnitFixturePRBMathSd59x18ReturnType> {
   const deployer: Signer = signers[0];
 
   const prbMathSd59x18Artifact: Artifact = await artifacts.readArtifact("PRBMathSD59x18Mock");
@@ -28,12 +28,12 @@ export async function unitFixturePrbMathSd59x18(signers: Signer[]): Promise<Unit
   return { prbMathSd59x18, prbMathSd59x18Typed };
 }
 
-type UnitFixturePrbMathUd60x18ReturnType = {
+type UnitFixturePRBMathUd60x18ReturnType = {
   prbMathUd60x18: PRBMathUD60x18Mock;
   prbMathUd60x18Typed: PRBMathUD60x18TypedMock;
 };
 
-export async function unitFixturePrbMathUd60x18(signers: Signer[]): Promise<UnitFixturePrbMathUd60x18ReturnType> {
+export async function unitFixturePRBMathUd60x18(signers: Signer[]): Promise<UnitFixturePRBMathUd60x18ReturnType> {
   const deployer: Signer = signers[0];
 
   const prbMathUd60x18Artifact: Artifact = await artifacts.readArtifact("PRBMathUD60x18Mock");

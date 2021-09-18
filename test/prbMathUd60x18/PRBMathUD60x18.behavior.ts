@@ -22,7 +22,7 @@ import shouldBehaveLikeSqrt from "./pure/sqrt";
 import shouldBehaveLikeSub from "./pure/sub";
 import shouldBehaveLikeToUint from "./pure/toUint";
 
-export function shouldBehaveLikePrbMathUd60x18(): void {
+export function shouldBehaveLikePRBMathUd60x18(): void {
   describe("Pure Functions", function () {
     describe("add", function () {
       shouldBehaveLikeAdd();
