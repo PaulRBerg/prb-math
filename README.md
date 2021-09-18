@@ -259,9 +259,9 @@ Feel free to dive in! [Open](https://github.com/paulrberg/prb-proxy/issues/new) 
 
 You will need the following software on your machine:
 
-- [x] [Git](https://git-scm.com/downloads)
-- [x] [Node.Js](https://nodejs.org/en/download/)
-- [x] [Yarn](https://yarnpkg.com/getting-started/install)
+- [Git](https://git-scm.com/downloads)
+- [Node.Js](https://nodejs.org/en/download/)
+- [Yarn](https://yarnpkg.com/getting-started/install)
 
 In addition, familiarity with [Solidity](https://soliditylang.org/), [TypeScript](https://typescriptlang.org/) and [Hardhat](https://hardhat.org) is requisite.
 
@@ -290,8 +290,6 @@ and will not be liable for any loss, direct or indirect through continued use of
 If you discover any security issues, please report them via [Keybase](https://keybase.io/paulrberg).
 
 ## Acknowledgements
-
-I am grateful to:
 
 - Mikhail Vladimirov for the insights he shared in his [Math in
   Solidity](https://medium.com/coinmonks/math-in-solidity-part-1-numbers-384c8377f26d) series.
