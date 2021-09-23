@@ -10,7 +10,7 @@ import { PRBMathSD59x18Errors } from "../../shared/errors";
 
 export default function shouldBehaveLikeSqrt(): void {
   context("when x is zero", function () {
-    it("returns zero", async function () {
+    it("returns 0", async function () {
       const x: BigNumber = bn("0");
       const expected: BigNumber = bn("0");
       expect(expected).to.equal(await this.contracts.prbMathSd59x18.doSqrt(x));

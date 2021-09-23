@@ -31,7 +31,7 @@ $ yarn add prb-math
 Or npm:
 
 ```bash
-npm install prb-math
+$ npm install prb-math
 ```
 
 ## Usage
