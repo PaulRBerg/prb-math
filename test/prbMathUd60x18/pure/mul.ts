@@ -1,23 +1,23 @@
 import { BigNumber } from "@ethersproject/bignumber";
+import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import fp from "evm-fp";
 import forEach from "mocha-each";
 
 import { E, HALF_SCALE, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, SQRT_MAX_UD60x18 } from "../../../helpers/constants";
-import { bn } from "../../../helpers/numbers";
 import { PRBMathErrors } from "../../shared/errors";
 import { mul } from "../../shared/mirrors";
 
 export default function shouldBehaveLikeMul(): void {
   context("when one of the operands is zero", function () {
     const testSets = [
-      [bn("0"), fp("0.5")],
-      [fp("0.5"), bn("0")],
-      [fp(MAX_UD60x18), bn("0")],
+      [Zero, fp("0.5")],
+      [fp("0.5"), Zero],
+      [fp(MAX_UD60x18), Zero],
     ];
 
     forEach(testSets).it("takes %e and %e and returns 0", async function (x: BigNumber, y: BigNumber) {
-      const expected: BigNumber = bn("0");
+      const expected: BigNumber = Zero;
       expect(expected).to.equal(await this.contracts.prbMathUd60x18.doMul(x, y));
       expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doMul(x, y));
     });

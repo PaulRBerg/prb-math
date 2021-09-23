@@ -1,17 +1,17 @@
 import { BigNumber } from "@ethersproject/bignumber";
+import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import fp from "evm-fp";
 import forEach from "mocha-each";
 
 import { MAX_SD59x18, MAX_WHOLE_SD59x18, MIN_SD59x18, MIN_WHOLE_SD59x18, PI } from "../../../helpers/constants";
-import { bn } from "../../../helpers/numbers";
 import { PRBMathSD59x18Errors } from "../../shared/errors";
 
 export default function shouldBehaveLikeAbs(): void {
   context("when x is zero", function () {
     it("returns 0", async function () {
-      const x: BigNumber = bn("0");
-      const expected: BigNumber = bn("0");
+      const x: BigNumber = Zero;
+      const expected: BigNumber = Zero;
       expect(expected).to.equal(await this.contracts.prbMathSd59x18.doAbs(x));
       expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doAbs(x));
     });

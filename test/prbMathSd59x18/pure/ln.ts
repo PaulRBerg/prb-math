@@ -1,17 +1,17 @@
 import { BigNumber } from "@ethersproject/bignumber";
+import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import fp from "evm-fp";
 import forEach from "mocha-each";
 
 import { E, MAX_SD59x18, MAX_WHOLE_SD59x18, PI } from "../../../helpers/constants";
 import { ln } from "../../../helpers/math";
-import { bn } from "../../../helpers/numbers";
 import { PRBMathSD59x18Errors } from "../../shared/errors";
 
 export default function shouldBehaveLikeLn(): void {
   context("when x is zero", function () {
     it("reverts", async function () {
-      const x: BigNumber = bn("0");
+      const x: BigNumber = Zero;
       await expect(this.contracts.prbMathSd59x18.doLn(x)).to.be.revertedWith(PRBMathSD59x18Errors.LogInputTooSmall);
       await expect(this.contracts.prbMathSd59x18Typed.doLn(x)).to.be.revertedWith(
         PRBMathSD59x18Errors.LogInputTooSmall,

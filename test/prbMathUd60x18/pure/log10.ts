@@ -1,19 +1,19 @@
 import { BigNumber } from "@ethersproject/bignumber";
+import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import fp from "evm-fp";
 import forEach from "mocha-each";
 
 import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, SCALE } from "../../../helpers/constants";
 import { log10 } from "../../../helpers/math";
-import { bn } from "../../../helpers/numbers";
 import { PRBMathUD60x18Errors } from "../../shared/errors";
 
 export default function shouldBehaveLikeLog10(): void {
   context("when x is less than 1", function () {
-    const testSets = [bn("0"), fp("1e-18"), fp("1e-17"), fp("1e4"), fp("0.1"), fp("0.5"), fp(SCALE).sub(1)];
+    const testSets = [Zero, fp("1e-18"), fp("1e-17"), fp("1e4"), fp("0.1"), fp("0.5"), fp(SCALE).sub(1)];
 
     forEach(testSets).it("takes %e and reverts", async function () {
-      const x: BigNumber = bn("0");
+      const x: BigNumber = Zero;
       await expect(this.contracts.prbMathUd60x18.doLog10(x)).to.be.revertedWith(PRBMathUD60x18Errors.LogInputTooSmall);
       await expect(this.contracts.prbMathUd60x18Typed.doLog10(x)).to.be.revertedWith(
         PRBMathUD60x18Errors.LogInputTooSmall,

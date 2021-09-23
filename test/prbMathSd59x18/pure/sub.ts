@@ -1,4 +1,5 @@
 import { BigNumber } from "@ethersproject/bignumber";
+import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import fp from "evm-fp";
 import forEach from "mocha-each";
@@ -51,7 +52,7 @@ export default function shouldBehaveLikeSub(): void {
           [fp("-4892e32"), fp("-2042e25")],
           [fp(MIN_SD59x18).add(1), fp("-1e-18")],
         ].concat([
-          [bn("0"), bn("0")],
+          [Zero, Zero],
           [fp("1"), fp("1")],
           [fp(E), fp("1.89")],
           [fp(PI), fp("2.0004")],

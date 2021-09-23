@@ -1,10 +1,10 @@
 import { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
+import { Zero } from "@ethersproject/constants";
 import fp from "evm-fp";
 import forEach from "mocha-each";
 
 import { E, MAX_SD59x18, MIN_SD59x18, PI } from "../../../helpers/constants";
-import { bn } from "../../../helpers/numbers";
 import { PanicCodes } from "../../shared/errors";
 
 export default function shouldBehaveLikeAdd(): void {
@@ -87,7 +87,7 @@ export default function shouldBehaveLikeAdd(): void {
           [fp("-4892e32"), fp("-2042e25")],
           [fp(MIN_SD59x18).add(1), fp("-1e-18")],
         ].concat([
-          [bn("0"), bn("0")],
+          [Zero, Zero],
           [fp("1"), fp("1")],
           [fp(E), fp("1.89")],
           [fp(PI), fp("2.0004")],

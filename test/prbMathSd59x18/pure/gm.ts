@@ -1,4 +1,5 @@
 import { BigNumber } from "@ethersproject/bignumber";
+import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import fp from "evm-fp";
 import forEach from "mocha-each";
@@ -19,12 +20,12 @@ import { PRBMathSD59x18Errors } from "../../shared/errors";
 export default function shouldBehaveLikeGm(): void {
   context("when the product of x and y is zero", function () {
     const testSets = [
-      [bn("0"), fp(PI)],
-      [fp(PI), bn("0")],
+      [Zero, fp(PI)],
+      [fp(PI), Zero],
     ];
 
     forEach(testSets).it("takes %e and %e and returns 0", async function (x: BigNumber, y: BigNumber) {
-      const expected: BigNumber = bn("0");
+      const expected: BigNumber = Zero;
       expect(expected).to.equal(await this.contracts.prbMathSd59x18.doGm(x, y));
       expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doGm(x, y));
     });

@@ -1,10 +1,10 @@
 import { BigNumber } from "@ethersproject/bignumber";
+import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import fp from "evm-fp";
 import forEach from "mocha-each";
 
 import { E, MAX_UD60x18, PI } from "../../../helpers/constants";
-import { bn } from "../../../helpers/numbers";
 import { PRBMathUD60x18Errors } from "../../shared/errors";
 
 export default function shouldBehaveLikeSub(): void {
@@ -24,8 +24,8 @@ export default function shouldBehaveLikeSub(): void {
 
   context("when the difference does not underflow", function () {
     const testSets = [
-      [bn("0"), bn("0")],
-      [fp("1"), bn("0")],
+      [Zero, Zero],
+      [fp("1"), Zero],
       [fp("1"), fp("1")],
       [fp(E), fp("1.89")],
       [fp(PI), fp("2.0004")],

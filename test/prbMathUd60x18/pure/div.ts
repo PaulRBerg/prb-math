@@ -1,18 +1,18 @@
 import { BigNumber } from "@ethersproject/bignumber";
+import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import fp from "evm-fp";
 import forEach from "mocha-each";
 
 import { MAX_UD60x18, PI, SCALE } from "../../../helpers/constants";
 import { mbn } from "../../../helpers/math";
-import { bn } from "../../../helpers/numbers";
 import { PRBMathErrors, PanicCodes } from "../../shared/errors";
 
 export default function shouldBehaveLikeDiv(): void {
   context("when the denominator is zero", function () {
     it("reverts", async function () {
       const x: BigNumber = fp("1");
-      const y: BigNumber = bn("0");
+      const y: BigNumber = Zero;
       await expect(this.contracts.prbMathUd60x18.doDiv(x, y)).to.be.revertedWith(PanicCodes.DivisionByZero);
       await expect(this.contracts.prbMathUd60x18Typed.doDiv(x, y)).to.be.revertedWith(PanicCodes.DivisionByZero);
     });
@@ -23,8 +23,8 @@ export default function shouldBehaveLikeDiv(): void {
       const testSets = ["1e-18", "1", PI, "1e18"];
 
       forEach(testSets).it("takes %e and returns 0", async function (y: string) {
-        const x: BigNumber = bn("0");
-        const expected: BigNumber = bn("0");
+        const x: BigNumber = Zero;
+        const expected: BigNumber = Zero;
         expect(expected).to.equal(await this.contracts.prbMathUd60x18.doDiv(x, fp(y)));
         expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doDiv(x, fp(y)));
       });

@@ -1,4 +1,5 @@
 import { BigNumber } from "@ethersproject/bignumber";
+import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import fp from "evm-fp";
 import forEach from "mocha-each";
@@ -10,11 +11,11 @@ import { PRBMathErrors, PRBMathSD59x18Errors } from "../../shared/errors";
 
 export default function shouldBehaveLikePowu(): void {
   context("when the base is zero", function () {
-    const x: BigNumber = bn("0");
+    const x: BigNumber = Zero;
 
     context("when the exponent is zero", function () {
       it("returns 1", async function () {
-        const y: BigNumber = bn("0");
+        const y: BigNumber = Zero;
         const expected: BigNumber = fp("1");
         expect(expected).to.equal(await this.contracts.prbMathSd59x18.doPowu(x, y));
         expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doPowu(x, y));
@@ -25,7 +26,7 @@ export default function shouldBehaveLikePowu(): void {
       const testSets = [[fp("1")], [fp(E)], [fp(PI)]];
 
       forEach(testSets).it("takes %e and returns 0", async function (y: BigNumber) {
-        const expected: BigNumber = bn("0");
+        const expected: BigNumber = Zero;
         expect(expected).to.equal(await this.contracts.prbMathSd59x18.doPowu(x, y));
         expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doPowu(x, y));
       });
@@ -37,7 +38,7 @@ export default function shouldBehaveLikePowu(): void {
       const testSets = [[fp("1")], [fp(E)], [fp(PI)], [fp(MAX_SD59x18)]];
 
       forEach(testSets).it("takes %e and returns 1", async function (x: BigNumber) {
-        const y: BigNumber = bn("0");
+        const y: BigNumber = Zero;
         const expected: BigNumber = fp("1");
         expect(expected).to.equal(await this.contracts.prbMathSd59x18.doPowu(x, y));
         expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doPowu(x, y));

@@ -1,19 +1,19 @@
 import { BigNumber } from "@ethersproject/bignumber";
+import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import fp from "evm-fp";
 import forEach from "mocha-each";
 
 import { E, MAX_UD60x18, PI } from "../../../helpers/constants";
 import { pow } from "../../../helpers/math";
-import { bn } from "../../../helpers/numbers";
 import { PRBMathUD60x18Errors } from "../../shared/errors";
 
 export default function shouldBehaveLikePow(): void {
   context("when the base is zero", function () {
-    const x: BigNumber = bn("0");
+    const x: BigNumber = Zero;
 
     context("when the exponent is zero", function () {
-      const y: BigNumber = bn("0");
+      const y: BigNumber = Zero;
 
       it("takes 0 and 0 and returns 1", async function () {
         const expected: BigNumber = fp("1");
@@ -26,8 +26,8 @@ export default function shouldBehaveLikePow(): void {
       const testSets = [[fp("1")], [fp(E)], [fp(PI)]];
 
       forEach(testSets).it("takes 0 and %e and returns 0", async function (y: BigNumber) {
-        const x: BigNumber = bn("0");
-        const expected: BigNumber = bn("0");
+        const x: BigNumber = Zero;
+        const expected: BigNumber = Zero;
         expect(expected).to.equal(await this.contracts.prbMathUd60x18.doPow(x, y));
         expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doPow(x, y));
       });
@@ -54,7 +54,7 @@ export default function shouldBehaveLikePow(): void {
 
     context("when the base is greater than or equal to the scale", function () {
       context("when the exponent is zero", function () {
-        const y: BigNumber = bn("0");
+        const y: BigNumber = Zero;
         const testSets = [[fp("1")], [fp(E)], [fp(PI)]];
 
         forEach(testSets).it("takes %e and 0 and returns 1", async function (x: BigNumber) {

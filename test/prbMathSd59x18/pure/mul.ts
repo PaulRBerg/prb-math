@@ -1,4 +1,5 @@
 import { BigNumber } from "@ethersproject/bignumber";
+import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import fp from "evm-fp";
 import forEach from "mocha-each";
@@ -21,17 +22,17 @@ import { mul } from "../../shared/mirrors";
 export default function shouldBehaveLikeMul(): void {
   context("when one of the operands is zero", function () {
     const testSets = [
-      [fp(MIN_SD59x18).add(1), bn("0")],
-      [fp("0.5"), bn("0")],
-      [bn("0"), fp("0.5")],
+      [fp(MIN_SD59x18).add(1), Zero],
+      [fp("0.5"), Zero],
+      [Zero, fp("0.5")],
     ].concat([
-      [bn("0"), fp("0.5")],
-      [fp("0.5"), bn("0")],
-      [fp(MAX_SD59x18), bn("0")],
+      [Zero, fp("0.5")],
+      [fp("0.5"), Zero],
+      [fp(MAX_SD59x18), Zero],
     ]);
 
     forEach(testSets).it("takes %e and %e and returns 0", async function (x: BigNumber, y: BigNumber) {
-      const expected: BigNumber = bn("0");
+      const expected: BigNumber = Zero;
       expect(expected).to.equal(await this.contracts.prbMathSd59x18.doMul(x, y));
       expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doMul(x, y));
     });

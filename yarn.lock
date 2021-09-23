@@ -11229,6 +11229,7 @@ fsevents@~2.1.1:
     "@ethersproject/abstract-signer": ^5.4.1
     "@ethersproject/bignumber": ^5.4.2
     "@ethersproject/bytes": ^5.4.0
+    "@ethersproject/constants": ^5.4.0
     "@ethersproject/providers": ^5.4.5
     "@ethersproject/wallet": ^5.4.0
     "@nomiclabs/hardhat-ethers": ^2.0.2

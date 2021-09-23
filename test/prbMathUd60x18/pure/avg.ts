@@ -1,18 +1,18 @@
 import { BigNumber } from "@ethersproject/bignumber";
+import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import fp from "evm-fp";
 import forEach from "mocha-each";
 
 import { MAX_UD60x18, MAX_WHOLE_UD60x18 } from "../../../helpers/constants";
-import { bn } from "../../../helpers/numbers";
 import { avg } from "../../shared/mirrors";
 
 export default function shouldBehaveLikeAvg(): void {
   context("when both operands are zero", function () {
     it("returns 0", async function () {
-      const x: BigNumber = bn("0");
-      const y: BigNumber = bn("0");
-      const expected: BigNumber = bn("0");
+      const x: BigNumber = Zero;
+      const y: BigNumber = Zero;
+      const expected: BigNumber = Zero;
       expect(expected).to.equal(await this.contracts.prbMathUd60x18.doAvg(x, y));
       expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doAvg(x, y));
     });
@@ -20,8 +20,8 @@ export default function shouldBehaveLikeAvg(): void {
 
   context("when one operand is zero and the other is not zero", function () {
     const testSets = [
-      [fp("0"), fp("3")],
-      [fp("3"), fp("0")],
+      [Zero, fp("3")],
+      [fp("3"), Zero],
     ];
 
     forEach(testSets).it("takes %e and %e and returns the correct value", async function (x: BigNumber, y: BigNumber) {

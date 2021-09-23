@@ -1,17 +1,17 @@
 import { BigNumber } from "@ethersproject/bignumber";
+import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import fp from "evm-fp";
 import forEach from "mocha-each";
 
 import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI } from "../../../helpers/constants";
 import { exp2 } from "../../../helpers/math";
-import { bn } from "../../../helpers/numbers";
 import { PRBMathUD60x18Errors } from "../../shared/errors";
 
 export default function shouldBehaveLikeExp2(): void {
   context("when x is zero", function () {
     it("returns 1", async function () {
-      const x: BigNumber = bn("0");
+      const x: BigNumber = Zero;
       const expected: BigNumber = fp("1");
       expect(expected).to.equal(await this.contracts.prbMathUd60x18.doExp2(x));
       expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doExp2(x));
