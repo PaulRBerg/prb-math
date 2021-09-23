@@ -1,18 +1,24 @@
 import { BigNumber } from "@ethersproject/bignumber";
+import type { BigNumberish } from "@ethersproject/bignumber";
 import fp from "evm-fp";
 
 import { HALF_SCALE, SCALE } from "../../helpers/constants";
 
 export function avg(x: BigNumber, y: BigNumber): BigNumber {
   let result: BigNumber = x.div(2).add(y.div(2));
-  if (x.mod(2).eq(1) && y.mod(2).eq(1)) {
+  const xModTwo: BigNumber = solidityMod(x, 2);
+  const yModTwo: BigNumber = solidityMod(y, 2);
+  if (xModTwo.eq(1) && yModTwo.eq(1)) {
     result = result.add(1);
+  } else if (xModTwo.eq(-1) && yModTwo.eq(-1)) {
+    result = result.sub(1);
   }
   return result;
 }
 
 export function frac(x: BigNumber): BigNumber {
-  return solidityModByScale(x);
+  const scale: BigNumber = BigNumber.from(10).pow(18);
+  return solidityMod(x, scale);
 }
 
 export function inv(x: BigNumber): BigNumber {
@@ -39,16 +45,11 @@ export function mul(x: BigNumber, y: BigNumber): BigNumber {
   return result;
 }
 
-export function solidityMod(x: BigNumber, n: BigNumber): BigNumber {
+// See https://github.com/ethers-io/ethers.js/discussions/1408
+function solidityMod(x: BigNumber, n: BigNumberish): BigNumber {
   let result = x.mod(n);
   if (!result.isZero() && x.isNegative()) {
     result = result.sub(n);
   }
   return result;
-}
-
-// See https://github.com/ethers-io/ethers.js/discussions/1408.
-export function solidityModByScale(x: BigNumber): BigNumber {
-  const scale: BigNumber = BigNumber.from(10).pow(18);
-  return solidityMod(x, scale);
 }

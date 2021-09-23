@@ -53,11 +53,11 @@ export default function shouldBehaveLikeAvg(): void {
   context("when both operands are negative", function () {
     const testSets = [
       [fp(MIN_WHOLE_SD59x18), fp(MIN_SD59x18)],
-      [fp("-1e-18"), fp("-3e-18")],
       [fp("-100"), fp("-200")],
       [fp("-4"), fp("-8")],
-      [fp("-1"), fp("-1")],
       [fp("-1"), fp("-2")],
+      [fp("-1"), fp("-1")],
+      [fp("-1e-18"), fp("-3e-18")],
     ];
 
     forEach(testSets).it("takes %e and %e and returns the correct value", async function (x: BigNumber, y: BigNumber) {
