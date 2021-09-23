@@ -38,7 +38,7 @@ export default function shouldBehaveLikeAvg(): void {
         [fp("1").add(1), fp("1").add(1)],
         [fp("3").add(1), fp("7").add(1)],
         [fp("99").add(1), fp("199").add(1)],
-        [fp("1000000000000000001").add(1), fp("10000000000000000001").add(1)],
+        [fp("1e18").add(1), fp("1e19").add(1)],
         [fp(MAX_UD60x18), fp(MAX_UD60x18)],
       ];
 
