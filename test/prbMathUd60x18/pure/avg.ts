@@ -20,8 +20,8 @@ export default function shouldBehaveLikeAvg(): void {
 
   context("when one operand is zero and the other is not zero", function () {
     const testSets = [
-      [fp("0"), fp("4")],
-      [fp("4"), fp("0")],
+      [fp("0"), fp("3")],
+      [fp("3"), fp("0")],
     ];
 
     forEach(testSets).it("takes %e and %e and returns the correct value", async function (x: BigNumber, y: BigNumber) {

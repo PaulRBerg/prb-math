@@ -20,10 +20,10 @@ export default function shouldBehaveLikeAvg(): void {
 
   context("when one operand is zero and the other is not zero", function () {
     const testSets = [
-      [fp("-4"), fp("0")],
-      [fp("0"), fp("-4")],
-      [fp("0"), fp("4")],
-      [fp("4"), fp("0")],
+      [fp("-3"), fp("0")],
+      [fp("0"), fp("-3")],
+      [fp("0"), fp("3")],
+      [fp("3"), fp("0")],
     ];
 
     forEach(testSets).it("takes %e and %e and returns the correct value", async function (x: BigNumber, y: BigNumber) {
@@ -53,11 +53,11 @@ export default function shouldBehaveLikeAvg(): void {
   context("when both operands are negative", function () {
     const testSets = [
       [fp(MIN_WHOLE_SD59x18), fp(MIN_SD59x18)],
-      [fp("1e-18"), fp("3e-18")],
-      [fp("100"), fp("200")],
-      [fp("4"), fp("8")],
-      [fp("1"), fp("1")],
-      [fp("1"), fp("2")],
+      [fp("-1e-18"), fp("-3e-18")],
+      [fp("-100"), fp("-200")],
+      [fp("-4"), fp("-8")],
+      [fp("-1"), fp("-1")],
+      [fp("-1"), fp("-2")],
     ];
 
     forEach(testSets).it("takes %e and %e and returns the correct value", async function (x: BigNumber, y: BigNumber) {
