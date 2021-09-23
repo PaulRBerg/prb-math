@@ -16,7 +16,7 @@ import { bn } from "../../../helpers/numbers";
 
 export default function shouldBehaveLikeToInt(): void {
   context("when x is less the absolute value of scale", function () {
-    const testSets = [[fp("1").mul(-1).add(1)], [bn("-1")]].concat([[bn("0")], [bn("1")], [fp("1").sub(1)]]);
+    const testSets = [[fp("1").mul(-1).add(1)], [fp("-1e-18")]].concat([[bn("0")], [fp("1e-18")], [fp("1").sub(1)]]);
 
     forEach(testSets).it("takes %e and returns 0", async function (x: BigNumber) {
       const expected: BigNumber = bn("0");

@@ -35,10 +35,10 @@ export default function shouldBehaveLikeAvg(): void {
     context("when both operands are odd", function () {
       const testSets = [
         [fp("1e-18"), fp("3e-18")],
-        [fp("1"), fp("1")],
-        [fp("3"), fp("7")],
-        [fp("99"), fp("199")],
-        [fp("1000000000000000001"), fp("10000000000000000001")],
+        [fp("1").add(1), fp("1").add(1)],
+        [fp("3").add(1), fp("7").add(1)],
+        [fp("99").add(1), fp("199").add(1)],
+        [fp("1000000000000000001").add(1), fp("10000000000000000001").add(1)],
         [fp(MAX_UD60x18), fp(MAX_UD60x18)],
       ];
 
@@ -74,11 +74,11 @@ export default function shouldBehaveLikeAvg(): void {
     context("when one operand is even and the other is odd", function () {
       const testSets = [
         [fp("1e-18"), fp("2e-18")],
-        [fp("1"), fp("2")],
-        [fp("3"), fp("8")],
-        [fp("99"), fp("200")],
-        [fp("1e18"), fp("10000000000000000001")],
-        [fp(MAX_WHOLE_UD60x18), fp(MAX_UD60x18)],
+        [fp("1").add(1), fp("2")],
+        [fp("3").add(1), fp("8")],
+        [fp("99").add(1), fp("200")],
+        [fp("1e18").add(1), fp("10000000000000000001")],
+        [fp(MAX_UD60x18), fp(MAX_WHOLE_UD60x18)],
       ];
 
       forEach(testSets).it(

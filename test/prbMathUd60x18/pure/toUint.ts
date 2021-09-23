@@ -4,14 +4,13 @@ import fp from "evm-fp";
 import forEach from "mocha-each";
 
 import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, SCALE } from "../../../helpers/constants";
-import { bn } from "../../../helpers/numbers";
 
 export default function shouldBehaveLikeToUint(): void {
   context("when x is less than the scale", function () {
-    const testSets = [[bn("0")], [bn("1")], [fp(SCALE).sub(1)]];
+    const testSets = [[fp("0")], [fp("1e-18")], [fp(SCALE).sub(1)]];
 
     forEach(testSets).it("takes %e and returns 0", async function (x: BigNumber) {
-      const expected: BigNumber = bn("0");
+      const expected: BigNumber = fp("0");
       expect(expected).to.equal(await this.contracts.prbMathUd60x18.doToUint(x));
       expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doToUint(x));
     });

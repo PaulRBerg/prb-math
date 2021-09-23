@@ -10,7 +10,7 @@ import { PanicCodes } from "../../shared/errors";
 export default function shouldBehaveLikeSub(): void {
   context("when the difference underflows", function () {
     const testSets = [
-      [fp(MIN_SD59x18), bn("1")],
+      [fp(MIN_SD59x18), fp("1e-18")],
       [fp(MIN_SD59x18).div(2), fp(MAX_SD59x18).div(2).add(2)],
       [bn("-2"), fp(MAX_SD59x18)],
     ];
@@ -25,9 +25,9 @@ export default function shouldBehaveLikeSub(): void {
   context("when the difference does not underflow", function () {
     context("when the difference overflows", function () {
       const testSets = [
-        [bn("1"), fp(MIN_SD59x18)],
+        [fp("1e-18"), fp(MIN_SD59x18)],
         [fp(MAX_SD59x18).div(2), fp(MIN_SD59x18).div(2).sub(1)],
-        [fp(MAX_SD59x18), bn("-1")],
+        [fp(MAX_SD59x18), fp("-1e-18")],
       ];
 
       forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
@@ -49,7 +49,7 @@ export default function shouldBehaveLikeSub(): void {
           [fp("-50255.423"), fp("-28177.04405")],
           [fp("-1.04e15"), fp("-5.3542e14")],
           [fp("-4892e32"), fp("-2042e25")],
-          [fp(MIN_SD59x18).add(1), bn("-1")],
+          [fp(MIN_SD59x18).add(1), fp("-1e-18")],
         ].concat([
           [bn("0"), bn("0")],
           [fp("1"), fp("1")],
@@ -61,7 +61,7 @@ export default function shouldBehaveLikeSub(): void {
           [fp("50255.423"), fp("28177.04405")],
           [fp("1.04e15"), fp("5.3542e14")],
           [fp("4892e32"), fp("2042e25")],
-          [fp(MAX_SD59x18).sub(1), bn("1")],
+          [fp(MAX_SD59x18).sub(1), fp("1e-18")],
         ]);
 
         forEach(testSets).it(

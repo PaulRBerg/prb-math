@@ -10,9 +10,9 @@ import { PRBMathUD60x18Errors } from "../../shared/errors";
 export default function shouldBehaveLikeSub(): void {
   context("when the difference underflows", function () {
     const testSets = [
-      [bn("1"), bn("2")],
+      [fp("1e-18"), fp("2e-18")],
       [fp(MAX_UD60x18).div(2), fp(MAX_UD60x18).div(2).add(1)],
-      [fp(MAX_UD60x18).sub(bn("1")), fp(MAX_UD60x18)],
+      [fp(MAX_UD60x18).sub(1), fp(MAX_UD60x18)],
     ];
 
     forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
@@ -35,7 +35,7 @@ export default function shouldBehaveLikeSub(): void {
       [fp("50255.423"), fp("28177.04405")],
       [fp("1.04e15"), fp("5.3542e14")],
       [fp("4892e32"), fp("2042e25")],
-      [fp(MAX_UD60x18).sub(1), bn("1")],
+      [fp(MAX_UD60x18).sub(1), fp("1e-18")],
     ];
 
     forEach(testSets).it("takes %e and %e and returns the correct value", async function (x: BigNumber, y: BigNumber) {
