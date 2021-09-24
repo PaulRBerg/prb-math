@@ -20,7 +20,7 @@ which is fast, but I didn't like that it operates with binary numbers and it lim
 [Fixidity](https://github.com/CementDAO/Fixidity), which operates with denary numbers and has wide precision, but is slow
 and susceptible to phantom overflow.
 
-## Installation
+## Install
 
 With yarn:
 
