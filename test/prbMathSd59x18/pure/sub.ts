@@ -42,8 +42,8 @@ export default function shouldBehaveLikeSub(): void {
       context("when the operands have the same sign", function () {
         const testSets = [
           [fp("-1"), fp("-1")],
-          [fp("-" + E), fp("-1.89")],
-          [fp("-" + PI), fp("-2.0004")],
+          [fp(`-${E}`), fp("-1.89")],
+          [fp(`-${PI}`), fp("-2.0004")],
           [fp("-42"), fp("-38.12")],
           [fp("-803.899"), fp("-1.02")],
           [fp("-8959"), fp("-5809")],

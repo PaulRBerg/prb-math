@@ -67,11 +67,11 @@ export default function shouldBehaveLikeGm(): void {
     context("when the product of x and y does not overflow", function () {
       const testSets = [
         [MIN_WHOLE_SD59x18, "-1e-18"],
-        ["-" + SQRT_MAX_SD59x18_DIV_BY_SCALE, "-" + SQRT_MAX_SD59x18_DIV_BY_SCALE],
+        [`-${SQRT_MAX_SD59x18_DIV_BY_SCALE}`, `-${SQRT_MAX_SD59x18_DIV_BY_SCALE}`],
         ["-2404.8", "-7899.210662"],
         ["-322.47", "-674.77"],
-        ["-" + PI, "-8.2"],
-        ["-" + E, "-89.01"],
+        [`-${PI}`, "-8.2"],
+        [`-${E}`, "-89.01"],
         ["-2", "-8"],
         ["-1", "-4"],
         ["-1", "-1"],

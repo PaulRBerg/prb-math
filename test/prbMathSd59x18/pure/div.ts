@@ -34,7 +34,7 @@ export default function shouldBehaveLikeDiv(): void {
 
     context("when the denominator is not min sd59x18", function () {
       context("when the numerator is zero", function () {
-        const testSets = ["-1e18", "-" + PI, "-1", "-1e-18"].concat(["1e-18", "1", PI, "1e18"]);
+        const testSets = ["-1e18", `-${PI}`, "-1", "-1e-18"].concat(["1e-18", "1", PI, "1e18"]);
 
         forEach(testSets).it("takes %e and returns 0", async function (y: string) {
           const x: BigNumber = Zero;

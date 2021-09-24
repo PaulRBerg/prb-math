@@ -25,7 +25,7 @@ export default function shouldBehaveLikeCeil(): void {
         [MIN_WHOLE_SD59x18],
         ["-1e18"],
         ["-4.2"],
-        ["-" + PI],
+        [`-${PI}`],
         ["-2"],
         ["-1"],
         ["-1.125"],
