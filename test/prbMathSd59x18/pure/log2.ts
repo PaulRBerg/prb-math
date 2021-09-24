@@ -6,7 +6,6 @@ import forEach from "mocha-each";
 
 import { E, MAX_SD59x18, MAX_WHOLE_SD59x18, PI } from "../../../helpers/constants";
 import { log2 } from "../../../helpers/math";
-import { bn } from "../../../helpers/numbers";
 import { PRBMathSD59x18Errors } from "../../shared/errors";
 
 export default function shouldBehaveLikeLog2(): void {

@@ -6,7 +6,6 @@ import forEach from "mocha-each";
 
 import { MAX_SD59x18, MIN_SD59x18, PI, SCALE } from "../../../helpers/constants";
 import { mbn } from "../../../helpers/math";
-import { bn } from "../../../helpers/numbers";
 import { PRBMathSD59x18Errors, PanicCodes } from "../../shared/errors";
 
 export default function shouldBehaveLikeDiv(): void {

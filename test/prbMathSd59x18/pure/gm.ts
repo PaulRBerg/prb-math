@@ -14,7 +14,6 @@ import {
   SQRT_MAX_SD59x18_DIV_BY_SCALE,
 } from "../../../helpers/constants";
 import { gm } from "../../../helpers/math";
-import { bn } from "../../../helpers/numbers";
 import { PRBMathSD59x18Errors } from "../../shared/errors";
 
 export default function shouldBehaveLikeGm(): void {

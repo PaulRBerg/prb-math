@@ -13,7 +13,6 @@ import {
   PI,
   SCALE,
 } from "../../../helpers/constants";
-import { bn } from "../../../helpers/numbers";
 
 export default function shouldBehaveLikeToInt(): void {
   context("when x is less the absolute value of scale", function () {
