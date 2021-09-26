@@ -15,7 +15,7 @@ export default function shouldBehaveLikePow(): void {
     context("when the exponent is zero", function () {
       const y: BigNumber = Zero;
 
-      it("takes 0 and 0 and returns 1", async function () {
+      it("returns 1", async function () {
         const expected: BigNumber = fp("1");
         expect(expected).to.equal(await this.contracts.prbMathSd59x18.doPow(x, y));
         expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doPow(x, y));
@@ -36,9 +36,9 @@ export default function shouldBehaveLikePow(): void {
   context("when the base is not zero", function () {
     context("when the base is negative", function () {
       const testSets = [[fp(PI).mul(-1)], [fp(E).mul(-1)], [fp("-1")]];
+      const y: BigNumber = fp("1");
 
       forEach(testSets).it("takes %e and 1 and reverts", async function (x: BigNumber) {
-        const y: BigNumber = fp("1");
         await expect(this.contracts.prbMathSd59x18.doPow(x, y)).to.be.revertedWith(
           PRBMathSD59x18Errors.LogInputTooSmall,
         );
@@ -50,8 +50,8 @@ export default function shouldBehaveLikePow(): void {
 
     context("when the base is positive", function () {
       context("when the exponent is zero", function () {
-        const y: BigNumber = Zero;
         const testSets = [[fp("1")], [fp(E)], [fp(PI)]];
+        const y: BigNumber = Zero;
 
         forEach(testSets).it("takes %e and 0 and returns 1", async function (x: BigNumber) {
           const expected: BigNumber = fp("1");
@@ -91,7 +91,7 @@ export default function shouldBehaveLikePow(): void {
             [E, `-${E}`],
             [E, "-1.66976"],
             [PI, `-${PI}`],
-            ["11", "-28.57142"],
+            ["11", "-28.5"],
             ["32.15", "-23.99"],
             ["406", "-0.25"],
             ["1729", "-0.98"],
@@ -111,7 +111,7 @@ export default function shouldBehaveLikePow(): void {
             [E, E],
             [E, "1.66976"],
             [PI, PI],
-            ["11", "28.57142"],
+            ["11", "28.5"],
             ["32.15", "23.99"],
             ["406", "0.25"],
             ["1729", "0.98"],

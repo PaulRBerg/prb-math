@@ -18,7 +18,7 @@ export default function shouldBehaveLikeSqrt(): void {
     });
   });
 
-  context("when x is positive", function () {
+  context("when x is not zero", function () {
     context(
       "when x is greater than or equal to 115792089237316195423570985008687907853269.984665640564039458",
       function () {

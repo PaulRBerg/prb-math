@@ -9,7 +9,7 @@ import { gm } from "../../../helpers/math";
 import { PRBMathUD60x18Errors } from "../../shared/errors";
 
 export default function shouldBehaveLikeGm(): void {
-  context("when the product of x and y is zero", function () {
+  context("when one of the operands is zero", function () {
     const testSets = [
       [Zero, fp(PI)],
       [fp(PI), Zero],
@@ -22,7 +22,7 @@ export default function shouldBehaveLikeGm(): void {
     });
   });
 
-  context("when the product of x and y is not zero", function () {
+  context("when neither of the operands is zero", function () {
     context("when the product of x and y overflows", function () {
       const testSets = [
         [fp(SQRT_MAX_UD60x18_DIV_BY_SCALE).add(1), fp(SQRT_MAX_UD60x18_DIV_BY_SCALE).add(1)],

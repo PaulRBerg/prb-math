@@ -9,7 +9,7 @@ import { frac } from "../../shared/mirrors";
 
 export default function shouldBehaveLikeFrac(): void {
   context("when x is zero", function () {
-    it("works", async function () {
+    it("returns 0", async function () {
       const x: BigNumber = Zero;
       const expected: BigNumber = Zero;
       expect(expected).to.equal(await this.contracts.prbMathSd59x18.doFrac(x));

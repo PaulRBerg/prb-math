@@ -27,8 +27,8 @@ export default function shouldBehaveLikeCeil(): void {
         ["-4.2"],
         [`-${PI}`],
         ["-2"],
-        ["-1"],
         ["-1.125"],
+        ["-1"],
         ["-0.5"],
         ["-0.1"],
       ];

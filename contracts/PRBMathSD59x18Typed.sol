@@ -62,7 +62,7 @@ library PRBMathSD59x18Typed {
         result = PRBMath.SD59x18({ value: x.value + y.value });
     }
 
-    /// @notice Calculates arithmetic average of x and y, rounding down.
+    /// @notice Calculates the arithmetic average of x and y, rounding down.
     /// @param x The first operand as a signed 59.18-decimal fixed-point number.
     /// @param y The second operand as a signed 59.18-decimal fixed-point number.
     /// @return result The arithmetic average as a signed 59.18-decimal fixed-point number.

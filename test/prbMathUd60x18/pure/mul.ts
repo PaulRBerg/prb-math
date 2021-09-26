@@ -11,6 +11,7 @@ import { mul } from "../../shared/mirrors";
 export default function shouldBehaveLikeMul(): void {
   context("when one of the operands is zero", function () {
     const testSets = [
+      [Zero, fp(MAX_UD60x18)],
       [Zero, fp("0.5")],
       [fp("0.5"), Zero],
       [fp(MAX_UD60x18), Zero],

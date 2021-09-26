@@ -14,8 +14,9 @@ export default function shouldBehaveLikePowu(): void {
     const x: BigNumber = Zero;
 
     context("when the exponent is zero", function () {
+      const y: BigNumber = Zero;
+
       it("returns 1", async function () {
-        const y: BigNumber = Zero;
         const expected: BigNumber = fp("1");
         expect(expected).to.equal(await this.contracts.prbMathSd59x18.doPowu(x, y));
         expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doPowu(x, y));
@@ -25,7 +26,7 @@ export default function shouldBehaveLikePowu(): void {
     context("when the exponent is not zero", function () {
       const testSets = [[fp("1")], [fp(E)], [fp(PI)]];
 
-      forEach(testSets).it("takes %e and returns 0", async function (y: BigNumber) {
+      forEach(testSets).it("takes 0 and %e and returns 0", async function (y: BigNumber) {
         const expected: BigNumber = Zero;
         expect(expected).to.equal(await this.contracts.prbMathSd59x18.doPowu(x, y));
         expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doPowu(x, y));
@@ -36,9 +37,9 @@ export default function shouldBehaveLikePowu(): void {
   context("when the base is not zero", function () {
     context("when the exponent is zero", function () {
       const testSets = [[fp("1")], [fp(E)], [fp(PI)], [fp(MAX_SD59x18)]];
+      const y: BigNumber = Zero;
 
-      forEach(testSets).it("takes %e and returns 1", async function (x: BigNumber) {
-        const y: BigNumber = Zero;
+      forEach(testSets).it("takes %e and 0 and returns 1", async function (x: BigNumber) {
         const expected: BigNumber = fp("1");
         expect(expected).to.equal(await this.contracts.prbMathSd59x18.doPowu(x, y));
         expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doPowu(x, y));

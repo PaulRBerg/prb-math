@@ -43,7 +43,7 @@ library PRBMathUD60x18Typed {
         }
     }
 
-    /// @notice Calculates arithmetic average of x and y, rounding down.
+    /// @notice Calculates the arithmetic average of x and y, rounding down.
     /// @param x The first operand as an unsigned 60.18-decimal fixed-point number.
     /// @param y The second operand as an unsigned 60.18-decimal fixed-point number.
     /// @return result The arithmetic average as an unsigned 60.18-decimal fixed-point number.

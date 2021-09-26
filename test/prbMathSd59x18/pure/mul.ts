@@ -23,14 +23,12 @@ export default function shouldBehaveLikeMul(): void {
     const testSets = [
       [fp(MIN_SD59x18).add(1), Zero],
       [fp("0.5"), Zero],
-      [Zero, fp("0.5")],
     ].concat([
       [Zero, fp("0.5")],
-      [fp("0.5"), Zero],
       [fp(MAX_SD59x18), Zero],
     ]);
 
-    forEach(testSets).it("takes %e and %e and returns 0", async function (x: BigNumber, y: BigNumber) {
+    forEach(testSets).it.only("takes %e and %e and returns 0", async function (x: BigNumber, y: BigNumber) {
       const expected: BigNumber = Zero;
       expect(expected).to.equal(await this.contracts.prbMathSd59x18.doMul(x, y));
       expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doMul(x, y));
@@ -54,7 +52,7 @@ export default function shouldBehaveLikeMul(): void {
       });
     });
 
-    context("when both operands are not min sd59x18", function () {
+    context("when neither operand is min sd59x18", function () {
       context("when the result overflows sd59x18", function () {
         const testSets = [
           [fp(MIN_SD59x18).add(1), fp("2")],
