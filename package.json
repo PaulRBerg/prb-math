@@ -10,7 +10,6 @@
     "url": "https://github.com/hifi-finance/prb-math/issues"
   },
   "devDependencies": {
-    "@codechecks/client": "^0.1.11",
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
     "@ethersproject/abi": "^5.4.1",
@@ -45,8 +44,6 @@
     "fs-extra": "^10.0.0",
     "hardhat": "^2.6.4",
     "husky": "^7.0.2",
-    "import-sort-parser-typescript": "^6.0.0",
-    "import-sort-style-module": "^6.0.0",
     "lint-staged": "^11.1.2",
     "lodash": "^4.17.21",
     "mathjs": "^9.4.5",
@@ -69,16 +66,6 @@
     "CHANGELOG.md"
   ],
   "homepage": "https://github.com/hifi-finance/prb-math#readme",
-  "importSort": {
-    ".js, .jsx": {
-      "parser": "babylon",
-      "style": "module"
-    },
-    ".ts, .tsx": {
-      "parser": "typescript",
-      "style": "module"
-    }
-  },
   "keywords": [
     "blockchain",
     "ethereum",
