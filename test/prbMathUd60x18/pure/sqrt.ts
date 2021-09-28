@@ -1,7 +1,7 @@
 import { BigNumber } from "@ethersproject/bignumber";
 import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
-import fp from "evm-fp";
+import { toBn } from "evm-bn";
 import forEach from "mocha-each";
 
 import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI } from "../../../helpers/constants";
@@ -23,9 +23,9 @@ export default function shouldBehaveLikeSqrt(): void {
       "when x is greater than or equal to 115792089237316195423570985008687907853269.984665640564039458",
       function () {
         const testSets = [
-          fp("115792089237316195423570985008687907853269.984665640564039458"),
-          fp(MAX_WHOLE_UD60x18),
-          fp(MAX_UD60x18),
+          toBn("115792089237316195423570985008687907853269.984665640564039458"),
+          toBn(MAX_WHOLE_UD60x18),
+          toBn(MAX_UD60x18),
         ];
 
         forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
@@ -58,9 +58,9 @@ export default function shouldBehaveLikeSqrt(): void {
       ];
 
       forEach(testSets).it("takes %e and returns the correct value", async function (x: string) {
-        const expected: BigNumber = fp(sqrt(x));
-        expect(expected).to.equal(await this.contracts.prbMathUd60x18.doSqrt(fp(x)));
-        expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doSqrt(fp(x)));
+        const expected: BigNumber = toBn(sqrt(x));
+        expect(expected).to.equal(await this.contracts.prbMathUd60x18.doSqrt(toBn(x)));
+        expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doSqrt(toBn(x)));
       });
     });
   });

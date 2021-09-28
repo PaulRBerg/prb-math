@@ -1,7 +1,7 @@
 import { BigNumber } from "@ethersproject/bignumber";
 import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
-import fp from "evm-fp";
+import { toBn } from "evm-bn";
 import forEach from "mocha-each";
 
 import { E, MAX_SD59x18, MAX_WHOLE_SD59x18, PI } from "../../../helpers/constants";
@@ -21,7 +21,7 @@ export default function shouldBehaveLikeSqrt(): void {
   context("when x is not zero", function () {
     context("when x is negative", function () {
       it("reverts", async function () {
-        const x: BigNumber = fp("-1");
+        const x: BigNumber = toBn("-1");
         await expect(this.contracts.prbMathSd59x18.doSqrt(x)).to.be.revertedWith(
           PRBMathSD59x18Errors.SqrtNegativeInput,
         );
@@ -36,9 +36,9 @@ export default function shouldBehaveLikeSqrt(): void {
         "when x is greater than or equal to 57896044618658097711785492504343953926634.992332820282019729",
         function () {
           const testSets = [
-            fp("57896044618658097711785492504343953926634.992332820282019729"),
-            fp(MAX_WHOLE_SD59x18),
-            fp(MAX_SD59x18),
+            toBn("57896044618658097711785492504343953926634.992332820282019729"),
+            toBn(MAX_WHOLE_SD59x18),
+            toBn(MAX_SD59x18),
           ];
 
           forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
@@ -71,9 +71,9 @@ export default function shouldBehaveLikeSqrt(): void {
         ];
 
         forEach(testSets).it("takes %e and returns the correct value", async function (x: string) {
-          const expected: BigNumber = fp(sqrt(x));
-          expect(expected).to.equal(await this.contracts.prbMathSd59x18.doSqrt(fp(x)));
-          expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doSqrt(fp(x)));
+          const expected: BigNumber = toBn(sqrt(x));
+          expect(expected).to.equal(await this.contracts.prbMathSd59x18.doSqrt(toBn(x)));
+          expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doSqrt(toBn(x)));
         });
       });
     });

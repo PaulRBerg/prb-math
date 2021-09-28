@@ -1,11 +1,9 @@
 import { BigNumber } from "@ethersproject/bignumber";
-import fp from "evm-fp";
-
-import { bn } from "./numbers";
+import { toBn } from "evm-bn";
 
 export const E: string = "2.718281828459045235";
-export const EPSILON: BigNumber = fp("1e-6");
-export const EPSILON_MAGNITUDE: BigNumber = bn("1e6");
+export const EPSILON: BigNumber = toBn("1e-6");
+export const EPSILON_MAGNITUDE: BigNumber = BigNumber.from("1000000");
 export const HALF_SCALE: string = "0.5";
 export const MAX_SD59x18: string = "57896044618658097711785492504343953926634992332820282019728.792003956564819967";
 export const MAX_UD60x18: string = "115792089237316195423570985008687907853269984665640564039457.584007913129639935";

@@ -1,7 +1,7 @@
 import { BigNumber } from "@ethersproject/bignumber";
 import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
-import fp from "evm-fp";
+import { toBn } from "evm-bn";
 import forEach from "mocha-each";
 
 import { E, MAX_SD59x18, PI } from "../../../helpers/constants";
@@ -16,14 +16,14 @@ export default function shouldBehaveLikePow(): void {
       const y: BigNumber = Zero;
 
       it("returns 1", async function () {
-        const expected: BigNumber = fp("1");
+        const expected: BigNumber = toBn("1");
         expect(expected).to.equal(await this.contracts.prbMathSd59x18.doPow(x, y));
         expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doPow(x, y));
       });
     });
 
     context("when the exponent is not zero", function () {
-      const testSets = [[fp("1")], [fp(E)], [fp(PI)]];
+      const testSets = [[toBn("1")], [toBn(E)], [toBn(PI)]];
 
       forEach(testSets).it("takes 0 and %e and returns 0", async function (y: BigNumber) {
         const expected: BigNumber = Zero;
@@ -35,8 +35,8 @@ export default function shouldBehaveLikePow(): void {
 
   context("when the base is not zero", function () {
     context("when the base is negative", function () {
-      const testSets = [[fp(PI).mul(-1)], [fp(E).mul(-1)], [fp("-1")]];
-      const y: BigNumber = fp("1");
+      const testSets = [[toBn(PI).mul(-1)], [toBn(E).mul(-1)], [toBn("-1")]];
+      const y: BigNumber = toBn("1");
 
       forEach(testSets).it("takes %e and 1 and reverts", async function (x: BigNumber) {
         await expect(this.contracts.prbMathSd59x18.doPow(x, y)).to.be.revertedWith(
@@ -50,11 +50,11 @@ export default function shouldBehaveLikePow(): void {
 
     context("when the base is positive", function () {
       context("when the exponent is zero", function () {
-        const testSets = [[fp("1")], [fp(E)], [fp(PI)]];
+        const testSets = [[toBn("1")], [toBn(E)], [toBn(PI)]];
         const y: BigNumber = Zero;
 
         forEach(testSets).it("takes %e and 0 and returns 1", async function (x: BigNumber) {
-          const expected: BigNumber = fp("1");
+          const expected: BigNumber = toBn("1");
           expect(expected).to.equal(await this.contracts.prbMathSd59x18.doPow(x, y));
           expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doPow(x, y));
         });
@@ -63,8 +63,8 @@ export default function shouldBehaveLikePow(): void {
       context("when the exponent is not zero", function () {
         context("when the exponent is greater than or equal to 192", function () {
           const testSets = [
-            [fp("6277101735386680763835789423207666416102355444464034512896"), fp("1")], // 2^192
-            [fp(MAX_SD59x18), fp("1")],
+            [toBn("6277101735386680763835789423207666416102355444464034512896"), toBn("1")], // 2^192
+            [toBn(MAX_SD59x18), toBn("1")],
           ];
 
           forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
@@ -121,9 +121,9 @@ export default function shouldBehaveLikePow(): void {
           ]);
 
           forEach(testSets).it("takes %e and %e and returns the correct value", async function (x: string, y: string) {
-            const expected: BigNumber = fp(pow(x, y));
-            expect(expected).to.be.near(await this.contracts.prbMathSd59x18.doPow(fp(x), fp(y)));
-            expect(expected).to.be.near(await this.contracts.prbMathSd59x18Typed.doPow(fp(x), fp(y)));
+            const expected: BigNumber = toBn(pow(x, y));
+            expect(expected).to.be.near(await this.contracts.prbMathSd59x18.doPow(toBn(x), toBn(y)));
+            expect(expected).to.be.near(await this.contracts.prbMathSd59x18Typed.doPow(toBn(x), toBn(y)));
           });
         });
       });

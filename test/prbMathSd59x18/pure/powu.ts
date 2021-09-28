@@ -1,12 +1,11 @@
 import { BigNumber } from "@ethersproject/bignumber";
 import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
-import fp from "evm-fp";
+import { toBn } from "evm-bn";
 import forEach from "mocha-each";
 
 import { E, MAX_SD59x18, MAX_WHOLE_SD59x18, PI, SQRT_MAX_SD59x18 } from "../../../helpers/constants";
 import { pow } from "../../../helpers/math";
-import { bn } from "../../../helpers/numbers";
 import { PRBMathErrors, PRBMathSD59x18Errors } from "../../shared/errors";
 
 export default function shouldBehaveLikePowu(): void {
@@ -17,14 +16,14 @@ export default function shouldBehaveLikePowu(): void {
       const y: BigNumber = Zero;
 
       it("returns 1", async function () {
-        const expected: BigNumber = fp("1");
+        const expected: BigNumber = toBn("1");
         expect(expected).to.equal(await this.contracts.prbMathSd59x18.doPowu(x, y));
         expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doPowu(x, y));
       });
     });
 
     context("when the exponent is not zero", function () {
-      const testSets = [[fp("1")], [fp(E)], [fp(PI)]];
+      const testSets = [[toBn("1")], [toBn(E)], [toBn(PI)]];
 
       forEach(testSets).it("takes 0 and %e and returns 0", async function (y: BigNumber) {
         const expected: BigNumber = Zero;
@@ -36,11 +35,11 @@ export default function shouldBehaveLikePowu(): void {
 
   context("when the base is not zero", function () {
     context("when the exponent is zero", function () {
-      const testSets = [[fp("1")], [fp(E)], [fp(PI)], [fp(MAX_SD59x18)]];
+      const testSets = [[toBn("1")], [toBn(E)], [toBn(PI)], [toBn(MAX_SD59x18)]];
       const y: BigNumber = Zero;
 
       forEach(testSets).it("takes %e and 0 and returns 1", async function (x: BigNumber) {
-        const expected: BigNumber = fp("1");
+        const expected: BigNumber = toBn("1");
         expect(expected).to.equal(await this.contracts.prbMathSd59x18.doPowu(x, y));
         expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doPowu(x, y));
       });
@@ -49,8 +48,8 @@ export default function shouldBehaveLikePowu(): void {
     context("when the exponent is not zero", function () {
       context("when the result overflows uint256", function () {
         const testSets = [
-          [fp(MAX_WHOLE_SD59x18), bn("2")],
-          [fp(MAX_SD59x18), bn("2")],
+          [toBn(MAX_WHOLE_SD59x18), toBn("2e-18")],
+          [toBn(MAX_SD59x18), toBn("2e-18")],
         ];
 
         forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
@@ -66,8 +65,8 @@ export default function shouldBehaveLikePowu(): void {
       context("when the result does not overflow uint256", function () {
         context("when the result overflows sd59x18", function () {
           const testSets = [
-            [fp("38685626227668133590.597632"), bn("3")], // smallest number whose cube doesn't fit within MAX_SD59x18
-            [fp(SQRT_MAX_SD59x18).add(1), bn("2")],
+            [toBn("38685626227668133590.597632"), toBn("3e-18")], // smallest number whose cube doesn't fit within MAX_SD59x18
+            [toBn(SQRT_MAX_SD59x18).add(1), toBn("2e-18")],
           ];
 
           forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
@@ -101,9 +100,9 @@ export default function shouldBehaveLikePowu(): void {
           ];
 
           forEach(testSets).it("takes %e and %e and returns the correct value", async function (x: string, y: string) {
-            const expected: BigNumber = fp(pow(x, y));
-            expect(expected).to.be.near(await this.contracts.prbMathSd59x18.doPowu(fp(x), bn(y)));
-            expect(expected).to.be.near(await this.contracts.prbMathSd59x18Typed.doPowu(fp(x), bn(y)));
+            const expected: BigNumber = toBn(pow(x, y));
+            expect(expected).to.be.near(await this.contracts.prbMathSd59x18.doPowu(toBn(x), BigNumber.from(y)));
+            expect(expected).to.be.near(await this.contracts.prbMathSd59x18Typed.doPowu(toBn(x), BigNumber.from(y)));
           });
         });
       });

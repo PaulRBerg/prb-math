@@ -1,7 +1,7 @@
 import { BigNumber } from "@ethersproject/bignumber";
 import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
-import fp from "evm-fp";
+import { toBn } from "evm-bn";
 import forEach from "mocha-each";
 
 import { MAX_UD60x18, PI, SCALE } from "../../../helpers/constants";
@@ -11,7 +11,7 @@ import { PRBMathErrors, PanicCodes } from "../../shared/errors";
 export default function shouldBehaveLikeDiv(): void {
   context("when the denominator is zero", function () {
     it("reverts", async function () {
-      const x: BigNumber = fp("1");
+      const x: BigNumber = toBn("1");
       const y: BigNumber = Zero;
       await expect(this.contracts.prbMathUd60x18.doDiv(x, y)).to.be.revertedWith(PanicCodes.DivisionByZero);
       await expect(this.contracts.prbMathUd60x18Typed.doDiv(x, y)).to.be.revertedWith(PanicCodes.DivisionByZero);
@@ -25,16 +25,16 @@ export default function shouldBehaveLikeDiv(): void {
       forEach(testSets).it("takes %e and returns 0", async function (y: string) {
         const x: BigNumber = Zero;
         const expected: BigNumber = Zero;
-        expect(expected).to.equal(await this.contracts.prbMathUd60x18.doDiv(x, fp(y)));
-        expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doDiv(x, fp(y)));
+        expect(expected).to.equal(await this.contracts.prbMathUd60x18.doDiv(x, toBn(y)));
+        expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doDiv(x, toBn(y)));
       });
     });
 
     context("when the numerator is not zero", function () {
       context("when the result overflows ud60x18", function () {
         const testSets = [
-          [fp(MAX_UD60x18).div(fp(SCALE)).add(1), fp("1e-18")],
-          [fp(MAX_UD60x18).div(fp(SCALE)).add(1), fp("1e-18")],
+          [toBn(MAX_UD60x18).div(toBn(SCALE)).add(1), toBn("1e-18")],
+          [toBn(MAX_UD60x18).div(toBn(SCALE)).add(1), toBn("1e-18")],
         ];
 
         forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
@@ -64,9 +64,9 @@ export default function shouldBehaveLikeDiv(): void {
         ];
 
         forEach(testSets).it("takes %e and %e and returns the correct value", async function (x: string, y: string) {
-          const expected: BigNumber = fp(String(mbn(x).div(mbn(y))));
-          expect(expected).to.equal(await this.contracts.prbMathUd60x18.doDiv(fp(x), fp(y)));
-          expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doDiv(fp(x), fp(y)));
+          const expected: BigNumber = toBn(String(mbn(x).div(mbn(y))));
+          expect(expected).to.equal(await this.contracts.prbMathUd60x18.doDiv(toBn(x), toBn(y)));
+          expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doDiv(toBn(x), toBn(y)));
         });
       });
     });

@@ -1,7 +1,7 @@
 import { BigNumber } from "@ethersproject/bignumber";
 import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
-import fp from "evm-fp";
+import { toBn } from "evm-bn";
 import forEach from "mocha-each";
 
 import { MAX_UD60x18, MAX_WHOLE_UD60x18, PI } from "../../../helpers/constants";
@@ -32,9 +32,9 @@ export default function shouldBehaveLikeFloor(): void {
     ];
 
     forEach(testSets).it("takes %e and returns the correct value", async function (x: string) {
-      const expected: BigNumber = fp(floor(x));
-      expect(expected).to.equal(await this.contracts.prbMathUd60x18.doFloor(fp(x)));
-      expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doFloor(fp(x)));
+      const expected: BigNumber = toBn(floor(x));
+      expect(expected).to.equal(await this.contracts.prbMathUd60x18.doFloor(toBn(x)));
+      expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doFloor(toBn(x)));
     });
   });
 }

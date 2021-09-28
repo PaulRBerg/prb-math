@@ -1,7 +1,7 @@
 import { BigNumber } from "@ethersproject/bignumber";
 import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
-import fp from "evm-fp";
+import { toBn } from "evm-bn";
 import forEach from "mocha-each";
 
 import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, SQRT_MAX_UD60x18_DIV_BY_SCALE } from "../../../helpers/constants";
@@ -11,8 +11,8 @@ import { PRBMathUD60x18Errors } from "../../shared/errors";
 export default function shouldBehaveLikeGm(): void {
   context("when one of the operands is zero", function () {
     const testSets = [
-      [Zero, fp(PI)],
-      [fp(PI), Zero],
+      [Zero, toBn(PI)],
+      [toBn(PI), Zero],
     ];
 
     forEach(testSets).it("takes %e and %e and returns 0", async function (x: BigNumber, y: BigNumber) {
@@ -25,9 +25,9 @@ export default function shouldBehaveLikeGm(): void {
   context("when neither of the operands is zero", function () {
     context("when the product of x and y overflows", function () {
       const testSets = [
-        [fp(SQRT_MAX_UD60x18_DIV_BY_SCALE).add(1), fp(SQRT_MAX_UD60x18_DIV_BY_SCALE).add(1)],
-        [fp(MAX_WHOLE_UD60x18), fp("3e-18")],
-        [fp(MAX_UD60x18), fp("2e-18")],
+        [toBn(SQRT_MAX_UD60x18_DIV_BY_SCALE).add(1), toBn(SQRT_MAX_UD60x18_DIV_BY_SCALE).add(1)],
+        [toBn(MAX_WHOLE_UD60x18), toBn("3e-18")],
+        [toBn(MAX_UD60x18), toBn("2e-18")],
       ];
 
       forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
@@ -51,9 +51,9 @@ export default function shouldBehaveLikeGm(): void {
       ];
 
       forEach(testSets).it("takes %e and %e and returns the correct value", async function (x: string, y: string) {
-        const expected: BigNumber = fp(gm(x, y));
-        expect(expected).to.equal(await this.contracts.prbMathUd60x18.doGm(fp(x), fp(y)));
-        expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doGm(fp(x), fp(y)));
+        const expected: BigNumber = toBn(gm(x, y));
+        expect(expected).to.equal(await this.contracts.prbMathUd60x18.doGm(toBn(x), toBn(y)));
+        expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doGm(toBn(x), toBn(y)));
       });
     });
   });

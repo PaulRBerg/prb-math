@@ -1,7 +1,7 @@
 import { BigNumber } from "@ethersproject/bignumber";
 import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
-import fp from "evm-fp";
+import { toBn } from "evm-bn";
 import forEach from "mocha-each";
 
 import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI } from "../../../helpers/constants";
@@ -12,7 +12,7 @@ export default function shouldBehaveLikeExp2(): void {
   context("when x is zero", function () {
     it("returns 1", async function () {
       const x: BigNumber = Zero;
-      const expected: BigNumber = fp("1");
+      const expected: BigNumber = toBn("1");
       expect(expected).to.equal(await this.contracts.prbMathUd60x18.doExp2(x));
       expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doExp2(x));
     });
@@ -20,7 +20,7 @@ export default function shouldBehaveLikeExp2(): void {
 
   context("when x is positive", function () {
     context("when x is greater than or equal to 192", function () {
-      const testSets = [fp("192"), fp(MAX_WHOLE_UD60x18), fp(MAX_UD60x18)];
+      const testSets = [toBn("192"), toBn(MAX_WHOLE_UD60x18), toBn(MAX_UD60x18)];
 
       forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
         await expect(this.contracts.prbMathUd60x18.doExp2(x)).to.be.revertedWith(PRBMathUD60x18Errors.Exp2InputTooBig);
@@ -55,9 +55,9 @@ export default function shouldBehaveLikeExp2(): void {
       ];
 
       forEach(testSets).it("takes %e and returns the correct value", async function (x: string) {
-        const expected: BigNumber = fp(exp2(x));
-        expect(expected).to.be.near(await this.contracts.prbMathUd60x18.doExp2(fp(x)));
-        expect(expected).to.be.near(await this.contracts.prbMathUd60x18Typed.doExp2(fp(x)));
+        const expected: BigNumber = toBn(exp2(x));
+        expect(expected).to.be.near(await this.contracts.prbMathUd60x18.doExp2(toBn(x)));
+        expect(expected).to.be.near(await this.contracts.prbMathUd60x18Typed.doExp2(toBn(x)));
       });
     });
   });

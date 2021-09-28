@@ -1,7 +1,7 @@
 import { BigNumber } from "@ethersproject/bignumber";
 import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
-import fp from "evm-fp";
+import { toBn } from "evm-bn";
 import forEach from "mocha-each";
 
 import { E, MAX_SD59x18, MAX_WHOLE_SD59x18, PI } from "../../../helpers/constants";
@@ -22,7 +22,7 @@ export default function shouldBehaveLikeLn(): void {
   context("when x is not zero", function () {
     context("when x is negative", function () {
       it("reverts", async function () {
-        const x: BigNumber = fp("-1");
+        const x: BigNumber = toBn("-1");
         await expect(this.contracts.prbMathSd59x18.doLn(x)).to.be.revertedWith(PRBMathSD59x18Errors.LogInputTooSmall);
         await expect(this.contracts.prbMathSd59x18Typed.doLn(x)).to.be.revertedWith(
           PRBMathSD59x18Errors.LogInputTooSmall,
@@ -54,9 +54,9 @@ export default function shouldBehaveLikeLn(): void {
       ];
 
       forEach(testSets).it("takes %e and returns the correct value", async function (x: string) {
-        const expected: BigNumber = fp(ln(x));
-        expect(expected).to.be.near(await this.contracts.prbMathSd59x18.doLn(fp(x)));
-        expect(expected).to.be.near(await this.contracts.prbMathSd59x18Typed.doLn(fp(x)));
+        const expected: BigNumber = toBn(ln(x));
+        expect(expected).to.be.near(await this.contracts.prbMathSd59x18.doLn(toBn(x)));
+        expect(expected).to.be.near(await this.contracts.prbMathSd59x18Typed.doLn(toBn(x)));
       });
     });
   });

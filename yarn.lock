@@ -668,17 +668,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/bignumber@npm:^5.2.0":
-  version: 5.2.0
-  resolution: "@ethersproject/bignumber@npm:5.2.0"
-  dependencies:
-    "@ethersproject/bytes": ^5.2.0
-    "@ethersproject/logger": ^5.2.0
-    bn.js: ^4.4.0
-  checksum: aed365180f7630441cf994c98236b5a5427540f512e3b79ef577e7df18ffbf41dec307990d9d9ca53ee04382292ea56bf4ba659ade658169a9b4ccc2a0e28832
-  languageName: node
-  linkType: hard
-
 "@ethersproject/bytes@npm:5.4.0, @ethersproject/bytes@npm:>=5.0.0-beta.129, @ethersproject/bytes@npm:^5.4.0":
   version: 5.4.0
   resolution: "@ethersproject/bytes@npm:5.4.0"
@@ -694,15 +683,6 @@ __metadata:
   dependencies:
     "@ethersproject/logger": ^5.0.8
   checksum: dbbcd8660c260343bb09e0d8bafb913f5f599f7078397d19fa9e1009004af5a91ea490fc93e6fe472da04aeff263cd888839c3de72378d232ffaf40bdf9cf0d0
-  languageName: node
-  linkType: hard
-
-"@ethersproject/bytes@npm:^5.2.0":
-  version: 5.2.0
-  resolution: "@ethersproject/bytes@npm:5.2.0"
-  dependencies:
-    "@ethersproject/logger": ^5.2.0
-  checksum: 103e7677f7785b6ffa7991dd0d811113a7f7aa2395131d6b6bcf653d665019369ed27f1d89f9b0cc47592e827a53cd13fbdb991ccfadc7bb2b9af86318419b9d
   languageName: node
   linkType: hard
 
@@ -837,13 +817,6 @@ __metadata:
   version: 5.0.10
   resolution: "@ethersproject/logger@npm:5.0.10"
   checksum: 5490bcc9b072b68d76e74bea75f55a2f5587abe6e7edb60bc255217bf084bc7fadf4a0ed85e29cdeaed7949922b1b3478e9fac42645976f148e2090382d58ea0
-  languageName: node
-  linkType: hard
-
-"@ethersproject/logger@npm:^5.2.0":
-  version: 5.2.0
-  resolution: "@ethersproject/logger@npm:5.2.0"
-  checksum: 4456d4b4ce4924bc3d5acc2af79c597a24a9e607ab2e4b226e17ecc0d7202d029e9e6f3294c0b00d8822832663f661728be7e8426fbc4bc373cc0103c68b8018
   languageName: node
   linkType: hard
 
@@ -6103,15 +6076,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"evm-fp@npm:^1.1.2":
-  version: 1.1.2
-  resolution: "evm-fp@npm:1.1.2"
+"evm-bn@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "evm-bn@npm:1.0.0"
   dependencies:
-    "@ethersproject/bignumber": ^5.2.0
+    "@ethersproject/bignumber": ^5.4.2
     from-exponential: ^1.1.1
   peerDependencies:
-    "@ethersproject/bignumber": ^5.2.0
-  checksum: c59d883775ec0cc85569b27c231a35c74e4a6c53990ee7709c152a65808b33de2dfea74348b7c996501cf8bf01e2323097054af9c3ae4dfb72f3219fd07fda08
+    "@ethersproject/bignumber": ^5.4.2
+  checksum: 6e55de21c633076830be3b23c4c2e0c1384d43d30f5c549df8035d2da44d88852568c08051d5b2ed4969503ce8e9b8a37513f41690ceb81afd458bf01761ecf0
   languageName: node
   linkType: hard
 
@@ -11113,7 +11086,7 @@ fsevents@~2.1.1:
     eslint-config-prettier: ^8.3.0
     ethereum-waffle: ^3.4.0
     ethers: ^5.4.7
-    evm-fp: ^1.1.2
+    evm-bn: ^1.0.0
     from-exponential: ^1.1.1
     fs-extra: ^10.0.0
     hardhat: ^2.6.4
