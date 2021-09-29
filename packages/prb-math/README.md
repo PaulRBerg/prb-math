@@ -250,31 +250,6 @@ Based on v3.0 of the library. See [abdk-gas-estimations](https://github.com/paul
 | pow    | 303  | 4740 | 1792 |
 | sqrt   | 129  | 809  | 699  |
 
-## Contributing
-
-Feel free to dive in! [Open](https://github.com/paulrberg/prb-proxy/issues/new) an issue,
-[start](https://github.com/paulrberg/prb-proxy/discussions/new) a discussion or submit a PR.
-
-### Pre Requisites
-
-You will need the following software on your machine:
-
-- [Git](https://git-scm.com/downloads)
-- [Node.Js](https://nodejs.org/en/download/)
-- [Yarn](https://yarnpkg.com/getting-started/install)
-
-In addition, familiarity with [Solidity](https://soliditylang.org/), [TypeScript](https://typescriptlang.org/) and [Hardhat](https://hardhat.org) is requisite.
-
-### Set Up
-
-Install the dependencies:
-
-```bash
-$ yarn install
-```
-
-Then, follow the `.env.example` file to add the requisite environment variables in the `.env` file. Now you can start making changes.
-
 ## Security
 
 While I set a high bar for code quality and test coverage, you shouldn't assume that this project is completely safe to use. The contracts
