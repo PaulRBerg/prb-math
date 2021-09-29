@@ -4,7 +4,7 @@ Monorepo implementing PRBMath and related packages.
 
 ## Packages
 
-The PRBMath monorepo is maintained with [yarn workspaces](https://yarnpkg.com/features/workspaces). Check out the README
+PRBMath is maintained with [yarn workspaces](https://yarnpkg.com/features/workspaces). Check out the README
 associated to each package for detailed usage instructions.
 
 | Package                                 | Description                                          |
