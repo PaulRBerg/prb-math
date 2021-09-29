@@ -12,7 +12,7 @@
   "dependencies": {
     "@ethersproject/bignumber": "^5.4.2",
     "decimal.js": "^10.3.1",
-    "evm-bn": "^1.0.0",
+    "evm-bn": "^1.0.1",
     "hardhat": "^2.6.4",
     "mathjs": "^9.5.0"
   },

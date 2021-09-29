@@ -1072,18 +1072,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/bignumber@npm:5.4.1":
-  version: 5.4.1
-  resolution: "@ethersproject/bignumber@npm:5.4.1"
-  dependencies:
-    "@ethersproject/bytes": ^5.4.0
-    "@ethersproject/logger": ^5.4.0
-    bn.js: ^4.11.9
-  checksum: ba154500635ed4545ba2e2a06ed1b4f07738956e131f1a4c0fc706f8eed80d89c9cc93fdf1a71f95e4f943e29faf8b3644cc1226c51f9280d26dc6783089f976
-  languageName: node
-  linkType: hard
-
-"@ethersproject/bignumber@npm:5.4.2, @ethersproject/bignumber@npm:^5.4.2":
+"@ethersproject/bignumber@npm:5.4.2":
   version: 5.4.2
   resolution: "@ethersproject/bignumber@npm:5.4.2"
   dependencies:
@@ -1091,28 +1080,6 @@ __metadata:
     "@ethersproject/logger": ^5.4.0
     bn.js: ^4.11.9
   checksum: 4332d27826b5f443824caa93232e7024d77d180cd59c184ee19d15637f696908da609fab8dfa805a5825f258f48ec0aeb20db890b1094779453320460ac2a50b
-  languageName: node
-  linkType: hard
-
-"@ethersproject/bignumber@npm:>=5.0.0-beta.130, @ethersproject/bignumber@npm:^5.4.0":
-  version: 5.4.0
-  resolution: "@ethersproject/bignumber@npm:5.4.0"
-  dependencies:
-    "@ethersproject/bytes": ^5.4.0
-    "@ethersproject/logger": ^5.4.0
-    bn.js: ^4.11.9
-  checksum: 1364bba9af5b942def3e1705359e7965bf006d51003a879d784619baea60989b9cd99e042b235cd2e7861da44a41212ae8d5768cc5550dfd52230401a40003f2
-  languageName: node
-  linkType: hard
-
-"@ethersproject/bignumber@npm:^5.0.13":
-  version: 5.0.15
-  resolution: "@ethersproject/bignumber@npm:5.0.15"
-  dependencies:
-    "@ethersproject/bytes": ^5.0.9
-    "@ethersproject/logger": ^5.0.8
-    bn.js: ^4.4.0
-  checksum: 849dce7f93fb931d50ca0ff58b6e22c752a9dbdcb48abb999a4c906cbe2095571151e100b87f81c4eb3bf2dbf39a6899e07ce0b103de9c835b726b4b52b24d9b
   languageName: node
   linkType: hard
 
@@ -3963,7 +3930,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bn.js@npm:^4.0.0, bn.js@npm:^4.1.0, bn.js@npm:^4.10.0, bn.js@npm:^4.11.0, bn.js@npm:^4.11.1, bn.js@npm:^4.11.6, bn.js@npm:^4.11.8, bn.js@npm:^4.11.9, bn.js@npm:^4.4.0, bn.js@npm:^4.8.0":
+"bn.js@npm:^4.0.0, bn.js@npm:^4.1.0, bn.js@npm:^4.10.0, bn.js@npm:^4.11.0, bn.js@npm:^4.11.1, bn.js@npm:^4.11.6, bn.js@npm:^4.11.8, bn.js@npm:^4.11.9, bn.js@npm:^4.8.0":
   version: 4.12.0
   resolution: "bn.js@npm:4.12.0"
   checksum: 39afb4f15f4ea537b55eaf1446c896af28ac948fdcf47171961475724d1bb65118cca49fa6e3d67706e4790955ec0e74de584e45c8f1ef89f46c812bee5b5a12
@@ -6940,15 +6907,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"evm-bn@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "evm-bn@npm:1.0.0"
+"evm-bn@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "evm-bn@npm:1.0.1"
   dependencies:
     "@ethersproject/bignumber": ^5.4.2
     from-exponential: ^1.1.1
   peerDependencies:
     "@ethersproject/bignumber": ^5.4.2
-  checksum: 6e55de21c633076830be3b23c4c2e0c1384d43d30f5c549df8035d2da44d88852568c08051d5b2ed4969503ce8e9b8a37513f41690ceb81afd458bf01761ecf0
+  checksum: bc9f1e7ba76ee008fef70e9002ae9080a03662856a03b8d053de175360a4a3586ab64979ce800e73c423e8ff5fa8ebca8bffbb19688cdec32cae23b52c64d847
   languageName: node
   linkType: hard
 
@@ -8302,7 +8269,7 @@ fsevents@~2.1.1:
     eslint: ^7.32.0
     eslint-config-prettier: ^8.3.0
     ethers: ^5.4.7
-    evm-bn: ^1.0.0
+    evm-bn: ^1.0.1
     hardhat: ^2.6.4
     istanbul-reports: ^3.0.2
     mathjs: ^9.5.0
@@ -12574,7 +12541,7 @@ fsevents@~2.1.1:
     eslint-config-prettier: ^8.3.0
     ethereum-waffle: ^3.4.0
     ethers: ^5.4.7
-    evm-bn: ^1.0.0
+    evm-bn: ^1.0.1
     from-exponential: ^1.1.1
     fs-extra: ^10.0.0
     hardhat: ^2.6.4

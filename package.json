@@ -18,6 +18,9 @@
     "shx": "^0.3.3"
   },
   "private": true,
+  "resolutions": {
+    "@ethersproject/bignumber": "5.4.2"
+  },
   "scripts": {
     "build": "yarn workspaces foreach --topological-dev --verbose run build",
     "clean": "yarn workspaces foreach --parallel run clean",

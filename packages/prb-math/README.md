@@ -36,7 +36,7 @@ $ npm install prb-math
 
 ## Usage
 
-PRBMath comes in four flavours: basic signed, typed signed, basic unsigned and typed unsigned.
+PRBMath comes in four flavors: basic signed, typed signed, basic unsigned and typed unsigned.
 
 ### PRBMathSD59x18.sol
 
