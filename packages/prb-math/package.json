@@ -26,7 +26,6 @@
     "@types/chai": "^4.2.21",
     "@types/fs-extra": "9.0.12",
     "@types/mathjs": "^9.4.2",
-    "@types/mocha": "^9.0.0",
     "@types/mocha-each": "^2.0.0",
     "@types/node": "^16.9.2",
     "@typescript-eslint/eslint-plugin": "^4.31.1",

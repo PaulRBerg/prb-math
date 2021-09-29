@@ -1,5 +1,6 @@
 # directories
 .yarn/
+**/.nyc_output
 **/artifacts
 **/build
 **/cache

@@ -5,6 +5,7 @@
 !.yarn/plugins
 !.yarn/sdks
 !.yarn/versions
+**/.nyc_output
 **/artifacts
 **/build
 **/cache
