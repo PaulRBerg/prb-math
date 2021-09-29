@@ -2,18 +2,15 @@ import "@nomiclabs/hardhat-waffle";
 import "@typechain/hardhat";
 import "solidity-coverage";
 
-import "./tasks/clean";
-
 import { resolve } from "path";
 
 import { config as dotenvConfig } from "dotenv";
 import { HardhatUserConfig } from "hardhat/config";
 import { NetworkUserConfig } from "hardhat/types";
 
-dotenvConfig({ path: resolve(__dirname, "./.env") });
+dotenvConfig({ path: resolve(__dirname, "..", "..", ".env") });
 
 const chainIds = {
-  ganache: 1337,
   goerli: 5,
   hardhat: 31337,
   kovan: 42,

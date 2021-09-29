@@ -1,0 +1,59 @@
+name: "Continuous Integration"
+
+env:
+  COVERAGE_GIT_BRANCH: "main"
+  COVERAGE_SERVICE_NAME: "github-actions-ci"
+  INFURA_API_KEY: ${{ secrets.INFURA_API_KEY }}
+  MNEMONIC: ${{ secrets.MNEMONIC }}
+
+on:
+  pull_request:
+    branches:
+      - "main"
+  push:
+    branches:
+      - "main"
+
+jobs:
+  run-prb-math-integration:
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Check out the repo"
+        uses: "actions/checkout@v2"
+
+      - name: "Install Node.js"
+        uses: "actions/setup-node@v2"
+        with:
+          cache: "yarn"
+          node-version: "16"
+
+      - name: "Install the dependencies"
+        run: "yarn install --immutable"
+
+      - name: "Lint the code"
+        run: "yarn workspace prb-math lint"
+
+      - name: "Compile the contracts and generate the TypeChain bindings"
+        run: "yarn workspace prb-math typechain"
+
+      - name: "Test the contracts and generate the coverage report"
+        run: "yarn workspace prb-math coverage"
+
+      - name: "Prepare the coverage report"
+        uses: "coverallsapp/github-action@master"
+        with:
+          flag-name: "prb-math"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel: true
+          path-to-lcov: "./packages/prb-math/coverage/lcov.info"
+
+  upload-coverage-report:
+    needs:
+      - "run-prb-math-integration"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Upload the coverage reports to Coveralls"
+        uses: "coverallsapp/github-action@master"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel-finished: true
