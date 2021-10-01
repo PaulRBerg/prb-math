@@ -1,12 +1,10 @@
-import { BigNumber } from "@ethersproject/bignumber";
+import type { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
-import { toBn } from "evm-bn";
-
-import { PI } from "../../../helpers/constants";
+import { PI } from "hardhat-prb-math/dist/constants";
 
 export default function shouldBehaveLikePiGetter(): void {
   it("returns pi", async function () {
-    const expected: BigNumber = toBn(PI);
+    const expected: BigNumber = PI;
     expect(expected).to.equal(await this.contracts.prbMathSd59x18.getPi());
     expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.getPi());
   });

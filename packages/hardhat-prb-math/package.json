@@ -27,7 +27,7 @@
     "@typechain/ethers-v5": "^7.1.2",
     "@types/fs-extra": "^9.0.13",
     "@types/mocha-each": "^2.0.0",
-    "@types/node": "^16.10.1",
+    "@types/node": "^16.10.2",
     "@typescript-eslint/eslint-plugin": "^4.32.0",
     "@typescript-eslint/parser": "^4.32.0",
     "commitizen": "^4.2.4",

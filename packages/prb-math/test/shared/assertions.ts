@@ -1,7 +1,10 @@
-import { BigNumber } from "@ethersproject/bignumber";
+import type { BigNumber } from "@ethersproject/bignumber";
 
 import { EPSILON, EPSILON_MAGNITUDE } from "../../helpers/constants";
-import { max } from "./mirrors";
+
+function max(x: BigNumber, y: BigNumber): BigNumber {
+  return x.gte(y) ? x : y;
+}
 
 export function near(chai: Chai.ChaiStatic): void {
   const Assertion = chai.Assertion;

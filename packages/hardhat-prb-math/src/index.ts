@@ -13,3 +13,7 @@ extendEnvironment(hre => {
     return new HardhatPRBMath();
   });
 });
+
+export { HardhatPRBMath };
+
+export { PRBMathErrors, PRBMathSD59x18Errors, PRBMathUD60x18Errors } from "./errors";

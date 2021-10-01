@@ -39,17 +39,18 @@ const math = create(
   },
   {
     number: "BigNumber",
-    precision: 78,
+    // 60 significant digits, 18 decimal places, and 2 extra digit for doing the rounding correctly
+    precision: 60 + 18 + 2,
   },
 );
 
-function toEbn(x: MathjsBigNumber): EthersBigNumber {
-  const fixed = x.toFixed(Number(DECIMALS), Decimal.ROUND_DOWN);
-  return toBn(fixed);
+function toEbn(x: MathjsBigNumber, rm: Decimal.Rounding = Decimal.ROUND_DOWN): EthersBigNumber {
+  const fixed = x.toFixed(Number(DECIMALS), rm);
+  return toBn(fixed, Number(DECIMALS));
 }
 
 function toMbn(x: EthersBigNumber): MathjsBigNumber {
-  return math.bignumber!(fromBn(x));
+  return math.bignumber!(fromBn(x, Number(DECIMALS)));
 }
 export class HardhatPRBMath {
   public avg(x: EthersBigNumber, y: EthersBigNumber): EthersBigNumber {
@@ -140,7 +141,7 @@ export class HardhatPRBMath {
 
   public mul(x: EthersBigNumber, y: EthersBigNumber): EthersBigNumber {
     const result: MathjsBigNumber = toMbn(x).mul(toMbn(y));
-    return toEbn(result);
+    return toEbn(result, Decimal.ROUND_HALF_UP);
   }
 
   public pow(x: EthersBigNumber, y: EthersBigNumber): EthersBigNumber {
@@ -148,6 +149,12 @@ export class HardhatPRBMath {
       throw new HardhatPluginError(PLUGIN_NAME, "PRBMath cannot raise a negative base to a power");
     }
     const result = math.pow!(toMbn(x), toMbn(y)) as MathjsBigNumber;
+    return toEbn(result);
+  }
+
+  public powu(x: EthersBigNumber, y: EthersBigNumber): EthersBigNumber {
+    const exponent: MathjsBigNumber = math.bignumber!(String(y));
+    const result = math.pow!(toMbn(x), exponent) as MathjsBigNumber;
     return toEbn(result);
   }
 

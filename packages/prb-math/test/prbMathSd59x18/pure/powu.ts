@@ -1,12 +1,13 @@
 import { BigNumber } from "@ethersproject/bignumber";
 import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
-import { toBn } from "evm-bn";
+import { toBn as toEvmBn } from "evm-bn";
+import { prb } from "hardhat";
+import { PRBMathErrors, PRBMathSD59x18Errors } from "hardhat-prb-math";
+import { E, MAX_SD59x18, MAX_WHOLE_SD59x18, PI } from "hardhat-prb-math/dist/constants";
 import forEach from "mocha-each";
 
-import { E, MAX_SD59x18, MAX_WHOLE_SD59x18, PI, SQRT_MAX_SD59x18 } from "../../../helpers/constants";
-import { pow } from "../../../helpers/math";
-import { PRBMathErrors, PRBMathSD59x18Errors } from "../../shared/errors";
+import { SQRT_MAX_SD59x18 } from "../../../helpers/constants";
 
 export default function shouldBehaveLikePowu(): void {
   context("when the base is zero", function () {
@@ -16,14 +17,14 @@ export default function shouldBehaveLikePowu(): void {
       const y: BigNumber = Zero;
 
       it("returns 1", async function () {
-        const expected: BigNumber = toBn("1");
+        const expected: BigNumber = toEvmBn("1");
         expect(expected).to.equal(await this.contracts.prbMathSd59x18.doPowu(x, y));
         expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doPowu(x, y));
       });
     });
 
     context("when the exponent is not zero", function () {
-      const testSets = [[toBn("1")], [toBn(E)], [toBn(PI)]];
+      const testSets = [toEvmBn("1"), E, PI];
 
       forEach(testSets).it("takes 0 and %e and returns 0", async function (y: BigNumber) {
         const expected: BigNumber = Zero;
@@ -35,11 +36,11 @@ export default function shouldBehaveLikePowu(): void {
 
   context("when the base is not zero", function () {
     context("when the exponent is zero", function () {
-      const testSets = [[toBn("1")], [toBn(E)], [toBn(PI)], [toBn(MAX_SD59x18)]];
+      const testSets = [toEvmBn("1"), E, PI, MAX_SD59x18];
       const y: BigNumber = Zero;
 
       forEach(testSets).it("takes %e and 0 and returns 1", async function (x: BigNumber) {
-        const expected: BigNumber = toBn("1");
+        const expected: BigNumber = toEvmBn("1");
         expect(expected).to.equal(await this.contracts.prbMathSd59x18.doPowu(x, y));
         expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doPowu(x, y));
       });
@@ -48,16 +49,16 @@ export default function shouldBehaveLikePowu(): void {
     context("when the exponent is not zero", function () {
       context("when the result overflows uint256", function () {
         const testSets = [
-          [toBn(MAX_WHOLE_SD59x18), toBn("2e-18")],
-          [toBn(MAX_SD59x18), toBn("2e-18")],
+          [MAX_WHOLE_SD59x18, toEvmBn("2e-18")],
+          [MAX_SD59x18, toEvmBn("2e-18")],
         ];
 
         forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
           await expect(this.contracts.prbMathSd59x18.doPowu(x, y)).to.be.revertedWith(
-            PRBMathErrors.MulDivFixedPointOverflow,
+            PRBMathErrors.MUL_DIV_FIXED_POINT_OVERFLOW,
           );
           await expect(this.contracts.prbMathSd59x18Typed.doPowu(x, y)).to.be.revertedWith(
-            PRBMathErrors.MulDivFixedPointOverflow,
+            PRBMathErrors.MUL_DIV_FIXED_POINT_OVERFLOW,
           );
         });
       });
@@ -65,45 +66,48 @@ export default function shouldBehaveLikePowu(): void {
       context("when the result does not overflow uint256", function () {
         context("when the result overflows sd59x18", function () {
           const testSets = [
-            [toBn("38685626227668133590.597632"), toBn("3e-18")], // smallest number whose cube doesn't fit within MAX_SD59x18
-            [toBn(SQRT_MAX_SD59x18).add(1), toBn("2e-18")],
+            [toEvmBn("38685626227668133590.597632"), toEvmBn("3e-18")], // smallest number whose cube doesn't fit within MAX_SD59x18
+            [toEvmBn(SQRT_MAX_SD59x18).add(1), toEvmBn("2e-18")],
           ];
 
           forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
             await expect(this.contracts.prbMathSd59x18.doPowu(x, y)).to.be.revertedWith(
-              PRBMathSD59x18Errors.PowuOverflow,
+              PRBMathSD59x18Errors.POWU_OVERFLOW,
             );
             await expect(this.contracts.prbMathSd59x18Typed.doPowu(x, y)).to.be.revertedWith(
-              PRBMathSD59x18Errors.PowuOverflow,
+              PRBMathSD59x18Errors.POWU_OVERFLOW,
             );
           });
         });
 
         context("when the result does not overflow sd59x18", function () {
           const testSets = [
-            ["0.001", "3"],
-            ["0.1", "2"],
-            ["1", "1"],
-            ["2", "5"],
-            ["2", "100"],
-            [E, "2"],
-            ["1e2", "4"],
-            [PI, "3"],
-            ["5.491", "19"],
-            ["478.77", "20"],
-            ["6452.166", "7"],
-            ["1e18", "2"],
-            ["38685626227668133590.597631999999999999", "3"], // Biggest number whose cube fits within MAX_SD59x18
-            [SQRT_MAX_SD59x18, "2"],
-            [MAX_WHOLE_SD59x18, "1"],
-            [MAX_SD59x18, "1"],
+            [toEvmBn("0.001"), BigNumber.from("3")],
+            [toEvmBn("0.1"), BigNumber.from("2")],
+            [toEvmBn("1"), BigNumber.from("1")],
+            [toEvmBn("2"), BigNumber.from("5")],
+            [toEvmBn("2"), BigNumber.from("100")],
+            [E, BigNumber.from("2")],
+            [toEvmBn("1e2"), BigNumber.from("4")],
+            [PI, BigNumber.from("3")],
+            [toEvmBn("5.491"), BigNumber.from("19")],
+            [toEvmBn("478.77"), BigNumber.from("20")],
+            [toEvmBn("6452.166"), BigNumber.from("7")],
+            [toEvmBn("1e18"), BigNumber.from("2")],
+            [toEvmBn("38685626227668133590.597631999999999999"), BigNumber.from("3")], // Biggest number whose cube fits within MAX_SD59x18
+            [toEvmBn(SQRT_MAX_SD59x18), BigNumber.from("2")],
+            [MAX_WHOLE_SD59x18, BigNumber.from("1")],
+            [MAX_SD59x18, BigNumber.from("1")],
           ];
 
-          forEach(testSets).it("takes %e and %e and returns the correct value", async function (x: string, y: string) {
-            const expected: BigNumber = toBn(pow(x, y));
-            expect(expected).to.be.near(await this.contracts.prbMathSd59x18.doPowu(toBn(x), BigNumber.from(y)));
-            expect(expected).to.be.near(await this.contracts.prbMathSd59x18Typed.doPowu(toBn(x), BigNumber.from(y)));
-          });
+          forEach(testSets).it(
+            "takes %e and %e and returns the correct value",
+            async function (x: BigNumber, y: BigNumber) {
+              const expected: BigNumber = prb.math.powu(x, y);
+              expect(expected).to.be.near(await this.contracts.prbMathSd59x18.doPowu(x, y));
+              expect(expected).to.be.near(await this.contracts.prbMathSd59x18Typed.doPowu(x, y));
+            },
+          );
         });
       });
     });

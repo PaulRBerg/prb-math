@@ -1,5 +1,6 @@
 import "@nomiclabs/hardhat-waffle";
 import "@typechain/hardhat";
+import "hardhat-prb-math";
 import "solidity-coverage";
 
 import { resolve } from "path";

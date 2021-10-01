@@ -56,8 +56,7 @@ task("log2", "Calculate the binary logarithm")
   .addParam("x", "Input")
   .setAction(async function (taskArgs: TaskArguments, { prb }): Promise<void> {
     const x: BigNumber = toBn(taskArgs.x);
-    const result: BigNumber = prb.math.log2(x);
-    console.log({ result: fromBn(result) });
+    const result: string = fromBn(prb.math.log2(x));
   });
 
 export default {};

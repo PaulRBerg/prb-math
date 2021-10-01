@@ -1,12 +1,11 @@
-import { BigNumber } from "@ethersproject/bignumber";
+import type { BigNumber } from "@ethersproject/bignumber";
 import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import { toBn } from "evm-bn";
+import { prb } from "hardhat";
+import { PRBMathUD60x18Errors } from "hardhat-prb-math";
+import { E, MAX_UD60x18, PI } from "hardhat-prb-math/dist/constants";
 import forEach from "mocha-each";
-
-import { E, MAX_UD60x18, PI } from "../../../helpers/constants";
-import { pow } from "../../../helpers/math";
-import { PRBMathUD60x18Errors } from "../../shared/errors";
 
 export default function shouldBehaveLikePow(): void {
   context("when the base is zero", function () {
@@ -24,7 +23,7 @@ export default function shouldBehaveLikePow(): void {
 
     context("when the exponent is not zero", function () {
       const x: BigNumber = Zero;
-      const testSets = [[toBn("1")], [toBn(E)], [toBn(PI)]];
+      const testSets = [toBn("1"), E, PI];
 
       forEach(testSets).it("takes 0 and %e and returns 0", async function (y: BigNumber) {
         const expected: BigNumber = Zero;
@@ -44,10 +43,10 @@ export default function shouldBehaveLikePow(): void {
 
       forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
         await expect(this.contracts.prbMathUd60x18.doPow(x, y)).to.be.revertedWith(
-          PRBMathUD60x18Errors.LogInputTooSmall,
+          PRBMathUD60x18Errors.LOG_INPUT_TOO_SMALL,
         );
         await expect(this.contracts.prbMathUd60x18Typed.doPow(x, y)).to.be.revertedWith(
-          PRBMathUD60x18Errors.LogInputTooSmall,
+          PRBMathUD60x18Errors.LOG_INPUT_TOO_SMALL,
         );
       });
     });
@@ -55,7 +54,7 @@ export default function shouldBehaveLikePow(): void {
     context("when the base is greater than or equal to the scale", function () {
       context("when the exponent is zero", function () {
         const y: BigNumber = Zero;
-        const testSets = [[toBn("1")], [toBn(E)], [toBn(PI)]];
+        const testSets = [toBn("1"), E, PI];
 
         forEach(testSets).it("takes %e and 0 and returns 1", async function (x: BigNumber) {
           const expected: BigNumber = toBn("1");
@@ -68,41 +67,44 @@ export default function shouldBehaveLikePow(): void {
         context("when the exponent is greater than or equal to 192", function () {
           const testSets = [
             [toBn("6277101735386680763835789423207666416102355444464034512896"), toBn("1")], // 2^192
-            [toBn(MAX_UD60x18), toBn("1")],
+            [MAX_UD60x18, toBn("1")],
           ];
 
           forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
             await expect(this.contracts.prbMathUd60x18.doPow(x, y)).to.be.revertedWith(
-              PRBMathUD60x18Errors.Exp2InputTooBig,
+              PRBMathUD60x18Errors.EXP2_INPUT_TOO_BIG,
             );
             await expect(this.contracts.prbMathUd60x18Typed.doPow(x, y)).to.be.revertedWith(
-              PRBMathUD60x18Errors.Exp2InputTooBig,
+              PRBMathUD60x18Errors.EXP2_INPUT_TOO_BIG,
             );
           });
         });
 
         context("when the exponent is less than 192", function () {
           const testSets = [
-            ["1", "1"],
-            ["1", PI],
-            ["2", "1.5"],
+            [toBn("1"), toBn("1")],
+            [toBn("1"), PI],
+            [toBn("2"), toBn("1.5")],
             [E, E],
-            [E, "1.66976"],
+            [E, toBn("1.66976")],
             [PI, PI],
-            ["11", "28.5"],
-            ["32.15", "23.99"],
-            ["406", "0.25"],
-            ["1729", "0.98"],
-            ["33441", "2.1891"],
-            ["340282366920938463463374607431768211455", "1"], // 2^128 - 1
-            ["6277101735386680763835789423207666416102355444464034512895", "1"], // 2^192 - 1
+            [toBn("11"), toBn("28.5")],
+            [toBn("32.15"), toBn("23.99")],
+            [toBn("406"), toBn("0.25")],
+            [toBn("1729"), toBn("0.98")],
+            [toBn("33441"), toBn("2.1891")],
+            [toBn("340282366920938463463374607431768211455"), toBn("1")], // 2^128 - 1
+            [toBn("6277101735386680763835789423207666416102355444464034512895"), toBn("1")], // 2^192 - 1
           ];
 
-          forEach(testSets).it("takes %e and %e and returns the correct value", async function (x: string, y: string) {
-            const expected: BigNumber = toBn(pow(x, y));
-            expect(expected).to.be.near(await this.contracts.prbMathUd60x18.doPow(toBn(x), toBn(y)));
-            expect(expected).to.be.near(await this.contracts.prbMathUd60x18Typed.doPow(toBn(x), toBn(y)));
-          });
+          forEach(testSets).it(
+            "takes %e and %e and returns the correct value",
+            async function (x: BigNumber, y: BigNumber) {
+              const expected: BigNumber = prb.math.pow(x, y);
+              expect(expected).to.be.near(await this.contracts.prbMathUd60x18.doPow(x, y));
+              expect(expected).to.be.near(await this.contracts.prbMathUd60x18Typed.doPow(x, y));
+            },
+          );
         });
       });
     });

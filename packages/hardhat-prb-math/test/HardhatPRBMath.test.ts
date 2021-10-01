@@ -5,6 +5,7 @@ import { shouldBehaveLikeExp } from "./HardhatPRBMath/exp.test";
 import { shouldBehaveLikeExp2 } from "./HardhatPRBMath/exp2.test";
 import { shouldBehaveLikeFloor } from "./HardhatPRBMath/floor.test";
 import { shouldBehaveLikeFrac } from "./HardhatPRBMath/frac.test";
+import { shouldBehaveLikeGm } from "./HardhatPRBMath/gm.test";
 import { shouldBehaveLikeInv } from "./HardhatPRBMath/inv.test";
 import { shouldBehaveLikeLn } from "./HardhatPRBMath/ln.test";
 import { shouldBehaveLikeLog10 } from "./HardhatPRBMath/log10.test";
@@ -12,7 +13,6 @@ import { shouldBehaveLikeLog2 } from "./HardhatPRBMath/log2.test";
 import { shouldBehaveLikeMul } from "./HardhatPRBMath/mul.test";
 import { shouldBehaveLikePow } from "./HardhatPRBMath/pow.test";
 import { shouldBehaveLikeSqrt } from "./HardhatPRBMath/sqrt.test";
-import { shouldBehaveLikeGm } from "./HardhatPRBMath/gm.test";
 import { useHardhatEnvironment } from "./shared/env";
 
 describe("Hardhat PRBMath", function () {

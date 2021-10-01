@@ -1,11 +1,10 @@
-import { BigNumber } from "@ethersproject/bignumber";
+import type { BigNumber } from "@ethersproject/bignumber";
 import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import { toBn } from "evm-bn";
+import { prb } from "hardhat";
+import { MAX_SD59x18, MAX_WHOLE_SD59x18, MIN_SD59x18, MIN_WHOLE_SD59x18 } from "hardhat-prb-math/dist/constants";
 import forEach from "mocha-each";
-
-import { MAX_SD59x18, MAX_WHOLE_SD59x18, MIN_SD59x18, MIN_WHOLE_SD59x18 } from "../../../helpers/constants";
-import { avg } from "../../shared/mirrors";
 
 export default function shouldBehaveLikeAvg(): void {
   context("when both operands are zero", function () {
@@ -27,7 +26,7 @@ export default function shouldBehaveLikeAvg(): void {
     ];
 
     forEach(testSets).it("takes %e and %e and returns the correct value", async function (x: BigNumber, y: BigNumber) {
-      const expected: BigNumber = avg(x, y);
+      const expected: BigNumber = prb.math.avg(x, y);
       expect(expected).to.equal(await this.contracts.prbMathSd59x18.doAvg(x, y));
       expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doAvg(x, y));
     });
@@ -35,16 +34,17 @@ export default function shouldBehaveLikeAvg(): void {
 
   context("when one operand is negative and the other is positive", function () {
     const testSets = [
-      [toBn(MIN_WHOLE_SD59x18), toBn(MAX_WHOLE_SD59x18)],
-      [toBn("-4"), toBn("4")],
-      [toBn("-2"), toBn("8")],
-      [toBn("4"), toBn("-4")],
-      [toBn("8"), toBn("-2")],
-      [toBn(MIN_SD59x18), toBn(MAX_SD59x18)],
+      [MIN_SD59x18, MAX_SD59x18],
+      [MIN_WHOLE_SD59x18, MAX_WHOLE_SD59x18],
+      [toBn("-4"), toBn("2")],
+      [toBn("-2"), toBn("2")],
+      [toBn("-2e-18"), toBn("4e-18")],
+      [toBn("-1e-18"), toBn("3e-18")],
+      [toBn("-1e-18"), toBn("2e-18")],
     ];
 
     forEach(testSets).it("takes %e and %e and returns the correct value", async function (x: BigNumber, y: BigNumber) {
-      const expected: BigNumber = avg(x, y);
+      const expected: BigNumber = prb.math.avg(x, y);
       expect(expected).to.equal(await this.contracts.prbMathSd59x18.doAvg(x, y));
       expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doAvg(x, y));
     });
@@ -52,42 +52,22 @@ export default function shouldBehaveLikeAvg(): void {
 
   context("when both operands are negative", function () {
     const testSets = [
-      [toBn(MIN_WHOLE_SD59x18), toBn(MIN_SD59x18)],
-      [toBn("-100"), toBn("-200")],
-      [toBn("-4"), toBn("-8")],
-      [toBn("-1"), toBn("-2")],
-      [toBn("-1"), toBn("-1")],
+      [MIN_WHOLE_SD59x18, MIN_SD59x18],
+      [toBn("-4"), toBn("-2")],
+      [toBn("-2"), toBn("-2")],
+      [toBn("-2e-18"), toBn("-4e-18")],
       [toBn("-1e-18"), toBn("-3e-18")],
+      [toBn("-1e-18"), toBn("-2e-18")],
     ];
 
     forEach(testSets).it("takes %e and %e and returns the correct value", async function (x: BigNumber, y: BigNumber) {
-      const expected: BigNumber = avg(x, y);
+      const expected: BigNumber = prb.math.avg(x, y);
       expect(expected).to.equal(await this.contracts.prbMathSd59x18.doAvg(x, y));
       expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doAvg(x, y));
     });
   });
 
   context("when both operands are positive", function () {
-    context("when both operands are odd", function () {
-      const testSets = [
-        [toBn("1e-18"), toBn("3e-18")],
-        [toBn("1").add(1), toBn("1").add(1)],
-        [toBn("3").add(1), toBn("7").add(1)],
-        [toBn("99").add(1), toBn("199").add(1)],
-        [toBn("1e18").add(1), toBn("1e19").add(1)],
-        [toBn(MAX_SD59x18), toBn(MAX_SD59x18)],
-      ];
-
-      forEach(testSets).it(
-        "takes %e and %e and returns the correct value",
-        async function (x: BigNumber, y: BigNumber) {
-          const expected: BigNumber = avg(x, y);
-          expect(expected).to.equal(await this.contracts.prbMathSd59x18.doAvg(x, y));
-          expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doAvg(x, y));
-        },
-      );
-    });
-
     context("when both operands are even", function () {
       const testSets = [
         [toBn("2e-18"), toBn("4e-18")],
@@ -95,13 +75,33 @@ export default function shouldBehaveLikeAvg(): void {
         [toBn("4"), toBn("8")],
         [toBn("100"), toBn("200")],
         [toBn("1e18"), toBn("1e19")],
-        [toBn(MIN_WHOLE_SD59x18), toBn(MIN_WHOLE_SD59x18)],
+        [MAX_WHOLE_SD59x18, MAX_WHOLE_SD59x18],
       ];
 
       forEach(testSets).it(
         "takes %e and %e and returns the correct value",
         async function (x: BigNumber, y: BigNumber) {
-          const expected: BigNumber = avg(x, y);
+          const expected: BigNumber = prb.math.avg(x, y);
+          expect(expected).to.equal(await this.contracts.prbMathSd59x18.doAvg(x, y));
+          expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doAvg(x, y));
+        },
+      );
+    });
+
+    context("when both operands are odd", function () {
+      const testSets = [
+        [toBn("1e-18"), toBn("3e-18")],
+        [toBn("1").add(1), toBn("1").add(1)],
+        [toBn("3").add(1), toBn("7").add(1)],
+        [toBn("99").add(1), toBn("199").add(1)],
+        [toBn("1e18").add(1), toBn("1e19").add(1)],
+        [MAX_SD59x18, MAX_SD59x18],
+      ];
+
+      forEach(testSets).it(
+        "takes %e and %e and returns the correct value",
+        async function (x: BigNumber, y: BigNumber) {
+          const expected: BigNumber = prb.math.avg(x, y);
           expect(expected).to.equal(await this.contracts.prbMathSd59x18.doAvg(x, y));
           expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doAvg(x, y));
         },
@@ -115,13 +115,13 @@ export default function shouldBehaveLikeAvg(): void {
         [toBn("3").add(1), toBn("8")],
         [toBn("99").add(1), toBn("200")],
         [toBn("1e18").add(1), toBn("10000000000000000001")],
-        [toBn(MAX_SD59x18), toBn(MAX_WHOLE_SD59x18)],
+        [MAX_SD59x18, MAX_WHOLE_SD59x18],
       ];
 
       forEach(testSets).it(
         "takes %e and %e and returns the correct value",
         async function (x: BigNumber, y: BigNumber) {
-          const expected: BigNumber = avg(x, y);
+          const expected: BigNumber = prb.math.avg(x, y);
           expect(expected).to.equal(await this.contracts.prbMathSd59x18.doAvg(x, y));
           expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doAvg(x, y));
         },

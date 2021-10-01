@@ -1,12 +1,10 @@
-import { BigNumber } from "@ethersproject/bignumber";
+import type { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
-import { toBn } from "evm-bn";
-
-import { E } from "../../../helpers/constants";
+import { E } from "hardhat-prb-math/dist/constants";
 
 export default function shouldBehaveLikeEGetter(): void {
   it("returns the e number", async function () {
-    const expected: BigNumber = toBn(E);
+    const expected: BigNumber = E;
     expect(expected).to.equal(await this.contracts.prbMathUd60x18.getE());
     expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.getE());
   });
