@@ -56,9 +56,18 @@ library PRBMathSD59x18 {
     function avg(int256 x, int256 y) internal pure returns (int256 result) {
         // The operations can never overflow.
         unchecked {
-            // The last operand checks if both x and y are odd and if that is the case, we add 1 to the result. We need
-            // to do this because if both numbers are odd, the 0.5 remainder gets truncated twice.
-            result = (x >> 1) + (y >> 1) + (x & y & 1);
+            int256 sum = (x >> 1) + (y >> 1);
+            if (sum < 0) {
+                // If at least one of x and y is odd, we add 1 to the result. This is because shifting negative numbers to the
+                // right rounds down to infinity.
+                assembly {
+                    result := add(sum, and(or(x, y), 1))
+                }
+            } else {
+                // If both x and y are odd, we add 1 to the result. This is because if both numbers are odd, the 0.5
+                // remainder gets truncated twice.
+                result = sum + (x & y & 1);
+            }
         }
     }
 
@@ -308,7 +317,7 @@ library PRBMathSD59x18 {
         }
     }
 
-    /// @notice Calculates 1 / x, rounding towards zero.
+    /// @notice Calculates 1 / x, rounding toward zero.
     ///
     /// @dev Requirements:
     /// - x cannot be zero.

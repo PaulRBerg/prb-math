@@ -68,12 +68,24 @@ library PRBMathSD59x18Typed {
     /// @return result The arithmetic average as a signed 59.18-decimal fixed-point number.
     function avg(PRBMath.SD59x18 memory x, PRBMath.SD59x18 memory y) internal pure returns (PRBMath.SD59x18 memory result) {
         // The operations can never overflow.
+        int256 xValue = x.value;
+        int256 yValue = y.value;
+        int256 rValue;
         unchecked {
-            // The last operand checks if both x and y are odd and if that is the case, we add 1 to the result. We need
-            // to do this because if both numbers are odd, the 0.5 remainder gets truncated twice.
-            int256 rValue = (x.value >> 1) + (y.value >> 1) + (x.value & y.value & 1);
-            result = PRBMath.SD59x18({ value: rValue });
+            int256 sum = (xValue >> 1) + (yValue >> 1);
+            if (sum < 0) {
+                // If at least one of x and y is odd, we add 1 to the result. This is because shifting negative numbers to the
+                // right rounds down to infinity.
+                assembly {
+                    rValue := add(sum, and(or(xValue, yValue), 1))
+                }
+            } else {
+                // If both x and y are odd, we add 1 to the result. This is because if both numbers are odd, the 0.5
+                // remainder gets truncated twice.
+                rValue = sum + (xValue & yValue & 1);
+            }
         }
+        result = PRBMath.SD59x18({ value: rValue });
     }
 
     /// @notice Yields the least greatest signed 59.18 decimal fixed-point number greater than or equal to x.
@@ -333,7 +345,7 @@ library PRBMathSD59x18Typed {
         }
     }
 
-    /// @notice Calculates 1 / x, rounding towards zero.
+    /// @notice Calculates 1 / x, rounding toward zero.
     ///
     /// @dev Requirements:
     /// - x cannot be zero.

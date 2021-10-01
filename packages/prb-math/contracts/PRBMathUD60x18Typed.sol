@@ -231,7 +231,7 @@ library PRBMathUD60x18Typed {
         }
     }
 
-    /// @notice Calculates 1 / x, rounding towards zero.
+    /// @notice Calculates 1 / x, rounding toward zero.
     ///
     /// @dev Requirements:
     /// - x cannot be zero.
