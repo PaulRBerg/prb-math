@@ -62,6 +62,9 @@ jobs:
       - name: "Lint the code"
         run: "yarn workspace prb-math lint"
 
+      - name: "Build the TypeScript packages"
+        run: "yarn build"
+
       - name: "Compile the contracts and generate the TypeChain bindings"
         run: "yarn workspace prb-math typechain"
 
