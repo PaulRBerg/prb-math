@@ -3,9 +3,7 @@ import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import { toBn as toEvmBn } from "evm-bn";
 import forEach from "mocha-each";
-import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, PRBMathErrors, powu } from "prb-math.js";
-
-import { SQRT_MAX_UD60x18 } from "../../../helpers/constants";
+import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, PRBMathErrors, SQRT_MAX_UD60x18, powu } from "prb-math.js";
 
 export default function shouldBehaveLikePow(): void {
   context("when the base is zero", function () {

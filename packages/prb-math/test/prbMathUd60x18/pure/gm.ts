@@ -5,7 +5,8 @@ import { toBn } from "evm-bn";
 import forEach from "mocha-each";
 import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, PRBMathUD60x18Errors, gm } from "prb-math.js";
 
-import { SQRT_MAX_UD60x18_DIV_BY_SCALE } from "../../../helpers/constants";
+// Biggest number whose square fits within uint256
+export const SQRT_MAX_UD60x18_DIV_BY_SCALE: BigNumber = toBn("340282366920938463463.374607431768211455");
 
 export default function shouldBehaveLikeGm(): void {
   context("when one of the operands is zero", function () {
@@ -24,7 +25,7 @@ export default function shouldBehaveLikeGm(): void {
   context("when neither of the operands is zero", function () {
     context("when the product of x and y overflows", function () {
       const testSets = [
-        [toBn(SQRT_MAX_UD60x18_DIV_BY_SCALE).add(1), toBn(SQRT_MAX_UD60x18_DIV_BY_SCALE).add(1)],
+        [SQRT_MAX_UD60x18_DIV_BY_SCALE.add(1), SQRT_MAX_UD60x18_DIV_BY_SCALE.add(1)],
         [MAX_WHOLE_UD60x18, toBn("3e-18")],
         [MAX_UD60x18, toBn("2e-18")],
       ];
@@ -46,7 +47,7 @@ export default function shouldBehaveLikeGm(): void {
         [PI, toBn("8.2")],
         [toBn("322.47"), toBn("674.77")],
         [toBn("2404.8"), toBn("7899.210662")],
-        [toBn(SQRT_MAX_UD60x18_DIV_BY_SCALE), toBn(SQRT_MAX_UD60x18_DIV_BY_SCALE)],
+        [SQRT_MAX_UD60x18_DIV_BY_SCALE, SQRT_MAX_UD60x18_DIV_BY_SCALE],
         [MAX_WHOLE_UD60x18, toBn("1e-18")],
         [MAX_UD60x18, toBn("1e-18")],
       ];

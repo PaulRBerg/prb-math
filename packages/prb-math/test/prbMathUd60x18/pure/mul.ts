@@ -3,9 +3,7 @@ import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import { toBn } from "evm-bn";
 import forEach from "mocha-each";
-import { E, HALF_SCALE, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, PRBMathErrors, mul } from "prb-math.js";
-
-import { SQRT_MAX_UD60x18 } from "../../../helpers/constants";
+import { E, HALF_SCALE, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, PRBMathErrors, SQRT_MAX_UD60x18, mul } from "prb-math.js";
 
 export default function shouldBehaveLikeMul(): void {
   context("when one of the operands is zero", function () {

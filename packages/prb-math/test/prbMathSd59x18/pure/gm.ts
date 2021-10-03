@@ -14,7 +14,8 @@ import {
   gm,
 } from "prb-math.js";
 
-import { SQRT_MAX_SD59x18_DIV_BY_SCALE } from "../../../helpers/constants";
+// Biggest number whose square fits within int256
+const SQRT_MAX_SD59x18_DIV_BY_SCALE: BigNumber = toBn("240615969168004511545.033772477625056927");
 
 export default function shouldBehaveLikeGm(): void {
   context("when one of the operands is zero", function () {
@@ -54,9 +55,9 @@ export default function shouldBehaveLikeGm(): void {
         const testSets = [
           [MIN_SD59x18, toBn("2e-18")],
           [MIN_WHOLE_SD59x18, toBn("3e-18")],
-          [toBn(SQRT_MAX_SD59x18_DIV_BY_SCALE).mul(-1), toBn(SQRT_MAX_SD59x18_DIV_BY_SCALE).mul(-1).sub(1)],
+          [SQRT_MAX_SD59x18_DIV_BY_SCALE.mul(-1), SQRT_MAX_SD59x18_DIV_BY_SCALE.mul(-1).sub(1)],
         ].concat([
-          [toBn(SQRT_MAX_SD59x18_DIV_BY_SCALE).add(1), toBn(SQRT_MAX_SD59x18_DIV_BY_SCALE).add(1)],
+          [SQRT_MAX_SD59x18_DIV_BY_SCALE.add(1), SQRT_MAX_SD59x18_DIV_BY_SCALE.add(1)],
           [MAX_WHOLE_SD59x18, toBn("3e-18")],
           [MAX_SD59x18, toBn("2e-18")],
         ]);
@@ -72,7 +73,7 @@ export default function shouldBehaveLikeGm(): void {
       context("when the product of x and y does not overflow", function () {
         const testSets = [
           [MIN_WHOLE_SD59x18, toBn("-1e-18")],
-          [toBn(SQRT_MAX_SD59x18_DIV_BY_SCALE).mul(-1), toBn(SQRT_MAX_SD59x18_DIV_BY_SCALE).mul(-1)],
+          [SQRT_MAX_SD59x18_DIV_BY_SCALE.mul(-1), SQRT_MAX_SD59x18_DIV_BY_SCALE.mul(-1)],
           [toBn("-2404.8"), toBn("-7899.210662")],
           [toBn("-322.47"), toBn("-674.77")],
           [PI.mul(-1), toBn("-8.2")],
@@ -88,7 +89,7 @@ export default function shouldBehaveLikeGm(): void {
           [PI, toBn("8.2")],
           [toBn("322.47"), toBn("674.77")],
           [toBn("2404.8"), toBn("7899.210662")],
-          [toBn(SQRT_MAX_SD59x18_DIV_BY_SCALE), toBn(SQRT_MAX_SD59x18_DIV_BY_SCALE)],
+          [SQRT_MAX_SD59x18_DIV_BY_SCALE, SQRT_MAX_SD59x18_DIV_BY_SCALE],
           [MAX_WHOLE_SD59x18, toBn("1e-18")],
           [MAX_SD59x18, toBn("1e-18")],
         ]);

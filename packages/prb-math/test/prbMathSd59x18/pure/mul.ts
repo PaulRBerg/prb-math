@@ -13,10 +13,10 @@ import {
   PI,
   PRBMathErrors,
   PRBMathSD59x18Errors,
+  SQRT_MAX_SD59x18,
+  SQRT_MAX_UD60x18,
   mul,
 } from "prb-math.js";
-
-import { SQRT_MAX_SD59x18, SQRT_MAX_UD60x18 } from "../../../helpers/constants";
 
 export default function shouldBehaveLikeMul(): void {
   context("when one of the operands is zero", function () {

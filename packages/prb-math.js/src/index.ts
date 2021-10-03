@@ -10,6 +10,8 @@ export {
   MIN_SD59x18,
   MIN_WHOLE_SD59x18,
   PI,
+  SQRT_MAX_SD59x18,
+  SQRT_MAX_UD60x18,
   SCALE,
 } from "./constants";
 
