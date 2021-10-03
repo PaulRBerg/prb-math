@@ -2,9 +2,8 @@ import type { BigNumber } from "@ethersproject/bignumber";
 import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import { toBn } from "evm-bn";
-import { prb } from "hardhat";
-import { MAX_SD59x18, MAX_WHOLE_SD59x18, MIN_SD59x18, MIN_WHOLE_SD59x18, PI } from "hardhat-prb-math/dist/constants";
 import forEach from "mocha-each";
+import { MAX_SD59x18, MAX_WHOLE_SD59x18, MIN_SD59x18, MIN_WHOLE_SD59x18, PI, inv } from "prb-math.js";
 
 import { PanicCodes } from "../../shared/errors";
 
@@ -39,7 +38,7 @@ export default function shouldBehaveLikeInv(): void {
       ];
 
       forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
-        const expected: BigNumber = prb.math.inv(x);
+        const expected: BigNumber = inv(x);
         expect(expected).to.equal(await this.contracts.prbMathSd59x18.doInv(x));
         expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doInv(x));
       });
@@ -66,7 +65,7 @@ export default function shouldBehaveLikeInv(): void {
       ];
 
       forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
-        const expected: BigNumber = prb.math.inv(x);
+        const expected: BigNumber = inv(x);
         expect(expected).to.equal(await this.contracts.prbMathSd59x18.doInv(x));
         expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doInv(x));
       });

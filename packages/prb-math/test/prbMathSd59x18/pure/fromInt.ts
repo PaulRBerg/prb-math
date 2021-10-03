@@ -1,9 +1,15 @@
 import type { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
 import { toBn } from "evm-bn";
-import { PRBMathSD59x18Errors } from "hardhat-prb-math";
-import { MAX_SD59x18, MAX_WHOLE_SD59x18, MIN_SD59x18, MIN_WHOLE_SD59x18, SCALE } from "hardhat-prb-math/dist/constants";
 import forEach from "mocha-each";
+import {
+  MAX_SD59x18,
+  MAX_WHOLE_SD59x18,
+  MIN_SD59x18,
+  MIN_WHOLE_SD59x18,
+  PRBMathSD59x18Errors,
+  SCALE,
+} from "prb-math.js";
 
 export default function shouldBehaveLikeFromInt(): void {
   context("when x is less than min sd59x18 divided by scale", function () {

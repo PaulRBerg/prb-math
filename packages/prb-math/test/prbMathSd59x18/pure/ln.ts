@@ -2,10 +2,8 @@ import type { BigNumber } from "@ethersproject/bignumber";
 import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import { toBn } from "evm-bn";
-import { prb } from "hardhat";
-import { PRBMathSD59x18Errors } from "hardhat-prb-math";
-import { E, MAX_SD59x18, MAX_WHOLE_SD59x18, PI } from "hardhat-prb-math/dist/constants";
 import forEach from "mocha-each";
+import { E, MAX_SD59x18, MAX_WHOLE_SD59x18, PI, PRBMathSD59x18Errors, ln } from "prb-math.js";
 
 export default function shouldBehaveLikeLn(): void {
   context("when x is zero", function () {
@@ -55,7 +53,7 @@ export default function shouldBehaveLikeLn(): void {
       ];
 
       forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
-        const expected: BigNumber = prb.math.ln(x);
+        const expected: BigNumber = ln(x);
         expect(expected).to.be.near(await this.contracts.prbMathSd59x18.doLn(x));
         expect(expected).to.be.near(await this.contracts.prbMathSd59x18Typed.doLn(x));
       });

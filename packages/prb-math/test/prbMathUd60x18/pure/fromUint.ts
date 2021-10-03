@@ -1,9 +1,8 @@
 import type { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
 import { toBn } from "evm-bn";
-import { PRBMathUD60x18Errors } from "hardhat-prb-math";
-import { MAX_UD60x18, MAX_WHOLE_UD60x18, SCALE } from "hardhat-prb-math/dist/constants";
 import forEach from "mocha-each";
+import { MAX_UD60x18, MAX_WHOLE_UD60x18, PRBMathUD60x18Errors, SCALE } from "prb-math.js";
 
 export default function shouldBehaveLikeFromUint(): void {
   context("when x is greater than max ud60x18 divided by scale", function () {

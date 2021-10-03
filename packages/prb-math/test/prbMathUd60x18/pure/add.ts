@@ -2,9 +2,8 @@ import type { BigNumber } from "@ethersproject/bignumber";
 import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import { toBn } from "evm-bn";
-import { PRBMathUD60x18Errors } from "hardhat-prb-math";
-import { E, MAX_UD60x18, PI } from "hardhat-prb-math/dist/constants";
 import forEach from "mocha-each";
+import { E, MAX_UD60x18, PI, PRBMathUD60x18Errors } from "prb-math.js";
 
 export default function shouldBehaveLikeAdd(): void {
   context("when the sum overflows", function () {

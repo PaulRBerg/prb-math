@@ -2,10 +2,8 @@ import type { BigNumber } from "@ethersproject/bignumber";
 import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import { toBn } from "evm-bn";
-import { prb } from "hardhat";
-import { PRBMathUD60x18Errors } from "hardhat-prb-math";
-import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, SCALE } from "hardhat-prb-math/dist/constants";
 import forEach from "mocha-each";
+import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, PRBMathUD60x18Errors, SCALE, log10 } from "prb-math.js";
 
 export default function shouldBehaveLikeLog10(): void {
   context("when x is less than 1", function () {
@@ -27,7 +25,7 @@ export default function shouldBehaveLikeLog10(): void {
       const testSets = [toBn("1"), toBn("10"), toBn("100"), toBn("1e18"), toBn("1e49"), toBn("1e57"), toBn("1e58")];
 
       forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
-        const expected: BigNumber = prb.math.log10(x);
+        const expected: BigNumber = log10(x);
         expect(expected).to.equal(await this.contracts.prbMathUd60x18.doLog10(x));
         expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doLog10(x));
       });
@@ -50,7 +48,7 @@ export default function shouldBehaveLikeLog10(): void {
       ];
 
       forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
-        const expected: BigNumber = prb.math.log10(x);
+        const expected: BigNumber = log10(x);
         expect(expected).to.be.near(await this.contracts.prbMathUd60x18.doLog10(x));
         expect(expected).to.be.near(await this.contracts.prbMathUd60x18Typed.doLog10(x));
       });

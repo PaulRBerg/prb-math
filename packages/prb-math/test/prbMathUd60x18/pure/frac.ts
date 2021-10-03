@@ -2,9 +2,8 @@ import type { BigNumber } from "@ethersproject/bignumber";
 import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import { toBn } from "evm-bn";
-import { prb } from "hardhat";
-import { MAX_UD60x18, MAX_WHOLE_UD60x18, PI } from "hardhat-prb-math/dist/constants";
 import forEach from "mocha-each";
+import { MAX_UD60x18, MAX_WHOLE_UD60x18, PI, frac } from "prb-math.js";
 
 export default function shouldBehaveLikeFrac(): void {
   context("when x is zero", function () {
@@ -31,7 +30,7 @@ export default function shouldBehaveLikeFrac(): void {
     ];
 
     forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
-      const expected: BigNumber = prb.math.frac(x);
+      const expected: BigNumber = frac(x);
       expect(expected).to.equal(await this.contracts.prbMathUd60x18.doFrac(x));
       expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doFrac(x));
     });

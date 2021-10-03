@@ -2,8 +2,8 @@ import type { BigNumber } from "@ethersproject/bignumber";
 import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import { toBn } from "evm-bn";
-import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, SCALE } from "hardhat-prb-math/dist/constants";
 import forEach from "mocha-each";
+import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, SCALE } from "prb-math.js";
 
 export default function shouldBehaveLikeToUint(): void {
   context("when x is less than the scale", function () {

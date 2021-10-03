@@ -2,10 +2,8 @@ import type { BigNumber } from "@ethersproject/bignumber";
 import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import { toBn } from "evm-bn";
-import { prb } from "hardhat";
-import { PRBMathUD60x18Errors } from "hardhat-prb-math";
-import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI } from "hardhat-prb-math/dist/constants";
 import forEach from "mocha-each";
+import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, PRBMathUD60x18Errors, log2 } from "prb-math.js";
 
 export default function shouldBehaveLikeLog2(): void {
   context("when x is less than 1", function () {
@@ -27,7 +25,7 @@ export default function shouldBehaveLikeLog2(): void {
       const testSets = [toBn("1"), toBn("2"), toBn("4"), toBn("8"), toBn("16"), toBn("195")];
 
       forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
-        const expected: BigNumber = prb.math.log2(x);
+        const expected: BigNumber = log2(x);
         expect(expected).to.be.near(await this.contracts.prbMathUd60x18.doLog2(x));
         expect(expected).to.be.near(await this.contracts.prbMathUd60x18Typed.doLog2(x));
       });
@@ -37,7 +35,7 @@ export default function shouldBehaveLikeLog2(): void {
       const testSets = [toBn("1.125"), E, PI, toBn("1e18"), MAX_WHOLE_UD60x18, MAX_UD60x18];
 
       forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
-        const expected: BigNumber = prb.math.log2(x);
+        const expected: BigNumber = log2(x);
         expect(expected).to.be.near(await this.contracts.prbMathUd60x18.doLog2(x));
         expect(expected).to.be.near(await this.contracts.prbMathUd60x18Typed.doLog2(x));
       });

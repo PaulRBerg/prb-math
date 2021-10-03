@@ -2,8 +2,8 @@ import type { BigNumber } from "@ethersproject/bignumber";
 import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import { toBn } from "evm-bn";
-import { E, MAX_SD59x18, MIN_SD59x18, PI } from "hardhat-prb-math/dist/constants";
 import forEach from "mocha-each";
+import { E, MAX_SD59x18, MIN_SD59x18, PI } from "prb-math.js";
 
 import { PanicCodes } from "../../shared/errors";
 

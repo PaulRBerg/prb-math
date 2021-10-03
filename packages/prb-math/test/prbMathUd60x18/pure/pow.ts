@@ -2,10 +2,8 @@ import type { BigNumber } from "@ethersproject/bignumber";
 import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import { toBn } from "evm-bn";
-import { prb } from "hardhat";
-import { PRBMathUD60x18Errors } from "hardhat-prb-math";
-import { E, MAX_UD60x18, PI } from "hardhat-prb-math/dist/constants";
 import forEach from "mocha-each";
+import { E, MAX_UD60x18, PI, PRBMathUD60x18Errors, pow } from "prb-math.js";
 
 export default function shouldBehaveLikePow(): void {
   context("when the base is zero", function () {
@@ -100,7 +98,7 @@ export default function shouldBehaveLikePow(): void {
           forEach(testSets).it(
             "takes %e and %e and returns the correct value",
             async function (x: BigNumber, y: BigNumber) {
-              const expected: BigNumber = prb.math.pow(x, y);
+              const expected: BigNumber = pow(x, y);
               expect(expected).to.be.near(await this.contracts.prbMathUd60x18.doPow(x, y));
               expect(expected).to.be.near(await this.contracts.prbMathUd60x18Typed.doPow(x, y));
             },

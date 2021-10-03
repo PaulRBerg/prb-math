@@ -7,10 +7,10 @@ Monorepo implementing PRBMath and related packages.
 PRBMath is maintained with [yarn workspaces](https://yarnpkg.com/features/workspaces). Check out the README
 associated to each package for detailed usage instructions.
 
-| Package                                 | Description                                          |
-| --------------------------------------- | ---------------------------------------------------- |
-| [`hardhat-prb-math`](/packages/hardhat) | Hardhat plugin to complement PRBMath                 |
-| [`prb-math`](/packages/prb-math)        | Smart contract library for advanced fixed-point math |
+| Package                                | Description                                          |
+| -------------------------------------- | ---------------------------------------------------- |
+| [`prb-math`](/packages/prb-math)       | Smart contract library for advanced fixed-point math |
+| [`prb-math.js`](/packages/prb-math.js) | JavaScript SDK for PRBMath                           |
 
 ## Contributing
 

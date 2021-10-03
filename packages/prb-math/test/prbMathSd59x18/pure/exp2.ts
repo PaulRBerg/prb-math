@@ -2,10 +2,17 @@ import type { BigNumber } from "@ethersproject/bignumber";
 import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import { toBn } from "evm-bn";
-import { prb } from "hardhat";
-import { PRBMathSD59x18Errors } from "hardhat-prb-math";
-import { E, MAX_SD59x18, MAX_WHOLE_SD59x18, MIN_SD59x18, MIN_WHOLE_SD59x18, PI } from "hardhat-prb-math/dist/constants";
 import forEach from "mocha-each";
+import {
+  E,
+  MAX_SD59x18,
+  MAX_WHOLE_SD59x18,
+  MIN_SD59x18,
+  MIN_WHOLE_SD59x18,
+  PI,
+  PRBMathSD59x18Errors,
+  exp2,
+} from "prb-math.js";
 
 export default function shouldBehaveLikeExp2(): void {
   context("when x is zero", function () {
@@ -46,7 +53,7 @@ export default function shouldBehaveLikeExp2(): void {
       ];
 
       forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
-        const expected: BigNumber = prb.math.exp2(x);
+        const expected: BigNumber = exp2(x);
         expect(expected).to.be.near(await this.contracts.prbMathSd59x18.doExp2(x));
         expect(expected).to.be.near(await this.contracts.prbMathSd59x18Typed.doExp2(x));
       });
@@ -92,7 +99,7 @@ export default function shouldBehaveLikeExp2(): void {
       ];
 
       forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
-        const expected: BigNumber = prb.math.exp2(x);
+        const expected: BigNumber = exp2(x);
         expect(expected).to.be.near(await this.contracts.prbMathSd59x18.doExp2(x));
         expect(expected).to.be.near(await this.contracts.prbMathSd59x18Typed.doExp2(x));
       });

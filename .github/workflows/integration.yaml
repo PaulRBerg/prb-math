@@ -15,35 +15,6 @@ on:
       - "main"
 
 jobs:
-  run-hardhat-prb-math-integration:
-    runs-on: "ubuntu-latest"
-    steps:
-      - name: "Check out the repo"
-        uses: "actions/checkout@v2"
-
-      - name: "Install Node.js"
-        uses: "actions/setup-node@v2"
-        with:
-          cache: "yarn"
-          node-version: "16"
-
-      - name: "Install the dependencies"
-        run: "yarn install --immutable"
-
-      - name: "Lint the code"
-        run: "yarn workspace hardhat-prb-math lint"
-
-      - name: "Test the contracts and generate the coverage report"
-        run: "yarn workspace hardhat-prb-math coverage"
-
-      - name: "Prepare the coverage report"
-        uses: "coverallsapp/github-action@master"
-        with:
-          flag-name: "hardhat-prb-math"
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel: true
-          path-to-lcov: "./packages/hardhat-prb-math/coverage/lcov.info"
-
   run-prb-math-integration:
     runs-on: "ubuntu-latest"
     steps:
@@ -79,10 +50,39 @@ jobs:
           parallel: true
           path-to-lcov: "./packages/prb-math/coverage/lcov.info"
 
+  run-prb-math-js-integration:
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Check out the repo"
+        uses: "actions/checkout@v2"
+
+      - name: "Install Node.js"
+        uses: "actions/setup-node@v2"
+        with:
+          cache: "yarn"
+          node-version: "16"
+
+      - name: "Install the dependencies"
+        run: "yarn install --immutable"
+
+      - name: "Lint the code"
+        run: "yarn workspace prb-math.js lint"
+
+      - name: "Test the contracts and generate the coverage report"
+        run: "yarn workspace prb-math.js coverage"
+
+      - name: "Prepare the coverage report"
+        uses: "coverallsapp/github-action@master"
+        with:
+          flag-name: "prb-math.js"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel: true
+          path-to-lcov: "./packages/prb-math.js/coverage/lcov.info"
+
   upload-coverage-report:
     needs:
-      - "run-hardhat-prb-math-integration"
       - "run-prb-math-integration"
+      - "run-prb-math-js-integration"
     runs-on: "ubuntu-latest"
     steps:
       - name: "Upload the coverage reports to Coveralls"

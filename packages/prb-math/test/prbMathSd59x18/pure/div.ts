@@ -2,10 +2,8 @@ import type { BigNumber } from "@ethersproject/bignumber";
 import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import { toBn } from "evm-bn";
-import { prb } from "hardhat";
-import { PRBMathSD59x18Errors } from "hardhat-prb-math";
-import { MAX_SD59x18, MIN_SD59x18, PI, SCALE } from "hardhat-prb-math/dist/constants";
 import forEach from "mocha-each";
+import { MAX_SD59x18, MIN_SD59x18, PI, PRBMathSD59x18Errors, SCALE, div } from "prb-math.js";
 
 import { PanicCodes } from "../../shared/errors";
 
@@ -128,7 +126,7 @@ export default function shouldBehaveLikeDiv(): void {
               forEach(testSets).it(
                 "takes %e and %e and returns the correct value",
                 async function (x: BigNumber, y: BigNumber) {
-                  const expected: BigNumber = prb.math.div(x, y);
+                  const expected: BigNumber = div(x, y);
                   expect(expected).to.equal(await this.contracts.prbMathSd59x18.doDiv(x, y));
                   expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doDiv(x, y));
                 },
@@ -175,7 +173,7 @@ export default function shouldBehaveLikeDiv(): void {
               forEach(testSets).it(
                 "takes %e and %e and returns the correct value",
                 async function (x: BigNumber, y: BigNumber) {
-                  const expected: BigNumber = prb.math.div(x, y);
+                  const expected: BigNumber = div(x, y);
                   expect(expected).to.equal(await this.contracts.prbMathSd59x18.doDiv(x, y));
                   expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doDiv(x, y));
                 },

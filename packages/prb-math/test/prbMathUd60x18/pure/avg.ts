@@ -2,9 +2,8 @@ import type { BigNumber } from "@ethersproject/bignumber";
 import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import { toBn } from "evm-bn";
-import { prb } from "hardhat";
-import { MAX_UD60x18, MAX_WHOLE_UD60x18 } from "hardhat-prb-math/dist/constants";
 import forEach from "mocha-each";
+import { MAX_UD60x18, MAX_WHOLE_UD60x18, avg } from "prb-math.js";
 
 export default function shouldBehaveLikeAvg(): void {
   context("when both operands are zero", function () {
@@ -24,7 +23,7 @@ export default function shouldBehaveLikeAvg(): void {
     ];
 
     forEach(testSets).it("takes %e and %e and returns the correct value", async function (x: BigNumber, y: BigNumber) {
-      const expected: BigNumber = prb.math.avg(x, y);
+      const expected: BigNumber = avg(x, y);
       expect(expected).to.equal(await this.contracts.prbMathUd60x18.doAvg(x, y));
       expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doAvg(x, y));
     });
@@ -43,7 +42,7 @@ export default function shouldBehaveLikeAvg(): void {
       forEach(testSets).it(
         "takes %e and %e and returns the correct value",
         async function (x: BigNumber, y: BigNumber) {
-          const expected: BigNumber = prb.math.avg(x, y);
+          const expected: BigNumber = avg(x, y);
           expect(expected).to.equal(await this.contracts.prbMathUd60x18.doAvg(x, y));
           expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doAvg(x, y));
         },
@@ -63,7 +62,7 @@ export default function shouldBehaveLikeAvg(): void {
       forEach(testSets).it(
         "takes %e and %e and returns the correct value",
         async function (x: BigNumber, y: BigNumber) {
-          const expected: BigNumber = prb.math.avg(x, y);
+          const expected: BigNumber = avg(x, y);
           expect(expected).to.equal(await this.contracts.prbMathUd60x18.doAvg(x, y));
           expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doAvg(x, y));
         },
@@ -83,7 +82,7 @@ export default function shouldBehaveLikeAvg(): void {
       forEach(testSets).it(
         "takes %e and %e and returns the correct value",
         async function (x: BigNumber, y: BigNumber) {
-          const expected: BigNumber = prb.math.avg(x, y);
+          const expected: BigNumber = avg(x, y);
           expect(expected).to.equal(await this.contracts.prbMathUd60x18.doAvg(x, y));
           expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doAvg(x, y));
         },

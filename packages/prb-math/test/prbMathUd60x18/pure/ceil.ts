@@ -2,10 +2,8 @@ import type { BigNumber } from "@ethersproject/bignumber";
 import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import { toBn } from "evm-bn";
-import { prb } from "hardhat";
-import { PRBMathUD60x18Errors } from "hardhat-prb-math";
-import { MAX_UD60x18, MAX_WHOLE_UD60x18, PI } from "hardhat-prb-math/dist/constants";
 import forEach from "mocha-each";
+import { MAX_UD60x18, MAX_WHOLE_UD60x18, PI, PRBMathUD60x18Errors, ceil } from "prb-math.js";
 
 export default function shouldBehaveLikeCeil(): void {
   context("when x is zero", function () {
@@ -43,7 +41,7 @@ export default function shouldBehaveLikeCeil(): void {
       ];
 
       forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
-        const expected: BigNumber = prb.math.ceil(x);
+        const expected: BigNumber = ceil(x);
         expect(expected).to.equal(await this.contracts.prbMathUd60x18.doCeil(x));
         expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doCeil(x));
       });

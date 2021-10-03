@@ -2,10 +2,8 @@ import { BigNumber } from "@ethersproject/bignumber";
 import { Zero } from "@ethersproject/constants";
 import { expect } from "chai";
 import { toBn as toEvmBn } from "evm-bn";
-import { prb } from "hardhat";
-import { PRBMathErrors } from "hardhat-prb-math";
-import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI } from "hardhat-prb-math/dist/constants";
 import forEach from "mocha-each";
+import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, PRBMathErrors, powu } from "prb-math.js";
 
 import { SQRT_MAX_UD60x18 } from "../../../helpers/constants";
 
@@ -89,7 +87,7 @@ export default function shouldBehaveLikePow(): void {
         forEach(testSets).it(
           "takes %e and %e and returns the correct value",
           async function (x: BigNumber, y: BigNumber) {
-            const expected: BigNumber = prb.math.powu(x, y);
+            const expected: BigNumber = powu(x, y);
             expect(expected).to.be.near(await this.contracts.prbMathUd60x18.doPowu(x, y));
             expect(expected).to.be.near(await this.contracts.prbMathUd60x18Typed.doPowu(x, y));
           },

@@ -1,6 +1,6 @@
 import type { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
-import { E } from "hardhat-prb-math/dist/constants";
+import { E } from "prb-math.js";
 
 export default function shouldBehaveLikeEGetter(): void {
   it("returns the e number", async function () {

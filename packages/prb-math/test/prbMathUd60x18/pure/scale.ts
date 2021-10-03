@@ -1,6 +1,6 @@
 import type { BigNumber } from "@ethersproject/bignumber";
 import { expect } from "chai";
-import { SCALE } from "hardhat-prb-math/dist/constants";
+import { SCALE } from "prb-math.js";
 
 export default function shouldBehaveLikeScaleGetter(): void {
   it("returns the scale number", async function () {
