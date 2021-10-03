@@ -6,6 +6,7 @@
     "name": "Paul Razvan Berg",
     "url": "https://paulrberg.com"
   },
+  "browser": "./dist/browser/prb-math.min.js",
   "bugs": {
     "url": "https://github.com/hifi-finance/prb-math/issues"
   },
@@ -21,6 +22,7 @@
     "@ethersproject/constants": "^5.4.0",
     "@ethersproject/providers": "^5.4.5",
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
+    "@rollup/plugin-node-resolve": "^13.0.5",
     "@types/mocha-each": "^2.0.0",
     "@types/node": "^16.10.2",
     "@typescript-eslint/eslint-plugin": "^4.32.0",
@@ -36,6 +38,9 @@
     "nyc-report-lcov-absolute": "^1.0.0",
     "pinst": "^2.1.6",
     "prettier": "^2.4.1",
+    "rollup": "^2.58.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-terser": "^7.0.2",
     "shx": "^0.3.3",
     "source-map-support": "^0.5.20",
     "ts-node": "^10.2.1",
@@ -58,7 +63,7 @@
     "typescript"
   ],
   "license": "Unlicense",
-  "main": "./dist/index.js",
+  "main": "./dist/node/index.js",
   "peerDependencies": {
     "@ethersproject/bignumber": "^5.4.2",
     "evm-bn": "^1.0.0",
@@ -73,7 +78,9 @@
     "url": "https://github.com/hifi-finance/prb-math"
   },
   "scripts": {
-    "build": "tsc --project ./tsconfig.prod.json",
+    "build": "yarn build:node && yarn build:browser",
+    "build:browser": "yarn rollup",
+    "build:node": "tsc --project ./tsconfig.prod.json",
     "clean": "shx rm -rf ./.nyc_output ./coverage ./dist ./coverage.json ./tsconfig.prod.tsbuildinfo",
     "clean:node_modules": "yarn workspaces foreach --parallel run clean:node_modules && shx rm -rf ./node_modules",
     "coverage": "yarn nyc --nycrc-path ./.nycrc.yaml mocha",
@@ -82,8 +89,9 @@
     "prepack": "yarn build",
     "prettier": "prettier --config ../../.prettierrc.js --ignore-path ../../.prettierignore --write \"**/*.{js,json,md,ts,yaml,yml}\"",
     "prettier:check": "prettier --check --config ../../.prettierrc.js --ignore-path ../../.prettierignore \"**/*.{js,json,md,ts,yaml,yml}\"",
+    "rollup": "rollup --config ./rollup.config.ts",
     "test": "mocha --config ./.mocharc.yaml",
     "typecheck": "tsc --incremental false --noEmit"
   },
-  "types": "./dist/index.d.ts"
+  "types": "./dist/node/index.d.ts"
 }
