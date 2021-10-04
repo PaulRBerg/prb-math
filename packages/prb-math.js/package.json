@@ -6,7 +6,6 @@
     "name": "Paul Razvan Berg",
     "url": "https://paulrberg.com"
   },
-  "browser": "./dist/browser/prb-math.min.js",
   "bugs": {
     "url": "https://github.com/hifi-finance/prb-math/issues"
   },

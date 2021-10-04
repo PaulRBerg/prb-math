@@ -9,7 +9,7 @@ export default [
     input: pkg.main,
     output: {
       exports: "named",
-      file: pkg.browser,
+      file: "./dist/browser/prb-math.min.js",
       format: "iife",
       name: "PRBMath",
       sourcemap: false,
