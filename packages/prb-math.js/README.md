@@ -14,16 +14,16 @@ provides TypeScript implementations for the mathematical functions originally wr
 With yarn:
 
 ```bash
-$ yarn add prb-math.js @ethersproject/bignumber evm-bn mathjs
+$ yarn add prb-math.js @ethersproject/bignumber evm-bn
 ```
 
 Or npm:
 
 ```bash
-$ npm install prb-math.js @ethersproject/bignumber evm-bn mathjs
+$ npm install prb-math.js @ethersproject/bignumber evm-bn
 ```
 
-The three trailing packages are the peer dependencies of `prb-math.js`.
+The two trailing packages are the peer dependencies of `prb-math.js`.
 
 ### Browser
 

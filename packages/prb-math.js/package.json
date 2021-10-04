@@ -65,8 +65,7 @@
   "main": "./dist/node/index.js",
   "peerDependencies": {
     "@ethersproject/bignumber": "^5.4.2",
-    "evm-bn": "^1.0.0",
-    "mathjs": "^9.5.0"
+    "evm-bn": "^1.0.0"
   },
   "publishConfig": {
     "access": "public"

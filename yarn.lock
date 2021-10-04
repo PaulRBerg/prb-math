@@ -252,15 +252,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.14.6":
-  version: 7.14.6
-  resolution: "@babel/runtime@npm:7.14.6"
-  dependencies:
-    regenerator-runtime: ^0.13.4
-  checksum: 927ffed7871f2ed29f967a8dad7a72aa10662f93b6735a89d664a161fa4dc2074b8947ca159a8a0a49cec9a71c8de473d7c2b22d3de0ee4d7dd06d24a7f98018
-  languageName: node
-  linkType: hard
-
 "@babel/runtime@npm:^7.15.4":
   version: 7.15.4
   resolution: "@babel/runtime@npm:7.15.4"
@@ -1950,15 +1941,6 @@ __metadata:
   version: 5.1.0
   resolution: "@types/lru-cache@npm:5.1.0"
   checksum: fc255bfe7740ede1161978bd2f7a007d9ebd9b6397cfef3bf60130102ab9f6304a680cd41a20d112fd420022a66293be89df659bacfcd66a4a36562168358e22
-  languageName: node
-  linkType: hard
-
-"@types/mathjs@npm:^9.4.2":
-  version: 9.4.2
-  resolution: "@types/mathjs@npm:9.4.2"
-  dependencies:
-    mathjs: "*"
-  checksum: 13d4e7a70719f6cd83273560d2e6e6b4fb0db5e794164ffcf66e49678d59b42eff0f3861b04d1a522b94c8cebeaed7c0585c088e1ca0e71d36910e502dd2eea2
   languageName: node
   linkType: hard
 
@@ -4639,13 +4621,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"complex.js@npm:^2.0.13":
-  version: 2.0.13
-  resolution: "complex.js@npm:2.0.13"
-  checksum: 586681e79fd9c5236152dff84a81bf782d8c3137fab6c2fe33e6780461e848ae684ca66d66cd36b335b3d2f2a449fc0f2356a88bf6192c0931f52537f1b12766
-  languageName: node
-  linkType: hard
-
 "complex.js@npm:^2.0.15":
   version: 2.0.15
   resolution: "complex.js@npm:2.0.15"
@@ -5119,7 +5094,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"decimal.js@npm:^10.3.0, decimal.js@npm:^10.3.1":
+"decimal.js@npm:^10.3.1":
   version: 10.3.1
   resolution: "decimal.js@npm:10.3.1"
   checksum: 0351ac9f05fe050f23227aa6a4573bee2d58fa7378fcf28d969a8c789525032effb488a90320fd3fe86a66e17b4bc507d811b15eada5b7f0e7ec5d2af4c24a59
@@ -10399,25 +10374,6 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"mathjs@npm:*":
-  version: 9.4.3
-  resolution: "mathjs@npm:9.4.3"
-  dependencies:
-    "@babel/runtime": ^7.14.6
-    complex.js: ^2.0.13
-    decimal.js: ^10.3.0
-    escape-latex: ^1.2.0
-    fraction.js: ^4.1.1
-    javascript-natural-sort: ^0.7.1
-    seedrandom: ^3.0.5
-    tiny-emitter: ^2.1.0
-    typed-function: ^2.0.0
-  bin:
-    mathjs: bin/cli.js
-  checksum: 876512a846fcd6c7a167eaea1dfa422d97d1d0214c4d144834294d4ff2acf8461b0143edd99d0d8cda83ff361ba33360ad194906fed9133b699f1960efa4e270
-  languageName: node
-  linkType: hard
-
 "mathjs@npm:^9.5.0":
   version: 9.5.0
   resolution: "mathjs@npm:9.5.0"
@@ -12227,7 +12183,6 @@ fsevents@~2.1.1:
   peerDependencies:
     "@ethersproject/bignumber": ^5.4.2
     evm-bn: ^1.0.0
-    mathjs: ^9.5.0
   languageName: unknown
   linkType: soft
 
@@ -12248,7 +12203,6 @@ fsevents@~2.1.1:
     "@typechain/hardhat": ^2.3.0
     "@types/chai": ^4.2.22
     "@types/fs-extra": 9.0.13
-    "@types/mathjs": ^9.4.2
     "@types/mocha-each": ^2.0.0
     "@types/node": ^16.10.2
     "@typescript-eslint/eslint-plugin": ^4.32.0
@@ -12265,7 +12219,6 @@ fsevents@~2.1.1:
     hardhat: ^2.6.4
     lint-staged: ^11.1.2
     lodash: ^4.17.21
-    mathjs: ^9.5.0
     mocha: ^9.1.2
     mocha-each: ^2.0.1
     pinst: ^2.1.6

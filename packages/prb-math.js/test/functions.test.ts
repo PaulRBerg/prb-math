@@ -14,7 +14,7 @@ import { shouldBehaveLikeMul } from "./functions/mul.test";
 import { shouldBehaveLikePow } from "./functions/pow.test";
 import { shouldBehaveLikeSqrt } from "./functions/sqrt.test";
 
-describe("prb-math.js", function () {
+describe("PRBMath.Js", function () {
   describe("avg", function () {
     shouldBehaveLikeAvg();
   });
