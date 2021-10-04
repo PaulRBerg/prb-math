@@ -1,7 +1,7 @@
 {
   "name": "prb-math.js",
   "description": "JavaScript SDK for the PRBMath smart contract library for advanced fixed-point math",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": {
     "name": "Paul Razvan Berg",
     "url": "https://paulrberg.com"
