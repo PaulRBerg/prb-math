@@ -1,7 +1,7 @@
 {
   "name": "prb-math.js",
   "description": "JavaScript SDK for the PRBMath smart contract library for advanced fixed-point math",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": {
     "name": "Paul Razvan Berg",
     "url": "https://paulrberg.com"
@@ -65,7 +65,7 @@
   "main": "./dist/node/index.js",
   "peerDependencies": {
     "@ethersproject/bignumber": "^5.4.2",
-    "evm-bn": "^1.0.0"
+    "evm-bn": "^1.0.1"
   },
   "publishConfig": {
     "access": "public"

@@ -12182,7 +12182,7 @@ fsevents@~2.1.1:
     typescript: ^4.4.3
   peerDependencies:
     "@ethersproject/bignumber": ^5.4.2
-    evm-bn: ^1.0.0
+    evm-bn: ^1.0.1
   languageName: unknown
   linkType: soft
 
