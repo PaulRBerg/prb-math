@@ -4,16 +4,7 @@ import type { BigNumber as MathjsBigNumber } from "mathjs";
 
 import math from "./math";
 import { SCALE } from "./constants";
-import { toMbn, toEbn } from "./helpers";
-
-function solidityMod(x: EthersBigNumber, m: EthersBigNumber): EthersBigNumber {
-  const m_mbn: MathjsBigNumber = toMbn(m);
-  let remainder: MathjsBigNumber = toMbn(x).mod(m_mbn);
-  if (x.isNegative() && !remainder.isZero()) {
-    remainder = remainder.sub(m_mbn);
-  }
-  return toEbn(remainder);
-}
+import { toMbn, toEbn, solidityMod } from "./helpers";
 
 export function avg(x: EthersBigNumber, y: EthersBigNumber): EthersBigNumber {
   const result = math.mean!(toMbn(x), toMbn(y)) as MathjsBigNumber;
