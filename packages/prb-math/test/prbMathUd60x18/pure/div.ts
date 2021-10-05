@@ -7,7 +7,7 @@ import { MAX_UD60x18, PI, PRBMathErrors, SCALE, div } from "prb-math.js";
 
 import { PanicCodes } from "../../shared/errors";
 
-export default function shouldBehaveLikeDiv(): void {
+export function shouldBehaveLikeDiv(): void {
   context("when the denominator is zero", function () {
     const y: BigNumber = Zero;
 

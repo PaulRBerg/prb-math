@@ -13,7 +13,7 @@ import {
   ceil,
 } from "prb-math.js";
 
-export default function shouldBehaveLikeCeil(): void {
+export function shouldBehaveLikeCeil(): void {
   context("when x is zero", function () {
     it("returns 0", async function () {
       const x: BigNumber = Zero;

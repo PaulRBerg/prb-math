@@ -7,7 +7,7 @@ import { E, MAX_SD59x18, MIN_SD59x18, PI } from "prb-math.js";
 
 import { PanicCodes } from "../../shared/errors";
 
-export default function shouldBehaveLikeSub(): void {
+export function shouldBehaveLikeSub(): void {
   context("when the difference underflows", function () {
     const testSets = [
       [MIN_SD59x18, toBn("1e-18")],

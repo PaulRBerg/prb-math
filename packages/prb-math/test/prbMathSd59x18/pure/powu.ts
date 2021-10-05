@@ -14,7 +14,7 @@ import {
   powu,
 } from "prb-math.js";
 
-export default function shouldBehaveLikePowu(): void {
+export function shouldBehaveLikePowu(): void {
   context("when the base is zero", function () {
     const x: BigNumber = Zero;
 

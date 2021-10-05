@@ -5,7 +5,7 @@ import { toBn as toEvmBn } from "evm-bn";
 import forEach from "mocha-each";
 import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, PRBMathErrors, SQRT_MAX_UD60x18, powu } from "prb-math.js";
 
-export default function shouldBehaveLikePow(): void {
+export function shouldBehaveLikePowu(): void {
   context("when the base is zero", function () {
     const x: BigNumber = Zero;
 

@@ -5,7 +5,7 @@ import { toBn } from "evm-bn";
 import forEach from "mocha-each";
 import { E, MAX_UD60x18, PI, PRBMathUD60x18Errors } from "prb-math.js";
 
-export default function shouldBehaveLikeAdd(): void {
+export function shouldBehaveLikeAdd(): void {
   context("when the sum overflows", function () {
     const testSets = [
       [toBn("1e-18"), MAX_UD60x18],

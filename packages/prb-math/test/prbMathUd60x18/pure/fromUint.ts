@@ -4,7 +4,7 @@ import { toBn } from "evm-bn";
 import forEach from "mocha-each";
 import { MAX_UD60x18, MAX_WHOLE_UD60x18, PRBMathUD60x18Errors, SCALE } from "prb-math.js";
 
-export default function shouldBehaveLikeFromUint(): void {
+export function shouldBehaveLikeFromUint(): void {
   context("when x is greater than max ud60x18 divided by scale", function () {
     const testSets = [MAX_WHOLE_UD60x18.div(SCALE).add(1), MAX_WHOLE_UD60x18, MAX_UD60x18];
 

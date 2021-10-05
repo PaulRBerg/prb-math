@@ -5,7 +5,7 @@ import { toBn } from "evm-bn";
 import forEach from "mocha-each";
 import { MAX_SD59x18, MAX_WHOLE_SD59x18, MIN_SD59x18, MIN_WHOLE_SD59x18, PI, frac } from "prb-math.js";
 
-export default function shouldBehaveLikeFrac(): void {
+export function shouldBehaveLikeFrac(): void {
   context("when x is zero", function () {
     it("returns 0", async function () {
       const x: BigNumber = Zero;

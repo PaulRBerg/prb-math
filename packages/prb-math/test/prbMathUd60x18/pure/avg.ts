@@ -5,7 +5,7 @@ import { toBn } from "evm-bn";
 import forEach from "mocha-each";
 import { MAX_UD60x18, MAX_WHOLE_UD60x18, avg } from "prb-math.js";
 
-export default function shouldBehaveLikeAvg(): void {
+export function shouldBehaveLikeAvg(): void {
   context("when both operands are zero", function () {
     it("returns 0", async function () {
       const x: BigNumber = Zero;

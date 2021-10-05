@@ -5,7 +5,7 @@ import { toBn } from "evm-bn";
 import forEach from "mocha-each";
 import { E, MAX_SD59x18, MAX_WHOLE_SD59x18, MIN_SD59x18, MIN_WHOLE_SD59x18, PI, SCALE } from "prb-math.js";
 
-export default function shouldBehaveLikeToInt(): void {
+export function shouldBehaveLikeToInt(): void {
   context("when x is less the absolute value of scale", function () {
     const testSets = [[toBn("1").mul(-1).add(1)], [toBn("-1e-18")]].concat([
       [Zero],

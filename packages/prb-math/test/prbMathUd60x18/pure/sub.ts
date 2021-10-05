@@ -5,7 +5,7 @@ import { toBn } from "evm-bn";
 import forEach from "mocha-each";
 import { E, MAX_UD60x18, PI, PRBMathUD60x18Errors } from "prb-math.js";
 
-export default function shouldBehaveLikeSub(): void {
+export function shouldBehaveLikeSub(): void {
   context("when the difference underflows", function () {
     const testSets = [
       [toBn("1e-18"), toBn("2e-18")],

@@ -5,7 +5,7 @@ import { toBn } from "evm-bn";
 import forEach from "mocha-each";
 import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, PRBMathUD60x18Errors, sqrt } from "prb-math.js";
 
-export default function shouldBehaveLikeSqrt(): void {
+export function shouldBehaveLikeSqrt(): void {
   context("when x is zero", function () {
     it("returns 0", async function () {
       const x: BigNumber = Zero;

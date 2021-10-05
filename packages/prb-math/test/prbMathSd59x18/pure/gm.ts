@@ -17,7 +17,7 @@ import {
 // Biggest number whose square fits within int256
 const SQRT_MAX_SD59x18_DIV_BY_SCALE: BigNumber = toBn("240615969168004511545.033772477625056927");
 
-export default function shouldBehaveLikeGm(): void {
+export function shouldBehaveLikeGm(): void {
   context("when one of the operands is zero", function () {
     const testSets = [
       [Zero, PI],

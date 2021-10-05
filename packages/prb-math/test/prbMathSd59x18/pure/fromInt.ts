@@ -11,7 +11,7 @@ import {
   SCALE,
 } from "prb-math.js";
 
-export default function shouldBehaveLikeFromInt(): void {
+export function shouldBehaveLikeFromInt(): void {
   context("when x is less than min sd59x18 divided by scale", function () {
     const testSets = [MIN_WHOLE_SD59x18.div(SCALE).sub(1), MIN_WHOLE_SD59x18, MIN_SD59x18];
 

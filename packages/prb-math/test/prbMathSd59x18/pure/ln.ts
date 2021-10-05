@@ -5,7 +5,7 @@ import { toBn } from "evm-bn";
 import forEach from "mocha-each";
 import { E, MAX_SD59x18, MAX_WHOLE_SD59x18, PI, PRBMathSD59x18Errors, ln } from "prb-math.js";
 
-export default function shouldBehaveLikeLn(): void {
+export function shouldBehaveLikeLn(): void {
   context("when x is zero", function () {
     it("reverts", async function () {
       const x: BigNumber = Zero;

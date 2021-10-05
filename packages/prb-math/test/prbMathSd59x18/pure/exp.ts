@@ -14,7 +14,7 @@ import {
   exp,
 } from "prb-math.js";
 
-export default function shouldBehaveLikeExp(): void {
+export function shouldBehaveLikeExp(): void {
   context("when x is zero", function () {
     it("returns 1", async function () {
       const x: BigNumber = Zero;

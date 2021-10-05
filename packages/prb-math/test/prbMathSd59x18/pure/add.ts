@@ -7,7 +7,7 @@ import { E, MAX_SD59x18, MIN_SD59x18, PI } from "prb-math.js";
 
 import { PanicCodes } from "../../shared/errors";
 
-export default function shouldBehaveLikeAdd(): void {
+export function shouldBehaveLikeAdd(): void {
   context("when the sum overflows", function () {
     const testSets = [
       [toBn("1e-18"), MAX_SD59x18],

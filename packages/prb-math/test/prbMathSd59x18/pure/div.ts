@@ -7,7 +7,7 @@ import { MAX_SD59x18, MIN_SD59x18, PI, PRBMathSD59x18Errors, SCALE, div } from "
 
 import { PanicCodes } from "../../shared/errors";
 
-export default function shouldBehaveLikeDiv(): void {
+export function shouldBehaveLikeDiv(): void {
   context("when the denominator is zero", function () {
     const y: BigNumber = Zero;
 

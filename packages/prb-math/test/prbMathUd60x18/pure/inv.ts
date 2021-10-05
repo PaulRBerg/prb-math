@@ -7,7 +7,7 @@ import { MAX_UD60x18, MAX_WHOLE_UD60x18, PI, inv } from "prb-math.js";
 
 import { PanicCodes } from "../../shared/errors";
 
-export default function shouldBehaveLikeInv(): void {
+export function shouldBehaveLikeInv(): void {
   context("when x is zero", function () {
     it("reverts", async function () {
       const x: BigNumber = Zero;

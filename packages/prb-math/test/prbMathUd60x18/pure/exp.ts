@@ -5,7 +5,7 @@ import { toBn } from "evm-bn";
 import forEach from "mocha-each";
 import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, PRBMathUD60x18Errors, exp } from "prb-math.js";
 
-export default function shouldBehaveLikeExp(): void {
+export function shouldBehaveLikeExp(): void {
   context("when x is zero", function () {
     it("returns 1", async function () {
       const x: BigNumber = Zero;

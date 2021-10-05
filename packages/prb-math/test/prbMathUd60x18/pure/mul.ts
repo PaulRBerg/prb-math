@@ -5,7 +5,7 @@ import { toBn } from "evm-bn";
 import forEach from "mocha-each";
 import { E, HALF_SCALE, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, PRBMathErrors, SQRT_MAX_UD60x18, mul } from "prb-math.js";
 
-export default function shouldBehaveLikeMul(): void {
+export function shouldBehaveLikeMul(): void {
   context("when one of the operands is zero", function () {
     const testSets = [
       [Zero, MAX_UD60x18],

@@ -5,7 +5,7 @@ import { toBn } from "evm-bn";
 import forEach from "mocha-each";
 import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, PRBMathUD60x18Errors, SCALE, log10 } from "prb-math.js";
 
-export default function shouldBehaveLikeLog10(): void {
+export function shouldBehaveLikeLog10(): void {
   context("when x is less than 1", function () {
     const testSets = [Zero, toBn("1e-18"), toBn("1e-17"), toBn("1e4"), toBn("0.1"), toBn("0.5"), SCALE.sub(1)];
 

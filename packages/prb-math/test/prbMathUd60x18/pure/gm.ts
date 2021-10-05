@@ -8,7 +8,7 @@ import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, PRBMathUD60x18Errors, gm } from 
 // Biggest number whose square fits within uint256
 export const SQRT_MAX_UD60x18_DIV_BY_SCALE: BigNumber = toBn("340282366920938463463.374607431768211455");
 
-export default function shouldBehaveLikeGm(): void {
+export function shouldBehaveLikeGm(): void {
   context("when one of the operands is zero", function () {
     const testSets = [
       [Zero, PI],

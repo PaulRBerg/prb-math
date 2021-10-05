@@ -18,7 +18,7 @@ import {
   mul,
 } from "prb-math.js";
 
-export default function shouldBehaveLikeMul(): void {
+export function shouldBehaveLikeMul(): void {
   context("when one of the operands is zero", function () {
     const testSets = [
       [MIN_SD59x18.add(1), Zero],

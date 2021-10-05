@@ -5,7 +5,7 @@ import { toBn } from "evm-bn";
 import forEach from "mocha-each";
 import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, SCALE } from "prb-math.js";
 
-export default function shouldBehaveLikeToUint(): void {
+export function shouldBehaveLikeToUint(): void {
   context("when x is less than the scale", function () {
     const testSets = [Zero, toBn("1e-18"), SCALE.sub(1)];
 
