@@ -72,6 +72,7 @@
     "access": "public"
   },
   "repository": {
+    "directory": "packages/prb-math",
     "type": "git",
     "url": "https://github.com/hifi-finance/prb-math"
   },
