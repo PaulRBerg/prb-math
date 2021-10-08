@@ -22,7 +22,6 @@
     "@typechain/ethers-v5": "^7.1.2",
     "@typechain/hardhat": "^2.3.0",
     "@types/chai": "^4.2.22",
-    "@types/fs-extra": "9.0.13",
     "@types/mocha-each": "^2.0.0",
     "@types/node": "^16.10.2",
     "@typescript-eslint/eslint-plugin": "^4.32.0",
@@ -34,8 +33,6 @@
     "ethereum-waffle": "^3.4.0",
     "ethers": "^5.4.7",
     "evm-bn": "^1.0.1",
-    "from-exponential": "^1.1.1",
-    "fs-extra": "^10.0.0",
     "hardhat": "^2.6.4",
     "lint-staged": "^11.1.2",
     "lodash": "^4.17.21",
@@ -58,11 +55,10 @@
     "/contracts",
     "CHANGELOG.md"
   ],
-  "homepage": "https://github.com/hifi-finance/prb-math#readme",
+  "homepage": "https://github.com/hifi-finance/prb-math/tree/main/packages/prb-math#readme",
   "keywords": [
     "blockchain",
     "ethereum",
-    "hardhat",
     "math",
     "smart-contracts",
     "solidity"
@@ -82,10 +78,10 @@
     "compile": "hardhat compile",
     "coverage": "hardhat coverage --solcoverjs ./.solcover.js --temp artifacts --testfiles \"./test/**/*.ts\"",
     "lint": "yarn lint:sol && yarn lint:ts && yarn prettier:check",
-    "lint:sol": "solhint --config ./.solhint.json --max-warnings 0 \"contracts/**/*.sol\"",
+    "lint:sol": "solhint --config ./.solhint.json  --ignore-path ./.solhintignore --max-warnings 0 \"contracts/**/*.sol\"",
     "lint:ts": "eslint --config ../../.eslintrc.yaml --ignore-path ../../.eslintignore --ext .js,.ts .",
-    "prettier": "prettier --config ../../.prettierrc.js ../../.prettierignore --write \"**/*.{js,json,md,sol,ts,yaml,yml}\"",
-    "prettier:check": "prettier --check --config ../../.prettierrc.js --ignore-path ../../.prettierignore \"**/*.{js,json,md,sol,ts,yaml,yml}\"",
+    "prettier": "prettier --config ../../.prettierrc.js ../../.prettierignore --write \"**/*.{js,json,md,sol,ts}\"",
+    "prettier:check": "prettier --check --config ../../.prettierrc.js --ignore-path ../../.prettierignore \"**/*.{js,json,md,sol,ts}\"",
     "test": "hardhat test",
     "typechain": "hardhat typechain"
   }

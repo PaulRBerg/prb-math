@@ -26,7 +26,7 @@
     "clean": "yarn workspaces foreach --parallel run clean",
     "clean:node_modules": "yarn workspaces foreach --parallel run clean:node_modules && shx rm -rf ./node_modules",
     "coverage": "yarn workspaces foreach --parallel run coverage",
-    "lint": "yarn workspaces foreach --parallel run lint && yarn prettier:check",
+    "lint": "yarn workspaces foreach --parallel run lint",
     "lint:sol": "yarn workspaces foreach --parallel run lint:sol",
     "lint:ts": "yarn workspaces foreach --parallel run lint:ts",
     "postinstall": "husky install",
