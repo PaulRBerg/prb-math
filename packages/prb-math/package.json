@@ -41,7 +41,6 @@
     "lodash": "^4.17.21",
     "mocha": "^9.1.2",
     "mocha-each": "^2.0.1",
-    "pinst": "^2.1.6",
     "prb-math.js": "workspace:*",
     "prettier": "^2.4.1",
     "prettier-plugin-solidity": "^1.0.0-beta.18",
