@@ -11,22 +11,22 @@ import "./PRBMath.sol";
 /// are bound by the minimum and the maximum values permitted by the Solidity type int256.
 library PRBMathSD59x18 {
     /// @dev log2(e) as a signed 59.18-decimal fixed-point number.
-    int256 internal constant LOG2_E = 1442695040888963407;
+    int256 internal constant LOG2_E = 1_442695040888963407;
 
     /// @dev Half the SCALE number.
     int256 internal constant HALF_SCALE = 5e17;
 
     /// @dev The maximum value a signed 59.18-decimal fixed-point number can have.
-    int256 internal constant MAX_SD59x18 = 57896044618658097711785492504343953926634992332820282019728792003956564819967;
+    int256 internal constant MAX_SD59x18 = 57896044618658097711785492504343953926634992332820282019728_792003956564819967;
 
     /// @dev The maximum whole value a signed 59.18-decimal fixed-point number can have.
-    int256 internal constant MAX_WHOLE_SD59x18 = 57896044618658097711785492504343953926634992332820282019728000000000000000000;
+    int256 internal constant MAX_WHOLE_SD59x18 = 57896044618658097711785492504343953926634992332820282019728_000000000000000000;
 
     /// @dev The minimum value a signed 59.18-decimal fixed-point number can have.
-    int256 internal constant MIN_SD59x18 = -57896044618658097711785492504343953926634992332820282019728792003956564819968;
+    int256 internal constant MIN_SD59x18 = -57896044618658097711785492504343953926634992332820282019728_792003956564819968;
 
     /// @dev The minimum whole value a signed 59.18-decimal fixed-point number can have.
-    int256 internal constant MIN_WHOLE_SD59x18 = -57896044618658097711785492504343953926634992332820282019728000000000000000000;
+    int256 internal constant MIN_WHOLE_SD59x18 = -57896044618658097711785492504343953926634992332820282019728_000000000000000000;
 
     /// @dev How many trailing decimals can be represented.
     int256 internal constant SCALE = 1e18;
@@ -150,7 +150,7 @@ library PRBMathSD59x18 {
     /// @notice Returns Euler's number as a signed 59.18-decimal fixed-point number.
     /// @dev See https://en.wikipedia.org/wiki/E_(mathematical_constant).
     function e() internal pure returns (int256 result) {
-        result = 2718281828459045235;
+        result = 2_718281828459045235;
     }
 
     /// @notice Calculates the natural exponent of x.
@@ -169,12 +169,12 @@ library PRBMathSD59x18 {
     /// @return result The result as a signed 59.18-decimal fixed-point number.
     function exp(int256 x) internal pure returns (int256 result) {
         // Without this check, the value passed to "exp2" would be less than -59.794705707972522261.
-        if (x < -41446531673892822322) {
+        if (x < -41_446531673892822322) {
             return 0;
         }
 
         // Without this check, the value passed to "exp2" would be greater than 192.
-        if (x >= 133084258667509499441) {
+        if (x >= 133_084258667509499441) {
             revert PRBMathSD59x18__ExpInputTooBig(x);
         }
 
@@ -202,7 +202,7 @@ library PRBMathSD59x18 {
         // This works because 2^(-x) = 1/2^x.
         if (x < 0) {
             // 2^59.794705707972522262 is the maximum number whose inverse does not truncate down to zero.
-            if (x < -59794705707972522261) {
+            if (x < -59_794705707972522261) {
                 return 0;
             }
 
@@ -459,7 +459,7 @@ library PRBMathSD59x18 {
         if (result == MAX_SD59x18) {
             // Do the fixed-point division inline to save gas. The denominator is log2(10).
             unchecked {
-                result = (log2(x) * SCALE) / 3321928094887362347;
+                result = (log2(x) * SCALE) / 3_321928094887362347;
             }
         }
     }
@@ -572,7 +572,7 @@ library PRBMathSD59x18 {
 
     /// @notice Returns PI as a signed 59.18-decimal fixed-point number.
     function pi() internal pure returns (int256 result) {
-        result = 3141592653589793238;
+        result = 3_141592653589793238;
     }
 
     /// @notice Raises x to the power of y.

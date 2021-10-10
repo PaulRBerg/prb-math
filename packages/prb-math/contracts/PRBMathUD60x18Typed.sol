@@ -17,13 +17,13 @@ library PRBMathUD60x18Typed {
     uint256 internal constant HALF_SCALE = 5e17;
 
     /// @dev log2(e) as an unsigned 60.18-decimal fixed-point number.
-    uint256 internal constant LOG2_E = 1442695040888963407;
+    uint256 internal constant LOG2_E = 1_442695040888963407;
 
     /// @dev The maximum value an unsigned 60.18-decimal fixed-point number can have.
-    uint256 internal constant MAX_UD60x18 = 115792089237316195423570985008687907853269984665640564039457584007913129639935;
+    uint256 internal constant MAX_UD60x18 = 115792089237316195423570985008687907853269984665640564039457_584007913129639935;
 
     /// @dev The maximum whole value an unsigned 60.18-decimal fixed-point number can have.
-    uint256 internal constant MAX_WHOLE_UD60x18 = 115792089237316195423570985008687907853269984665640564039457000000000000000000;
+    uint256 internal constant MAX_WHOLE_UD60x18 = 115792089237316195423570985008687907853269984665640564039457_000000000000000000;
 
     /// @dev How many trailing decimals can be represented.
     uint256 internal constant SCALE = 1e18;
@@ -104,7 +104,7 @@ library PRBMathUD60x18Typed {
     /// @notice Returns Euler's number as an unsigned 60.18-decimal fixed-point number.
     /// @dev See https://en.wikipedia.org/wiki/E_(mathematical_constant).
     function e() internal pure returns (PRBMath.UD60x18 memory result) {
-        result = PRBMath.UD60x18({ value: 2718281828459045235 });
+        result = PRBMath.UD60x18({ value: 2_718281828459045235 });
     }
 
     /// @notice Calculates the natural exponent of x.
@@ -121,7 +121,7 @@ library PRBMathUD60x18Typed {
         uint256 xValue = x.value;
 
         // Without this check, the value passed to "exp2" would be greater than 192.
-        if (xValue >= 133084258667509499441) {
+        if (xValue >= 133_084258667509499441) {
             revert PRBMathUD60x18__ExpInputTooBig(xValue);
         }
 
@@ -381,7 +381,7 @@ library PRBMathUD60x18Typed {
         } else {
             // Do the fixed-point division inline to save gas. The denominator is log2(10).
             unchecked {
-                rValue = (log2(x).value * SCALE) / 3321928094887362347;
+                rValue = (log2(x).value * SCALE) / 3_321928094887362347;
                 result = PRBMath.UD60x18({ value: rValue });
             }
         }
@@ -451,7 +451,7 @@ library PRBMathUD60x18Typed {
 
     /// @notice Returns PI as an unsigned 60.18-decimal fixed-point number.
     function pi() internal pure returns (PRBMath.UD60x18 memory result) {
-        result = PRBMath.UD60x18({ value: 3141592653589793238 });
+        result = PRBMath.UD60x18({ value: 3_141592653589793238 });
     }
 
     /// @notice Raises x to the power of y.

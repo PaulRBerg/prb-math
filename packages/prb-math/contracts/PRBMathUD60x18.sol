@@ -14,13 +14,13 @@ library PRBMathUD60x18 {
     uint256 internal constant HALF_SCALE = 5e17;
 
     /// @dev log2(e) as an unsigned 60.18-decimal fixed-point number.
-    uint256 internal constant LOG2_E = 1442695040888963407;
+    uint256 internal constant LOG2_E = 1_442695040888963407;
 
     /// @dev The maximum value an unsigned 60.18-decimal fixed-point number can have.
-    uint256 internal constant MAX_UD60x18 = 115792089237316195423570985008687907853269984665640564039457584007913129639935;
+    uint256 internal constant MAX_UD60x18 = 115792089237316195423570985008687907853269984665640564039457_584007913129639935;
 
     /// @dev The maximum whole value an unsigned 60.18-decimal fixed-point number can have.
-    uint256 internal constant MAX_WHOLE_UD60x18 = 115792089237316195423570985008687907853269984665640564039457000000000000000000;
+    uint256 internal constant MAX_WHOLE_UD60x18 = 115792089237316195423570985008687907853269984665640564039457_000000000000000000;
 
     /// @dev How many trailing decimals can be represented.
     uint256 internal constant SCALE = 1e18;
@@ -81,7 +81,7 @@ library PRBMathUD60x18 {
     /// @notice Returns Euler's number as an unsigned 60.18-decimal fixed-point number.
     /// @dev See https://en.wikipedia.org/wiki/E_(mathematical_constant).
     function e() internal pure returns (uint256 result) {
-        result = 2718281828459045235;
+        result = 2_718281828459045235;
     }
 
     /// @notice Calculates the natural exponent of x.
@@ -96,7 +96,7 @@ library PRBMathUD60x18 {
     /// @return result The result as an unsigned 60.18-decimal fixed-point number.
     function exp(uint256 x) internal pure returns (uint256 result) {
         // Without this check, the value passed to "exp2" would be greater than 192.
-        if (x >= 133084258667509499441) {
+        if (x >= 133_084258667509499441) {
             revert PRBMathUD60x18__ExpInputTooBig(x);
         }
 
@@ -343,7 +343,7 @@ library PRBMathUD60x18 {
         if (result == MAX_UD60x18) {
             // Do the fixed-point division inline to save gas. The denominator is log2(10).
             unchecked {
-                result = (log2(x) * SCALE) / 3321928094887362347;
+                result = (log2(x) * SCALE) / 3_321928094887362347;
             }
         }
     }
@@ -410,7 +410,7 @@ library PRBMathUD60x18 {
 
     /// @notice Returns PI as an unsigned 60.18-decimal fixed-point number.
     function pi() internal pure returns (uint256 result) {
-        result = 3141592653589793238;
+        result = 3_141592653589793238;
     }
 
     /// @notice Raises x to the power of y.
