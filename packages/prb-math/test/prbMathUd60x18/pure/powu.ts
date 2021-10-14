@@ -75,7 +75,7 @@ export function shouldBehaveLikePowu(): void {
           [toEvmBn("5.491"), BigNumber.from("19")],
           [toEvmBn("478.77"), BigNumber.from("20")],
           [toEvmBn("6452.166"), BigNumber.from("7")],
-          [toEvmBn("1e18"), BigNumber.from("2")],
+          [toEvmBn("1e18"), BigNumber.from("3")],
           [toEvmBn("48740834812604276470.692694885616578541"), BigNumber.from("3")], // Biggest number whose cube fits within MAX_UD60x18
           [toEvmBn(SQRT_MAX_UD60x18), BigNumber.from("2")],
           [MAX_WHOLE_UD60x18, BigNumber.from("1")],
