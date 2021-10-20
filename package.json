@@ -37,7 +37,6 @@
     "@typescript-eslint/parser": "^4.32.0",
     "chai": "^4.3.4",
     "commitizen": "^4.2.4",
-    "copyfiles": "^2.4.1",
     "cz-conventional-changelog": "^3.3.0",
     "dotenv": "^10.0.0",
     "eslint": "^7.32.0",
@@ -94,8 +93,8 @@
     "url": "https://github.com/hifi-finance/prb-math"
   },
   "scripts": {
-    "build": "tsc --project ./tsconfig.prod.json && copyfiles --up 1 \"./src/**/*.d.ts\" ./dist",
-    "clean": "shx rm -rf ./.nyc_output ./artifacts ./coverage ./dist ./typechain ./coverage.json ",
+    "build": "tsc --project ./tsconfig.prod.json",
+    "clean": "shx rm -rf ./.nyc_output ./artifacts ./coverage-contracts ./coverage-ts ./dist ./typechain ./coverage.json ",
     "clean:node_modules": "shx rm -rf ./node_modules",
     "compile": "hardhat compile",
     "coverage": "yarn coverage:contracts && yarn coverage:ts",

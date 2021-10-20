@@ -1,6 +1,6 @@
-import { Signer } from "@ethersproject/abstract-signer";
+import type { Signer } from "@ethersproject/abstract-signer";
 import { artifacts, waffle } from "hardhat";
-import { Artifact } from "hardhat/types";
+import type { Artifact } from "hardhat/types";
 
 import { PRBMathSD59x18Mock } from "../../src/types/PRBMathSD59x18Mock";
 import { PRBMathSD59x18TypedMock } from "../../src/types/PRBMathSD59x18TypedMock";

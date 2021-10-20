@@ -1,10 +1,14 @@
 // eslint-disable @typescript-eslint/no-explicit-any
-import { Signer } from "@ethersproject/abstract-signer";
-import { Wallet } from "@ethersproject/wallet";
-import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
+import type { Signer } from "@ethersproject/abstract-signer";
+import type { Wallet } from "@ethersproject/wallet";
+import type { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
+import chai from "chai";
 import { ethers, waffle } from "hardhat";
 
+import { near } from "./assertions";
 import { Contracts, Signers } from "./types";
+
+chai.use(near);
 
 export function baseContext(description: string, hooks: () => void): void {
   describe(description, function () {
