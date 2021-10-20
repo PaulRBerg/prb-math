@@ -132,6 +132,28 @@ contract UnsignedConsumer {
 
 ```
 
+### JavaScript SDK
+
+PRBMath is accompanied by a JavaScript SDK. Whatever functions there are in the Solidity library, you should find them
+replicated in the SDK. The only exception are `fromUint` and `toUint`, for which you can use
+[evm-bn](https://github.com/paulrberg/evm-bn).
+
+Here's an example for how to calculate the binary logarithm:
+
+```ts
+import type { BigNumber } from "@ethersproject/bignumber";
+import { fromBn, toBn } from "evm-bn";
+import { log2 } from "prb-math";
+
+(async function () {
+  const x: BigNumber = toBn("16");
+  const result: BigNumber = log2(x);
+  console.log({ result: fromBn(result) });
+})();
+```
+
+Pro tip: see how the SDK is used in the [tests](./test/contracts) for PRBMath.
+
 ### PRBMathUD60x18Typed.sol
 
 ```solidity

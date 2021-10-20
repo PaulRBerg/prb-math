@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.0] - 2021-10-20
+
+### Added
+
+- `@ethersproject/bignumber`, `decimal.js`, `evm-bn`, and `mathjs` as normal deps.
+- Ship JavaScript source maps with the npm package.
+
+### Changed
+
+- Americanize spellings in NatSpec comments.
+- Move everything from the `prb-math.js` package to `prb-math`.
+- Polish NatSpec comments in `avg` function.
+- Use underscores in number literals.
+
+### Fixed
+
+- Bug in `powu` function in the `PRBMathSD59x18` contract, which caused the result to be positive even if the base was negative.
+- Minor bug in `avg` function in the `PRBMathSD59x18` contract, which rounded down the result instead of up when the intermediary sum was negative.
+
 ## [2.3.0] - 2021-09-18
 
 ### Added
@@ -100,7 +119,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 
 - Rename the previous `pow` function to `powu`.
-- Speed up `exp2`by simplifying the integer part calculations.
+- Speed up `exp2` by simplifying the integer part calculations.
 - Use the fixed-point format in NatSpec comments.
 
 ### Fixed
@@ -122,7 +141,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 
-- Optimise the `pow` function in PRBMathUD60x18.sol by calling `mulDivFixedPoint` directly.
+- Optimize the `pow` function in PRBMathUD60x18.sol by calling `mulDivFixedPoint` directly.
 
 ## [1.0.3] - 2021-04-20
 
