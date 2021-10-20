@@ -2,6 +2,7 @@ check-coverage: false
 exclude:
   - "src/constants.ts"
   - "src/errors.ts"
+  - "src/helpers.ts"
 extends: "@istanbuljs/nyc-config-typescript"
 include:
   - "src/**/*.ts"
