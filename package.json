@@ -94,7 +94,9 @@
     "url": "https://github.com/hifi-finance/prb-math"
   },
   "scripts": {
-    "build": "tsc --project ./tsconfig.prod.json",
+    "build": "yarn build:node && yarn build:browser",
+    "build:browser": "yarn rollup --config ./rollup.config.ts",
+    "build:node": "tsc --project ./tsconfig.prod.json",
     "clean": "shx rm -rf ./.nyc_output ./artifacts ./coverage-contracts ./coverage-ts ./dist ./typechain ./coverage.json ",
     "clean:node_modules": "shx rm -rf ./node_modules",
     "compile": "hardhat compile",
