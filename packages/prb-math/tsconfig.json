@@ -1,6 +1,0 @@
-{
-  "extends": "../../tsconfig.json",
-  "exclude": ["node_modules"],
-  "files": ["hardhat.config.ts"],
-  "include": ["artifacts/**/*", "artifacts/**/*.json", "helpers/**/*", "tasks/**/*", "test/**/*", "typechain/**/*"]
-}

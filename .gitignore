@@ -10,9 +10,11 @@
 **/build
 **/cache
 **/coverage
+**/coverage-contracts
+**/coverage-ts
 **/dist
 **/node_modules
-**/typechain
+**/src/types
 
 # files
 *.env

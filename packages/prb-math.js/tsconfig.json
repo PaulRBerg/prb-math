@@ -1,5 +1,0 @@
-{
-  "extends": "../../tsconfig.json",
-  "files": ["rollup.config.ts"],
-  "include": ["src/**/*", "test/**/*"]
-}

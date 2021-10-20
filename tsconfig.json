@@ -17,5 +17,7 @@
     "strict": true,
     "target": "es6"
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "files": ["./hardhat.config.ts", "./rollup.config.ts"],
+  "include": ["src/**/*", "test/**/*"]
 }

@@ -3,6 +3,7 @@ name: "Continuous Integration"
 env:
   COVERAGE_GIT_BRANCH: "main"
   COVERAGE_SERVICE_NAME: "github-actions-ci"
+  ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
   INFURA_API_KEY: ${{ secrets.INFURA_API_KEY }}
   MNEMONIC: ${{ secrets.MNEMONIC }}
 
@@ -15,7 +16,7 @@ on:
       - "main"
 
 jobs:
-  run-prb-math-integration:
+  run-contracts-integration:
     runs-on: "ubuntu-latest"
     steps:
       - name: "Check out the repo"
@@ -31,26 +32,23 @@ jobs:
         run: "yarn install --immutable"
 
       - name: "Lint the code"
-        run: "yarn workspace prb-math lint"
-
-      - name: "Build prb-math.js"
-        run: "yarn workspace prb-math.js build:node"
+        run: "yarn lint:contracts"
 
       - name: "Compile the contracts and generate the TypeChain bindings"
-        run: "yarn workspace prb-math typechain"
+        run: "yarn generate:types"
 
       - name: "Test the contracts and generate the coverage report"
-        run: "yarn workspace prb-math coverage"
+        run: "yarn coverage:contracts"
 
       - name: "Prepare the coverage report"
         uses: "coverallsapp/github-action@master"
         with:
-          flag-name: "prb-math"
+          flag-name: "prb-math-contracts"
           github-token: ${{ secrets.GITHUB_TOKEN }}
           parallel: true
-          path-to-lcov: "./packages/prb-math/coverage/lcov.info"
+          path-to-lcov: "./coverage-contracts/lcov.info"
 
-  run-prb-math-js-integration:
+  run-ts-integration:
     runs-on: "ubuntu-latest"
     steps:
       - name: "Check out the repo"
@@ -66,23 +64,26 @@ jobs:
         run: "yarn install --immutable"
 
       - name: "Lint the code"
-        run: "yarn workspace prb-math.js lint"
+        run: "yarn lint:ts"
 
-      - name: "Test the contracts and generate the coverage report"
-        run: "yarn workspace prb-math.js coverage"
+      - name: "Compile the contracts and generate the TypeChain bindings"
+        run: "yarn generate:types"
+
+      - name: "Test the code and generate the coverage report"
+        run: "yarn coverage:ts"
 
       - name: "Prepare the coverage report"
         uses: "coverallsapp/github-action@master"
         with:
-          flag-name: "prb-math.js"
+          flag-name: "prb-math-ts"
           github-token: ${{ secrets.GITHUB_TOKEN }}
           parallel: true
-          path-to-lcov: "./packages/prb-math.js/coverage/lcov.info"
+          path-to-lcov: "./coverage-ts/lcov.info"
 
   upload-coverage-report:
     needs:
-      - "run-prb-math-integration"
-      - "run-prb-math-js-integration"
+      - "run-contracts-integration"
+      - "run-ts-integration"
     runs-on: "ubuntu-latest"
     steps:
       - name: "Upload the coverage reports to Coveralls"

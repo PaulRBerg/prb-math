@@ -1,41 +1,116 @@
 {
-  "name": "prb-math-monorepo",
-  "description": "Monorepo implementing PRBMath and related packages",
-  "version": "1.0.0",
+  "name": "prb-math",
+  "description": "Smart contract library for advanced fixed-point math",
+  "version": "2.3.0",
   "author": {
     "name": "Paul Razvan Berg",
     "url": "https://paulrberg.com"
   },
+  "bugs": {
+    "url": "https://github.com/hifi-finance/prb-math/issues"
+  },
+  "dependencies": {
+    "@ethersproject/bignumber": "^5.4.2",
+    "decimal.js": "^10.3.1",
+    "evm-bn": "^1.0.1",
+    "mathjs": "^9.5.0"
+  },
   "devDependencies": {
     "@commitlint/cli": "^13.2.0",
     "@commitlint/config-conventional": "^13.2.0",
+    "@ethersproject/abi": "^5.4.1",
+    "@ethersproject/abstract-signer": "^5.4.1",
+    "@ethersproject/bytes": "^5.4.0",
+    "@ethersproject/constants": "^5.4.0",
+    "@ethersproject/providers": "^5.4.5",
+    "@ethersproject/wallet": "^5.4.0",
+    "@istanbuljs/nyc-config-typescript": "^1.0.1",
+    "@nomiclabs/hardhat-ethers": "^2.0.2",
+    "@nomiclabs/hardhat-waffle": "^2.0.1",
+    "@rollup/plugin-node-resolve": "^13.0.5",
+    "@typechain/ethers-v5": "^7.1.2",
+    "@typechain/hardhat": "^2.3.0",
+    "@types/chai": "^4.2.22",
+    "@types/mocha-each": "^2.0.0",
+    "@types/node": "^16.10.2",
+    "@typescript-eslint/eslint-plugin": "^4.32.0",
+    "@typescript-eslint/parser": "^4.32.0",
+    "chai": "^4.3.4",
     "commitizen": "^4.2.4",
+    "copyfiles": "^2.4.1",
     "cz-conventional-changelog": "^3.3.0",
+    "dotenv": "^10.0.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "ethereum-waffle": "^3.4.0",
+    "ethers": "^5.4.7",
+    "hardhat": "^2.6.4",
     "husky": "^7.0.2",
     "lint-staged": "^11.1.2",
+    "lodash": "^4.17.21",
+    "mocha": "^9.1.2",
+    "mocha-each": "^2.0.1",
+    "nyc": "^15.1.0",
     "prettier": "^2.4.1",
     "prettier-plugin-solidity": "^1.0.0-beta.18",
-    "shx": "^0.3.3"
+    "rollup": "^2.58.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "shelljs": "^0.8.4",
+    "shx": "^0.3.3",
+    "solhint": "^3.3.6",
+    "solhint-plugin-prettier": "^0.0.5",
+    "solidity-coverage": "^0.7.17",
+    "ts-generator": "^0.1.1",
+    "ts-node": "^10.2.1",
+    "typechain": "^5.1.2",
+    "typescript": "~4.4.3"
   },
-  "private": true,
-  "resolutions": {
-    "@ethersproject/bignumber": "5.4.2"
+  "files": [
+    "/contracts",
+    "/dist/**/*.d.ts",
+    "/dist/**/*.d.ts.map",
+    "/dist/**/*.js",
+    "/dist/**/*.js.map",
+    "CHANGELOG.md"
+  ],
+  "homepage": "https://github.com/hifi-finance/prb-math#readme",
+  "keywords": [
+    "blockchain",
+    "ethereum",
+    "library",
+    "math",
+    "smart-contracts",
+    "solidity",
+    "typescript"
+  ],
+  "license": "Unlicense",
+  "main": "./dist/node/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hifi-finance/prb-math"
   },
   "scripts": {
-    "build": "yarn workspaces foreach --topological-dev --verbose run build",
-    "clean": "yarn workspaces foreach --parallel run clean",
-    "clean:node_modules": "yarn workspaces foreach --parallel run clean:node_modules && shx rm -rf ./node_modules",
-    "coverage": "yarn workspaces foreach --parallel run coverage",
-    "lint": "yarn workspaces foreach --parallel run lint",
-    "lint:sol": "yarn workspaces foreach --parallel run lint:sol",
-    "lint:ts": "yarn workspaces foreach --parallel run lint:ts",
-    "postinstall": "husky install",
-    "prettier": "prettier --config ./.prettierrc.js --ignore-path ./.prettierignore --write \"**/*.{js,json,md,sol,ts,yaml,yml}\"",
-    "prettier:check": "prettier --check --config ./.prettierrc.js --ignore-path ./.prettierignore \"**/*.{js,json,md,sol,ts,yaml,yml}\"",
-    "test": "yarn workspaces foreach --parallel run test",
-    "watch": "yarn workspaces foreach --interlaced --parallel --verbose run watch"
+    "build": "tsc --project ./tsconfig.prod.json && copyfiles --up 1 \"./src/**/*.d.ts\" ./dist",
+    "clean": "shx rm -rf ./.nyc_output ./artifacts ./coverage ./dist ./typechain ./coverage.json ",
+    "clean:node_modules": "shx rm -rf ./node_modules",
+    "compile": "hardhat compile",
+    "coverage": "yarn coverage:contracts && yarn coverage:ts",
+    "coverage:contracts": "hardhat coverage --solcoverjs ./.solcover.js --temp artifacts --testfiles \"./test/contracts/**/*.test.ts\"",
+    "coverage:ts": "yarn nyc --nycrc-path ./.nycrc.yaml mocha",
+    "generate:types": "hardhat typechain",
+    "lint": "yarn lint:contracts && yarn lint:ts && yarn prettier:check",
+    "lint:contracts": "solhint --config ./.solhint.json  --ignore-path ./.solhintignore --max-warnings 0 \"contracts/**/*.sol\"",
+    "lint:ts": "eslint --config ./.eslintrc.yaml --ignore-path ./.eslintignore --ext .js,.ts .",
+    "prepack": "yarn build",
+    "prettier": "prettier --config ./.prettierrc.yaml ./.prettierignore --write \"**/*.{js,json,md,sol,ts}\"",
+    "prettier:check": "prettier --check --config ./.prettierrc.yaml --ignore-path ./.prettierignore \"**/*.{js,json,md,sol,ts}\"",
+    "test": "yarn mocha --config ./.mocharc.yaml ./test/**/*.test.ts",
+    "test:contracts": "yarn mocha --config ./.mocharc.yaml ./test/contracts/**/*.test.ts",
+    "test:ts": "yarn mocha --config ./.mocharc.yaml ./test/ts/**/*.test.ts"
   },
-  "workspaces": [
-    "packages/*"
-  ]
+  "types": "./dist/node/index.d.ts"
 }
