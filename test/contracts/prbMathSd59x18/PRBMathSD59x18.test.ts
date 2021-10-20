@@ -1,4 +1,3 @@
-import { baseContext } from "../../shared/contexts";
 import { unitFixturePRBMathSd59x18 } from "../../shared/fixtures";
 import { shouldBehaveLikeAbs } from "./pure/abs.test";
 import { shouldBehaveLikeAdd } from "./pure/add.test";
@@ -25,106 +24,108 @@ import { shouldBehaveLikeSqrt } from "./pure/sqrt.test";
 import { shouldBehaveLikeSub } from "./pure/sub.test";
 import { shouldBehaveLikeToInt } from "./pure/toInt.test";
 
-baseContext("PRBMathSD59x18", function () {
-  beforeEach(async function () {
-    const { prbMathSd59x18, prbMathSd59x18Typed } = await this.loadFixture(unitFixturePRBMathSd59x18);
-    this.contracts.prbMathSd59x18 = prbMathSd59x18;
-    this.contracts.prbMathSd59x18Typed = prbMathSd59x18Typed;
-  });
+export function unitTestPrbMathSd59x18(): void {
+  describe("PRBMathSD59x18", function () {
+    beforeEach(async function () {
+      const { prbMathSd59x18, prbMathSd59x18Typed } = await this.loadFixture(unitFixturePRBMathSd59x18);
+      this.contracts.prbMathSd59x18 = prbMathSd59x18;
+      this.contracts.prbMathSd59x18Typed = prbMathSd59x18Typed;
+    });
 
-  describe("abs", function () {
-    shouldBehaveLikeAbs();
-  });
+    describe("abs", function () {
+      shouldBehaveLikeAbs();
+    });
 
-  describe("add", function () {
-    shouldBehaveLikeAdd();
-  });
+    describe("add", function () {
+      shouldBehaveLikeAdd();
+    });
 
-  describe("avg", function () {
-    shouldBehaveLikeAvg();
-  });
+    describe("avg", function () {
+      shouldBehaveLikeAvg();
+    });
 
-  describe("ceil", function () {
-    shouldBehaveLikeCeil();
-  });
+    describe("ceil", function () {
+      shouldBehaveLikeCeil();
+    });
 
-  describe("div", function () {
-    shouldBehaveLikeDiv();
-  });
+    describe("div", function () {
+      shouldBehaveLikeDiv();
+    });
 
-  describe("e", function () {
-    shouldBehaveLikeEGetter();
-  });
+    describe("e", function () {
+      shouldBehaveLikeEGetter();
+    });
 
-  describe("exp", function () {
-    shouldBehaveLikeExp();
-  });
+    describe("exp", function () {
+      shouldBehaveLikeExp();
+    });
 
-  describe("exp2", function () {
-    shouldBehaveLikeExp2();
-  });
+    describe("exp2", function () {
+      shouldBehaveLikeExp2();
+    });
 
-  describe("floor", function () {
-    shouldBehaveLikeFloor();
-  });
+    describe("floor", function () {
+      shouldBehaveLikeFloor();
+    });
 
-  describe("fromInt", function () {
-    shouldBehaveLikeFromInt();
-  });
+    describe("fromInt", function () {
+      shouldBehaveLikeFromInt();
+    });
 
-  describe("frac", function () {
-    shouldBehaveLikeFrac();
-  });
+    describe("frac", function () {
+      shouldBehaveLikeFrac();
+    });
 
-  describe("gm", function () {
-    shouldBehaveLikeGm();
-  });
+    describe("gm", function () {
+      shouldBehaveLikeGm();
+    });
 
-  describe("inv", function () {
-    shouldBehaveLikeInv();
-  });
+    describe("inv", function () {
+      shouldBehaveLikeInv();
+    });
 
-  describe("ln", function () {
-    shouldBehaveLikeLn();
-  });
+    describe("ln", function () {
+      shouldBehaveLikeLn();
+    });
 
-  describe("log10", function () {
-    shouldBehaveLikeLog10();
-  });
+    describe("log10", function () {
+      shouldBehaveLikeLog10();
+    });
 
-  describe("log2", function () {
-    shouldBehaveLikeLog2();
-  });
+    describe("log2", function () {
+      shouldBehaveLikeLog2();
+    });
 
-  describe("mul", function () {
-    shouldBehaveLikeMul();
-  });
+    describe("mul", function () {
+      shouldBehaveLikeMul();
+    });
 
-  describe("pi", function () {
-    shouldBehaveLikePiGetter();
-  });
+    describe("pi", function () {
+      shouldBehaveLikePiGetter();
+    });
 
-  describe("pow", function () {
-    shouldBehaveLikePow();
-  });
+    describe("pow", function () {
+      shouldBehaveLikePow();
+    });
 
-  describe("powu", function () {
-    shouldBehaveLikePowu();
-  });
+    describe("powu", function () {
+      shouldBehaveLikePowu();
+    });
 
-  describe("scale", function () {
-    shouldBehaveLikeScaleGetter();
-  });
+    describe("scale", function () {
+      shouldBehaveLikeScaleGetter();
+    });
 
-  describe("sqrt", function () {
-    shouldBehaveLikeSqrt();
-  });
+    describe("sqrt", function () {
+      shouldBehaveLikeSqrt();
+    });
 
-  describe("sub", function () {
-    shouldBehaveLikeSub();
-  });
+    describe("sub", function () {
+      shouldBehaveLikeSub();
+    });
 
-  describe("toInt", function () {
-    shouldBehaveLikeToInt();
+    describe("toInt", function () {
+      shouldBehaveLikeToInt();
+    });
   });
-});
+}
