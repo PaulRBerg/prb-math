@@ -601,7 +601,7 @@ library PRBMath {
             return 0;
         }
 
-        // Set the initial guess to the closest power of two that is higher than x.
+        // Set the initial guess to the closest power of two that is at least sqrt(x).
         uint256 xAux = uint256(x);
         result = 1;
         if (xAux >= 0x100000000000000000000000000000000) {
