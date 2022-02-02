@@ -12301,7 +12301,7 @@ fsevents@~2.1.1:
   peerDependencies:
     "@ethersproject/bignumber": 5.x
     evm-bn: 1.x
-    mathjs: 9.x
+    mathjs: 10.x
   languageName: unknown
   linkType: soft
 

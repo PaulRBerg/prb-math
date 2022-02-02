@@ -1,7 +1,7 @@
 {
   "name": "prb-math",
   "description": "Smart contract library for advanced fixed-point math",
-  "version": "2.4.2",
+  "version": "2.4.3",
   "author": {
     "name": "Paul Razvan Berg",
     "url": "https://paulrberg.com"
@@ -89,7 +89,7 @@
   "peerDependencies": {
     "@ethersproject/bignumber": "5.x",
     "evm-bn": "1.x",
-    "mathjs": "9.x"
+    "mathjs": "10.x"
   },
   "publishConfig": {
     "access": "public"
@@ -115,7 +115,7 @@
     "lint": "yarn lint:contracts && yarn lint:ts && yarn prettier:check",
     "lint:contracts": "solhint --config ./.solhint.json  --ignore-path ./.solhintignore --max-warnings 0 \"contracts/**/*.sol\"",
     "lint:ts": "eslint --config ./.eslintrc.yaml --ignore-path ./.eslintignore --ext .js,.ts .",
-    "postinstall": "husky install",
+    "_postinstall": "husky install",
     "postpublish": "pinst --enable",
     "prepack": "yarn build",
     "prepublishOnly": "pinst --disable",
