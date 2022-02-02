@@ -109,7 +109,7 @@
     "clean:node_modules": "shx rm -rf ./node_modules",
     "compile": "hardhat compile",
     "coverage": "yarn coverage:contracts && yarn coverage:ts",
-    "coverage:contracts": "hardhat coverage --solcoverjs ./.solcover.js --temp artifacts --testfiles \"./test/contracts/**/*.test.ts\"",
+    "coverage:contracts": "hardhat coverage --solcoverjs ./.solcover.js --temp artifacts --testfiles \"test/contracts/**/*.test.ts\"",
     "coverage:ts": "yarn nyc --nycrc-path ./.nycrc.yaml mocha",
     "generate:types": "hardhat typechain",
     "lint": "yarn lint:contracts && yarn lint:ts && yarn prettier:check",
