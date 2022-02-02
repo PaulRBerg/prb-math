@@ -1,7 +1,7 @@
 {
   "name": "prb-math",
   "description": "Smart contract library for advanced fixed-point math",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "author": {
     "name": "Paul Razvan Berg",
     "url": "https://paulrberg.com"
