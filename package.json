@@ -115,7 +115,7 @@
     "lint": "yarn lint:contracts && yarn lint:ts && yarn prettier:check",
     "lint:contracts": "solhint --config ./.solhint.json  --ignore-path ./.solhintignore --max-warnings 0 \"contracts/**/*.sol\"",
     "lint:ts": "eslint --config ./.eslintrc.yaml --ignore-path ./.eslintignore --ext .js,.ts .",
-    "_postinstall": "husky install",
+    "postinstall": "husky install",
     "postpublish": "pinst --enable",
     "prepack": "yarn build",
     "prepublishOnly": "pinst --disable",

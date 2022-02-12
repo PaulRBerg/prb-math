@@ -4,4 +4,5 @@ require:
   - "hardhat/register"
   - "ts-node/register/transpile-only"
   - "./test/shared/setup.ts"
+timeout: 30000
 watchExtension: "ts"
