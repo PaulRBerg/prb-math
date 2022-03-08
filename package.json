@@ -7,7 +7,7 @@
     "url": "https://paulrberg.com"
   },
   "bugs": {
-    "url": "https://github.com/hifi-finance/prb-math/issues"
+    "url": "https://github.com/paulrberg/prb-math/issues"
   },
   "dependencies": {
     "@ethersproject/bignumber": "^5.5.0",
@@ -74,7 +74,7 @@
     "/dist/**/*.js.map",
     "CHANGELOG.md"
   ],
-  "homepage": "https://github.com/hifi-finance/prb-math#readme",
+  "homepage": "https://github.com/paulrberg/prb-math#readme",
   "keywords": [
     "blockchain",
     "ethereum",
@@ -86,6 +86,7 @@
   ],
   "license": "Unlicense",
   "main": "./dist/node/index.js",
+  "packageManager": "yarn@3.2.0",
   "peerDependencies": {
     "@ethersproject/bignumber": "5.x",
     "evm-bn": "1.x",
@@ -96,7 +97,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/hifi-finance/prb-math"
+    "url": "https://github.com/paulrberg/prb-math"
   },
   "resolutions": {
     "@ethersproject/wallet": "^5.5.0"
@@ -125,6 +126,5 @@
     "test:contracts": "yarn mocha --config ./.mocharc.yaml ./test/contracts/**/*.test.ts",
     "test:ts": "yarn mocha --config ./.mocharc.yaml ./test/ts/**/*.test.ts"
   },
-  "types": "./dist/node/index.d.ts",
-  "packageManager": "yarn@3.1.1"
+  "types": "./dist/node/index.d.ts"
 }
