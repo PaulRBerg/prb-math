@@ -1,5 +1,5 @@
 {
-  "name": "prb-math",
+  "name": "@prb/math",
   "description": "Smart contract library for advanced fixed-point math",
   "version": "2.4.3",
   "author": {

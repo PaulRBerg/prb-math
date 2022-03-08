@@ -25,13 +25,13 @@ and susceptible to phantom overflow.
 With yarn:
 
 ```bash
-$ yarn add prb-math
+$ yarn add @prb/math
 ```
 
 Or npm:
 
 ```bash
-$ npm install prb-math
+$ npm install @prb/math
 ```
 
 ## Usage
@@ -44,7 +44,7 @@ PRBMath comes in four flavors: basic signed, typed signed, basic unsigned and ty
 // SPDX-License-Identifier: Unlicense
 pragma solidity >=0.8.4;
 
-import "prb-math/contracts/PRBMathSD59x18.sol";
+import "@prb/math/contracts/PRBMathSD59x18.sol";
 
 contract SignedConsumer {
   using PRBMathSD59x18 for int256;
@@ -73,7 +73,7 @@ contract SignedConsumer {
 // SPDX-License-Identifier: Unlicense
 pragma solidity >=0.8.4;
 
-import "prb-math/contracts/PRBMathSD59x18Typed.sol";
+import "@prb/math/contracts/PRBMathSD59x18Typed.sol";
 
 contract SignedConsumerTyped {
   using PRBMathSD59x18Typed for PRBMath.SD59x18;
@@ -107,7 +107,7 @@ contract SignedConsumerTyped {
 // SPDX-License-Identifier: Unlicense
 pragma solidity >=0.8.4;
 
-import "prb-math/contracts/PRBMathUD60x18.sol";
+import "@prb/math/contracts/PRBMathUD60x18.sol";
 
 contract UnsignedConsumer {
   using PRBMathUD60x18 for uint256;
@@ -138,7 +138,7 @@ contract UnsignedConsumer {
 // SPDX-License-Identifier: Unlicense
 pragma solidity >=0.8.4;
 
-import "prb-math/contracts/PRBMathUD60x18Typed.sol";
+import "@prb/math/contracts/PRBMathUD60x18Typed.sol";
 
 contract UnsignedConsumerTyped {
   using PRBMathUD60x18Typed for PRBMath.UD60x18;
@@ -177,7 +177,7 @@ Here's an example for how to calculate the binary logarithm:
 ```ts
 import type { BigNumber } from "@ethersproject/bignumber";
 import { fromBn, toBn } from "evm-bn";
-import { log2 } from "prb-math";
+import { log2 } from "@prb/math";
 
 (async function () {
   const x: BigNumber = toBn("16");
