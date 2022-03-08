@@ -202,20 +202,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - First release of the library.
 
-[2.5.0]: https://github.com/hifi-finance/prb-math/compare/prb-math@2.4.3...prb-math@2.5.0
-[2.4.3]: https://github.com/hifi-finance/prb-math/compare/prb-math@2.4.2...prb-math@2.4.3
-[2.4.2]: https://github.com/hifi-finance/prb-math/compare/prb-math@2.4.1...prb-math@2.4.2
-[2.4.1]: https://github.com/hifi-finance/prb-math/compare/prb-math@2.4.0...prb-math@2.4.1
-[2.4.0]: https://github.com/hifi-finance/prb-math/compare/prb-math@2.3.0...prb-math@2.4.0
-[2.3.0]: https://github.com/hifi-finance/prb-math/compare/prb-math@2.2.0...prb-math@2.3.0
-[2.2.0]: https://github.com/hifi-finance/prb-math/compare/prb-math@2.1.0...prb-math@2.2.0
-[2.1.0]: https://github.com/hifi-finance/prb-math/compare/prb-math@2.0.1...prb-math@2.1.0
-[2.0.1]: https://github.com/hifi-finance/prb-math/compare/prb-math@2.0.0...prb-math@2.0.1
-[2.0.0]: https://github.com/hifi-finance/prb-math/compare/prb-math@1.1.0...prb-math@2.0.0
-[1.1.0]: https://github.com/hifi-finance/prb-math/compare/prb-math@1.0.5...prb-math@1.1.0
-[1.0.5]: https://github.com/hifi-finance/prb-math/compare/prb-math@1.0.4...prb-math@1.0.5
-[1.0.4]: https://github.com/hifi-finance/prb-math/compare/prb-math@1.0.3...prb-math@1.0.4
-[1.0.3]: https://github.com/hifi-finance/prb-math/compare/prb-math@1.0.2...prb-math@1.0.3
-[1.0.2]: https://github.com/hifi-finance/prb-math/compare/prb-math@1.0.1...prb-math@1.0.2
-[1.0.1]: https://github.com/hifi-finance/prb-math/compare/prb-math@1.0.0...prb-math@1.0.1
-[1.0.0]: https://github.com/hifi-finance/prb-math/releases/tag/prb-math@1.0.0
+[2.5.0]: https://github.com/paulrberg/prb-math/compare/v2.4.3...v2.5.0
+[2.4.3]: https://github.com/paulrberg/prb-math/compare/v2.4.2...v2.4.3
+[2.4.2]: https://github.com/paulrberg/prb-math/compare/v2.4.1...v2.4.2
+[2.4.1]: https://github.com/paulrberg/prb-math/compare/v2.4.0...v2.4.1
+[2.4.0]: https://github.com/paulrberg/prb-math/compare/v2.3.0...v2.4.0
+[2.3.0]: https://github.com/paulrberg/prb-math/compare/v2.2.0...v2.3.0
+[2.2.0]: https://github.com/paulrberg/prb-math/compare/v2.1.0...v2.2.0
+[2.1.0]: https://github.com/paulrberg/prb-math/compare/v2.0.1...v2.1.0
+[2.0.1]: https://github.com/paulrberg/prb-math/compare/v2.0.0...v2.0.1
+[2.0.0]: https://github.com/paulrberg/prb-math/compare/v1.1.0...v2.0.0
+[1.1.0]: https://github.com/paulrberg/prb-math/compare/v1.0.5...v1.1.0
+[1.0.5]: https://github.com/paulrberg/prb-math/compare/v1.0.4...v1.0.5
+[1.0.4]: https://github.com/paulrberg/prb-math/compare/v1.0.3...v1.0.4
+[1.0.3]: https://github.com/paulrberg/prb-math/compare/v1.0.2...v1.0.3
+[1.0.2]: https://github.com/paulrberg/prb-math/compare/v1.0.1...v1.0.2
+[1.0.1]: https://github.com/paulrberg/prb-math/compare/v1.0.0...v1.0.1
+[1.0.0]: https://github.com/paulrberg/prb-math/releases/tag/v1.0.0
