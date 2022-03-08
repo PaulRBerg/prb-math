@@ -11,12 +11,9 @@ import { NetworkUserConfig } from "hardhat/types";
 dotenvConfig({ path: resolve(__dirname, ".env") });
 
 const chainIds = {
-  goerli: 5,
   hardhat: 31337,
-  kovan: 42,
   mainnet: 1,
   rinkeby: 4,
-  ropsten: 3,
 };
 
 // Ensure that we have all the environment variables we need.
@@ -57,10 +54,7 @@ const config: HardhatUserConfig = {
       },
       chainId: chainIds.hardhat,
     },
-    goerli: createTestnetConfig("goerli"),
-    kovan: createTestnetConfig("kovan"),
     rinkeby: createTestnetConfig("rinkeby"),
-    ropsten: createTestnetConfig("ropsten"),
   },
   paths: {
     artifacts: "./artifacts",
