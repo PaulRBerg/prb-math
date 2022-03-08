@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 
+- Change the package name from `prb-math` to `@prb/math`.
 - Update links to repository.
 - Upgrade to `mathjs` v10.4.0.
 
