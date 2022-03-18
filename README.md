@@ -176,8 +176,8 @@ Here's an example for how to calculate the binary logarithm:
 
 ```ts
 import type { BigNumber } from "@ethersproject/bignumber";
-import { fromBn, toBn } from "evm-bn";
 import { log2 } from "@prb/math";
+import { fromBn, toBn } from "evm-bn";
 
 (async function () {
   const x: BigNumber = toBn("16");

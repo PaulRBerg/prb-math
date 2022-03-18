@@ -1,15 +1,15 @@
 import { shouldBehaveLikeAvg } from "./functions/avg.test";
 import { shouldBehaveLikeCeil } from "./functions/ceil.test";
 import { shouldBehaveLikeDiv } from "./functions/div.test";
-import { shouldBehaveLikeExp } from "./functions/exp.test";
 import { shouldBehaveLikeExp2 } from "./functions/exp2.test";
+import { shouldBehaveLikeExp } from "./functions/exp.test";
 import { shouldBehaveLikeFloor } from "./functions/floor.test";
 import { shouldBehaveLikeFrac } from "./functions/frac.test";
 import { shouldBehaveLikeGm } from "./functions/gm.test";
 import { shouldBehaveLikeInv } from "./functions/inv.test";
 import { shouldBehaveLikeLn } from "./functions/ln.test";
-import { shouldBehaveLikeLog10 } from "./functions/log10.test";
 import { shouldBehaveLikeLog2 } from "./functions/log2.test";
+import { shouldBehaveLikeLog10 } from "./functions/log10.test";
 import { shouldBehaveLikeMul } from "./functions/mul.test";
 import { shouldBehaveLikePow } from "./functions/pow.test";
 import { shouldBehaveLikeSqrt } from "./functions/sqrt.test";

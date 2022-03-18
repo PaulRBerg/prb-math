@@ -2,9 +2,9 @@ import type { BigNumber as EthersBigNumber } from "@ethersproject/bignumber";
 import { Decimal } from "decimal.js";
 import type { BigNumber as MathjsBigNumber } from "mathjs";
 
-import math from "./math";
 import { SCALE } from "./constants";
-import { toMbn, toEbn, solidityMod } from "./helpers";
+import { solidityMod, toEbn, toMbn } from "./helpers";
+import math from "./math";
 
 export function avg(x: EthersBigNumber, y: EthersBigNumber): EthersBigNumber {
   const result = math.mean!(toMbn(x), toMbn(y)) as MathjsBigNumber;

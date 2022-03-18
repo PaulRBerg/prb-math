@@ -1,12 +1,10 @@
 import "@nomiclabs/hardhat-waffle";
 import "@typechain/hardhat";
-import "solidity-coverage";
-
-import { resolve } from "path";
-
 import { config as dotenvConfig } from "dotenv";
 import { HardhatUserConfig } from "hardhat/config";
 import { NetworkUserConfig } from "hardhat/types";
+import { resolve } from "path";
+import "solidity-coverage";
 
 dotenvConfig({ path: resolve(__dirname, ".env") });
 
