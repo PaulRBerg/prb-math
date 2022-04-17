@@ -6,14 +6,13 @@ import forEach from "mocha-each";
 
 import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, SCALE } from "../../../../src/constants";
 
-export function shouldBehaveLikeToUint(): void {
+export function shouldBehaveLikeFromUD60x18(): void {
   context("when x is less than the scale", function () {
     const testSets = [Zero, toBn("1e-18"), SCALE.sub(1)];
 
     forEach(testSets).it("takes %e and returns 0", async function (x: BigNumber) {
       const expected: BigNumber = Zero;
-      expect(expected).to.equal(await this.contracts.prbMathUd60x18.doToUint(x));
-      expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doToUint(x));
+      expect(expected).to.equal(await this.contracts.prbMathUd60x18.doFromUD60x18(x));
     });
   });
 
@@ -33,8 +32,7 @@ export function shouldBehaveLikeToUint(): void {
 
     forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
       const expected: BigNumber = x.div(SCALE);
-      expect(expected).to.equal(await this.contracts.prbMathUd60x18.doToUint(x));
-      expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doToUint(x));
+      expect(expected).to.equal(await this.contracts.prbMathUd60x18.doFromUD60x18(x));
     });
   });
 }

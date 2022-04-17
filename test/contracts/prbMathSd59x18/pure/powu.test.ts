@@ -26,7 +26,6 @@ export function shouldBehaveLikePowu(): void {
       it("returns 1", async function () {
         const expected: BigNumber = toEvmBn("1");
         expect(expected).to.equal(await this.contracts.prbMathSd59x18.doPowu(x, y));
-        expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doPowu(x, y));
       });
     });
 
@@ -36,7 +35,6 @@ export function shouldBehaveLikePowu(): void {
       forEach(testSets).it("takes 0 and %e and returns 0", async function (y: BigNumber) {
         const expected: BigNumber = Zero;
         expect(expected).to.equal(await this.contracts.prbMathSd59x18.doPowu(x, y));
-        expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doPowu(x, y));
       });
     });
   });
@@ -49,7 +47,6 @@ export function shouldBehaveLikePowu(): void {
       forEach(testSets).it("takes %e and 0 and returns 1", async function (x: BigNumber) {
         const expected: BigNumber = toEvmBn("1");
         expect(expected).to.equal(await this.contracts.prbMathSd59x18.doPowu(x, y));
-        expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doPowu(x, y));
       });
     });
 
@@ -67,9 +64,6 @@ export function shouldBehaveLikePowu(): void {
           await expect(this.contracts.prbMathSd59x18.doPowu(x, y)).to.be.revertedWith(
             PRBMathErrors.MUL_DIV_FIXED_POINT_OVERFLOW,
           );
-          await expect(this.contracts.prbMathSd59x18Typed.doPowu(x, y)).to.be.revertedWith(
-            PRBMathErrors.MUL_DIV_FIXED_POINT_OVERFLOW,
-          );
         });
       });
 
@@ -85,9 +79,6 @@ export function shouldBehaveLikePowu(): void {
 
           forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
             await expect(this.contracts.prbMathSd59x18.doPowu(x, y)).to.be.revertedWith(
-              PRBMathSD59x18Errors.POWU_OVERFLOW,
-            );
-            await expect(this.contracts.prbMathSd59x18Typed.doPowu(x, y)).to.be.revertedWith(
               PRBMathSD59x18Errors.POWU_OVERFLOW,
             );
           });
@@ -135,7 +126,6 @@ export function shouldBehaveLikePowu(): void {
             async function (x: BigNumber, y: BigNumber) {
               const expected: BigNumber = powu(x, y);
               expect(expected).to.be.near(await this.contracts.prbMathSd59x18.doPowu(x, y));
-              expect(expected).to.be.near(await this.contracts.prbMathSd59x18Typed.doPowu(x, y));
             },
           );
         });

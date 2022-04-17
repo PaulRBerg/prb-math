@@ -21,7 +21,6 @@ export function shouldBehaveLikeGm(): void {
     forEach(testSets).it("takes %e and %e and returns 0", async function (x: BigNumber, y: BigNumber) {
       const expected: BigNumber = Zero;
       expect(expected).to.equal(await this.contracts.prbMathUd60x18.doGm(x, y));
-      expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doGm(x, y));
     });
   });
 
@@ -35,9 +34,6 @@ export function shouldBehaveLikeGm(): void {
 
       forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
         await expect(this.contracts.prbMathUd60x18.doGm(x, y)).to.be.revertedWith(PRBMathUD60x18Errors.GM_OVERFLOW);
-        await expect(this.contracts.prbMathUd60x18Typed.doGm(x, y)).to.be.revertedWith(
-          PRBMathUD60x18Errors.GM_OVERFLOW,
-        );
       });
     });
 
@@ -60,7 +56,6 @@ export function shouldBehaveLikeGm(): void {
         async function (x: BigNumber, y: BigNumber) {
           const expected: BigNumber = gm(x, y);
           expect(expected).to.equal(await this.contracts.prbMathUd60x18.doGm(x, y));
-          expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doGm(x, y));
         },
       );
     });

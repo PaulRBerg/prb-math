@@ -14,7 +14,6 @@ export function shouldBehaveLikeFloor(): void {
       const x: BigNumber = Zero;
       const expected: BigNumber = Zero;
       expect(expected).to.equal(await this.contracts.prbMathSd59x18.doFloor(x));
-      expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doFloor(x));
     });
   });
 
@@ -25,9 +24,6 @@ export function shouldBehaveLikeFloor(): void {
 
         forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
           await expect(this.contracts.prbMathSd59x18.doFloor(x)).to.be.revertedWith(
-            PRBMathSD59x18Errors.FLOOR_UNDERFLOW,
-          );
-          await expect(this.contracts.prbMathSd59x18Typed.doFloor(x)).to.be.revertedWith(
             PRBMathSD59x18Errors.FLOOR_UNDERFLOW,
           );
         });
@@ -48,7 +44,6 @@ export function shouldBehaveLikeFloor(): void {
         forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
           const expected: BigNumber = floor(x);
           expect(expected).to.equal(await this.contracts.prbMathSd59x18.doFloor(x));
-          expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doFloor(x));
         });
       });
     });
@@ -70,7 +65,6 @@ export function shouldBehaveLikeFloor(): void {
       forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
         const expected: BigNumber = floor(x);
         expect(expected).to.equal(await this.contracts.prbMathSd59x18.doFloor(x));
-        expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doFloor(x));
       });
     });
   });

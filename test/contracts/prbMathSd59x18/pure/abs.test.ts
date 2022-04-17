@@ -13,7 +13,6 @@ export function shouldBehaveLikeAbs(): void {
       const x: BigNumber = Zero;
       const expected: BigNumber = Zero;
       expect(expected).to.equal(await this.contracts.prbMathSd59x18.doAbs(x));
-      expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doAbs(x));
     });
   });
 
@@ -22,12 +21,7 @@ export function shouldBehaveLikeAbs(): void {
       context("when x = min sd59x18", function () {
         it("reverts", async function () {
           const x: BigNumber = MIN_SD59x18;
-          await expect(this.contracts.prbMathSd59x18.doAbs(x)).to.be.revertedWith(
-            PRBMathSD59x18Errors.ABS_INPUT_TOO_SMALL,
-          );
-          await expect(this.contracts.prbMathSd59x18Typed.doAbs(x)).to.be.revertedWith(
-            PRBMathSD59x18Errors.ABS_INPUT_TOO_SMALL,
-          );
+          await expect(this.contracts.prbMathSd59x18.doAbs(x)).to.be.revertedWith(PRBMathSD59x18Errors.ABS_MIN_SD59x18);
         });
       });
 
@@ -48,7 +42,6 @@ export function shouldBehaveLikeAbs(): void {
         forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
           const expected: BigNumber = x.abs();
           expect(expected).to.equal(await this.contracts.prbMathSd59x18.doAbs(x));
-          expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doAbs(x));
         });
       });
     });
@@ -71,7 +64,6 @@ export function shouldBehaveLikeAbs(): void {
         forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
           const expected: BigNumber = x.abs();
           expect(expected).to.equal(await this.contracts.prbMathSd59x18.doAbs(x));
-          expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doAbs(x));
         });
       });
     });

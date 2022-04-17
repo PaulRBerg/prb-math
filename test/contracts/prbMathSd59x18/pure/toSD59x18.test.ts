@@ -6,16 +6,13 @@ import forEach from "mocha-each";
 import { MAX_SD59x18, MAX_WHOLE_SD59x18, MIN_SD59x18, MIN_WHOLE_SD59x18, SCALE } from "../../../../src/constants";
 import { PRBMathSD59x18Errors } from "../../../../src/errors";
 
-export function shouldBehaveLikeFromInt(): void {
+export function shouldBehaveLikeToSD59x18(): void {
   context("when x is less than min sd59x18 divided by scale", function () {
     const testSets = [MIN_WHOLE_SD59x18.div(SCALE).sub(1), MIN_WHOLE_SD59x18, MIN_SD59x18];
 
     forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
-      await expect(this.contracts.prbMathSd59x18.doFromInt(x)).to.be.revertedWith(
-        PRBMathSD59x18Errors.FROM_INT_UNDERFLOW,
-      );
-      await expect(this.contracts.prbMathSd59x18Typed.doFromInt(x)).to.be.revertedWith(
-        PRBMathSD59x18Errors.FROM_INT_UNDERFLOW,
+      await expect(this.contracts.prbMathSd59x18.doToSD59x18(x)).to.be.revertedWith(
+        PRBMathSD59x18Errors.TO_SD59x18_UNDERFLOW,
       );
     });
   });
@@ -25,11 +22,8 @@ export function shouldBehaveLikeFromInt(): void {
       const testSets = [MAX_WHOLE_SD59x18.div(SCALE).add(1), MAX_WHOLE_SD59x18, MAX_SD59x18];
 
       forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
-        await expect(this.contracts.prbMathSd59x18.doFromInt(x)).to.be.revertedWith(
-          PRBMathSD59x18Errors.FROM_INT_OVERFLOW,
-        );
-        await expect(this.contracts.prbMathSd59x18Typed.doFromInt(x)).to.be.revertedWith(
-          PRBMathSD59x18Errors.FROM_INT_OVERFLOW,
+        await expect(this.contracts.prbMathSd59x18.doToSD59x18(x)).to.be.revertedWith(
+          PRBMathSD59x18Errors.TO_SD59x18_OVERFLOW,
         );
       });
     });
@@ -59,8 +53,7 @@ export function shouldBehaveLikeFromInt(): void {
 
       forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
         const expected: BigNumber = x.mul(SCALE);
-        expect(expected).to.equal(await this.contracts.prbMathSd59x18.doFromInt(x));
-        expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doFromInt(x));
+        expect(expected).to.equal(await this.contracts.prbMathSd59x18.doToSD59x18(x));
       });
     });
   });

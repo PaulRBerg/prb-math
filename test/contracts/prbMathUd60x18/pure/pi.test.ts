@@ -7,6 +7,5 @@ export function shouldBehaveLikePiGetter(): void {
   it("returns pi", async function () {
     const expected: BigNumber = PI;
     expect(expected).to.equal(await this.contracts.prbMathUd60x18.getPi());
-    expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.getPi());
   });
 }

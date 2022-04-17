@@ -13,7 +13,6 @@ export function shouldBehaveLikeFloor(): void {
       const x: BigNumber = Zero;
       const expected: BigNumber = Zero;
       expect(expected).to.equal(await this.contracts.prbMathUd60x18.doFloor(x));
-      expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doFloor(x));
     });
   });
 
@@ -34,7 +33,6 @@ export function shouldBehaveLikeFloor(): void {
     forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
       const expected: BigNumber = floor(x);
       expect(expected).to.equal(await this.contracts.prbMathUd60x18.doFloor(x));
-      expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doFloor(x));
     });
   });
 }

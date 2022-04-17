@@ -13,7 +13,6 @@ export function shouldBehaveLikeFrac(): void {
       const x: BigNumber = Zero;
       const expected: BigNumber = Zero;
       expect(expected).to.equal(await this.contracts.prbMathUd60x18.doFrac(x));
-      expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doFrac(x));
     });
   });
 
@@ -34,7 +33,6 @@ export function shouldBehaveLikeFrac(): void {
     forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
       const expected: BigNumber = frac(x);
       expect(expected).to.equal(await this.contracts.prbMathUd60x18.doFrac(x));
-      expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doFrac(x));
     });
   });
 }

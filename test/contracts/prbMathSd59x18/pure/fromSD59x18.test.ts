@@ -14,7 +14,7 @@ import {
   SCALE,
 } from "../../../../src/constants";
 
-export function shouldBehaveLikeToInt(): void {
+export function shouldBehaveLikeFromSD59x18(): void {
   context("when x is less the absolute value of scale", function () {
     const testSets = [[toBn("1").mul(-1).add(1)], [toBn("-1e-18")]].concat([
       [Zero],
@@ -24,8 +24,7 @@ export function shouldBehaveLikeToInt(): void {
 
     forEach(testSets).it("takes %e and returns 0", async function (x: BigNumber) {
       const expected: BigNumber = Zero;
-      expect(expected).to.equal(await this.contracts.prbMathSd59x18.doToInt(x));
-      expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doToInt(x));
+      expect(expected).to.equal(await this.contracts.prbMathSd59x18.doFromSD59x18(x));
     });
   });
 
@@ -56,8 +55,7 @@ export function shouldBehaveLikeToInt(): void {
 
     forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
       const expected: BigNumber = x.div(SCALE);
-      expect(expected).to.equal(await this.contracts.prbMathSd59x18.doToInt(x));
-      expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doToInt(x));
+      expect(expected).to.equal(await this.contracts.prbMathSd59x18.doFromSD59x18(x));
     });
   });
 }

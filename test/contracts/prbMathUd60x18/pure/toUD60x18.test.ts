@@ -6,16 +6,13 @@ import forEach from "mocha-each";
 import { MAX_UD60x18, MAX_WHOLE_UD60x18, SCALE } from "../../../../src/constants";
 import { PRBMathUD60x18Errors } from "../../../../src/errors";
 
-export function shouldBehaveLikeFromUint(): void {
+export function shouldBehaveLikeToUD60x18(): void {
   context("when x is greater than max ud60x18 divided by scale", function () {
     const testSets = [MAX_WHOLE_UD60x18.div(SCALE).add(1), MAX_WHOLE_UD60x18, MAX_UD60x18];
 
     forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
-      await expect(this.contracts.prbMathUd60x18.doFromUint(x)).to.be.revertedWith(
-        PRBMathUD60x18Errors.FROM_UINT_OVERFLOW,
-      );
-      await expect(this.contracts.prbMathUd60x18Typed.doFromUint(x)).to.be.revertedWith(
-        PRBMathUD60x18Errors.FROM_UINT_OVERFLOW,
+      await expect(this.contracts.prbMathUd60x18.doToUD60x18(x)).to.be.revertedWith(
+        PRBMathUD60x18Errors.TO_UD60x18_OVERFLOW,
       );
     });
   });
@@ -35,8 +32,7 @@ export function shouldBehaveLikeFromUint(): void {
 
     forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
       const expected: BigNumber = x.mul(SCALE);
-      expect(expected).to.equal(await this.contracts.prbMathUd60x18.doFromUint(x));
-      expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doFromUint(x));
+      expect(expected).to.equal(await this.contracts.prbMathUd60x18.doToUD60x18(x));
     });
   });
 }

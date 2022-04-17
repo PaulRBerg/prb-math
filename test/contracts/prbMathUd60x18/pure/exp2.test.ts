@@ -14,7 +14,6 @@ export function shouldBehaveLikeExp2(): void {
       const x: BigNumber = Zero;
       const expected: BigNumber = toBn("1");
       expect(expected).to.equal(await this.contracts.prbMathUd60x18.doExp2(x));
-      expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doExp2(x));
     });
   });
 
@@ -24,9 +23,6 @@ export function shouldBehaveLikeExp2(): void {
 
       forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
         await expect(this.contracts.prbMathUd60x18.doExp2(x)).to.be.revertedWith(
-          PRBMathUD60x18Errors.EXP2_INPUT_TOO_BIG,
-        );
-        await expect(this.contracts.prbMathUd60x18Typed.doExp2(x)).to.be.revertedWith(
           PRBMathUD60x18Errors.EXP2_INPUT_TOO_BIG,
         );
       });
@@ -59,7 +55,6 @@ export function shouldBehaveLikeExp2(): void {
       forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
         const expected: BigNumber = exp2(x);
         expect(expected).to.be.near(await this.contracts.prbMathUd60x18.doExp2(x));
-        expect(expected).to.be.near(await this.contracts.prbMathUd60x18Typed.doExp2(x));
       });
     });
   });

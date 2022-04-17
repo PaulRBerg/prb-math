@@ -16,7 +16,6 @@ export function shouldBehaveLikeDiv(): void {
     it("reverts", async function () {
       const x: BigNumber = toBn("1");
       await expect(this.contracts.prbMathUd60x18.doDiv(x, y)).to.be.revertedWith(PanicCodes.DIVISION_BY_ZERO);
-      await expect(this.contracts.prbMathUd60x18Typed.doDiv(x, y)).to.be.revertedWith(PanicCodes.DIVISION_BY_ZERO);
     });
   });
 
@@ -28,7 +27,6 @@ export function shouldBehaveLikeDiv(): void {
       forEach(testSets).it("takes %e and returns 0", async function (y: BigNumber) {
         const expected: BigNumber = Zero;
         expect(expected).to.equal(await this.contracts.prbMathUd60x18.doDiv(x, y));
-        expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doDiv(x, y));
       });
     });
 
@@ -41,9 +39,6 @@ export function shouldBehaveLikeDiv(): void {
 
         forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
           await expect(this.contracts.prbMathUd60x18.doDiv(x, y)).to.be.revertedWith(PRBMathErrors.MUL_DIV_OVERFLOW);
-          await expect(this.contracts.prbMathUd60x18Typed.doDiv(x, y)).to.be.revertedWith(
-            PRBMathErrors.MUL_DIV_OVERFLOW,
-          );
         });
       });
 
@@ -72,7 +67,6 @@ export function shouldBehaveLikeDiv(): void {
           async function (x: BigNumber, y: BigNumber) {
             const expected: BigNumber = div(x, y);
             expect(expected).to.equal(await this.contracts.prbMathUd60x18.doDiv(x, y));
-            expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doDiv(x, y));
           },
         );
       });
