@@ -13,9 +13,6 @@ export function shouldBehaveLikeLn(): void {
     it("reverts", async function () {
       const x: BigNumber = Zero;
       await expect(this.contracts.prbMathSd59x18.doLn(x)).to.be.revertedWith(PRBMathSD59x18Errors.LOG_INPUT_TOO_SMALL);
-      await expect(this.contracts.prbMathSd59x18Typed.doLn(x)).to.be.revertedWith(
-        PRBMathSD59x18Errors.LOG_INPUT_TOO_SMALL,
-      );
     });
   });
 
@@ -24,9 +21,6 @@ export function shouldBehaveLikeLn(): void {
       it("reverts", async function () {
         const x: BigNumber = toBn("-1");
         await expect(this.contracts.prbMathSd59x18.doLn(x)).to.be.revertedWith(
-          PRBMathSD59x18Errors.LOG_INPUT_TOO_SMALL,
-        );
-        await expect(this.contracts.prbMathSd59x18Typed.doLn(x)).to.be.revertedWith(
           PRBMathSD59x18Errors.LOG_INPUT_TOO_SMALL,
         );
       });
@@ -58,7 +52,6 @@ export function shouldBehaveLikeLn(): void {
       forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
         const expected: BigNumber = ln(x);
         expect(expected).to.be.near(await this.contracts.prbMathSd59x18.doLn(x));
-        expect(expected).to.be.near(await this.contracts.prbMathSd59x18Typed.doLn(x));
       });
     });
   });

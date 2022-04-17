@@ -1,90 +1,86 @@
 // SPDX-License-Identifier: Unlicense
-pragma solidity >=0.8.4;
+pragma solidity >=0.8.13;
 
-import "../PRBMathUD60x18.sol";
+import { e, fromUD60x18, pi, toUD60x18, UD60x18 } from "../UD60x18.sol";
 
 contract PRBMathUD60x18Mock {
-    function doAvg(uint256 x, uint256 y) external pure returns (uint256 result) {
-        result = PRBMathUD60x18.avg(x, y);
+    function doAvg(UD60x18 x, UD60x18 y) external pure returns (UD60x18 result) {
+        result = x.avg(y);
     }
 
-    function doCeil(uint256 x) external pure returns (uint256 result) {
-        result = PRBMathUD60x18.ceil(x);
+    function doCeil(UD60x18 x) external pure returns (UD60x18 result) {
+        result = x.ceil();
     }
 
-    function doDiv(uint256 x, uint256 y) external pure returns (uint256 result) {
-        result = PRBMathUD60x18.div(x, y);
+    function doDiv(UD60x18 x, UD60x18 y) external pure returns (UD60x18 result) {
+        result = x.div(y);
     }
 
-    function doExp(uint256 x) external pure returns (uint256 result) {
-        result = PRBMathUD60x18.exp(x);
+    function doExp(UD60x18 x) external pure returns (UD60x18 result) {
+        result = x.exp();
     }
 
-    function doExp2(uint256 x) external pure returns (uint256 result) {
-        result = PRBMathUD60x18.exp2(x);
+    function doExp2(UD60x18 x) external pure returns (UD60x18 result) {
+        result = x.exp2();
     }
 
-    function doFloor(uint256 x) external pure returns (uint256 result) {
-        result = PRBMathUD60x18.floor(x);
+    function doFloor(UD60x18 x) external pure returns (UD60x18 result) {
+        result = x.floor();
     }
 
-    function doFrac(uint256 x) external pure returns (uint256 result) {
-        result = PRBMathUD60x18.frac(x);
+    function doFrac(UD60x18 x) external pure returns (UD60x18 result) {
+        result = x.frac();
     }
 
-    function doFromUint(uint256 x) external pure returns (uint256 result) {
-        result = PRBMathUD60x18.fromUint(x);
+    function doFromUD60x18(UD60x18 x) external pure returns (uint256 result) {
+        result = fromUD60x18(x);
     }
 
-    function doGm(uint256 x, uint256 y) external pure returns (uint256 result) {
-        result = PRBMathUD60x18.gm(x, y);
+    function doGm(UD60x18 x, UD60x18 y) external pure returns (UD60x18 result) {
+        result = x.gm(y);
     }
 
-    function doInv(uint256 x) external pure returns (uint256 result) {
-        result = PRBMathUD60x18.inv(x);
+    function doInv(UD60x18 x) external pure returns (UD60x18 result) {
+        result = x.inv();
     }
 
-    function doLn(uint256 x) external pure returns (uint256 result) {
-        result = PRBMathUD60x18.ln(x);
+    function doLn(UD60x18 x) external pure returns (UD60x18 result) {
+        result = x.ln();
     }
 
-    function doLog10(uint256 x) external pure returns (uint256 result) {
-        result = PRBMathUD60x18.log10(x);
+    function doLog10(UD60x18 x) external pure returns (UD60x18 result) {
+        result = x.log10();
     }
 
-    function doLog2(uint256 x) external pure returns (uint256 result) {
-        result = PRBMathUD60x18.log2(x);
+    function doLog2(UD60x18 x) external pure returns (UD60x18 result) {
+        result = x.log2();
     }
 
-    function doMul(uint256 x, uint256 y) external pure returns (uint256 result) {
-        result = PRBMathUD60x18.mul(x, y);
+    function doMul(UD60x18 x, UD60x18 y) external pure returns (UD60x18 result) {
+        result = x.mul(y);
     }
 
-    function doPow(uint256 x, uint256 y) external pure returns (uint256 result) {
-        result = PRBMathUD60x18.pow(x, y);
+    function doPow(UD60x18 x, UD60x18 y) external pure returns (UD60x18 result) {
+        result = x.pow(y);
     }
 
-    function doPowu(uint256 x, uint256 y) external pure returns (uint256 result) {
-        result = PRBMathUD60x18.powu(x, y);
+    function doPowu(UD60x18 x, uint256 y) external pure returns (UD60x18 result) {
+        result = x.powu(y);
     }
 
-    function doSqrt(uint256 x) external pure returns (uint256 result) {
-        result = PRBMathUD60x18.sqrt(x);
+    function doSqrt(UD60x18 x) external pure returns (UD60x18 result) {
+        result = x.sqrt();
     }
 
-    function doToUint(uint256 x) external pure returns (uint256 result) {
-        result = PRBMathUD60x18.toUint(x);
+    function doToUD60x18(uint256 x) external pure returns (UD60x18 result) {
+        result = toUD60x18(x);
     }
 
-    function getE() external pure returns (uint256 result) {
-        result = PRBMathUD60x18.e();
+    function getE() external pure returns (UD60x18 result) {
+        result = e();
     }
 
-    function getPi() external pure returns (uint256 result) {
-        result = PRBMathUD60x18.pi();
-    }
-
-    function getScale() external pure returns (uint256 result) {
-        result = PRBMathUD60x18.scale();
+    function getPi() external pure returns (UD60x18 result) {
+        result = pi();
     }
 }

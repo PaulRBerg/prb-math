@@ -14,7 +14,6 @@ export function shouldBehaveLikeCeil(): void {
       const x: BigNumber = Zero;
       const expected: BigNumber = Zero;
       expect(expected).to.equal(await this.contracts.prbMathUd60x18.doCeil(x));
-      expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doCeil(x));
     });
   });
 
@@ -24,9 +23,6 @@ export function shouldBehaveLikeCeil(): void {
 
       forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
         await expect(this.contracts.prbMathUd60x18.doCeil(x)).to.be.revertedWith(PRBMathUD60x18Errors.CEIL_OVERFLOW);
-        await expect(this.contracts.prbMathUd60x18Typed.doCeil(x)).to.be.revertedWith(
-          PRBMathUD60x18Errors.CEIL_OVERFLOW,
-        );
       });
     });
 
@@ -46,7 +42,6 @@ export function shouldBehaveLikeCeil(): void {
       forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
         const expected: BigNumber = ceil(x);
         expect(expected).to.equal(await this.contracts.prbMathUd60x18.doCeil(x));
-        expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doCeil(x));
       });
     });
   });

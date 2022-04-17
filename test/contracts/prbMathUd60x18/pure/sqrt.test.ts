@@ -14,7 +14,6 @@ export function shouldBehaveLikeSqrt(): void {
       const x: BigNumber = Zero;
       const expected: BigNumber = Zero;
       expect(expected).to.equal(await this.contracts.prbMathUd60x18.doSqrt(x));
-      expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doSqrt(x));
     });
   });
 
@@ -30,9 +29,6 @@ export function shouldBehaveLikeSqrt(): void {
 
         forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
           await expect(this.contracts.prbMathUd60x18.doSqrt(x)).to.be.revertedWith(PRBMathUD60x18Errors.SQRT_OVERFLOW);
-          await expect(this.contracts.prbMathUd60x18Typed.doSqrt(x)).to.be.revertedWith(
-            PRBMathUD60x18Errors.SQRT_OVERFLOW,
-          );
         });
       },
     );
@@ -60,7 +56,6 @@ export function shouldBehaveLikeSqrt(): void {
       forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
         const expected: BigNumber = sqrt(x);
         expect(expected).to.equal(await this.contracts.prbMathUd60x18.doSqrt(x));
-        expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doSqrt(x));
       });
     });
   });

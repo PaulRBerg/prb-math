@@ -14,7 +14,6 @@ export function shouldBehaveLikeExp2(): void {
       const x: BigNumber = Zero;
       const expected: BigNumber = toBn("1");
       expect(expected).to.equal(await this.contracts.prbMathSd59x18.doExp2(x));
-      expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doExp2(x));
     });
   });
 
@@ -25,7 +24,6 @@ export function shouldBehaveLikeExp2(): void {
       forEach(testSets).it("takes %e and returns 0", async function (x: BigNumber) {
         const expected: BigNumber = Zero;
         expect(expected).to.equal(await this.contracts.prbMathSd59x18.doExp2(x));
-        expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doExp2(x));
       });
     });
 
@@ -49,7 +47,6 @@ export function shouldBehaveLikeExp2(): void {
       forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
         const expected: BigNumber = exp2(x);
         expect(expected).to.be.near(await this.contracts.prbMathSd59x18.doExp2(x));
-        expect(expected).to.be.near(await this.contracts.prbMathSd59x18Typed.doExp2(x));
       });
     });
   });
@@ -60,9 +57,6 @@ export function shouldBehaveLikeExp2(): void {
 
       forEach(testSets).it("takes %e and reverts", async function (x: BigNumber) {
         await expect(this.contracts.prbMathSd59x18.doExp2(x)).to.be.revertedWith(
-          PRBMathSD59x18Errors.EXP2_INPUT_TOO_BIG,
-        );
-        await expect(this.contracts.prbMathSd59x18Typed.doExp2(x)).to.be.revertedWith(
           PRBMathSD59x18Errors.EXP2_INPUT_TOO_BIG,
         );
       });
@@ -95,7 +89,6 @@ export function shouldBehaveLikeExp2(): void {
       forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
         const expected: BigNumber = exp2(x);
         expect(expected).to.be.near(await this.contracts.prbMathSd59x18.doExp2(x));
-        expect(expected).to.be.near(await this.contracts.prbMathSd59x18Typed.doExp2(x));
       });
     });
   });

@@ -17,9 +17,6 @@ export function shouldBehaveLikeLog2(): void {
       await expect(this.contracts.prbMathUd60x18.doLog2(x)).to.be.revertedWith(
         PRBMathUD60x18Errors.LOG_INPUT_TOO_SMALL,
       );
-      await expect(this.contracts.prbMathUd60x18Typed.doLog2(x)).to.be.revertedWith(
-        PRBMathUD60x18Errors.LOG_INPUT_TOO_SMALL,
-      );
     });
   });
 
@@ -30,7 +27,6 @@ export function shouldBehaveLikeLog2(): void {
       forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
         const expected: BigNumber = log2(x);
         expect(expected).to.be.near(await this.contracts.prbMathUd60x18.doLog2(x));
-        expect(expected).to.be.near(await this.contracts.prbMathUd60x18Typed.doLog2(x));
       });
     });
 
@@ -40,7 +36,6 @@ export function shouldBehaveLikeLog2(): void {
       forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
         const expected: BigNumber = log2(x);
         expect(expected).to.be.near(await this.contracts.prbMathUd60x18.doLog2(x));
-        expect(expected).to.be.near(await this.contracts.prbMathUd60x18Typed.doLog2(x));
       });
     });
   });

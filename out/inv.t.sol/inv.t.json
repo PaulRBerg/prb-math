@@ -1,0 +1,33 @@
+{
+  "abi": [],
+  "bytecode": {
+    "object": "0x",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "linkReferences": {}
+  },
+  "ast": {
+    "absolutePath": "test/sd59x18/inv/inv.t.sol",
+    "id": 2,
+    "exportedSymbols": {},
+    "nodeType": "SourceUnit",
+    "src": "39:26:0",
+    "nodes": [
+      {
+        "id": 1,
+        "nodeType": "PragmaDirective",
+        "src": "39:25:0",
+        "literals": [
+          "solidity",
+          ">=",
+          "0.8",
+          ".13"
+        ]
+      }
+    ],
+    "license": "UNLICENSED"
+  },
+  "id": 0
+}

@@ -13,7 +13,6 @@ export function shouldBehaveLikeInv(): void {
     it("reverts", async function () {
       const x: BigNumber = Zero;
       await expect(this.contracts.prbMathSd59x18.doInv(x)).to.be.revertedWith(PanicCodes.DIVISION_BY_ZERO);
-      await expect(this.contracts.prbMathSd59x18Typed.doInv(x)).to.be.revertedWith(PanicCodes.DIVISION_BY_ZERO);
     });
   });
 
@@ -41,7 +40,6 @@ export function shouldBehaveLikeInv(): void {
       forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
         const expected: BigNumber = inv(x);
         expect(expected).to.equal(await this.contracts.prbMathSd59x18.doInv(x));
-        expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doInv(x));
       });
     });
 
@@ -68,7 +66,6 @@ export function shouldBehaveLikeInv(): void {
       forEach(testSets).it("takes %e and returns the correct value", async function (x: BigNumber) {
         const expected: BigNumber = inv(x);
         expect(expected).to.equal(await this.contracts.prbMathSd59x18.doInv(x));
-        expect(expected).to.equal(await this.contracts.prbMathSd59x18Typed.doInv(x));
       });
     });
   });

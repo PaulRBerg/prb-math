@@ -1,5 +1,4 @@
 import { unitFixturePRBMathUd60x18 } from "../../shared/fixtures";
-import { shouldBehaveLikeAdd } from "./pure/add.test";
 import { shouldBehaveLikeAvg } from "./pure/avg.test";
 import { shouldBehaveLikeCeil } from "./pure/ceil.test";
 import { shouldBehaveLikeDiv } from "./pure/div.test";
@@ -8,7 +7,7 @@ import { shouldBehaveLikeExp2 } from "./pure/exp2.test";
 import { shouldBehaveLikeExp } from "./pure/exp.test";
 import { shouldBehaveLikeFloor } from "./pure/floor.test";
 import { shouldBehaveLikeFrac } from "./pure/frac.test";
-import { shouldBehaveLikeFromUint } from "./pure/fromUint.test";
+import { shouldBehaveLikeFromUD60x18 } from "./pure/fromUD60x18.test";
 import { shouldBehaveLikeGm } from "./pure/gm.test";
 import { shouldBehaveLikeInv } from "./pure/inv.test";
 import { shouldBehaveLikeLn } from "./pure/ln.test";
@@ -18,21 +17,14 @@ import { shouldBehaveLikeMul } from "./pure/mul.test";
 import { shouldBehaveLikePiGetter } from "./pure/pi.test";
 import { shouldBehaveLikePow } from "./pure/pow.test";
 import { shouldBehaveLikePowu } from "./pure/powu.test";
-import { shouldBehaveLikeScaleGetter } from "./pure/scale.test";
 import { shouldBehaveLikeSqrt } from "./pure/sqrt.test";
-import { shouldBehaveLikeSub } from "./pure/sub.test";
-import { shouldBehaveLikeToUint } from "./pure/toUint.test";
+import { shouldBehaveLikeToUD60x18 } from "./pure/toUD60x18.test";
 
 export function unitTestPrbMathUd60x18(): void {
   describe("PRBMathUD60x18", function () {
     beforeEach(async function () {
-      const { prbMathUd60x18, prbMathUd60x18Typed } = await this.loadFixture(unitFixturePRBMathUd60x18);
+      const { prbMathUd60x18 } = await this.loadFixture(unitFixturePRBMathUd60x18);
       this.contracts.prbMathUd60x18 = prbMathUd60x18;
-      this.contracts.prbMathUd60x18Typed = prbMathUd60x18Typed;
-    });
-
-    describe("add", function () {
-      shouldBehaveLikeAdd();
     });
 
     describe("avg", function () {
@@ -67,8 +59,8 @@ export function unitTestPrbMathUd60x18(): void {
       shouldBehaveLikeFrac();
     });
 
-    describe("fromUint", function () {
-      shouldBehaveLikeFromUint();
+    describe("fromUD60x18", function () {
+      shouldBehaveLikeFromUD60x18();
     });
 
     describe("gm", function () {
@@ -107,20 +99,12 @@ export function unitTestPrbMathUd60x18(): void {
       shouldBehaveLikePowu();
     });
 
-    describe("scale", function () {
-      shouldBehaveLikeScaleGetter();
-    });
-
     describe("sqrt", function () {
       shouldBehaveLikeSqrt();
     });
 
-    describe("sub", function () {
-      shouldBehaveLikeSub();
-    });
-
-    describe("toUint", function () {
-      shouldBehaveLikeToUint();
+    describe("toUD60x18", function () {
+      shouldBehaveLikeToUD60x18();
     });
   });
 }

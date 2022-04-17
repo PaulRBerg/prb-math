@@ -14,7 +14,6 @@ export function shouldBehaveLikeAvg(): void {
       const y: BigNumber = Zero;
       const expected: BigNumber = Zero;
       expect(expected).to.equal(await this.contracts.prbMathUd60x18.doAvg(x, y));
-      expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doAvg(x, y));
     });
   });
 
@@ -27,7 +26,6 @@ export function shouldBehaveLikeAvg(): void {
     forEach(testSets).it("takes %e and %e and returns the correct value", async function (x: BigNumber, y: BigNumber) {
       const expected: BigNumber = avg(x, y);
       expect(expected).to.equal(await this.contracts.prbMathUd60x18.doAvg(x, y));
-      expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doAvg(x, y));
     });
   });
 
@@ -46,7 +44,6 @@ export function shouldBehaveLikeAvg(): void {
         async function (x: BigNumber, y: BigNumber) {
           const expected: BigNumber = avg(x, y);
           expect(expected).to.equal(await this.contracts.prbMathUd60x18.doAvg(x, y));
-          expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doAvg(x, y));
         },
       );
     });
@@ -66,7 +63,6 @@ export function shouldBehaveLikeAvg(): void {
         async function (x: BigNumber, y: BigNumber) {
           const expected: BigNumber = avg(x, y);
           expect(expected).to.equal(await this.contracts.prbMathUd60x18.doAvg(x, y));
-          expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doAvg(x, y));
         },
       );
     });
@@ -86,7 +82,6 @@ export function shouldBehaveLikeAvg(): void {
         async function (x: BigNumber, y: BigNumber) {
           const expected: BigNumber = avg(x, y);
           expect(expected).to.equal(await this.contracts.prbMathUd60x18.doAvg(x, y));
-          expect(expected).to.equal(await this.contracts.prbMathUd60x18Typed.doAvg(x, y));
         },
       );
     });
