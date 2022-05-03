@@ -47,22 +47,22 @@ pragma solidity >=0.8.4;
 import "@prb/math/contracts/PRBMathSD59x18.sol";
 
 contract SignedConsumer {
-  using PRBMathSD59x18 for int256;
+    using PRBMathSD59x18 for int256;
 
-  function signedLog2(int256 x) external pure returns (int256 result) {
-    result = x.log2();
-  }
+    function signedLog2(int256 x) external pure returns (int256 result) {
+        result = x.log2();
+    }
 
-  /// @notice Calculates x*y÷1e18 while handling possible intermediary overflow.
-  /// @dev Try this with x = type(int256).max and y = 5e17.
-  function signedMul(int256 x, int256 y) external pure returns (int256 result) {
-    result = x.mul(y);
-  }
+    /// @notice Calculates x*y÷1e18 while handling possible intermediary overflow.
+    /// @dev Try this with x = type(int256).max and y = 5e17.
+    function signedMul(int256 x, int256 y) external pure returns (int256 result) {
+        result = x.mul(y);
+    }
 
-  /// @dev Assuming that 1e18 = 100% and 1e16 = 1%.
-  function signedYield(int256 principal, int256 apr) external pure returns (int256 result) {
-    result = principal.mul(apr);
-  }
+    /// @dev Assuming that 1e18 = 100% and 1e16 = 1%.
+    function signedYield(int256 principal, int256 apr) external pure returns (int256 result) {
+        result = principal.mul(apr);
+    }
 }
 
 ```
@@ -76,27 +76,27 @@ pragma solidity >=0.8.4;
 import "@prb/math/contracts/PRBMathSD59x18Typed.sol";
 
 contract SignedConsumerTyped {
-  using PRBMathSD59x18Typed for PRBMath.SD59x18;
+    using PRBMathSD59x18Typed for PRBMath.SD59x18;
 
-  function signedLog2(int256 x) external pure returns (int256 result) {
-    PRBMath.SD59x18 memory xsd = PRBMath.SD59x18({ value: x });
-    result = xsd.log2().value;
-  }
+    function signedLog2(int256 x) external pure returns (int256 result) {
+        PRBMath.SD59x18 memory xsd = PRBMath.SD59x18({ value: x });
+        result = xsd.log2().value;
+    }
 
-  /// @notice Calculates x*y÷1e18 while handling possible intermediary overflow.
-  /// @dev Try this with x = type(int256).max and y = 5e17.
-  function signedMul(int256 x, int256 y) external pure returns (int256 result) {
-    PRBMath.SD59x18 memory xsd = PRBMath.SD59x18({ value: x });
-    PRBMath.SD59x18 memory ysd = PRBMath.SD59x18({ value: y });
-    result = xsd.mul(ysd).value;
-  }
+    /// @notice Calculates x*y÷1e18 while handling possible intermediary overflow.
+    /// @dev Try this with x = type(int256).max and y = 5e17.
+    function signedMul(int256 x, int256 y) external pure returns (int256 result) {
+        PRBMath.SD59x18 memory xsd = PRBMath.SD59x18({ value: x });
+        PRBMath.SD59x18 memory ysd = PRBMath.SD59x18({ value: y });
+        result = xsd.mul(ysd).value;
+    }
 
-  /// @dev Assuming that 1e18 = 100% and 1e16 = 1%.
-  function signedYield(int256 principal, int256 apr) external pure returns (int256 result) {
-    PRBMath.SD59x18 memory principalSd = PRBMath.SD59x18({ value: principal });
-    PRBMath.SD59x18 memory aprSd = PRBMath.SD59x18({ value: apr });
-    result = principalSd.mul(aprSd).value;
-  }
+    /// @dev Assuming that 1e18 = 100% and 1e16 = 1%.
+    function signedYield(int256 principal, int256 apr) external pure returns (int256 result) {
+        PRBMath.SD59x18 memory principalSd = PRBMath.SD59x18({ value: principal });
+        PRBMath.SD59x18 memory aprSd = PRBMath.SD59x18({ value: apr });
+        result = principalSd.mul(aprSd).value;
+    }
 }
 
 ```
@@ -110,24 +110,24 @@ pragma solidity >=0.8.4;
 import "@prb/math/contracts/PRBMathUD60x18.sol";
 
 contract UnsignedConsumer {
-  using PRBMathUD60x18 for uint256;
+    using PRBMathUD60x18 for uint256;
 
-  /// @dev Note that "x" must be greater than or equal to 1e18, lest the result would be negative, and negative
-  /// numbers are not supported by the unsigned 60.18-decimal fixed-point representation.
-  function unsignedLog2(uint256 x) external pure returns (uint256 result) {
-    result = x.log2();
-  }
+    /// @dev Note that "x" must be greater than or equal to 1e18, lest the result would be negative, and negative
+    /// numbers are not supported by the unsigned 60.18-decimal fixed-point representation.
+    function unsignedLog2(uint256 x) external pure returns (uint256 result) {
+        result = x.log2();
+    }
 
-  /// @notice Calculates x*y÷1e18 while handling possible intermediary overflow.
-  /// @dev Try this with x = type(uint256).max and y = 5e17.
-  function unsignedMul(uint256 x, uint256 y) external pure returns (uint256 result) {
-    result = x.mul(y);
-  }
+    /// @notice Calculates x*y÷1e18 while handling possible intermediary overflow.
+    /// @dev Try this with x = type(uint256).max and y = 5e17.
+    function unsignedMul(uint256 x, uint256 y) external pure returns (uint256 result) {
+        result = x.mul(y);
+    }
 
-  /// @dev Assuming that 1e18 = 100% and 1e16 = 1%.
-  function unsignedYield(uint256 principal, uint256 apr) external pure returns (uint256 result) {
-    result = principal.mul(apr);
-  }
+    /// @dev Assuming that 1e18 = 100% and 1e16 = 1%.
+    function unsignedYield(uint256 principal, uint256 apr) external pure returns (uint256 result) {
+        result = principal.mul(apr);
+    }
 }
 
 ```
@@ -141,27 +141,27 @@ pragma solidity >=0.8.4;
 import "@prb/math/contracts/PRBMathUD60x18Typed.sol";
 
 contract UnsignedConsumerTyped {
-  using PRBMathUD60x18Typed for PRBMath.UD60x18;
+    using PRBMathUD60x18Typed for PRBMath.UD60x18;
 
-  function unsignedLog2(uint256 x) external pure returns (uint256 result) {
-    PRBMath.UD60x18 memory xud = PRBMath.UD60x18({ value: x });
-    result = xud.log2().value;
-  }
+    function unsignedLog2(uint256 x) external pure returns (uint256 result) {
+        PRBMath.UD60x18 memory xud = PRBMath.UD60x18({ value: x });
+        result = xud.log2().value;
+    }
 
-  /// @notice Calculates x*y÷1e18 while handling possible intermediary overflow.
-  /// @dev Try this with x = type(uint256).max and y = 5e17.
-  function unsignedMul(uint256 x, uint256 y) external pure returns (uint256 result) {
-    PRBMath.UD60x18 memory xud = PRBMath.UD60x18({ value: x });
-    PRBMath.UD60x18 memory yud = PRBMath.UD60x18({ value: y });
-    result = xud.mul(yud).value;
-  }
+    /// @notice Calculates x*y÷1e18 while handling possible intermediary overflow.
+    /// @dev Try this with x = type(uint256).max and y = 5e17.
+    function unsignedMul(uint256 x, uint256 y) external pure returns (uint256 result) {
+        PRBMath.UD60x18 memory xud = PRBMath.UD60x18({ value: x });
+        PRBMath.UD60x18 memory yud = PRBMath.UD60x18({ value: y });
+        result = xud.mul(yud).value;
+    }
 
-  /// @dev Assuming that 1e18 = 100% and 1e16 = 1%.
-  function unsignedYield(uint256 principal, uint256 apr) external pure returns (uint256 result) {
-    PRBMath.UD60x18 memory principalUd = PRBMath.UD60x18({ value: principal });
-    PRBMath.UD60x18 memory aprUd = PRBMath.UD60x18({ value: apr });
-    result = principalUd.mul(aprUd).value;
-  }
+    /// @dev Assuming that 1e18 = 100% and 1e16 = 1%.
+    function unsignedYield(uint256 principal, uint256 apr) external pure returns (uint256 result) {
+        PRBMath.UD60x18 memory principalUd = PRBMath.UD60x18({ value: principal });
+        PRBMath.UD60x18 memory aprUd = PRBMath.UD60x18({ value: apr });
+        result = principalUd.mul(aprUd).value;
+    }
 }
 
 ```
