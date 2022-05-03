@@ -2,8 +2,8 @@ import type { BigNumber } from "@ethersproject/bignumber";
 import type { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
 import type { Fixture } from "ethereum-waffle";
 
-import type { PRBMathSD59x18Mock } from "../../src/types/PRBMathSD59x18Mock";
-import type { PRBMathUD60x18Mock } from "../../src/types/PRBMathUD60x18Mock";
+import type { PRBMathSD59x18Mock } from "../../src/types/test/PRBMathSD59x18Mock";
+import type { PRBMathUD60x18Mock } from "../../src/types/test/PRBMathUD60x18Mock";
 
 declare global {
   export namespace Chai {

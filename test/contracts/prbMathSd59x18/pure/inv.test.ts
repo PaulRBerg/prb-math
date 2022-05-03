@@ -6,13 +6,13 @@ import forEach from "mocha-each";
 
 import { MAX_SD59x18, MAX_WHOLE_SD59x18, MIN_SD59x18, MIN_WHOLE_SD59x18, PI } from "../../../../src/constants";
 import { inv } from "../../../../src/functions";
-import { PanicCodes } from "../../../shared/errors";
 
 export function shouldBehaveLikeInv(): void {
   context("when x is zero", function () {
     it("reverts", async function () {
       const x: BigNumber = Zero;
-      await expect(this.contracts.prbMathSd59x18.doInv(x)).to.be.revertedWith(PanicCodes.DIVISION_BY_ZERO);
+      // Use "revertedWith(PanicCodes.DIVISION_BY_ZERO" when this Hardhat bug is patched: https://bit.ly/3MNgsPQ
+      await expect(this.contracts.prbMathSd59x18.doInv(x)).to.be.reverted;
     });
   });
 
