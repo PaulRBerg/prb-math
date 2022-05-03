@@ -2,8 +2,8 @@ import type { Signer } from "@ethersproject/abstract-signer";
 import { artifacts, waffle } from "hardhat";
 import type { Artifact } from "hardhat/types";
 
-import { PRBMathSD59x18Mock } from "../../src/types/PRBMathSD59x18Mock";
-import { PRBMathUD60x18Mock } from "../../src/types/PRBMathUD60x18Mock";
+import type { PRBMathSD59x18Mock } from "../../src/types/test/PRBMathSD59x18Mock";
+import type { PRBMathUD60x18Mock } from "../../src/types/test/PRBMathUD60x18Mock";
 
 type UnitFixturePRBMathSd59x18ReturnType = {
   prbMathSd59x18: PRBMathSD59x18Mock;

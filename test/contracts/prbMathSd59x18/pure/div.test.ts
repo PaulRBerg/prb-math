@@ -7,7 +7,6 @@ import forEach from "mocha-each";
 import { MAX_SD59x18, MIN_SD59x18, PI, SCALE } from "../../../../src/constants";
 import { PRBMathSD59x18Errors } from "../../../../src/errors";
 import { div } from "../../../../src/functions";
-import { PanicCodes } from "../../../shared/errors";
 
 export function shouldBehaveLikeDiv(): void {
   context("when the denominator is zero", function () {
@@ -15,7 +14,8 @@ export function shouldBehaveLikeDiv(): void {
 
     it("reverts", async function () {
       const x: BigNumber = toBn("1");
-      await expect(this.contracts.prbMathSd59x18.doDiv(x, y)).to.be.revertedWith(PanicCodes.DIVISION_BY_ZERO);
+      // Use "revertedWith(PanicCodes.DIVISION_BY_ZERO" when this Hardhat bug is patched: https://bit.ly/3MNgsPQ
+      await expect(this.contracts.prbMathSd59x18.doDiv(x, y)).to.be.reverted;
     });
   });
 

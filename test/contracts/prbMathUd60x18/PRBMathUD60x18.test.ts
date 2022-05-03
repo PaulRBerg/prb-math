@@ -39,10 +39,6 @@ export function unitTestPrbMathUd60x18(): void {
       shouldBehaveLikeDiv();
     });
 
-    describe("e", function () {
-      shouldBehaveLikeEGetter();
-    });
-
     describe("exp", function () {
       shouldBehaveLikeExp();
     });
@@ -57,10 +53,6 @@ export function unitTestPrbMathUd60x18(): void {
 
     describe("frac", function () {
       shouldBehaveLikeFrac();
-    });
-
-    describe("fromUD60x18", function () {
-      shouldBehaveLikeFromUD60x18();
     });
 
     describe("gm", function () {
@@ -87,10 +79,6 @@ export function unitTestPrbMathUd60x18(): void {
       shouldBehaveLikeMul();
     });
 
-    describe("pi", function () {
-      shouldBehaveLikePiGetter();
-    });
-
     describe("pow", function () {
       shouldBehaveLikePow();
     });
@@ -101,6 +89,18 @@ export function unitTestPrbMathUd60x18(): void {
 
     describe("sqrt", function () {
       shouldBehaveLikeSqrt();
+    });
+
+    describe("fromUD60x18", function () {
+      shouldBehaveLikeFromUD60x18();
+    });
+
+    describe("e", function () {
+      shouldBehaveLikeEGetter();
+    });
+
+    describe("pi", function () {
+      shouldBehaveLikePiGetter();
     });
 
     describe("toUD60x18", function () {
