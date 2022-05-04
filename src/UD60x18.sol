@@ -88,16 +88,17 @@ using { avg, ceil, div, exp, exp2, floor, frac, gm, inv, ln, log10, log2, mul, p
 /// @dev Based on the formula:
 ///
 /// $$
-/// avg(x, y) = (x >> 1) + (y >> 1) + (x & y & 1)
+/// avg(x, y) = (x & y) + ((xUint ^ yUint) / 2)
 /// $$
 //
 /// In English, what this formula does is:
 ///
-///     1. Shift x one bit to the right.
-///     2. Shift y one bit to the left.
-///     3. Add 1 if both x and y are odd.
+///     1. AND x and y.
+///     2. Calculate half of XOR x and y.
+///     3. Add the two results together.
 ///
-/// We need to add 1 if both x and y are odd to account for the double 0.5 remainder that is truncated after shifting.
+/// This technique is known as SWAR, which stands for "SIMD within a register". You can read more about it here:
+/// https://devblogs.microsoft.com/oldnewthing/20220207-00/?p=106223
 ///
 /// @param x The first operand as an UD60x18 number.
 /// @param y The second operand as an UD60x18 number.
@@ -106,7 +107,7 @@ function avg(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     uint256 xUint = unwrap(x);
     uint256 yUint = unwrap(y);
     unchecked {
-        result = wrap((xUint >> 1) + (yUint >> 1) + (xUint & yUint & 1));
+        result = wrap((xUint & yUint) + ((xUint ^ yUint) >> 1));
     }
 }
 
