@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Unlicense
-pragma solidity >=0.8.4;
+pragma solidity >=0.8.13;
 
 import { e, fromSD59x18, pi, SD59x18, toSD59x18 } from "../SD59x18.sol";
 
