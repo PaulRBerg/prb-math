@@ -45,131 +45,61 @@ $ npm install @prb/math
 
 ## Usage
 
-PRBMath comes in four flavors: basic signed, typed signed, basic unsigned and typed unsigned.
+PRBMath makes heavy use of the [user-defined value
+types](https://blog.soliditylang.org/2021/09/27/user-defined-value-types/) added in Solidity v0.8.8 and the
+[using ... for T global](https://blog.soliditylang.org/2022/03/16/solidity-0.8.13-release-announcement/) directive
+introduced in Solidity v0.8.13. Thus, the library cannot be used in Solidity v0.8.12 and below.
 
-### PRBMathSD59x18.sol
+### SD59x18.sol
 
 ```solidity
-// SPDX-License-Identifier: Unlicense
-pragma solidity >=0.8.4;
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity >=0.8.13;
 
-import "@prb/math/contracts/PRBMathSD59x18.sol";
+import { SD59x18 } from "@prb/math/contracts/SD59x18.sol";
 
 contract SignedConsumer {
-  using PRBMathSD59x18 for int256;
-
-  function signedLog2(int256 x) external pure returns (int256 result) {
+  function signedLog2(SD59x18 x) external pure returns (SD59x18 result) {
     result = x.log2();
   }
 
   /// @notice Calculates x*y÷1e18 while handling possible intermediary overflow.
   /// @dev Try this with x = type(int256).max and y = 5e17.
-  function signedMul(int256 x, int256 y) external pure returns (int256 result) {
+  function signedMul(SD59x18 x, SD59x18 y) external pure returns (SD59x18 result) {
     result = x.mul(y);
   }
 
   /// @dev Assuming that 1e18 = 100% and 1e16 = 1%.
-  function signedYield(int256 principal, int256 apr) external pure returns (int256 result) {
+  function signedYield(SD59x18 principal, SD59x18 apr) external pure returns (SD59x18 result) {
     result = principal.mul(apr);
   }
 }
 
 ```
 
-### PRBMathSD59x18Typed.sol
+### UD60x18.sol
 
 ```solidity
-// SPDX-License-Identifier: Unlicense
-pragma solidity >=0.8.4;
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity >=0.8.13;
 
-import "@prb/math/contracts/PRBMathSD59x18Typed.sol";
-
-contract SignedConsumerTyped {
-  using PRBMathSD59x18Typed for PRBMath.SD59x18;
-
-  function signedLog2(int256 x) external pure returns (int256 result) {
-    PRBMath.SD59x18 memory xsd = PRBMath.SD59x18({ value: x });
-    result = xsd.log2().value;
-  }
-
-  /// @notice Calculates x*y÷1e18 while handling possible intermediary overflow.
-  /// @dev Try this with x = type(int256).max and y = 5e17.
-  function signedMul(int256 x, int256 y) external pure returns (int256 result) {
-    PRBMath.SD59x18 memory xsd = PRBMath.SD59x18({ value: x });
-    PRBMath.SD59x18 memory ysd = PRBMath.SD59x18({ value: y });
-    result = xsd.mul(ysd).value;
-  }
-
-  /// @dev Assuming that 1e18 = 100% and 1e16 = 1%.
-  function signedYield(int256 principal, int256 apr) external pure returns (int256 result) {
-    PRBMath.SD59x18 memory principalSd = PRBMath.SD59x18({ value: principal });
-    PRBMath.SD59x18 memory aprSd = PRBMath.SD59x18({ value: apr });
-    result = principalSd.mul(aprSd).value;
-  }
-}
-
-```
-
-### PRBMathUD60x18.sol
-
-```solidity
-// SPDX-License-Identifier: Unlicense
-pragma solidity >=0.8.4;
-
-import "@prb/math/contracts/PRBMathUD60x18.sol";
+import { UD60x18 } from "@prb/math/contracts/UD60x18.sol";
 
 contract UnsignedConsumer {
-  using PRBMathUD60x18 for uint256;
-
-  /// @dev Note that "x" must be greater than or equal to 1e18, lest the result would be negative, and negative
-  /// numbers are not supported by the unsigned 60.18-decimal fixed-point representation.
-  function unsignedLog2(uint256 x) external pure returns (uint256 result) {
+  /// @dev Note that "x" must be greater than or equal to 1e18, because UD60x18 does not support negative numbers.
+  function unsignedLog2(UD60x18 x) external pure returns (UD60x18 result) {
     result = x.log2();
   }
 
   /// @notice Calculates x*y÷1e18 while handling possible intermediary overflow.
   /// @dev Try this with x = type(uint256).max and y = 5e17.
-  function unsignedMul(uint256 x, uint256 y) external pure returns (uint256 result) {
+  function unsignedMul(UD60x18 x, UD60x18 y) external pure returns (UD60x18 result) {
     result = x.mul(y);
   }
 
   /// @dev Assuming that 1e18 = 100% and 1e16 = 1%.
-  function unsignedYield(uint256 principal, uint256 apr) external pure returns (uint256 result) {
+  function unsignedYield(UD60x18 principal, UD60x18 apr) external pure returns (UD60x18 result) {
     result = principal.mul(apr);
-  }
-}
-
-```
-
-### PRBMathUD60x18Typed.sol
-
-```solidity
-// SPDX-License-Identifier: Unlicense
-pragma solidity >=0.8.4;
-
-import "@prb/math/contracts/PRBMathUD60x18Typed.sol";
-
-contract UnsignedConsumerTyped {
-  using PRBMathUD60x18Typed for PRBMath.UD60x18;
-
-  function unsignedLog2(uint256 x) external pure returns (uint256 result) {
-    PRBMath.UD60x18 memory xud = PRBMath.UD60x18({ value: x });
-    result = xud.log2().value;
-  }
-
-  /// @notice Calculates x*y÷1e18 while handling possible intermediary overflow.
-  /// @dev Try this with x = type(uint256).max and y = 5e17.
-  function unsignedMul(uint256 x, uint256 y) external pure returns (uint256 result) {
-    PRBMath.UD60x18 memory xud = PRBMath.UD60x18({ value: x });
-    PRBMath.UD60x18 memory yud = PRBMath.UD60x18({ value: y });
-    result = xud.mul(yud).value;
-  }
-
-  /// @dev Assuming that 1e18 = 100% and 1e16 = 1%.
-  function unsignedYield(uint256 principal, uint256 apr) external pure returns (uint256 result) {
-    PRBMath.UD60x18 memory principalUd = PRBMath.UD60x18({ value: principal });
-    PRBMath.UD60x18 memory aprUd = PRBMath.UD60x18({ value: apr });
-    result = principalUd.mul(aprUd).value;
   }
 }
 
@@ -178,12 +108,11 @@ contract UnsignedConsumerTyped {
 ### JavaScript SDK
 
 PRBMath is accompanied by a JavaScript SDK. Whatever functions there are in the Solidity library, you should find them
-replicated in the SDK. The only exception are `fromUint` and `toUint`, for which you can use
-[evm-bn](https://github.com/paulrberg/evm-bn).
+replicated in the SDK. The only exception are the converter functions `fromSD59x18`, `fromUD60x18`, `toSD59x18` and `toUD60x18`. For conversion, you can use [evm-bn](https://github.com/paulrberg/evm-bn).
 
-Here's an example for how to calculate the binary logarithm:
+Here is an example for how to calculate the binary logarithm:
 
-```ts
+```typescript
 import type { BigNumber } from "@ethersproject/bignumber";
 import { log2 } from "@prb/math";
 import { fromBn, toBn } from "evm-bn";
@@ -199,68 +128,37 @@ Pro tip: see how the SDK is used in the [tests](./test/contracts) for PRBMath.
 
 ## Gas Efficiency
 
-The typeless PRBMath library is faster than ABDKMath for `abs`, `exp`, `exp2`, `gm`, `inv`, `ln`,
-`log2`. Conversely, it is slower than ABDKMath for `avg`, `div`, `mul`, `powu` and `sqrt`. There are
+PRBMath is faster than ABDKMath for `abs`, `exp`, `exp2`, `gm`, `inv`, `ln`, `log2`. Conversely, it is slower than ABDKMath for `avg`, `div`, `mul`, `powu` and `sqrt`. There are
 two technical reasons why PRBMath lags behind ABDKMath's `mul` and `div` functions:
 
 1. PRBMath operates with 256-bit word sizes, so it has to account for possible intermediary overflow. ABDKMath operates with
    128-bit word sizes.
 2. PRBMath rounds up instead of truncating in certain cases (see listing 6 and text above it in this
-   [article](https://accu.org/index.php/journals/1717)), which makes it slightly more precise than ABDKMath but comes at a gas cost.
+   [article](https://accu.org/index.php/journals/1717)). THis makes it slightly more precise than ABDKMath but comes at a gas cost.
 
 ### PRBMath
 
 Based on the v2.0.1 of the library.
 
-| SD59x18 | Min | Max   | Avg  |     | UD60x18  | Min  | Max   | Avg  |
-| ------- | --- | ----- | ---- | --- | -------- | ---- | ----- | ---- |
-| abs     | 68  | 72    | 70   |     | n/a      | n/a  | n/a   | n/a  |
-| avg     | 57  | 57    | 57   |     | avg      | 57   | 57    | 57   |
-| ceil    | 82  | 117   | 101  |     | ceil     | 78   | 78    | 78   |
-| div     | 431 | 483   | 451  |     | div      | 205  | 205   | 205  |
-| exp     | 38  | 2797  | 2263 |     | exp      | 1874 | 2742  | 2244 |
-| exp2    | 63  | 2678  | 2104 |     | exp2     | 1784 | 2652  | 2156 |
-| floor   | 82  | 117   | 101  |     | floor    | 43   | 43    | 43   |
-| frac    | 23  | 23    | 23   |     | frac     | 23   | 23    | 23   |
-| fromInt | 83  | 83    | 83   |     | fromUint | 49   | 49    | 49   |
-| gm      | 26  | 892   | 690  |     | gm       | 26   | 893   | 691  |
-| inv     | 40  | 40    | 40   |     | inv      | 40   | 40    | 40   |
-| ln      | 463 | 7306  | 4724 |     | ln       | 419  | 6902  | 3814 |
-| log10   | 104 | 9074  | 4337 |     | log10    | 503  | 8695  | 4571 |
-| log2    | 377 | 7241  | 4243 |     | log2     | 330  | 6825  | 3426 |
-| mul     | 455 | 463   | 459  |     | mul      | 219  | 275   | 247  |
-| pow     | 64  | 11338 | 8518 |     | pow      | 64   | 10637 | 6635 |
-| powu    | 293 | 24745 | 5681 |     | powu     | 83   | 24535 | 5471 |
-| sqrt    | 140 | 839   | 716  |     | sqrt     | 114  | 846   | 710  |
-| toInt   | 23  | 23    | 23   |     | toUint   | 23   | 23    | 23   |
-
-### PRBMathTyped
-
-Based on the v2.0.1 of the library.
-
-| SD59x18 | Min | Max   | Avg  |     | UD60x18  | Min  | Max   | Avg  |
-| ------- | --- | ----- | ---- | --- | -------- | ---- | ----- | ---- |
-| abs     | 128 | 132   | 130  |     | n/a      | n/a  | n/a   | n/a  |
-| add     | 221 | 221   | 221  |     | add      | 97   | 97    | 97   |
-| avg     | 120 | 120   | 120  |     | avg      | 120  | 120   | 120  |
-| ceil    | 95  | 166   | 141  |     | ceil     | 132  | 132   | 132  |
-| div     | 524 | 582   | 546  |     | div      | 259  | 259   | 259  |
-| exp     | 82  | 3076  | 2617 |     | exp      | 2086 | 2954  | 2456 |
-| exp2    | 110 | 2768  | 2233 |     | exp2     | 1840 | 2708  | 2212 |
-| floor   | 95  | 171   | 143  |     | floor    | 97   | 97    | 97   |
-| fromInt | 118 | 118   | 118  |     | fromUint | 84   | 84    | 84   |
-| frac    | 82  | 82    | 82   |     | frac     | 77   | 77    | 77   |
-| gm      | 67  | 947   | 741  |     | gm       | 67   | 948   | 743  |
-| inv     | 82  | 82    | 82   |     | inv      | 82   | 82    | 82   |
-| ln      | 645 | 7503  | 5041 |     | ln       | 626  | 7124  | 4029 |
-| log10   | 182 | 9287  | 4337 |     | log10    | 2414 | 8912  | 7280 |
-| log2    | 422 | 7285  | 4701 |     | log2     | 407  | 6910  | 4108 |
-| mul     | 538 | 546   | 542  |     | mul      | 273  | 336   | 305  |
-| pow     | 115 | 11824 | 8471 |     | pow      | 115  | 11129 | 7346 |
-| powu    | 479 | 25213 | 5931 |     | powu     | 132  | 24426 | 4207 |
-| sqrt    | 195 | 918   | 798  |     | sqrt     | 153  | 903   | 769  |
-| sub     | 218 | 218   | 218  |     | sub      | 98   | 98    | 98   |
-| toInt   | 29  | 29    | 29   |     | toUint   | 29   | 29    | 29   |
+| SD59x18 | Min | Max   | Avg  |     | UD60x18 | Min  | Max   | Avg  |
+| ------- | --- | ----- | ---- | --- | ------- | ---- | ----- | ---- |
+| abs     | 68  | 72    | 70   |     | n/a     | n/a  | n/a   | n/a  |
+| avg     | 57  | 57    | 57   |     | avg     | 57   | 57    | 57   |
+| ceil    | 82  | 117   | 101  |     | ceil    | 78   | 78    | 78   |
+| div     | 431 | 483   | 451  |     | div     | 205  | 205   | 205  |
+| exp     | 38  | 2797  | 2263 |     | exp     | 1874 | 2742  | 2244 |
+| exp2    | 63  | 2678  | 2104 |     | exp2    | 1784 | 2652  | 2156 |
+| floor   | 82  | 117   | 101  |     | floor   | 43   | 43    | 43   |
+| frac    | 23  | 23    | 23   |     | frac    | 23   | 23    | 23   |
+| gm      | 26  | 892   | 690  |     | gm      | 26   | 893   | 691  |
+| inv     | 40  | 40    | 40   |     | inv     | 40   | 40    | 40   |
+| ln      | 463 | 7306  | 4724 |     | ln      | 419  | 6902  | 3814 |
+| log10   | 104 | 9074  | 4337 |     | log10   | 503  | 8695  | 4571 |
+| log2    | 377 | 7241  | 4243 |     | log2    | 330  | 6825  | 3426 |
+| mul     | 455 | 463   | 459  |     | mul     | 219  | 275   | 247  |
+| pow     | 64  | 11338 | 8518 |     | pow     | 64   | 10637 | 6635 |
+| powu    | 293 | 24745 | 5681 |     | powu    | 83   | 24535 | 5471 |
+| sqrt    | 140 | 839   | 716  |     | sqrt    | 114  | 846   | 710  |
 
 ### ABDKMath64x64
 
@@ -283,7 +181,7 @@ Based on v3.0 of the library. See [abdk-gas-estimations](https://github.com/paul
 
 ## Security
 
-While I set a high bar for code quality and test coverage, you shouldn't assume that this project is completely safe to use. The contracts
+While I set a high bar for code quality and test coverage, you should not assume that this project is completely safe to use. The contracts
 have not been audited by a security researcher.
 
 ### Caveat Emptor
