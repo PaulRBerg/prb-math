@@ -97,13 +97,8 @@ error PRBMathUD60x18__SubUnderflow(uint256 x, uint256 y);
 library PRBMath {
     /// STRUCTS ///
 
-    struct SD59x18 {
-        int256 value;
-    }
-
-    struct UD60x18 {
-        uint256 value;
-    }
+    type SD59x18 is int256;
+    type UD60x18 is uint256;
 
     /// STORAGE ///
 

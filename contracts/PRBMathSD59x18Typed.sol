@@ -47,13 +47,13 @@ library PRBMathSD59x18Typed {
     ///
     /// @param x The number to calculate the absolute value for.
     /// @param result The absolute value of x.
-    function abs(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
-        int256 xValue = x.value;
+    function abs(PRBMath.SD59x18 x) internal pure returns (PRBMath.SD59x18 result) {
+        int256 xValue = PRBMath.SD59x18.unwrap(x);
         if (xValue == MIN_SD59x18) {
             revert PRBMathSD59x18__AbsInputTooSmall();
         }
         unchecked {
-            result = PRBMath.SD59x18({ value: x.value < 0 ? -xValue : xValue });
+            result = PRBMath.SD59x18.wrap(xValue < 0 ? -xValue : xValue);
         }
     }
 
@@ -62,26 +62,18 @@ library PRBMathSD59x18Typed {
     /// @param x The first summand as a signed 59.18-decimal fixed-point number.
     /// @param y The second summand as a signed 59.18-decimal fixed-point number.
     /// @param result The sum as a signed 59.18 decimal fixed-point number.
-    function add(PRBMath.SD59x18 memory x, PRBMath.SD59x18 memory y)
-        internal
-        pure
-        returns (PRBMath.SD59x18 memory result)
-    {
-        result = PRBMath.SD59x18({ value: x.value + y.value });
+    function add(PRBMath.SD59x18 x, PRBMath.SD59x18 y) internal pure returns (PRBMath.SD59x18 result) {
+        result = PRBMath.SD59x18.wrap(PRBMath.SD59x18.unwrap(x) + PRBMath.SD59x18.unwrap(y));
     }
 
     /// @notice Calculates the arithmetic average of x and y, rounding down.
     /// @param x The first operand as a signed 59.18-decimal fixed-point number.
     /// @param y The second operand as a signed 59.18-decimal fixed-point number.
     /// @return result The arithmetic average as a signed 59.18-decimal fixed-point number.
-    function avg(PRBMath.SD59x18 memory x, PRBMath.SD59x18 memory y)
-        internal
-        pure
-        returns (PRBMath.SD59x18 memory result)
-    {
+    function avg(PRBMath.SD59x18 x, PRBMath.SD59x18 y) internal pure returns (PRBMath.SD59x18 result) {
         // The operations can never overflow.
-        int256 xValue = x.value;
-        int256 yValue = y.value;
+        int256 xValue = PRBMath.SD59x18.unwrap(x);
+        int256 yValue = PRBMath.SD59x18.unwrap(y);
         int256 rValue;
         unchecked {
             int256 sum = (xValue >> 1) + (yValue >> 1);
@@ -97,7 +89,7 @@ library PRBMathSD59x18Typed {
                 rValue = sum + (xValue & yValue & 1);
             }
         }
-        result = PRBMath.SD59x18({ value: rValue });
+        result = PRBMath.SD59x18.wrap(rValue);
     }
 
     /// @notice Yields the least greatest signed 59.18 decimal fixed-point number greater than or equal to x.
@@ -110,8 +102,8 @@ library PRBMathSD59x18Typed {
     ///
     /// @param x The signed 59.18-decimal fixed-point number to ceil.
     /// @param result The least integer greater than or equal to x, as a signed 58.18-decimal fixed-point number.
-    function ceil(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
-        int256 xValue = x.value;
+    function ceil(PRBMath.SD59x18 x) internal pure returns (PRBMath.SD59x18 result) {
+        int256 xValue = PRBMath.SD59x18.unwrap(x);
         if (xValue > MAX_WHOLE_SD59x18) {
             revert PRBMathSD59x18__CeilOverflow(xValue);
         }
@@ -125,7 +117,7 @@ library PRBMathSD59x18Typed {
                 if (xValue > 0) {
                     rValue += SCALE;
                 }
-                result = PRBMath.SD59x18({ value: rValue });
+                result = PRBMath.SD59x18.wrap(rValue);
             }
         }
     }
@@ -146,13 +138,9 @@ library PRBMathSD59x18Typed {
     /// @param x The numerator as a signed 59.18-decimal fixed-point number.
     /// @param y The denominator as a signed 59.18-decimal fixed-point number.
     /// @param result The quotient as a signed 59.18-decimal fixed-point number.
-    function div(PRBMath.SD59x18 memory x, PRBMath.SD59x18 memory y)
-        internal
-        pure
-        returns (PRBMath.SD59x18 memory result)
-    {
-        int256 xValue = x.value;
-        int256 yValue = y.value;
+    function div(PRBMath.SD59x18 x, PRBMath.SD59x18 y) internal pure returns (PRBMath.SD59x18 result) {
+        int256 xValue = PRBMath.SD59x18.unwrap(x);
+        int256 yValue = PRBMath.SD59x18.unwrap(y);
         if (xValue == MIN_SD59x18 || yValue == MIN_SD59x18) {
             revert PRBMathSD59x18__DivInputTooSmall();
         }
@@ -181,13 +169,13 @@ library PRBMathSD59x18Typed {
 
         // XOR over sx and sy. This is basically checking whether the inputs have the same sign. If yes, the result
         // should be positive. Otherwise, it should be negative.
-        result = PRBMath.SD59x18({ value: sx ^ sy == 1 ? -int256(rAbs) : int256(rAbs) });
+        result = PRBMath.SD59x18.wrap(sx ^ sy == 1 ? -int256(rAbs) : int256(rAbs));
     }
 
     /// @notice Returns Euler's number as a signed 59.18-decimal fixed-point number.
     /// @dev See https://en.wikipedia.org/wiki/E_(mathematical_constant).
-    function e() internal pure returns (PRBMath.SD59x18 memory result) {
-        result = PRBMath.SD59x18({ value: 2_718281828459045235 });
+    function e() internal pure returns (PRBMath.SD59x18 result) {
+        result = PRBMath.SD59x18.wrap(2_718281828459045235);
     }
 
     /// @notice Calculates the natural exponent of x.
@@ -204,11 +192,11 @@ library PRBMathSD59x18Typed {
     ///
     /// @param x The exponent as a signed 59.18-decimal fixed-point number.
     /// @return result The result as a signed 59.18-decimal fixed-point number.
-    function exp(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
-        int256 xValue = x.value;
+    function exp(PRBMath.SD59x18 x) internal pure returns (PRBMath.SD59x18 result) {
+        int256 xValue = PRBMath.SD59x18.unwrap(x);
         // Without this check, the value passed to "exp2" would be less than -59.794705707972522261.
         if (xValue < -41_446531673892822322) {
-            return PRBMath.SD59x18({ value: 0 });
+            return PRBMath.SD59x18.wrap(0);
         }
 
         // Without this check, the value passed to "exp2" would be greater than 192.
@@ -219,7 +207,7 @@ library PRBMathSD59x18Typed {
         // Do the fixed-point multiplication inline to save gas.
         unchecked {
             int256 doubleScaleProduct = xValue * LOG2_E;
-            PRBMath.SD59x18 memory exponent = PRBMath.SD59x18({ value: (doubleScaleProduct + HALF_SCALE) / SCALE });
+            PRBMath.SD59x18 exponent = PRBMath.SD59x18.wrap((doubleScaleProduct + HALF_SCALE) / SCALE);
             result = exp2(exponent);
         }
     }
@@ -237,20 +225,20 @@ library PRBMathSD59x18Typed {
     ///
     /// @param x The exponent as a signed 59.18-decimal fixed-point number.
     /// @return result The result as a signed 59.18-decimal fixed-point number.
-    function exp2(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
-        int256 xValue = x.value;
+    function exp2(PRBMath.SD59x18 x) internal pure returns (PRBMath.SD59x18 result) {
+        int256 xValue = PRBMath.SD59x18.unwrap(x);
 
         // This works because 2^(-x) = 1/2^x.
         if (xValue < 0) {
             // 2^59.794705707972522262 is the maximum number whose inverse does not truncate down to zero.
             if (xValue < -59_794705707972522261) {
-                return PRBMath.SD59x18({ value: 0 });
+                return PRBMath.SD59x18.wrap(0);
             }
 
             // Do the fixed-point inversion inline to save gas. The numerator is SCALE * SCALE.
             unchecked {
-                PRBMath.SD59x18 memory exponent = PRBMath.SD59x18({ value: -xValue });
-                result = PRBMath.SD59x18({ value: 1e36 / exp2(exponent).value });
+                PRBMath.SD59x18 exponent = PRBMath.SD59x18.wrap(-xValue);
+                result = PRBMath.SD59x18.wrap(1e36 / PRBMath.SD59x18.unwrap(exp2(exponent)));
             }
         } else {
             // 2^192 doesn't fit within the 192.64-bit format used internally in this function.
@@ -263,7 +251,7 @@ library PRBMathSD59x18Typed {
                 uint256 x192x64 = (uint256(xValue) << 64) / uint256(SCALE);
 
                 // Safe to convert the result to int256 directly because the maximum input allowed is 192.
-                result = PRBMath.SD59x18({ value: int256(PRBMath.exp2(x192x64)) });
+                result = PRBMath.SD59x18.wrap(int256(PRBMath.exp2(x192x64)));
             }
         }
     }
@@ -278,8 +266,8 @@ library PRBMathSD59x18Typed {
     ///
     /// @param x The signed 59.18-decimal fixed-point number to floor.
     /// @param result The greatest integer less than or equal to x, as a signed 58.18-decimal fixed-point number.
-    function floor(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
-        int256 xValue = x.value;
+    function floor(PRBMath.SD59x18 x) internal pure returns (PRBMath.SD59x18 result) {
+        int256 xValue = PRBMath.SD59x18.unwrap(x);
         if (xValue < MIN_WHOLE_SD59x18) {
             revert PRBMathSD59x18__FloorUnderflow(xValue);
         }
@@ -293,7 +281,7 @@ library PRBMathSD59x18Typed {
                 if (xValue < 0) {
                     rValue -= SCALE;
                 }
-                result = PRBMath.SD59x18({ value: rValue });
+                result = PRBMath.SD59x18.wrap(rValue);
             }
         }
     }
@@ -303,9 +291,9 @@ library PRBMathSD59x18Typed {
     /// @dev Based on the odd function definition. https://en.wikipedia.org/wiki/Fractional_part
     /// @param x The signed 59.18-decimal fixed-point number to get the fractional part of.
     /// @param result The fractional part of x as a signed 59.18-decimal fixed-point number.
-    function frac(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
+    function frac(PRBMath.SD59x18 x) internal pure returns (PRBMath.SD59x18 result) {
         unchecked {
-            result = PRBMath.SD59x18({ value: x.value % SCALE });
+            result = PRBMath.SD59x18.wrap(PRBMath.SD59x18.unwrap(x) % SCALE);
         }
     }
 
@@ -317,7 +305,7 @@ library PRBMathSD59x18Typed {
     ///
     /// @param x The basic integer to convert.
     /// @param result The same number in signed 59.18-decimal fixed-point representation.
-    function fromInt(int256 x) internal pure returns (PRBMath.SD59x18 memory result) {
+    function fromInt(int256 x) internal pure returns (PRBMath.SD59x18 result) {
         unchecked {
             if (x < MIN_SD59x18 / SCALE) {
                 revert PRBMathSD59x18__FromIntUnderflow(x);
@@ -325,7 +313,7 @@ library PRBMathSD59x18Typed {
             if (x > MAX_SD59x18 / SCALE) {
                 revert PRBMathSD59x18__FromIntOverflow(x);
             }
-            result = PRBMath.SD59x18({ value: x * SCALE });
+            result = PRBMath.SD59x18.wrap(x * SCALE);
         }
     }
 
@@ -338,30 +326,28 @@ library PRBMathSD59x18Typed {
     /// @param x The first operand as a signed 59.18-decimal fixed-point number.
     /// @param y The second operand as a signed 59.18-decimal fixed-point number.
     /// @return result The result as a signed 59.18-decimal fixed-point number.
-    function gm(PRBMath.SD59x18 memory x, PRBMath.SD59x18 memory y)
-        internal
-        pure
-        returns (PRBMath.SD59x18 memory result)
-    {
-        if (x.value == 0) {
-            return PRBMath.SD59x18({ value: 0 });
+    function gm(PRBMath.SD59x18 x, PRBMath.SD59x18 y) internal pure returns (PRBMath.SD59x18 result) {
+        int256 xValue = PRBMath.SD59x18.unwrap(x);
+        int256 yValue = PRBMath.SD59x18.unwrap(y);
+        if (xValue == 0) {
+            return PRBMath.SD59x18.wrap(0);
         }
 
         unchecked {
             // Checking for overflow this way is faster than letting Solidity do it.
-            int256 xy = x.value * y.value;
-            if (xy / x.value != y.value) {
-                revert PRBMathSD59x18__GmOverflow(x.value, y.value);
+            int256 xy = xValue * yValue;
+            if (xy / xValue != yValue) {
+                revert PRBMathSD59x18__GmOverflow(xValue, yValue);
             }
 
             // The product cannot be negative.
             if (xy < 0) {
-                revert PRBMathSD59x18__GmNegativeProduct(x.value, y.value);
+                revert PRBMathSD59x18__GmNegativeProduct(xValue, yValue);
             }
 
             // We don't need to multiply by the SCALE here because the x*y product had already picked up a factor of SCALE
             // during multiplication. See the comments within the "sqrt" function.
-            result = PRBMath.SD59x18({ value: int256(PRBMath.sqrt(uint256(xy))) });
+            result = PRBMath.SD59x18.wrap(int256(PRBMath.sqrt(uint256(xy))));
         }
     }
 
@@ -372,10 +358,10 @@ library PRBMathSD59x18Typed {
     ///
     /// @param x The signed 59.18-decimal fixed-point number for which to calculate the inverse.
     /// @return result The inverse as a signed 59.18-decimal fixed-point number.
-    function inv(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
+    function inv(PRBMath.SD59x18 x) internal pure returns (PRBMath.SD59x18 result) {
         unchecked {
             // 1e36 is SCALE * SCALE.
-            result = PRBMath.SD59x18({ value: 1e36 / x.value });
+            result = PRBMath.SD59x18.wrap(1e36 / PRBMath.SD59x18.unwrap(x));
         }
     }
 
@@ -392,12 +378,12 @@ library PRBMathSD59x18Typed {
     ///
     /// @param x The signed 59.18-decimal fixed-point number for which to calculate the natural logarithm.
     /// @return result The natural logarithm as a signed 59.18-decimal fixed-point number.
-    function ln(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
+    function ln(PRBMath.SD59x18 x) internal pure returns (PRBMath.SD59x18 result) {
         // Do the fixed-point multiplication inline to save gas. This is overflow-safe because the maximum value that log2(x)
         // can return is 195205294292027477728.
         unchecked {
-            int256 rValue = (log2(x).value * SCALE) / LOG2_E;
-            result = PRBMath.SD59x18({ value: rValue });
+            int256 rValue = (PRBMath.SD59x18.unwrap(log2(x)) * SCALE) / LOG2_E;
+            result = PRBMath.SD59x18.wrap(rValue);
         }
     }
 
@@ -414,8 +400,8 @@ library PRBMathSD59x18Typed {
     ///
     /// @param x The signed 59.18-decimal fixed-point number for which to calculate the common logarithm.
     /// @return result The common logarithm as a signed 59.18-decimal fixed-point number.
-    function log10(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
-        int256 xValue = x.value;
+    function log10(PRBMath.SD59x18 x) internal pure returns (PRBMath.SD59x18 result) {
+        int256 xValue = PRBMath.SD59x18.unwrap(x);
         if (xValue <= 0) {
             revert PRBMathSD59x18__LogInputTooSmall(xValue);
         }
@@ -510,12 +496,12 @@ library PRBMathSD59x18Typed {
         }
 
         if (rValue != MAX_SD59x18) {
-            result = PRBMath.SD59x18({ value: rValue });
+            result = PRBMath.SD59x18.wrap(rValue);
         } else {
             // Do the fixed-point division inline to save gas. The denominator is log2(10).
             unchecked {
-                rValue = (log2(x).value * SCALE) / 3_321928094887362347;
-                result = PRBMath.SD59x18({ value: rValue });
+                rValue = (PRBMath.SD59x18.unwrap(log2(x)) * SCALE) / 3_321928094887362347;
+                result = PRBMath.SD59x18.wrap(rValue);
             }
         }
     }
@@ -533,8 +519,8 @@ library PRBMathSD59x18Typed {
     ///
     /// @param x The signed 59.18-decimal fixed-point number for which to calculate the binary logarithm.
     /// @return result The binary logarithm as a signed 59.18-decimal fixed-point number.
-    function log2(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
-        int256 xValue = x.value;
+    function log2(PRBMath.SD59x18 x) internal pure returns (PRBMath.SD59x18 result) {
+        int256 xValue = PRBMath.SD59x18.unwrap(x);
         if (xValue <= 0) {
             revert PRBMathSD59x18__LogInputTooSmall(xValue);
         }
@@ -564,7 +550,7 @@ library PRBMathSD59x18Typed {
 
             // If y = 1, the fractional part is zero.
             if (y == SCALE) {
-                return PRBMath.SD59x18({ value: rValue * sign });
+                return PRBMath.SD59x18.wrap(rValue * sign);
             }
 
             // Calculate the fractional part via the iterative approximation.
@@ -581,7 +567,7 @@ library PRBMathSD59x18Typed {
                     y >>= 1;
                 }
             }
-            result = PRBMath.SD59x18({ value: rValue * sign });
+            result = PRBMath.SD59x18.wrap(rValue * sign);
         }
     }
 
@@ -602,13 +588,9 @@ library PRBMathSD59x18Typed {
     /// @param x The multiplicand as a signed 59.18-decimal fixed-point number.
     /// @param y The multiplier as a signed 59.18-decimal fixed-point number.
     /// @return result The product as a signed 59.18-decimal fixed-point number.
-    function mul(PRBMath.SD59x18 memory x, PRBMath.SD59x18 memory y)
-        internal
-        pure
-        returns (PRBMath.SD59x18 memory result)
-    {
-        int256 xValue = x.value;
-        int256 yValue = y.value;
+    function mul(PRBMath.SD59x18 x, PRBMath.SD59x18 y) internal pure returns (PRBMath.SD59x18 result) {
+        int256 xValue = PRBMath.SD59x18.unwrap(x);
+        int256 yValue = PRBMath.SD59x18.unwrap(y);
         if (xValue == MIN_SD59x18 || yValue == MIN_SD59x18) {
             revert PRBMathSD59x18__MulInputTooSmall();
         }
@@ -630,13 +612,13 @@ library PRBMathSD59x18Typed {
                 sx := sgt(xValue, sub(0, 1))
                 sy := sgt(yValue, sub(0, 1))
             }
-            result = PRBMath.SD59x18({ value: sx ^ sy == 1 ? -int256(rAbs) : int256(rAbs) });
+            result = PRBMath.SD59x18.wrap(sx ^ sy == 1 ? -int256(rAbs) : int256(rAbs));
         }
     }
 
     /// @notice Returns PI as a signed 59.18-decimal fixed-point number.
-    function pi() internal pure returns (PRBMath.SD59x18 memory result) {
-        result = PRBMath.SD59x18({ value: 3_141592653589793238 });
+    function pi() internal pure returns (PRBMath.SD59x18 result) {
+        result = PRBMath.SD59x18.wrap(3_141592653589793238);
     }
 
     /// @notice Raises x to the power of y.
@@ -654,13 +636,9 @@ library PRBMathSD59x18Typed {
     /// @param x Number to raise to given power y, as a signed 59.18-decimal fixed-point number.
     /// @param y Exponent to raise x to, as a signed 59.18-decimal fixed-point number.
     /// @return result x raised to power y, as a signed 59.18-decimal fixed-point number.
-    function pow(PRBMath.SD59x18 memory x, PRBMath.SD59x18 memory y)
-        internal
-        pure
-        returns (PRBMath.SD59x18 memory result)
-    {
-        if (x.value == 0) {
-            return PRBMath.SD59x18({ value: y.value == 0 ? SCALE : int256(0) });
+    function pow(PRBMath.SD59x18 x, PRBMath.SD59x18 y) internal pure returns (PRBMath.SD59x18 result) {
+        if (PRBMath.SD59x18.unwrap(x) == 0) {
+            return PRBMath.SD59x18.wrap(PRBMath.SD59x18.unwrap(y) == 0 ? SCALE : int256(0));
         } else {
             result = exp2(mul(log2(x), y));
         }
@@ -682,8 +660,8 @@ library PRBMathSD59x18Typed {
     /// @param x The base as a signed 59.18-decimal fixed-point number.
     /// @param y The exponent as an uint256.
     /// @return result The result as a signed 59.18-decimal fixed-point number.
-    function powu(PRBMath.SD59x18 memory x, uint256 y) internal pure returns (PRBMath.SD59x18 memory result) {
-        uint256 xAbs = uint256(abs(x).value);
+    function powu(PRBMath.SD59x18 x, uint256 y) internal pure returns (PRBMath.SD59x18 result) {
+        uint256 xAbs = uint256(PRBMath.SD59x18.unwrap(abs(x)));
 
         // Calculate the first iteration of the loop in advance.
         uint256 rAbs = y & 1 > 0 ? xAbs : uint256(SCALE);
@@ -705,13 +683,13 @@ library PRBMathSD59x18Typed {
         }
 
         // Is the base negative and the exponent an odd number?
-        bool isNegative = x.value < 0 && y & 1 == 1;
-        result = PRBMath.SD59x18({ value: isNegative ? -int256(rAbs) : int256(rAbs) });
+        bool isNegative = PRBMath.SD59x18.unwrap(x) < 0 && y & 1 == 1;
+        result = PRBMath.SD59x18.wrap(isNegative ? -int256(rAbs) : int256(rAbs));
     }
 
     /// @notice Returns 1 as a signed 59.18-decimal fixed-point number.
-    function scale() internal pure returns (PRBMath.SD59x18 memory result) {
-        result = PRBMath.SD59x18({ value: SCALE });
+    function scale() internal pure returns (PRBMath.SD59x18 result) {
+        result = PRBMath.SD59x18.wrap(SCALE);
     }
 
     /// @notice Calculates the square root of x, rounding down.
@@ -723,8 +701,8 @@ library PRBMathSD59x18Typed {
     ///
     /// @param x The signed 59.18-decimal fixed-point number for which to calculate the square root.
     /// @return result The result as a signed 59.18-decimal fixed-point .
-    function sqrt(PRBMath.SD59x18 memory x) internal pure returns (PRBMath.SD59x18 memory result) {
-        int256 xValue = x.value;
+    function sqrt(PRBMath.SD59x18 x) internal pure returns (PRBMath.SD59x18 result) {
+        int256 xValue = PRBMath.SD59x18.unwrap(x);
         unchecked {
             if (xValue < 0) {
                 revert PRBMathSD59x18__SqrtNegativeInput(xValue);
@@ -735,7 +713,7 @@ library PRBMathSD59x18Typed {
             // Multiply x by the SCALE to account for the factor of SCALE that is picked up when multiplying two signed
             // 59.18-decimal fixed-point numbers together (in this case, those two numbers are both the square root).
             int256 rValue = int256(PRBMath.sqrt(uint256(xValue * SCALE)));
-            result = PRBMath.SD59x18({ value: rValue });
+            result = PRBMath.SD59x18.wrap(rValue);
         }
     }
 
@@ -744,20 +722,16 @@ library PRBMathSD59x18Typed {
     /// @param x The minuend as a signed 59.18-decimal fixed-point number.
     /// @param y The subtrahend as a signed 59.18-decimal fixed-point number.
     /// @param result The difference as a signed 59.18 decimal fixed-point number.
-    function sub(PRBMath.SD59x18 memory x, PRBMath.SD59x18 memory y)
-        internal
-        pure
-        returns (PRBMath.SD59x18 memory result)
-    {
-        result = PRBMath.SD59x18({ value: x.value - y.value });
+    function sub(PRBMath.SD59x18 x, PRBMath.SD59x18 y) internal pure returns (PRBMath.SD59x18 result) {
+        result = PRBMath.SD59x18.wrap(PRBMath.SD59x18.unwrap(x) - PRBMath.SD59x18.unwrap(y));
     }
 
     /// @notice Converts a signed 59.18-decimal fixed-point number to basic integer form, rounding down in the process.
     /// @param x The signed 59.18-decimal fixed-point number to convert.
     /// @return result The same number in basic integer form.
-    function toInt(PRBMath.SD59x18 memory x) internal pure returns (int256 result) {
+    function toInt(PRBMath.SD59x18 x) internal pure returns (int256 result) {
         unchecked {
-            result = x.value / SCALE;
+            result = PRBMath.SD59x18.unwrap(x) / SCALE;
         }
     }
 }
