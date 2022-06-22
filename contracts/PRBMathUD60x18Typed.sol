@@ -441,7 +441,7 @@ library PRBMathUD60x18Typed {
 
             // Calculate the fractional part via the iterative approximation.
             // The "delta >>= 1" part is equivalent to "delta /= 2", but shifting bits is faster.
-            for (uint256 delta = HALF_SCALE; delta > 0; delta >>= 1) {
+            for (uint256 delta = HALF_SCALE; delta != 0; delta >>= 1) {
                 y = (y * y) / SCALE;
 
                 // Is y^2 > 2 and so in the range [2,4)?
