@@ -454,14 +454,14 @@ library PRBMathUD60x18 {
     /// @return result The result as an unsigned 60.18-decimal fixed-point number.
     function powu(uint256 x, uint256 y) internal pure returns (uint256 result) {
         // Calculate the first iteration of the loop in advance.
-        result = y & 1 > 0 ? x : SCALE;
+        result = y & 1 != 0 ? x : SCALE;
 
         // Equivalent to "for(y /= 2; y > 0; y /= 2)" but faster.
-        for (y >>= 1; y > 0; y >>= 1) {
+        for (y >>= 1; y != 0; y >>= 1) {
             x = PRBMath.mulDivFixedPoint(x, x);
 
             // Equivalent to "y % 2 == 1" but faster.
-            if (y & 1 > 0) {
+            if (y & 1 != 0) {
                 result = PRBMath.mulDivFixedPoint(result, x);
             }
         }
