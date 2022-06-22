@@ -622,15 +622,15 @@ library PRBMathSD59x18 {
         uint256 xAbs = uint256(abs(x));
 
         // Calculate the first iteration of the loop in advance.
-        uint256 rAbs = y & 1 > 0 ? xAbs : uint256(SCALE);
+        uint256 rAbs = y & 1 != 0 ? xAbs : uint256(SCALE);
 
         // Equivalent to "for(y /= 2; y > 0; y /= 2)" but faster.
         uint256 yAux = y;
-        for (yAux >>= 1; yAux > 0; yAux >>= 1) {
+        for (yAux >>= 1; yAux != 0; yAux >>= 1) {
             xAbs = PRBMath.mulDivFixedPoint(xAbs, xAbs);
 
             // Equivalent to "y % 2 == 1" but faster.
-            if (yAux & 1 > 0) {
+            if (yAux & 1 != 0) {
                 rAbs = PRBMath.mulDivFixedPoint(rAbs, xAbs);
             }
         }
