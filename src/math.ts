@@ -31,7 +31,7 @@ const math = create(
   },
   {
     number: "BigNumber",
-    precision: 60 + 18 + 2, // 60 significant digits, 18 decimal places, and 2 extra digit for doing the rounding correctly
+    precision: 60 + 18 + 2, // 60 significant digits, 18 decimal places, and 2 extra digits for doing the rounding correctly
   },
 );
 

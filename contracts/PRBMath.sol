@@ -6,17 +6,17 @@ pragma solidity >=0.8.13;
 library PRBMath {
     /// CUSTOM ERRORS ///
 
-    /// @notice Emitted when multiplying and dividing three numbers and the result overflows uint256.
-    error PRBMath__MulDivFixedPointOverflow(uint256 prod1);
+    /// @notice Emitted when the ending result in the fixed-point version of `mulDiv` would overflow uint256.
+    error PRBMath__MulDivFixedPointOverflow(uint256 x, uint256 y);
 
-    /// @notice Emitted when multiplying and dividing three numbers and the result overflows uint256.
-    error PRBMath__MulDivOverflow(uint256 prod1, uint256 denominator);
+    /// @notice Emitted when the ending result in `mulDiv` would overflow uint256.
+    error PRBMath__MulDivOverflow(uint256 x, uint256 y, uint256 denominator);
 
-    /// @notice Emitted when multiplying and dividing three numbers and one of the inputs is `type(int256).min`.
+    /// @notice Emitted when attempting to run `mulDiv` with one of the inputs `type(int256).min`.
     error PRBMath__MulDivSignedInputTooSmall();
 
-    /// @notice Emitted when multiplying and dividing three numbers and the intermediary absolute result overflows int256.
-    error PRBMath__MulDivSignedOverflow(uint256 rAbs);
+    /// @notice Emitted when the ending result in the signed version of `mulDiv` would overflow int256.
+    error PRBMath__MulDivSignedOverflow(int256 x, int256 y);
 
     /// CONSTANTS ///
 
@@ -348,14 +348,13 @@ library PRBMath {
         // Handle non-overflow cases, 256 by 256 division. "prod1 > 0 == false" is equivalent to "prod1 == 0" but faster.
         if (prod1 > 0 == false) {
             unchecked {
-                result = prod0 / denominator;
+                return prod0 / denominator;
             }
-            return result;
         }
 
         // Make sure the result is less than 2^256. Also prevents denominator == 0.
         if (prod1 >= denominator) {
-            revert PRBMath__MulDivOverflow(prod1, denominator);
+            revert PRBMath__MulDivOverflow(x, y, denominator);
         }
 
         ///////////////////////////////////////////////
@@ -411,7 +410,6 @@ library PRBMath {
             // less than 2^256, this is the final result. We don't need to compute the high bits of the result and prod1
             // is no longer required.
             result = prod0 * inverse;
-            return result;
         }
     }
 
@@ -443,7 +441,7 @@ library PRBMath {
         }
 
         if (prod1 >= SCALE) {
-            revert PRBMath__MulDivFixedPointOverflow(prod1);
+            revert PRBMath__MulDivFixedPointOverflow(x, y);
         }
 
         uint256 remainder;
@@ -455,9 +453,8 @@ library PRBMath {
 
         if (prod1 > 0 == false) {
             unchecked {
-                result = (prod0 / SCALE) + roundUpUnit;
+                return (prod0 / SCALE) + roundUpUnit;
             }
-            return result;
         }
 
         assembly {
@@ -508,7 +505,7 @@ library PRBMath {
         // Compute the absolute value of (x*y)÷denominator. The result must fit within int256.
         uint256 rAbs = mulDiv(ax, ay, ad);
         if (rAbs > uint256(type(int256).max)) {
-            revert PRBMath__MulDivSignedOverflow(rAbs);
+            revert PRBMath__MulDivSignedOverflow(x, y);
         }
 
         // Get the signs of x, y and the denominator.
@@ -587,7 +584,7 @@ library PRBMath {
 
             // Round down the result.
             uint256 roundedDownResult = x / result;
-            return result >= roundedDownResult ? roundedDownResult : result;
+            result >= roundedDownResult ? roundedDownResult : result;
         }
     }
 }
