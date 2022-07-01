@@ -112,20 +112,20 @@
     "compile": "hardhat compile",
     "coverage": "yarn coverage:contracts && yarn coverage:ts",
     "coverage:contracts": "hardhat coverage --solcoverjs ./.solcover.js --temp artifacts --testfiles \"test/contracts/**/*.test.ts\"",
-    "coverage:ts": "yarn nyc --nycrc-path ./.nycrc.yaml mocha",
+    "coverage:ts": "yarn nyc --nycrc-path ./.nycrc.yml mocha",
     "generate:types": "hardhat typechain",
     "lint": "yarn lint:contracts && yarn lint:ts && yarn prettier:check",
     "lint:contracts": "solhint --config ./.solhint.json  --ignore-path ./.solhintignore --max-warnings 0 \"contracts/**/*.sol\"",
-    "lint:ts": "eslint --config ./.eslintrc.yaml --ignore-path ./.eslintignore --ext .js,.ts .",
+    "lint:ts": "eslint --config ./.eslintrc.yml --ignore-path ./.eslintignore --ext .js,.ts .",
     "postinstall": "husky install",
     "postpublish": "pinst --enable",
     "prepack": "yarn build",
     "prepublishOnly": "pinst --disable",
-    "prettier": "prettier --config ./.prettierrc.yaml ./.prettierignore --write \"**/*.{js,json,md,sol,ts}\"",
-    "prettier:check": "prettier --check --config ./.prettierrc.yaml --ignore-path ./.prettierignore \"**/*.{js,json,md,sol,ts}\"",
-    "test": "yarn mocha --config ./.mocharc.yaml ./test/**/*.test.ts",
-    "test:contracts": "yarn mocha --config ./.mocharc.yaml ./test/contracts/**/*.test.ts",
-    "test:ts": "yarn mocha --config ./.mocharc.yaml ./test/ts/**/*.test.ts"
+    "prettier": "prettier --config ./.prettierrc.yml ./.prettierignore --write \"**/*.{js,json,md,sol,ts}\"",
+    "prettier:check": "prettier --check --config ./.prettierrc.yml --ignore-path ./.prettierignore \"**/*.{js,json,md,sol,ts}\"",
+    "test": "yarn mocha --config ./.mocharc.yml ./test/**/*.test.ts",
+    "test:contracts": "yarn mocha --config ./.mocharc.yml ./test/contracts/**/*.test.ts",
+    "test:ts": "yarn mocha --config ./.mocharc.yml ./test/ts/**/*.test.ts"
   },
   "types": "./dist/node/index.d.ts"
 }
