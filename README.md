@@ -295,4 +295,4 @@ If you discover any security issues, please report them via [Keybase](https://ke
 
 ## License
 
-[Unlicense](./LICENSE.md) © Paul Razvan Berg
+[Unlicense](./LICENSE.md)
