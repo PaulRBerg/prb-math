@@ -1,4 +1,13 @@
-# PRBMath ![Continuous Integration](https://github.com/paulrberg/prb-math/actions/workflows/integration.yml/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/paulrberg/prb-math/badge.svg?branch=main)](https://coveralls.io/github/paulrberg/prb-math?branch=main) [![Styled with Prettier](https://img.shields.io/badge/Code_Style-Prettier-ff69b4.svg)](https://prettier.io) [![License: Unlicense](https://img.shields.io/badge/License-Unlicense-blue.svg)](https://unlicense.org/)
+# PRBMath [![GitHub Actions][gha-badge]][gha] [![Coverage Status][coveralls-badge]][coveralls] [![Styled with Prettier][prettier-badge]][prettier] [![License: Unlicense][license-badge]][license]
+
+[gha]: https://github.com/paulrberg/prb-math/actions
+[gha-badge]: https://github.com/paulrberg/prb-math/actions/workflows/integration.yml/badge.svg
+[coveralls]: https://coveralls.io/github/paulrberg/prb-math
+[coveralls-badge]: https://coveralls.io/repos/github/paulrberg/prb-math/badge.svg?branch=main
+[prettier]: https://prettier.io
+[prettier-badge]: https://img.shields.io/badge/Code_Style-Prettier-ff69b4.svg
+[license]: https://unlicense.org/
+[license-badge]: https://img.shields.io/badge/License-Unlicense-blue.svg
 
 **Smart contract library for advanced fixed-point math** that operates with signed 59.18-decimal fixed-point and unsigned
 60.18-decimal fixed-point numbers. The name of the number formats stems from the fact that there can be up to 59/60 digits
