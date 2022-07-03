@@ -44,7 +44,7 @@ jobs:
         uses: "coverallsapp/github-action@master"
         with:
           flag-name: "prb-math-contracts"
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
           parallel: true
           path-to-lcov: "./coverage-contracts/lcov.info"
 
@@ -76,7 +76,7 @@ jobs:
         uses: "coverallsapp/github-action@master"
         with:
           flag-name: "prb-math-ts"
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
           parallel: true
           path-to-lcov: "./coverage-ts/lcov.info"
 
@@ -89,5 +89,5 @@ jobs:
       - name: "Upload the coverage reports to Coveralls"
         uses: "coverallsapp/github-action@master"
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
           parallel-finished: true
