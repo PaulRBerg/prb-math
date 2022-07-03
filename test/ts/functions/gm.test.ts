@@ -30,7 +30,7 @@ export function shouldBehaveLikeGm(): void {
       ];
 
       forEach(testSets).it("takes %e and %e and throws an error", function (x: BigNumber, y: BigNumber) {
-        expect(() => gm(x, y)).to.throw("PRBMath cannot calculate the geometric mean of a negative number");
+        expect(() => gm(x, y)).to.throw("Cannot calculate the geometric mean of a negative number");
       });
     });
 

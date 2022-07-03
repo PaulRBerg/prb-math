@@ -15,6 +15,7 @@ export function solidityMod(x: EthersBigNumber, m: EthersBigNumber): EthersBigNu
   return toEbn(remainder);
 }
 
+/// Using `ROUND_DOWN` as the default rounding mode since that is what Solidity does when dividing numbers.
 export function toEbn(x: MathjsBigNumber, rm: Decimal.Rounding = Decimal.ROUND_DOWN): EthersBigNumber {
   const fixed = x.toFixed(Number(DECIMALS), rm);
   return toBn(fixed, Number(DECIMALS));

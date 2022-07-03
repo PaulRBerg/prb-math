@@ -55,7 +55,7 @@ export function shouldBehaveLikeGm(): void {
         "takes %e and %e and returns the correct value",
         async function (x: BigNumber, y: BigNumber) {
           const expected: BigNumber = gm(x, y);
-          expect(expected).to.equal(await this.contracts.prbMathUd60x18.doGm(x, y));
+          expect(expected).to.be.near(await this.contracts.prbMathUd60x18.doGm(x, y));
         },
       );
     });

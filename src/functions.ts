@@ -47,7 +47,7 @@ export function frac(x: EthersBigNumber): EthersBigNumber {
 export function gm(x: EthersBigNumber, y: EthersBigNumber): EthersBigNumber {
   const xy: MathjsBigNumber = toMbn(x).mul(toMbn(y));
   if (xy.isNegative()) {
-    throw new Error("PRBMath cannot calculate the geometric mean of a negative number");
+    throw new Error("Cannot calculate the geometric mean of a negative number");
   }
   const result = math.sqrt!(xy) as MathjsBigNumber;
   return toEbn(result);
@@ -99,7 +99,7 @@ export function mul(x: EthersBigNumber, y: EthersBigNumber): EthersBigNumber {
 
 export function pow(x: EthersBigNumber, y: EthersBigNumber): EthersBigNumber {
   if (x.isNegative()) {
-    throw new Error("PRBMath cannot raise a negative base to a power");
+    throw new Error("Cannot raise a negative base to a power");
   }
   const result = math.pow!(toMbn(x), toMbn(y)) as MathjsBigNumber;
   return toEbn(result);

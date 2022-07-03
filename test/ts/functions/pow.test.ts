@@ -36,7 +36,7 @@ export function shouldBehaveLikePow(): void {
       const y: BigNumber = toBn("1");
 
       forEach(testSets).it("takes %e and 1 and throws an error", function (x: BigNumber) {
-        expect(() => pow(x, y)).to.throw("PRBMath cannot raise a negative base to a power");
+        expect(() => pow(x, y)).to.throw("Cannot raise a negative base to a power");
       });
     });
 
