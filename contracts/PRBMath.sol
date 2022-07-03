@@ -628,7 +628,7 @@ library PRBMath {
             xAux >>= 4;
             result <<= 2;
         }
-        if (xAux >= 0x8) {
+        if (xAux >= 0x4) {
             result <<= 1;
         }
 
