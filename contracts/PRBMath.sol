@@ -543,31 +543,31 @@ library PRBMath {
         // Set the initial guess to the least power of two that is greater than or equal to sqrt(x).
         uint256 xAux = uint256(x);
         result = 1;
-        if (xAux >= 0x100000000000000000000000000000000) {
+        if (xAux >= 2**128) {
             xAux >>= 128;
             result <<= 64;
         }
-        if (xAux >= 0x10000000000000000) {
+        if (xAux >= 2**64) {
             xAux >>= 64;
             result <<= 32;
         }
-        if (xAux >= 0x100000000) {
+        if (xAux >= 2**32) {
             xAux >>= 32;
             result <<= 16;
         }
-        if (xAux >= 0x10000) {
+        if (xAux >= 2**16) {
             xAux >>= 16;
             result <<= 8;
         }
-        if (xAux >= 0x100) {
+        if (xAux >= 2**8) {
             xAux >>= 8;
             result <<= 4;
         }
-        if (xAux >= 0x10) {
+        if (xAux >= 2**4) {
             xAux >>= 4;
             result <<= 2;
         }
-        if (xAux >= 0x4) {
+        if (xAux >= 2**2) {
             result <<= 1;
         }
 
