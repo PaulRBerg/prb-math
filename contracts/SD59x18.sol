@@ -233,6 +233,8 @@ function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     uint256 sx;
     uint256 sy;
     assembly {
+        // This works thanks to two's complement.
+        // "sgt" stands for "signed greater than" and "sub(0,1)" is max uint256.
         sx := sgt(x, sub(0, 1))
         sy := sgt(y, sub(0, 1))
     }
@@ -643,7 +645,8 @@ function mul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     uint256 sx;
     uint256 sy;
     assembly {
-        // `sgt` returns 1 if x < y, 0 otherwise. `sub(0, 1)` is max uint256.
+        // This works thanks to two's complement.
+        // "sgt" stands for "signed greater than" and "sub(0,1)" is max uint256.
         sx := sgt(x, sub(0, 1))
         sy := sgt(y, sub(0, 1))
     }
