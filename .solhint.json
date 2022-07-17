@@ -5,7 +5,6 @@
     "code-complexity": "off",
     "compiler-version": ["error", ">=0.8.13"],
     "const-name-snakecase": "off",
-    "constructor-syntax": "error",
     "func-visibility": ["error", { "ignoreConstructors": true }],
     "max-line-length": ["error", 132],
     "no-inline-assembly": "off",

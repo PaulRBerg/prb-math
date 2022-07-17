@@ -51,11 +51,15 @@ UD60x18 constant LOG2_E = UD60x18.wrap(1_442695040888963407);
 uint256 constant LOG2_E_UINT = 1_442695040888963407;
 
 /// @dev The maximum value an UD60x18 number can have.
-UD60x18 constant MAX_UD60x18 = UD60x18.wrap(115792089237316195423570985008687907853269984665640564039457_584007913129639935);
+UD60x18 constant MAX_UD60x18 = UD60x18.wrap(
+    115792089237316195423570985008687907853269984665640564039457_584007913129639935
+);
 uint256 constant MAX_UD60x18_UINT = 115792089237316195423570985008687907853269984665640564039457_584007913129639935;
 
 /// @dev The maximum whole value an UD60x18 number can have.
-UD60x18 constant MAX_WHOLE_UD60x18 = UD60x18.wrap(115792089237316195423570985008687907853269984665640564039457_000000000000000000);
+UD60x18 constant MAX_WHOLE_UD60x18 = UD60x18.wrap(
+    115792089237316195423570985008687907853269984665640564039457_000000000000000000
+);
 uint256 constant MAX_WHOLE_UD60x18_UINT = 115792089237316195423570985008687907853269984665640564039457_000000000000000000;
 
 /// @dev The unit amount which implies how many trailing decimals can be represented.
@@ -67,24 +71,7 @@ UD60x18 constant ZERO = UD60x18.wrap(0);
 
 /// GLOBAL-SCOPED FIXED-POINT FUNCTIONS ///
 
-using {
-    avg,
-    ceil,
-    div,
-    exp,
-    exp2,
-    floor,
-    frac,
-    gm,
-    inv,
-    ln,
-    log10,
-    log2,
-    mul,
-    pow,
-    powu,
-    sqrt
-} for UD60x18 global;
+using { avg, ceil, div, exp, exp2, floor, frac, gm, inv, ln, log10, log2, mul, pow, powu, sqrt } for UD60x18 global;
 
 /// @notice Calculates the arithmetic average of x and y, rounding down.
 ///
@@ -106,9 +93,7 @@ using {
 /// @param y The second operand as an UD60x18 number.
 /// @return result The arithmetic average as an UD60x18 number.
 function avg(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
-    result = x.rshift(1)
-                .uncheckedAdd(y.rshift(1))
-                .uncheckedAdd(x.and(UD60x18.unwrap(y)).and(1));
+    result = x.rshift(1).uncheckedAdd(y.rshift(1)).uncheckedAdd(x.and(UD60x18.unwrap(y)).and(1));
 }
 
 /// @notice Yields the least UD60x18 number greater than or equal to x.
@@ -136,7 +121,6 @@ function ceil(UD60x18 x) pure returns (UD60x18 result) {
         result := add(x, mul(delta, gt(remainder, 0)))
     }
 }
-
 
 /// @notice Divides two UD60x18 numbers, returning a new UD60x18 number.
 ///
@@ -237,7 +221,6 @@ function gm(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     if (x.isZero()) {
         return ZERO;
     }
-
 
     // Equivalent to "xy / x != y". Checking for overflow this way is faster than letting Solidity do it.
     UD60x18 xy = x.uncheckedMul(y);
@@ -449,14 +432,13 @@ function log2(UD60x18 x) pure returns (UD60x18 result) {
     }
 }
 
-
 /// @notice Multiplies two UD60x18 numbers together, returning a new UD60x18 number.
-/// @dev See the documentation for the `PRBMath.mulDivFixedPoint` function.
+/// @dev See the documentation for the `PRBMath.mulDiv18` function.
 /// @param x The multiplicand as an UD60x18 number.
 /// @param y The multiplier as an UD60x18 number.
 /// @return result The product as an UD60x18 number.
 function mul(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
-    result = UD60x18.wrap(PRBMath.mulDivFixedPoint(UD60x18.unwrap(x), UD60x18.unwrap(y)));
+    result = UD60x18.wrap(PRBMath.mulDiv18(UD60x18.unwrap(x), UD60x18.unwrap(y)));
 }
 
 /// @notice Raises x to the power of y.
@@ -494,7 +476,7 @@ function pow(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// - The result must fit within `MAX_UD60x18`.
 ///
 /// Caveats:
-/// - All from "PRBMath.mulDivFixedPoint".
+/// - All from "PRBMath.mulDiv18".
 /// - Assumes 0^0 is 1.
 ///
 /// @param x The base as an UD60x18 number.
@@ -506,15 +488,14 @@ function powu(UD60x18 x, uint256 y) pure returns (UD60x18 result) {
 
     // Equivalent to "for(y /= 2; y > 0; y /= 2)" but faster.
     for (y >>= 1; y > 0; y >>= 1) {
-        x = UD60x18.wrap(PRBMath.mulDivFixedPoint(UD60x18.unwrap(x), UD60x18.unwrap(x)));
+        x = UD60x18.wrap(PRBMath.mulDiv18(UD60x18.unwrap(x), UD60x18.unwrap(x)));
 
         // Equivalent to "y % 2 == 1" but faster.
         if (y & 1 > 0) {
-            result = UD60x18.wrap(PRBMath.mulDivFixedPoint(UD60x18.unwrap(result), UD60x18.unwrap(x)));
+            result = UD60x18.wrap(PRBMath.mulDiv18(UD60x18.unwrap(result), UD60x18.unwrap(x)));
         }
     }
 }
-
 
 /// @notice Calculates the square root of x, rounding down.
 /// @dev Uses the Babylonian method https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Babylonian_method.
@@ -557,7 +538,7 @@ function add(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     result = UD60x18.wrap(UD60x18.unwrap(x) + UD60x18.unwrap(y));
 }
 
-/// @notice Implements the AND bitwise operation in the UD60x18 type.
+/// @notice Implements the AND (&) bitwise operation in the UD60x18 type.
 function and(UD60x18 x, uint256 bits) pure returns (UD60x18 result) {
     result = UD60x18.wrap(UD60x18.unwrap(x) & bits);
 }
@@ -598,7 +579,6 @@ function lshift(UD60x18 x, uint256 bits) pure returns (UD60x18 result) {
     result = UD60x18.wrap(UD60x18.unwrap(x) << bits);
 }
 
-
 /// @notice Implements the not equal operation (!=) in the UD60x18 type
 function neq(UD60x18 x, UD60x18 y) pure returns (bool result) {
     result = UD60x18.unwrap(x) != UD60x18.unwrap(y);
@@ -633,6 +613,11 @@ function uncheckedSub(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     unchecked {
         result = UD60x18.wrap(UD60x18.unwrap(x) - UD60x18.unwrap(y));
     }
+}
+
+/// @notice Implements the XOR (^) bitwise operation in the UD60x18 type.
+function xor(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
+    result = UD60x18.wrap(UD60x18.unwrap(x) ^ UD60x18.unwrap(y));
 }
 
 /// HELPER FUNCTIONS ///
@@ -673,10 +658,7 @@ function toUD60x18(uint256 x) pure returns (UD60x18 result) {
 
 /// FILE-SCOPED FUNCTIONS ///
 
-using {
-    uncheckedDiv,
-    uncheckedMul
-} for UD60x18;
+using { uncheckedDiv, uncheckedMul } for UD60x18;
 
 /// @notice Implements the unchecked standard division operation in the UD60x18 type.
 function uncheckedDiv(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {

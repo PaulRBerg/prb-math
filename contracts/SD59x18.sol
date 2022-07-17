@@ -150,8 +150,8 @@ function avg(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     SD59x18 sum = x.rshift(1).uncheckedAdd(y.rshift(1));
 
     if (sum.lt(ZERO)) {
-    // If at least one of x and y is odd, we add 1 to the result. Shifting negative numbers to the right rounds
-    // down to infinity. The right part is equivalent to "sum + (x % 2 == 1 || y % 2 == 1)" but faster.
+        // If at least one of x and y is odd, we add 1 to the result. Shifting negative numbers to the right rounds
+        // down to infinity. The right part is equivalent to "sum + (x % 2 == 1 || y % 2 == 1)" but faster.
         assembly {
             result := add(sum, and(or(x, y), 1))
         }
@@ -161,7 +161,6 @@ function avg(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
         result = sum.uncheckedAdd(x.and(SD59x18.unwrap(y)).and(1));
     }
 }
-
 
 /// @notice Yields the least SD59x18 number greater than or equal to x.
 ///
@@ -229,20 +228,13 @@ function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
         revert PRBMathSD59x18__DivOverflow(rAbs);
     }
 
-    // Get the signs of x and y.
-    uint256 sx;
-    uint256 sy;
-    assembly {
-        // This works thanks to two's complement.
-        // "sgt" stands for "signed greater than" and "sub(0,1)" is max uint256.
-        sx := sgt(x, sub(0, 1))
-        sy := sgt(y, sub(0, 1))
-    }
+    // Check if x and y have the same sign via "(x ^ y) > -1".
+    // This works thanks to two's complement, the left-most bit is the sign bit.
+    bool sameSign = x.xor(y).gt(SD59x18.wrap(-1));
 
-    // XOR over sx and sy. What this does is to check whether the inputs have the same sign. If they don't, the result
-    // should be negative. Otherwise, it should be positive.
+    // If the inputs don't have the same sign, the result should be negative. Otherwise, it should be positive.
     unchecked {
-        result = SD59x18.wrap(sx ^ sy == 1 ? -int256(rAbs) : int256(rAbs));
+        result = SD59x18.wrap(sameSign ? int256(rAbs) : -int256(rAbs));
     }
 }
 
@@ -420,7 +412,7 @@ function inv(SD59x18 x) pure returns (SD59x18 result) {
 ///
 /// @param x The SD59x18 number for which to calculate the natural logarithm.
 /// @return result The natural logarithm as an SD59x18 number.
-function ln(SD59x18 x)  pure returns (SD59x18 result) {
+function ln(SD59x18 x) pure returns (SD59x18 result) {
     // Do the fixed-point multiplication inline to save gas. This is overflow-safe because the maximum value that log2(x)
     // can return is 195.205294292027477728.
     result = log2(x).uncheckedMul(SCALE).uncheckedDiv(LOG2_E);
@@ -540,7 +532,6 @@ function log10(SD59x18 x) pure returns (SD59x18 result) {
     }
 }
 
-
 /// @notice Calculates the binary logarithm of x.
 ///
 /// @dev Based on the iterative approximation algorithm.
@@ -609,7 +600,7 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
 /// is always 1e18.
 ///
 /// Requirements:
-/// - All from `PRBMath.mulDivFixedPoint`.
+/// - All from `PRBMath.mulDiv18`.
 /// - None of the inputs can be `MIN_SD59x18`.
 /// - The result must fit within `MAX_SD59x18`.
 ///
@@ -636,25 +627,18 @@ function mul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
         ay = yInt < 0 ? uint256(-yInt) : uint256(yInt);
     }
 
-    uint256 rAbs = PRBMath.mulDivFixedPoint(ax, ay);
+    uint256 rAbs = PRBMath.mulDiv18(ax, ay);
     if (rAbs > uint256(MAX_SD59x18_INT)) {
         revert PRBMathSD59x18__MulOverflow(rAbs);
     }
 
-    // Get the signs of x and y.
-    uint256 sx;
-    uint256 sy;
-    assembly {
-        // This works thanks to two's complement.
-        // "sgt" stands for "signed greater than" and "sub(0,1)" is max uint256.
-        sx := sgt(x, sub(0, 1))
-        sy := sgt(y, sub(0, 1))
-    }
+    // Check if x and y have the same sign via "(x ^ y) > -1".
+    // This works thanks to two's complement, the left-most bit is the sign bit.
+    bool sameSign = x.xor(y).gt(SD59x18.wrap(-1));
 
-    // XOR over sx and sy. What this does is to check whether the inputs have the same sign. If they don't, the result
-    // should be negative. Otherwise, it should be positive.
+    // If the inputs have the same sign, the result should be negative. Otherwise, it should be positive.
     unchecked {
-        result = SD59x18.wrap(sx ^ sy == 1 ? -int256(rAbs) : int256(rAbs));
+        result = SD59x18.wrap(sameSign ? int256(rAbs) : -int256(rAbs));
     }
 }
 
@@ -691,11 +675,11 @@ function pow(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 /// @dev See https://en.wikipedia.org/wiki/Exponentiation_by_squaring
 ///
 /// Requirements:
-/// - All from `abs` and `PRBMath.mulDivFixedPoint`.
+/// - All from `abs` and `PRBMath.mulDiv18`.
 /// - The result must fit within `MAX_SD59x18`.
 ///
 /// Caveats:
-/// - All from `PRBMath.mulDivFixedPoint`.
+/// - All from `PRBMath.mulDiv18`.
 /// - Assumes 0^0 is 1.
 ///
 /// @param x The base as an SD59x18 number.
@@ -710,11 +694,11 @@ function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
     // Equivalent to "for(y /= 2; y > 0; y /= 2)" but faster.
     uint256 yAux = y;
     for (yAux >>= 1; yAux > 0; yAux >>= 1) {
-        xAbs = PRBMath.mulDivFixedPoint(xAbs, xAbs);
+        xAbs = PRBMath.mulDiv18(xAbs, xAbs);
 
         // Equivalent to "y % 2 == 1" but faster.
         if (yAux & 1 > 0) {
-            rAbs = PRBMath.mulDivFixedPoint(rAbs, xAbs);
+            rAbs = PRBMath.mulDiv18(rAbs, xAbs);
         }
     }
 
@@ -728,7 +712,6 @@ function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
     bool isNegative = x.lt(ZERO) && y & 1 == 1;
     result = isNegative ? uncheckedUnary(resultSD59x18) : resultSD59x18;
 }
-
 
 /// @notice Calculates the square root of x, rounding down.
 /// @dev Uses the Babylonian method https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Babylonian_method.
@@ -771,7 +754,8 @@ using {
     uncheckedAdd,
     uncheckedMod,
     uncheckedSub,
-    uncheckedUnary
+    uncheckedUnary,
+    xor
 } for SD59x18 global;
 
 /// @notice Implements the checked addition operation (+) in the SD59x18 type.
@@ -779,7 +763,7 @@ function add(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     return SD59x18.wrap(SD59x18.unwrap(x) + SD59x18.unwrap(y));
 }
 
-/// @notice Implements the AND bitwise operation in the SD59x18 type.
+/// @notice Implements the AND (&) bitwise operation in the SD59x18 type.
 function and(SD59x18 x, int256 bits) pure returns (SD59x18 result) {
     return SD59x18.wrap(SD59x18.unwrap(x) & bits);
 }
@@ -862,6 +846,11 @@ function uncheckedUnary(SD59x18 x) pure returns (SD59x18 result) {
     }
 }
 
+/// @notice Implements the XOR (^) bitwise operation in the SD59x18 type.
+function xor(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
+    result = SD59x18.wrap(SD59x18.unwrap(x) ^ SD59x18.unwrap(y));
+}
+
 /// HELPER FUNCTIONS ///
 
 /// @notice Returns Euler's number as an SD59x18 number.
@@ -878,7 +867,7 @@ function fromSD59x18(SD59x18 x) pure returns (int256 result) {
 }
 
 /// @notice Returns PI as an SD59x18 number.
-function pi()  pure returns (SD59x18 result) {
+function pi() pure returns (SD59x18 result) {
     result = SD59x18.wrap(3_141592653589793238);
 }
 
@@ -902,13 +891,9 @@ function toSD59x18(int256 x) pure returns (SD59x18 result) {
     }
 }
 
-
 /// FILE-SCOPED FUNCTIONS ///
 
-using {
-    uncheckedDiv,
-    uncheckedMul
-} for SD59x18;
+using { uncheckedDiv, uncheckedMul } for SD59x18;
 
 /// @notice Implements the unchecked standard division operation in the SD59x18 type.
 function uncheckedDiv(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {

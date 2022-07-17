@@ -1,10 +1,7 @@
 arrowParens: avoid
 bracketSpacing: true
 endOfLine: auto
-importOrder: ["<THIRD_PARTY_MODULES>", "^[./]"]
-importOrderParserPlugins: ["typescript"]
-importOrderSeparation: true
-importOrderSortSpecifiers: true
+
 printWidth: 120
 singleQuote: false
 tabWidth: 2
@@ -13,5 +10,11 @@ trailingComma: all
 overrides:
   - files: "*.sol"
     options:
-      compiler: "0.8.13"
+      compiler: "0.8.15"
       tabWidth: 4
+  - files: "*.ts"
+    options:
+      importOrder: ["<THIRD_PARTY_MODULES>", "^[./]"]
+      importOrderParserPlugins: ["typescript"]
+      importOrderSeparation: true
+      importOrderSortSpecifiers: true

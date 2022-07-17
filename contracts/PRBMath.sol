@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity >=0.8.13;
 
-/// @dev Common mathematical functions used in both SD59x18 and UD60x18. Note however that this shared library does not
+/// @dev Common mathematical functions used in both SD59x18 and UD60x18. Note that this shared library does not
 /// always operate with SD59x18 and UD60x18 numbers.
 library PRBMath {
     /// CUSTOM ERRORS ///
@@ -273,7 +273,7 @@ library PRBMath {
         }
     }
 
-    /// @notice Finds the zero-based index of the first one in the binary representation of x.
+    /// @notice Finds the zero-based index of the first 1 in the binary representation of x.
     /// @dev See the note on msb in the "Find First Set" Wikipedia article https://en.wikipedia.org/wiki/Find_first_set
     /// @param x The uint256 number for which to find the index of the most significant bit.
     /// @return result The index of the most significant bit as an uint256.
@@ -431,7 +431,7 @@ library PRBMath {
     /// @param x The multiplicand as an unsigned 60.18-decimal fixed-point number.
     /// @param y The multiplier as an unsigned 60.18-decimal fixed-point number.
     /// @return result The result as an unsigned 60.18-decimal fixed-point number.
-    function mulDivFixedPoint(uint256 x, uint256 y) internal pure returns (uint256 result) {
+    function mulDiv18(uint256 x, uint256 y) internal pure returns (uint256 result) {
         uint256 prod0;
         uint256 prod1;
         assembly {
