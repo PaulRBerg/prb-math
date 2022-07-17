@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity >=0.8.13;
 
-import { e, fromUD60x18, pi, toUD60x18, UD60x18 } from "../UD60x18.sol";
+import { fromUD60x18, toUD60x18, UD60x18 } from "../UD60x18.sol";
 
 contract PRBMathUD60x18Mock {
     function doAvg(UD60x18 x, UD60x18 y) external pure returns (UD60x18 result) {
@@ -74,13 +74,5 @@ contract PRBMathUD60x18Mock {
 
     function doToUD60x18(uint256 x) external pure returns (UD60x18 result) {
         result = toUD60x18(x);
-    }
-
-    function getE() external pure returns (UD60x18 result) {
-        result = e();
-    }
-
-    function getPi() external pure returns (UD60x18 result) {
-        result = pi();
     }
 }

@@ -62,6 +62,9 @@ error PRBMathSD59x18__ToSD59x18Underflow(int256 x);
 
 /// CONSTANTS ///
 
+/// @dev Euler's number as an SD59x18 number..
+SD59x18 constant E = SD59x18.wrap(2_718281828459045235);
+
 /// @dev Half the SCALE number.
 SD59x18 constant HALF_SCALE = SD59x18.wrap(5e17);
 int256 constant HALF_SCALE_INT = 5e17;
@@ -97,6 +100,9 @@ SD59x18 constant MIN_WHOLE_SD59x18 = SD59x18.wrap(
     -57896044618658097711785492504343953926634992332820282019728_000000000000000000
 );
 int256 constant MIN_WHOLE_SD59x18_INT = -57896044618658097711785492504343953926634992332820282019728_000000000000000000;
+
+/// @dev PI as an SD59x18 number.
+SD59x18 constant PI = SD59x18.wrap(3_141592653589793238);
 
 /// @dev The unit amount which implies how many trailing decimals can be represented.
 SD59x18 constant SCALE = SD59x18.wrap(1e18);
@@ -853,22 +859,11 @@ function xor(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 
 /// HELPER FUNCTIONS ///
 
-/// @notice Returns Euler's number as an SD59x18 number.
-/// @dev See https://en.wikipedia.org/wiki/E_(mathematical_constant).
-function e() pure returns (SD59x18 result) {
-    result = SD59x18.wrap(2_718281828459045235);
-}
-
 /// @notice Converts an SD59x18 number to basic integer form, rounding down in the process.
 /// @param x The SD59x18 number to convert.
 /// @return result The same number in basic integer form.
 function fromSD59x18(SD59x18 x) pure returns (int256 result) {
     result = SD59x18.unwrap(x.uncheckedDiv(SCALE));
-}
-
-/// @notice Returns PI as an SD59x18 number.
-function pi() pure returns (SD59x18 result) {
-    result = SD59x18.wrap(3_141592653589793238);
 }
 
 /// @notice Converts a number from basic integer form to SD59x18.

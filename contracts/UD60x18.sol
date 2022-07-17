@@ -38,6 +38,9 @@ error PRBMathUD60x18__ToUD60x18Overflow(uint256 x);
 
 /// CONSTANTS ///
 
+/// @dev Euler's number as an UD60x18 number..
+UD60x18 constant E = UD60x18.wrap(2_718281828459045235);
+
 /// @dev Half the SCALE number.
 UD60x18 constant HALF_SCALE = UD60x18.wrap(5e17);
 uint256 constant HALF_SCALE_UINT = 5e17;
@@ -61,6 +64,9 @@ UD60x18 constant MAX_WHOLE_UD60x18 = UD60x18.wrap(
     115792089237316195423570985008687907853269984665640564039457_000000000000000000
 );
 uint256 constant MAX_WHOLE_UD60x18_UINT = 115792089237316195423570985008687907853269984665640564039457_000000000000000000;
+
+/// @dev PI as an UD60x18 number.
+UD60x18 constant PI = UD60x18.wrap(3_141592653589793238);
 
 /// @dev The unit amount which implies how many trailing decimals can be represented.
 UD60x18 constant SCALE = UD60x18.wrap(1e18);
@@ -625,22 +631,11 @@ function xor(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 
 /// HELPER FUNCTIONS ///
 
-/// @notice Returns Euler's number as an UD60x18 number.
-/// @dev See https://en.wikipedia.org/wiki/E_(mathematical_constant).
-function e() pure returns (UD60x18 result) {
-    result = UD60x18.wrap(2_718281828459045235);
-}
-
 /// @notice Converts an UD60x18 number to basic integer form, rounding down in the process.
 /// @param x The UD60x18 number to convert.
 /// @return result The same number in basic integer form.
 function fromUD60x18(UD60x18 x) pure returns (uint256 result) {
     result = UD60x18.unwrap(x.uncheckedDiv(SCALE));
-}
-
-/// @notice Returns PI as an UD60x18 number.
-function pi() pure returns (UD60x18 result) {
-    result = UD60x18.wrap(3_141592653589793238);
 }
 
 /// @notice Converts a number from basic integer form to UD60x18.

@@ -32,9 +32,7 @@ export function shouldBehaveLikeMul(): void {
       ];
 
       forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
-        await expect(this.contracts.prbMathUd60x18.doMul(x, y)).to.be.revertedWith(
-          PRBMathErrors.MUL_DIV_FIXED_POINT_OVERFLOW,
-        );
+        await expect(this.contracts.prbMathUd60x18.doMul(x, y)).to.be.revertedWith(PRBMathErrors.MUL_DIV_18_OVERFLOW);
       });
     });
 

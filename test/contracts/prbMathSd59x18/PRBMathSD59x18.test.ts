@@ -3,7 +3,6 @@ import { shouldBehaveLikeAbs } from "./pure/abs.test";
 import { shouldBehaveLikeAvg } from "./pure/avg.test";
 import { shouldBehaveLikeCeil } from "./pure/ceil.test";
 import { shouldBehaveLikeDiv } from "./pure/div.test";
-import { shouldBehaveLikeEGetter } from "./pure/e.test";
 import { shouldBehaveLikeExp2 } from "./pure/exp2.test";
 import { shouldBehaveLikeExp } from "./pure/exp.test";
 import { shouldBehaveLikeFloor } from "./pure/floor.test";
@@ -15,7 +14,6 @@ import { shouldBehaveLikeLn } from "./pure/ln.test";
 import { shouldBehaveLikeLog2 } from "./pure/log2.test";
 import { shouldBehaveLikeLog10 } from "./pure/log10.test";
 import { shouldBehaveLikeMul } from "./pure/mul.test";
-import { shouldBehaveLikePiGetter } from "./pure/pi.test";
 import { shouldBehaveLikePow } from "./pure/pow.test";
 import { shouldBehaveLikePowu } from "./pure/powu.test";
 import { shouldBehaveLikeSqrt } from "./pure/sqrt.test";
@@ -94,14 +92,6 @@ export function unitTestPrbMathSd59x18(): void {
 
     describe("sqrt", function () {
       shouldBehaveLikeSqrt();
-    });
-
-    describe("e", function () {
-      shouldBehaveLikeEGetter();
-    });
-
-    describe("pi", function () {
-      shouldBehaveLikePiGetter();
     });
 
     describe("fromSD59x18", function () {

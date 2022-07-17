@@ -2,7 +2,6 @@ import { unitFixturePRBMathUd60x18 } from "../../shared/fixtures";
 import { shouldBehaveLikeAvg } from "./pure/avg.test";
 import { shouldBehaveLikeCeil } from "./pure/ceil.test";
 import { shouldBehaveLikeDiv } from "./pure/div.test";
-import { shouldBehaveLikeEGetter } from "./pure/e.test";
 import { shouldBehaveLikeExp2 } from "./pure/exp2.test";
 import { shouldBehaveLikeExp } from "./pure/exp.test";
 import { shouldBehaveLikeFloor } from "./pure/floor.test";
@@ -14,7 +13,6 @@ import { shouldBehaveLikeLn } from "./pure/ln.test";
 import { shouldBehaveLikeLog2 } from "./pure/log2.test";
 import { shouldBehaveLikeLog10 } from "./pure/log10.test";
 import { shouldBehaveLikeMul } from "./pure/mul.test";
-import { shouldBehaveLikePiGetter } from "./pure/pi.test";
 import { shouldBehaveLikePow } from "./pure/pow.test";
 import { shouldBehaveLikePowu } from "./pure/powu.test";
 import { shouldBehaveLikeSqrt } from "./pure/sqrt.test";
@@ -93,14 +91,6 @@ export function unitTestPrbMathUd60x18(): void {
 
     describe("fromUD60x18", function () {
       shouldBehaveLikeFromUD60x18();
-    });
-
-    describe("e", function () {
-      shouldBehaveLikeEGetter();
-    });
-
-    describe("pi", function () {
-      shouldBehaveLikePiGetter();
     });
 
     describe("toUD60x18", function () {

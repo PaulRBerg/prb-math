@@ -62,7 +62,7 @@ export function shouldBehaveLikePowu(): void {
 
         forEach(testSets).it("takes %e and %e and reverts", async function (x: BigNumber, y: BigNumber) {
           await expect(this.contracts.prbMathSd59x18.doPowu(x, y)).to.be.revertedWith(
-            PRBMathErrors.MUL_DIV_FIXED_POINT_OVERFLOW,
+            PRBMathErrors.MUL_DIV_18_OVERFLOW,
           );
         });
       });
