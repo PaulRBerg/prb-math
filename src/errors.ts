@@ -1,5 +1,5 @@
 export enum PRBMathErrors {
-  MUL_DIV_FIXED_POINT_OVERFLOW = "PRBMath__MulDivFixedPointOverflow",
+  MUL_DIV_18_OVERFLOW = "PRBMath__MulDiv18Overflow",
   MUL_DIV_OVERFLOW = "PRBMath__MulDivOverflow",
   MUL_DIV_SIGNED_INPUT_TOO_SMALL = "PRBMath__MulDivSignedInputTooSmall",
   MUL_DIV_SIGNED_OVERFLOW = "PRBMath__MulDivSignedOverflow",

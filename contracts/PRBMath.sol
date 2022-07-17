@@ -7,7 +7,7 @@ library PRBMath {
     /// CUSTOM ERRORS ///
 
     /// @notice Emitted when the ending result in the fixed-point version of `mulDiv` would overflow uint256.
-    error PRBMath__MulDivFixedPointOverflow(uint256 x, uint256 y);
+    error PRBMath__MulDiv18Overflow(uint256 x, uint256 y);
 
     /// @notice Emitted when the ending result in `mulDiv` would overflow uint256.
     error PRBMath__MulDivOverflow(uint256 x, uint256 y, uint256 denominator);
@@ -441,7 +441,7 @@ library PRBMath {
         }
 
         if (prod1 >= SCALE) {
-            revert PRBMath__MulDivFixedPointOverflow(x, y);
+            revert PRBMath__MulDiv18Overflow(x, y);
         }
 
         uint256 remainder;

@@ -93,7 +93,10 @@ using { avg, ceil, div, exp, exp2, floor, frac, gm, inv, ln, log10, log2, mul, p
 /// @param y The second operand as an UD60x18 number.
 /// @return result The arithmetic average as an UD60x18 number.
 function avg(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
-    result = x.rshift(1).uncheckedAdd(y.rshift(1)).uncheckedAdd(x.and(UD60x18.unwrap(y)).and(1));
+    // prettier-ignore
+    result = x.rshift(1)
+                .uncheckedAdd(y.rshift(1))
+                .uncheckedAdd(x.and(UD60x18.unwrap(y)).and(1));
 }
 
 /// @notice Yields the least UD60x18 number greater than or equal to x.
