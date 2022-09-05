@@ -4,7 +4,7 @@ pragma solidity >=0.8.13;
 import { PRBMath } from "./PRBMath.sol";
 
 /// @notice The signed 59.18-decimal fixed-point number representation. Can have up to 59 digits and up to 18 decimals.
-/// The numbers are bound by the minimum and the maximum values permitted by the Solidity type int256.
+/// The values are bound by the minimum and the maximum values permitted by the Solidity type int256.
 type SD59x18 is int256;
 
 /// CUSTOM ERRORS
@@ -138,7 +138,7 @@ using {
 /// @dev Requirements:
 /// - x must be greater than `MIN_SD59x18`.
 ///
-/// @param x The SD59x18 number to calculate the absolute value for.
+/// @param x The SD59x18 number for which to calculate the absolute value.
 /// @param result The absolute value of x as an SD59x18 number.
 function abs(SD59x18 x) pure returns (SD59x18 result) {
     if (x.eq(MIN_SD59x18)) {
@@ -602,7 +602,7 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
 
 /// @notice Multiplies two SD59x18 numbers together, returning a new SD59x18 number.
 ///
-/// @dev This is variant of `mulDiv` that works with signed numbers and employs constant folding, i.e. the denominator
+/// @dev This is a variant of `mulDiv` that works with signed numbers and employs constant folding, i.e. the denominator
 /// is always 1e18.
 ///
 /// Requirements:
