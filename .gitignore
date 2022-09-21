@@ -5,22 +5,19 @@
 !.yarn/plugins
 !.yarn/sdks
 !.yarn/versions
-**/.nyc_output
-**/artifacts
-**/build
 **/cache
-**/coverage
-**/coverage-contracts
-**/coverage-ts
-**/dist
 **/node_modules
-**/src/types
+**/out
 
 # files
 *.env
 *.log
-*.tsbuildinfo
-coverage.json
-npm-debug.log*
+.DS_Store
+.pnp.*
 yarn-debug.log*
 yarn-error.log*
+
+# broadcasts
+!/broadcast
+/broadcast/*
+/broadcast/*/31337/

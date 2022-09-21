@@ -1,0 +1,5 @@
+inv.t.sol
+├── when x is zero
+│  └── it should revert
+└── when x is not zero
+   └── it should return the correct value

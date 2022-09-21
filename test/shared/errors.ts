@@ -1,4 +1,0 @@
-export enum PanicCodes {
-  ARITHMETIC_OVERFLOW_OR_UNDERFLOW = "0x11",
-  DIVISION_BY_ZERO = "0x12",
-}

@@ -1,0 +1,2 @@
+"*.{json,md,sol,yml}":
+  - prettier --config ./.prettierrc.yml --write

@@ -1,16 +1,15 @@
 # directories
 .yarn/
-**/.nyc_output
-**/artifacts
-**/build
+**/broadcast
 **/cache
-**/coverage
-**/coverage-contracts
-**/coverage-ts
-**/dist
+**/lib
+**/out
 **/node_modules
-**/src/types
 
 # files
+*.env
+*.log
+.pnp.*
 coverage.json
-LICENSE.md
+yarn-debug.log*
+yarn-error.log*
