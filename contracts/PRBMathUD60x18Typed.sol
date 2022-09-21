@@ -127,7 +127,7 @@ library PRBMathUD60x18Typed {
     ///
     /// Requirements:
     /// - All from "log2".
-    /// - x must be less than 88.722839111672999628.
+    /// - x must be less than 133.084258667509499441.
     ///
     /// @param x The exponent as an unsigned 60.18-decimal fixed-point number.
     /// @return result The result as an unsigned 60.18-decimal fixed-point number.
