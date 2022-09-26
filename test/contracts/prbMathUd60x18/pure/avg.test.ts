@@ -18,7 +18,7 @@ export function shouldBehaveLikeAvg(): void {
     });
   });
 
-  context("when one operand is zero and the other is not zero", function () {
+  context("when only one operand is zero", function () {
     const testSets = [
       [Zero, toBn("3")],
       [toBn("3"), Zero],
@@ -31,7 +31,7 @@ export function shouldBehaveLikeAvg(): void {
     });
   });
 
-  context("when both operands are positive", function () {
+  context("when neither operand is zero", function () {
     context("when both operands are even", function () {
       const testSets = [
         [toBn("2e-18"), toBn("4e-18")],

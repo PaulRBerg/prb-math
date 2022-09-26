@@ -18,7 +18,7 @@ export function shouldBehaveLikeAvg(): void {
     });
   });
 
-  context("when one operand is zero and the other is not zero", function () {
+  context("when only one operand is zero", function () {
     const testSets = [
       [toBn("-3"), Zero],
       [Zero, toBn("-3")],
