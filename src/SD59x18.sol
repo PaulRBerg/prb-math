@@ -866,6 +866,11 @@ function fromSD59x18(SD59x18 x) pure returns (int256 result) {
     result = SD59x18.unwrap(x.uncheckedDiv(SCALE));
 }
 
+/// @notice Wraps a signed integer into the SD59x18 type.
+function sd59x18(int256 x) pure returns (SD59x18 result) {
+    result = SD59x18.wrap(x);
+}
+
 /// @notice Converts a number from basic integer form to SD59x18.
 ///
 /// @dev Requirements:

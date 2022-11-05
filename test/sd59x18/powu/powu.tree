@@ -1,0 +1,17 @@
+powu.t.sol
+├── when the base is zero
+│  ├── when the exponent is zero
+│  │  └── it should return one
+│  └── when the exponent is not zero
+│  │  └── it should return one
+└── when the base is not zero
+   ├── when the exponent is zero
+   │  └── it should return one
+   └── when the exponent is not zero
+      ├── when the result overflows uint256
+      │  └── it should revert
+      └── when the result does not overflow or underflow uint256
+         ├── when the result overflows or underflows sd59x18
+         │  └── it should revert
+         └── when the result does not overflow sd59x18
+            └── it should return the correct value

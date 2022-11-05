@@ -1,0 +1,12 @@
+gm.t.sol
+├── when one of the operands is zero
+│  └── it should return zero
+└── when neither of the operands is zero
+   ├── when the product of x and y is negative
+   │  └── it should revert
+   └── when the product of x and y is positive
+     ├── when the product of x and y overflows
+     │  └── it should revert
+     └── when the product of x and y does not overflow
+        └── it should return the correct value
+
