@@ -33,14 +33,14 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
         _;
     }
 
-    function testDiv__DenomitorMin() external DenominatorNotZero {
+    function testDiv__DenomitorMinSD59x18() external DenominatorNotZero {
         SD59x18 x = sd(1);
         SD59x18 y = MIN_SD59x18;
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__DivInputTooSmall.selector));
         div(x, y);
     }
 
-    modifier DenominatorNotMin() {
+    modifier DenominatorNotMinSD59x18() {
         _;
     }
 
@@ -61,7 +61,7 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
         external
         parameterizedTest(numeratorZeroSets())
         DenominatorNotZero
-        DenominatorNotMin
+        DenominatorNotMinSD59x18
     {
         SD59x18 actual = div(s.x, s.y);
         assertEq(actual, s.expected);
@@ -71,14 +71,14 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
         _;
     }
 
-    function testDiv__NumeratorMin() external DenominatorNotZero DenominatorNotMin NumeratorNotZero {
+    function testDiv__NumeratorMinSD59x18() external DenominatorNotZero DenominatorNotMinSD59x18 NumeratorNotZero {
         SD59x18 x = MIN_SD59x18;
         SD59x18 y = sd(1);
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__DivInputTooSmall.selector));
         div(x, y);
     }
 
-    modifier NumeratorNotMin() {
+    modifier NumeratorNotMinSD59x18() {
         _;
     }
 
@@ -95,9 +95,9 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
         external
         parameterizedTest(resultOverflowSets())
         DenominatorNotZero
-        DenominatorNotMin
+        DenominatorNotMinSD59x18
         NumeratorNotZero
-        NumeratorNotMin
+        NumeratorNotMinSD59x18
     {
         vm.expectRevert(
             abi.encodeWithSelector(
@@ -165,9 +165,9 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
         external
         parameterizedTest(numeratorDenominatorSameSignSets())
         DenominatorNotZero
-        DenominatorNotMin
+        DenominatorNotMinSD59x18
         NumeratorNotZero
-        NumeratorNotMin
+        NumeratorNotMinSD59x18
         NotOverflow
     {
         SD59x18 actual = div(s.x, s.y);
@@ -227,9 +227,9 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
         external
         parameterizedTest(numeratorDenominatorSameSignSets())
         DenominatorNotZero
-        DenominatorNotMin
+        DenominatorNotMinSD59x18
         NumeratorNotZero
-        NumeratorNotMin
+        NumeratorNotMinSD59x18
         NotOverflow
     {
         SD59x18 actual = div(s.x, s.y);
