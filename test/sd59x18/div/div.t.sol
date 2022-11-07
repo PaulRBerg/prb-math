@@ -3,7 +3,6 @@ pragma solidity >=0.8.13;
 
 import { stdError } from "forge-std/StdError.sol";
 
-import { PRBMath__MulDivOverflow } from "~/Helpers.sol";
 import {
     MAX_SD59x18,
     MAX_SD59x18_INT,
@@ -26,7 +25,7 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
     function testDiv__DenomitorZero() external {
         SD59x18 x = sd(1);
         SD59x18 y = ZERO;
-        vm.expectRevert();
+        vm.expectRevert(stdError.divisionError);
         div(x, y);
     }
 

@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.13;
 
-import { stdError } from "forge-std/StdError.sol";
-
 import { MAX_SD59x18, MAX_WHOLE_SD59x18, SD59x18, ZERO, avg } from "~/SD59x18.sol";
 import { SD59x18__BaseTest } from "../SD59x18BaseTest.t.sol";
 

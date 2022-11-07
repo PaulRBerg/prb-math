@@ -7,7 +7,7 @@ import { MAX_WHOLE_SD59x18, MAX_SD59x18, MIN_SD59x18, MIN_WHOLE_SD59x18, PI, SD5
 import { SD59x18__BaseTest } from "../SD59x18BaseTest.t.sol";
 
 contract SD59x18__InvTest is SD59x18__BaseTest {
-    function testCannotInv__Zero() external {
+    function testInv__Zero() external {
         SD59x18 x = ZERO;
         vm.expectRevert(stdError.divisionError);
         inv(x);
