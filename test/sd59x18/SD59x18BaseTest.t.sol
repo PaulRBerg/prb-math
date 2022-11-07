@@ -80,8 +80,20 @@ abstract contract SD59x18__BaseTest is PRBMath__BaseTest {
         return Set({ x: sd(x), y: sd(y), expected: sd(expected) });
     }
 
+    function set(int256 x, int256 y, SD59x18 expected) internal pure returns (Set memory) {
+        return Set({ x: sd(x), y: sd(y), expected: expected });
+    }
+
+    function set(int256 x, SD59x18 y, SD59x18 expected) internal pure returns (Set memory) {
+        return Set({ x: sd(x), y: y, expected: expected });
+    }
+
     function set(SD59x18 x, SD59x18 y, int256 expected) internal pure returns (Set memory) {
         return Set({ x: x, y: y, expected: sd(expected) });
+    }
+
+    function set(SD59x18 x, int256 y, SD59x18 expected) internal pure returns (Set memory) {
+        return Set({ x: x, y: sd(y), expected: expected });
     }
 
     function set(SD59x18 x, SD59x18 y, SD59x18 expected) internal pure returns (Set memory) {

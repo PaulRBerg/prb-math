@@ -34,7 +34,7 @@ contract UD60x18__CeilTest is UD60x18__BaseTest {
         _;
     }
 
-    function lesThanOrEqualSets() internal returns (Set[] memory) {
+    function lessThanOrEqualSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.1e18, expected: 1e18 }));
         sets.push(set({ x: 0.5e18, expected: 1e18 }));
@@ -48,7 +48,7 @@ contract UD60x18__CeilTest is UD60x18__BaseTest {
         return sets;
     }
 
-    function testCeil() external parameterizedTest(lesThanOrEqualSets()) NotZero LessThanOrEqualToMaxWholeUD60x18 {
+    function testCeil() external parameterizedTest(lessThanOrEqualSets()) NotZero LessThanOrEqualToMaxWholeUD60x18 {
         UD60x18 actual = ceil(s.x);
         assertEq(actual, s.expected);
     }
