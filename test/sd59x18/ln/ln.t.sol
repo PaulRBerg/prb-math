@@ -24,7 +24,7 @@ contract SD59x18__LnTest is SD59x18__BaseTest {
         _;
     }
 
-    function testLn__Negative() external {
+    function testLn__Negative() external NotZero {
         SD59x18 x = sd(-1);
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__LogInputTooSmall.selector, x));
         ln(x);

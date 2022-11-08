@@ -24,7 +24,7 @@ contract SD59x18__Log10Test is SD59x18__BaseTest {
         _;
     }
 
-    function testLog10__Negative() external {
+    function testLog10__Negative() external NotZero {
         SD59x18 x = sd(-1);
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__LogInputTooSmall.selector, x));
         log10(x);
