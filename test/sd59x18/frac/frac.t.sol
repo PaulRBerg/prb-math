@@ -22,7 +22,7 @@ contract SD59x18__FracTest is SD59x18__BaseTest {
         sets.push(set({ x: MIN_WHOLE_SD59x18, expected: ZERO }));
         sets.push(set({ x: -1e36, expected: ZERO }));
         sets.push(set({ x: -4.2e18, expected: -2e17 }));
-        sets.push(set({ x: negativePI, expected: -141592653589793238 }));
+        sets.push(set({ x: NEGATIVE_PI, expected: -141592653589793238 }));
         sets.push(set({ x: -2e18, expected: ZERO }));
         sets.push(set({ x: -1.125e18, expected: -125e15 }));
         sets.push(set({ x: -1e18, expected: ZERO }));

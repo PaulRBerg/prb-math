@@ -13,7 +13,8 @@ abstract contract SD59x18__BaseTest is PRBMath__BaseTest {
                                       CONSTANTS
     //////////////////////////////////////////////////////////////////////////*/
 
-    SD59x18 internal constant negativePI = SD59x18.wrap(-3.141592653589793238e18);
+    SD59x18 internal constant NEGATIVE_PI = SD59x18.wrap(-3.141592653589793238e18);
+    SD59x18 internal constant NEGATIVE_E = SD59x18.wrap(-2_718281828459045235);
 
     /*//////////////////////////////////////////////////////////////////////////
                                        STRUCTS

@@ -43,7 +43,7 @@ contract SD59x18__AbsTest is SD59x18__BaseTest {
         sets.push(set({ x: -1e36, expected: 1e36 }));
         sets.push(set({ x: -4.2e18, expected: 4.2e18 }));
         sets.push(set({ x: -2e18, expected: 2e18 }));
-        sets.push(set({ x: negativePI, expected: PI }));
+        sets.push(set({ x: NEGATIVE_PI, expected: PI }));
         sets.push(set({ x: -1.125e18, expected: 1.125e18 }));
         sets.push(set({ x: -1e18, expected: 1e18 }));
         sets.push(set({ x: -0.5e18, expected: 0.5e18 }));

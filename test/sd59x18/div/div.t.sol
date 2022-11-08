@@ -47,7 +47,7 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
     function numeratorZeroSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: -1e36, expected: ZERO }));
-        sets.push(set({ x: negativePI, expected: ZERO }));
+        sets.push(set({ x: NEGATIVE_PI, expected: ZERO }));
         sets.push(set({ x: -1e18, expected: ZERO }));
         sets.push(set({ x: -1, expected: ZERO }));
         sets.push(set({ x: 1, expected: ZERO }));
