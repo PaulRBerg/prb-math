@@ -28,7 +28,7 @@ contract SD59x18__InvTest is SD59x18__BaseTest {
         sets.push(set({ x: -100.135e18, expected: -0.00998651820042942e18 }));
         sets.push(set({ x: -22e18, expected: -0.045454545454545454e18 }));
         sets.push(set({ x: -4e18, expected: -0.25e18 }));
-        sets.push(set({ x: -3.141592653589793238e18, expected: -0.318309886183790671e18 }));
+        sets.push(set({ x: negativePI, expected: -0.318309886183790671e18 }));
         sets.push(set({ x: -2e18, expected: -0.5e18 }));
         sets.push(set({ x: -1e18, expected: -1e18 }));
         sets.push(set({ x: -0.1e18, expected: -10e18 }));
