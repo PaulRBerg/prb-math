@@ -30,7 +30,7 @@ contract SD59x18__Log2Test is SD59x18__BaseTest {
         log2(x);
     }
 
-    modifier NotNegative() {
+    modifier Positive() {
         _;
     }
 
@@ -49,7 +49,7 @@ contract SD59x18__Log2Test is SD59x18__BaseTest {
         return sets;
     }
 
-    function testLog2__PowerOfTwo() external parameterizedTest(powerSets()) NotZero NotNegative {
+    function testLog2__PowerOfTwo() external parameterizedTest(powerSets()) NotZero Positive {
         SD59x18 actual = log2(s.x);
         assertEq(actual, s.expected);
     }
@@ -75,7 +75,7 @@ contract SD59x18__Log2Test is SD59x18__BaseTest {
         return sets;
     }
 
-    function testLog2() external parameterizedTest(notPowerSets()) NotZero NotNegative {
+    function testLog2() external parameterizedTest(notPowerSets()) NotZero Positive {
         SD59x18 actual = log2(s.x);
         assertEq(actual, s.expected);
     }

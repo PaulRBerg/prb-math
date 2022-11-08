@@ -30,7 +30,7 @@ contract SD59x18__LnTest is SD59x18__BaseTest {
         ln(x);
     }
 
-    modifier NotNegative() {
+    modifier Positive() {
         _;
     }
 
@@ -58,7 +58,7 @@ contract SD59x18__LnTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testLn() external parameterizedTest(positiveSets()) NotZero NotNegative {
+    function testLn() external parameterizedTest(positiveSets()) NotZero Positive {
         SD59x18 actual = ln(s.x);
         assertEq(actual, s.expected);
     }
