@@ -9,18 +9,12 @@ import {
     MIN_WHOLE_SD59x18,
     PI,
     SD59x18,
-    SCALE,
     ZERO,
     fromSD59x18
 } from "~/SD59x18.sol";
 import { SD59x18__BaseTest } from "../SD59x18BaseTest.t.sol";
 
 contract SD59x18__FromTest is SD59x18__BaseTest {
-    SD59x18 internal constant MIN_SD59x18_SCALED =
-        SD59x18.wrap(-57896044618658097711785492504343953926634992332820282019728);
-    SD59x18 internal constant MAX_SD59x18_SCALED =
-        SD59x18.wrap(57896044618658097711785492504343953926634992332820282019728);
-
     function lessThanSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: -1e18 + 1 }));
