@@ -3,7 +3,7 @@ pow.t.sol
 │  ├── when the exponent is zero
 │  │  └── it should return one
 │  └── when the exponent is not zero
-│  │  └── it should return one
+│     └── it should zero
 └── when the base is not zero
    ├── when the base is negative
    │  └── it should revert

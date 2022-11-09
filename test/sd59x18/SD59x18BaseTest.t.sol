@@ -3,7 +3,7 @@ pragma solidity >=0.8.13;
 
 import { console2 } from "forge-std/console2.sol";
 import { PRBMath__BaseTest } from "../PRBMathBaseTest.t.sol";
-import { MAX_SD59x18, SD59x18, ZERO } from "~/SD59x18.sol";
+import { SD59x18, ZERO } from "~/SD59x18.sol";
 
 /// @title SD59x18__BaseTest
 /// @author Paul Razvan Berg
@@ -72,19 +72,19 @@ abstract contract SD59x18__BaseTest is PRBMath__BaseTest {
     }
 
     function set(int256 x, int256 expected) internal pure returns (Set memory) {
-        return Set({ x: sd(x), y: MAX_SD59x18, expected: sd(expected) });
+        return Set({ x: sd(x), y: ZERO, expected: sd(expected) });
     }
 
     function set(int256 x, SD59x18 expected) internal pure returns (Set memory) {
-        return Set({ x: sd(x), y: MAX_SD59x18, expected: expected });
+        return Set({ x: sd(x), y: ZERO, expected: expected });
     }
 
     function set(SD59x18 x, int256 expected) internal pure returns (Set memory) {
-        return Set({ x: x, y: MAX_SD59x18, expected: sd(expected) });
+        return Set({ x: x, y: ZERO, expected: sd(expected) });
     }
 
     function set(SD59x18 x, SD59x18 expected) internal pure returns (Set memory) {
-        return Set({ x: x, y: MAX_SD59x18, expected: expected });
+        return Set({ x: x, y: ZERO, expected: expected });
     }
 
     function set(int256 x, int256 y, int256 expected) internal pure returns (Set memory) {
@@ -93,6 +93,10 @@ abstract contract SD59x18__BaseTest is PRBMath__BaseTest {
 
     function set(int256 x, int256 y, SD59x18 expected) internal pure returns (Set memory) {
         return Set({ x: sd(x), y: sd(y), expected: expected });
+    }
+
+    function set(int256 x, SD59x18 y, int256 expected) internal pure returns (Set memory) {
+        return Set({ x: sd(x), y: y, expected: sd(expected) });
     }
 
     function set(int256 x, SD59x18 y, SD59x18 expected) internal pure returns (Set memory) {

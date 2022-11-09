@@ -658,7 +658,7 @@ function mul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 ///
 /// Requirements:
 /// - All from `exp2`, `log2` and `mul`.
-/// - z cannot be zero.
+/// - x cannot be zero.
 ///
 /// Caveats:
 /// - All from `exp2`, `log2` and `mul`.
