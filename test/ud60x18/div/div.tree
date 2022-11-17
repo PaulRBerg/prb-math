@@ -1,0 +1,11 @@
+div.t.sol
+├── when the denominator is zero
+│  └── it should revert
+└── when the denominator is not zero
+   ├── when the numerator is zero
+   │  └── it should return zero
+   └── when the numerator is not zero
+      ├── when the result overflows ud60x18
+      │  └── it should revert
+      └── when the result does not overflow ud60x18
+         └── it should return the correct value

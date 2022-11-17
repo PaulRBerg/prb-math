@@ -1,0 +1,8 @@
+log10.t.sol
+├── when x is less than one
+│  └── it should revert
+└── when x is greater than or equal to one
+   ├── when x is a power of ten
+   │  └── it should return the correct value
+   └── when x is not a power of ten
+      └── it should return the correct value
