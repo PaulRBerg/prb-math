@@ -1,6 +1,6 @@
 sqrt.t.sol
 ├── when x is zero
-│  └── it should revert
+│  └── it should return zero
 └── when x is not zero
    ├── when x is negative
    │  └── it should revert
