@@ -147,23 +147,24 @@ function abs(SD59x18 x) pure returns (SD59x18 result) {
     result = x.lt(ZERO) ? uncheckedUnary(x) : x;
 }
 
-/// @notice Calculates the arithmetic average of x and y, rounding down.
+/// @notice Calculates the arithmetic average of x and y, rounding towards zero.
 /// @param x The first operand as an SD59x18 number.
 /// @param y The second operand as an SD59x18 number.
 /// @return result The arithmetic average as an SD59x18 number.
 function avg(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
-    // These operations can never overflow.
+    // This is equivalent to "x / 2 +  y / 2" but faster.
+    // This operation can never overflow.
     SD59x18 sum = x.rshift(1).uncheckedAdd(y.rshift(1));
 
     if (sum.lt(ZERO)) {
-        // If at least one of x and y is odd, we add 1 to the result. Shifting negative numbers to the right rounds
+        // If at least one of x and y is odd, we add 1 to the result, since shifting negative numbers to the right rounds
         // down to infinity. The right part is equivalent to "sum + (x % 2 == 1 || y % 2 == 1)" but faster.
         assembly {
             result := add(sum, and(or(x, y), 1))
         }
     } else {
         // We need to add 1 if both x and y are odd to account for the double 0.5 remainder that is truncated after shifting.
-        // This is equivalent to "sum + x & y & 1".
+        // The right part is equivalent to "sum + x & y & 1".
         result = sum.uncheckedAdd(x.and(SD59x18.unwrap(y)).and(1));
     }
 }
@@ -368,7 +369,7 @@ function frac(SD59x18 x) pure returns (SD59x18 result) {
 /// @param y The second operand as an SD59x18 number.
 /// @return result The result as an SD59x18 number.
 function gm(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
-    if (x.isZero()) {
+    if (x.isZero() || y.isZero()) {
         return ZERO;
     }
 
@@ -859,7 +860,7 @@ function xor(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 
 /// HELPER FUNCTIONS ///
 
-/// @notice Converts an SD59x18 number to basic integer form, rounding down in the process.
+/// @notice Converts an SD59x18 number to basic integer form, rounding towards zero in the process.
 /// @param x The SD59x18 number to convert.
 /// @return result The same number in basic integer form.
 function fromSD59x18(SD59x18 x) pure returns (int256 result) {
