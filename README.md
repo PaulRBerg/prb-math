@@ -1,7 +1,7 @@
 # PRBMath [![GitHub Actions][gha-badge]][gha] [![Coverage Status][coveralls-badge]][coveralls] [![Styled with Prettier][prettier-badge]][prettier] [![License: Unlicense][license-badge]][license]
 
 [gha]: https://github.com/paulrberg/prb-math/actions
-[gha-badge]: https://github.com/paulrberg/prb-math/actions/workflows/integration.yml/badge.svg
+[gha-badge]: https://github.com/paulrberg/prb-math/actions/workflows/ci.yml/badge.svg
 [coveralls]: https://coveralls.io/github/paulrberg/prb-math
 [coveralls-badge]: https://coveralls.io/repos/github/paulrberg/prb-math/badge.svg?branch=main
 [prettier]: https://prettier.io
