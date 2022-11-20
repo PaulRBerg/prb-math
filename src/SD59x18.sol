@@ -882,6 +882,12 @@ function fromSD59x18(SD59x18 x) pure returns (int256 result) {
 }
 
 /// @notice Wraps a signed integer into the SD59x18 type.
+function sd(int256 x) pure returns (SD59x18 result) {
+    result = SD59x18.wrap(x);
+}
+
+/// @notice Wraps a signed integer into the SD59x18 type.
+/// @dev Alias for the "sd" function defined above.
 function sd59x18(int256 x) pure returns (SD59x18 result) {
     result = SD59x18.wrap(x);
 }

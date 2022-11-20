@@ -666,6 +666,12 @@ function toUD60x18(uint256 x) pure returns (UD60x18 result) {
 }
 
 /// @notice Wraps a signed integer into the UD60x18 type.
+function ud(uint256 x) pure returns (UD60x18 result) {
+    result = UD60x18.wrap(x);
+}
+
+/// @notice Wraps a signed integer into the UD60x18 type.
+/// @dev Alias for the "ud" function defined above.
 function ud60x18(uint256 x) pure returns (UD60x18 result) {
     result = UD60x18.wrap(x);
 }
