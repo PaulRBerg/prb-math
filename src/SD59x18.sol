@@ -82,6 +82,7 @@ SD59x18 constant MAX_SD59x18 = SD59x18.wrap(
     57896044618658097711785492504343953926634992332820282019728_792003956564819967
 );
 int256 constant MAX_SD59x18_INT = 57896044618658097711785492504343953926634992332820282019728_792003956564819967;
+uint256 constant MAX_SD59x18_UINT = 57896044618658097711785492504343953926634992332820282019728_792003956564819967;
 
 /// @dev The maximum whole value an SD59x18 number can have.
 SD59x18 constant MAX_WHOLE_SD59x18 = SD59x18.wrap(
@@ -107,6 +108,7 @@ SD59x18 constant PI = SD59x18.wrap(3_141592653589793238);
 /// @dev The unit amount which implies how many trailing decimals can be represented.
 SD59x18 constant SCALE = SD59x18.wrap(1e18);
 int256 constant SCALE_INT = 1e18;
+uint256 constant SCALE_UINT = 1e18;
 
 /// @dev Zero as an SD59x18 number.
 SD59x18 constant ZERO = SD59x18.wrap(0);
@@ -230,8 +232,8 @@ function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     }
 
     // Compute the absolute value (x*SCALE)÷y. The resulting value must fit within int256.
-    uint256 rAbs = mulDiv(ax, uint256(SCALE_INT), ay);
-    if (rAbs > uint256(MAX_SD59x18_INT)) {
+    uint256 rAbs = mulDiv(ax, SCALE_UINT, ay);
+    if (rAbs > MAX_SD59x18_UINT) {
         revert PRBMathSD59x18__DivOverflow(rAbs);
     }
 
@@ -635,7 +637,7 @@ function mul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     }
 
     uint256 rAbs = mulDiv18(ax, ay);
-    if (rAbs > uint256(MAX_SD59x18_INT)) {
+    if (rAbs > MAX_SD59x18_UINT) {
         revert PRBMathSD59x18__MulOverflow(rAbs);
     }
 
@@ -696,7 +698,7 @@ function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
     uint256 xAbs = uint256(SD59x18.unwrap(abs(x)));
 
     // Calculate the first iteration of the loop in advance.
-    uint256 rAbs = y & 1 > 0 ? xAbs : uint256(SCALE_INT);
+    uint256 rAbs = y & 1 > 0 ? xAbs : SCALE_UINT;
 
     // Equivalent to "for(y /= 2; y > 0; y /= 2)" but faster.
     uint256 yAux = y;
@@ -710,7 +712,7 @@ function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
     }
 
     // The result must fit within `MAX_SD59x18`.
-    if (rAbs > uint256(MAX_SD59x18_INT)) {
+    if (rAbs > MAX_SD59x18_UINT) {
         revert PRBMathSD59x18__PowuOverflow(rAbs);
     }
 
