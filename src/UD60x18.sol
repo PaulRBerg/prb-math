@@ -3,11 +3,13 @@ pragma solidity >=0.8.13;
 
 import { msb, mulDiv, mulDiv18, prbExp2, prbSqrt } from "./Core.sol";
 
-/// @notice The unsigned 60.18-decimal fixed-point number representation. Can have up to 60 digits and up to 18 decimals.
-/// The numbers are bound by the minimum and the maximum values permitted by the Solidity type uint256.
+/// @notice The unsigned 60.18-decimal fixed-point number representation, which can have up to 60 digits and up to 18 decimals.
+/// The values of this are bound by the minimum and the maximum values permitted by the Solidity type uint256.
 type UD60x18 is uint256;
 
-/// CUSTOM ERRORS ///
+/*//////////////////////////////////////////////////////////////////////////
+                                CUSTOM ERRORS
+//////////////////////////////////////////////////////////////////////////*/
 
 /// @notice Emitted when adding two numbers overflows UD60x18.
 error PRBMathUD60x18__AddOverflow(uint256 x, UD60x18 y);
@@ -36,9 +38,11 @@ error PRBMathUD60x18__SubUnderflow(UD60x18 x, UD60x18 y);
 /// @notice Emitted when converting a basic integer to the fixed-point format overflows UD60x18.
 error PRBMathUD60x18__ToUD60x18Overflow(uint256 x);
 
-/// CONSTANTS ///
+/*//////////////////////////////////////////////////////////////////////////
+                                    CONSTANTS
+//////////////////////////////////////////////////////////////////////////*/
 
-/// @dev Euler's number as an UD60x18 number..
+/// @dev Euler's number as an UD60x18 number.
 UD60x18 constant E = UD60x18.wrap(2_718281828459045235);
 
 /// @dev Half the SCALE number.
@@ -75,7 +79,9 @@ uint256 constant SCALE_UINT = 1e18;
 /// @dev Zero as an UD60x18 number.
 UD60x18 constant ZERO = UD60x18.wrap(0);
 
-/// GLOBAL-SCOPED FIXED-POINT FUNCTIONS ///
+/*//////////////////////////////////////////////////////////////////////////
+                        GLOBAL-SCOPED FIXED-POINT FUNCTIONS
+//////////////////////////////////////////////////////////////////////////*/
 
 using { avg, ceil, div, exp, exp2, floor, frac, gm, inv, ln, log10, log2, mul, pow, powu, sqrt } for UD60x18 global;
 
@@ -523,7 +529,9 @@ function sqrt(UD60x18 x) pure returns (UD60x18 result) {
     result = UD60x18.wrap(prbSqrt(UD60x18.unwrap(x.uncheckedMul(SCALE))));
 }
 
-/// GLOBAL-SCOPED NON-FIXED-POINT FUNCTIONS ///
+/*//////////////////////////////////////////////////////////////////////////
+                    GLOBAL-SCOPED NON-FIXED-POINT FUNCTIONS
+//////////////////////////////////////////////////////////////////////////*/
 
 using {
     add,
@@ -629,7 +637,9 @@ function xor(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     result = UD60x18.wrap(UD60x18.unwrap(x) ^ UD60x18.unwrap(y));
 }
 
-/// HELPER FUNCTIONS ///
+/*//////////////////////////////////////////////////////////////////////////
+                                HELPER FUNCTIONS
+//////////////////////////////////////////////////////////////////////////*/
 
 /// @notice Divides an UD60x18 number by `SCALE` to convert to basic integer form.
 /// @dev Rounds down in the process.
@@ -660,7 +670,9 @@ function ud60x18(uint256 x) pure returns (UD60x18 result) {
     result = UD60x18.wrap(x);
 }
 
-/// FILE-SCOPED FUNCTIONS ///
+/*//////////////////////////////////////////////////////////////////////////
+                            FILE-SCOPED FUNCTIONS
+//////////////////////////////////////////////////////////////////////////*/
 
 using { uncheckedDiv, uncheckedMul } for UD60x18;
 

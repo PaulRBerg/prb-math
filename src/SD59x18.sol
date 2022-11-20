@@ -3,11 +3,13 @@ pragma solidity >=0.8.13;
 
 import { msb, mulDiv, mulDiv18, prbExp2, prbSqrt } from "./Core.sol";
 
-/// @notice The signed 59.18-decimal fixed-point number representation. Can have up to 59 digits and up to 18 decimals.
-/// The values are bound by the minimum and the maximum values permitted by the Solidity type int256.
+/// @notice The signed 59.18-decimal fixed-point number representation, which can have up to 59 digits and up to 18 decimals.
+/// The values of this are bound by the minimum and the maximum values permitted by the underlying Solidity type int256.
 type SD59x18 is int256;
 
-/// CUSTOM ERRORS
+/*//////////////////////////////////////////////////////////////////////////
+                                CUSTOM ERRORS
+//////////////////////////////////////////////////////////////////////////*/
 
 /// @notice Emitted when taking the absolute value of `MIN_SD59x18`.
 error PRBMathSD59x18__AbsMinSD59x18();
@@ -60,9 +62,11 @@ error PRBMathSD59x18__ToSD59x18Overflow(int256 x);
 /// @notice Emitted when converting a basic integer to the fixed-point format underflows SD59x18.
 error PRBMathSD59x18__ToSD59x18Underflow(int256 x);
 
-/// CONSTANTS ///
+/*//////////////////////////////////////////////////////////////////////////
+                                    CONSTANTS
+//////////////////////////////////////////////////////////////////////////*/
 
-/// @dev Euler's number as an SD59x18 number..
+/// @dev Euler's number as an SD59x18 number.
 SD59x18 constant E = SD59x18.wrap(2_718281828459045235);
 
 /// @dev Half the SCALE number.
@@ -113,7 +117,9 @@ uint256 constant SCALE_UINT = 1e18;
 /// @dev Zero as an SD59x18 number.
 SD59x18 constant ZERO = SD59x18.wrap(0);
 
-/// GLOBAL-SCOPED FIXED-POINT FUNCTIONS ///
+/*//////////////////////////////////////////////////////////////////////////
+                        GLOBAL-SCOPED FIXED-POINT FUNCTIONS
+//////////////////////////////////////////////////////////////////////////*/
 
 using {
     abs,
@@ -747,7 +753,9 @@ function sqrt(SD59x18 x) pure returns (SD59x18 result) {
     result = SD59x18.wrap(int256(resultUint));
 }
 
-/// GLOBAL-SCOPED NON-FIXED-POINT FUNCTIONS ///
+/*//////////////////////////////////////////////////////////////////////////
+                    GLOBAL-SCOPED NON-FIXED-POINT FUNCTIONS
+//////////////////////////////////////////////////////////////////////////*/
 
 using {
     add,
@@ -862,7 +870,9 @@ function xor(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     result = SD59x18.wrap(SD59x18.unwrap(x) ^ SD59x18.unwrap(y));
 }
 
-/// HELPER FUNCTIONS ///
+/*//////////////////////////////////////////////////////////////////////////
+                                HELPER FUNCTIONS
+//////////////////////////////////////////////////////////////////////////*/
 
 /// @notice Converts an SD59x18 number to basic integer form, rounding towards zero in the process.
 /// @param x The SD59x18 number to convert.
@@ -896,7 +906,9 @@ function toSD59x18(int256 x) pure returns (SD59x18 result) {
     }
 }
 
-/// FILE-SCOPED FUNCTIONS ///
+/*//////////////////////////////////////////////////////////////////////////
+                            FILE-SCOPED FUNCTIONS
+//////////////////////////////////////////////////////////////////////////*/
 
 using { uncheckedDiv, uncheckedMul } for SD59x18;
 
