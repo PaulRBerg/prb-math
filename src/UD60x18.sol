@@ -137,7 +137,7 @@ function ceil(UD60x18 x) pure returns (UD60x18 result) {
     }
 }
 
-/// @notice Divides two UD60x18 numbers, returning a new UD60x18 number.
+/// @notice Divides two UD60x18 numbers, returning a new UD60x18 number. Rounds towards zero.
 ///
 /// @dev Uses `mulDiv` to enable overflow-safe multiplication and division.
 ///

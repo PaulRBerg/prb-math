@@ -582,6 +582,8 @@ function prbSqrt(uint256 x) pure returns (uint256 result) {
 
         // Round down the result.
         uint256 roundedDownResult = x / result;
-        result >= roundedDownResult ? roundedDownResult : result;
+        if (result >= roundedDownResult) {
+            result = roundedDownResult;
+        }
     }
 }

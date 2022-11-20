@@ -19,7 +19,8 @@ contract SD59x18__GmTest is SD59x18__BaseTest {
     // Greatest number whose square fits within int256
     SD59x18 internal constant SQRT_MAX_SD59x18_DIV_BY_SCALE = SD59x18.wrap(240615969168004511545_033772477625056927);
     // Smallest number whose square fits within int256
-    SD59x18 internal constant SQRT_MIN_SD59x18_DIV_BY_SCALE = SD59x18.wrap(-240615969168004511545_033772477625056927);
+    SD59x18 internal constant NEGATIVE_SQRT_MAX_SD59x18_DIV_BY_SCALE =
+        SD59x18.wrap(-240615969168004511545_033772477625056927);
 
     function oneOperandZeroSets() internal returns (Set[] memory) {
         delete sets;
@@ -60,7 +61,11 @@ contract SD59x18__GmTest is SD59x18__BaseTest {
         sets.push(set({ x: MIN_SD59x18, y: 0.000000000000000002e18, expected: NIL }));
         sets.push(set({ x: MIN_WHOLE_SD59x18, y: 0.000000000000000003e18, expected: NIL }));
         sets.push(
-            set({ x: SQRT_MIN_SD59x18_DIV_BY_SCALE, y: SQRT_MIN_SD59x18_DIV_BY_SCALE.sub(sd(1)), expected: NIL })
+            set({
+                x: NEGATIVE_SQRT_MAX_SD59x18_DIV_BY_SCALE,
+                y: NEGATIVE_SQRT_MAX_SD59x18_DIV_BY_SCALE.sub(sd(1)),
+                expected: NIL
+            })
         );
         sets.push(
             set({
@@ -90,18 +95,12 @@ contract SD59x18__GmTest is SD59x18__BaseTest {
 
     function gmSets() internal returns (Set[] memory) {
         delete sets;
+        sets.push(set({ x: MIN_WHOLE_SD59x18, y: -0.000000000000000001e18, expected: SQRT_MAX_SD59x18_DIV_BY_SCALE }));
         sets.push(
             set({
-                x: MIN_WHOLE_SD59x18,
-                y: -0.000000000000000001e18,
-                expected: 240615969168004511545_033772477625056927
-            })
-        );
-        sets.push(
-            set({
-                x: SQRT_MIN_SD59x18_DIV_BY_SCALE,
-                y: SQRT_MIN_SD59x18_DIV_BY_SCALE,
-                expected: 240615969168004511545_033772477625056927
+                x: NEGATIVE_SQRT_MAX_SD59x18_DIV_BY_SCALE,
+                y: NEGATIVE_SQRT_MAX_SD59x18_DIV_BY_SCALE,
+                expected: SQRT_MAX_SD59x18_DIV_BY_SCALE
             })
         );
         sets.push(set({ x: -2404.8e18, y: -7899.210662e18, expected: 4358_442588812843362311 }));
@@ -122,19 +121,11 @@ contract SD59x18__GmTest is SD59x18__BaseTest {
             set({
                 x: SQRT_MAX_SD59x18_DIV_BY_SCALE,
                 y: SQRT_MAX_SD59x18_DIV_BY_SCALE,
-                expected: 240615969168004511545_033772477625056927
+                expected: SQRT_MAX_SD59x18_DIV_BY_SCALE
             })
         );
-        sets.push(
-            set({
-                x: MAX_WHOLE_SD59x18,
-                y: 0.000000000000000001e18,
-                expected: 240615969168004511545_033772477625056927
-            })
-        );
-        sets.push(
-            set({ x: MAX_SD59x18, y: 0.000000000000000001e18, expected: 240615969168004511545_033772477625056927 })
-        );
+        sets.push(set({ x: MAX_WHOLE_SD59x18, y: 0.000000000000000001e18, expected: SQRT_MAX_SD59x18_DIV_BY_SCALE }));
+        sets.push(set({ x: MAX_SD59x18, y: 0.000000000000000001e18, expected: SQRT_MAX_SD59x18_DIV_BY_SCALE }));
         return sets;
     }
 

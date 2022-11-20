@@ -3,25 +3,24 @@ pragma solidity >=0.8.13;
 
 import {
     E,
-    MAX_WHOLE_SD59x18,
-    MAX_SD59x18,
+    MAX_WHOLE_UD60x18,
+    MAX_UD60x18,
     PI,
-    PRBMathSD59x18__SqrtOverflow,
-    PRBMathSD59x18__SqrtNegativeInput,
-    SD59x18,
+    PRBMathUD60x18__SqrtOverflow,
+    UD60x18,
     ZERO,
     sqrt
-} from "src/SD59x18.sol";
-import { SD59x18__BaseTest } from "../SD59x18BaseTest.t.sol";
+} from "src/UD60x18.sol";
+import { UD60x18__BaseTest } from "../UD60x18BaseTest.t.sol";
 
-contract SD59x18__SqrtTest is SD59x18__BaseTest {
-    SD59x18 internal constant MAX_PERMITTED =
-        SD59x18.wrap(57896044618658097711785492504343953926634_992332820282019728);
+contract UD60x18__SqrtTest is UD60x18__BaseTest {
+    UD60x18 internal constant MAX_PERMITTED =
+        UD60x18.wrap(115792089237316195423570985008687907853269_984665640564039457);
 
     function testSqrt__Zero() external {
-        SD59x18 x = ZERO;
-        SD59x18 actual = sqrt(x);
-        SD59x18 expected = ZERO;
+        UD60x18 x = ZERO;
+        UD60x18 actual = sqrt(x);
+        UD60x18 expected = ZERO;
         assertEq(actual, expected);
     }
 
@@ -29,21 +28,11 @@ contract SD59x18__SqrtTest is SD59x18__BaseTest {
         _;
     }
 
-    function testCannotSqrt__Negative() external NotZero {
-        SD59x18 x = sd(-1);
-        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__SqrtNegativeInput.selector, x));
-        sqrt(x);
-    }
-
-    modifier Positive() {
-        _;
-    }
-
     function greaterThanMaxPermittedSets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: MAX_PERMITTED.add(sd(1)) }));
-        sets.push(set({ x: MAX_WHOLE_SD59x18 }));
-        sets.push(set({ x: MAX_SD59x18 }));
+        sets.push(set({ x: MAX_PERMITTED.add(ud(1)) }));
+        sets.push(set({ x: MAX_WHOLE_UD60x18 }));
+        sets.push(set({ x: MAX_UD60x18 }));
         return sets;
     }
 
@@ -51,9 +40,8 @@ contract SD59x18__SqrtTest is SD59x18__BaseTest {
         external
         parameterizedTest(greaterThanMaxPermittedSets())
         NotZero
-        Positive
     {
-        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__SqrtOverflow.selector, s.x));
+        vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__SqrtOverflow.selector, s.x));
         sqrt(s.x);
     }
 
@@ -82,12 +70,12 @@ contract SD59x18__SqrtTest is SD59x18__BaseTest {
         );
         sets.push(set({ x: 1e58, expected: 1e38 }));
         sets.push(set({ x: 5e58, expected: 223606797749978969640_917366873127623544 }));
-        sets.push(set({ x: MAX_PERMITTED, expected: 240615969168004511545_033772477625056927 }));
+        sets.push(set({ x: MAX_PERMITTED, expected: 340282366920938463463_374607431768211455 }));
         return sets;
     }
 
-    function testSqrt() external parameterizedTest(sqrtSets()) NotZero Positive LessThanOrEqualToMaxPermitted {
-        SD59x18 actual = sqrt(s.x);
+    function testSqrt() external parameterizedTest(sqrtSets()) NotZero LessThanOrEqualToMaxPermitted {
+        UD60x18 actual = sqrt(s.x);
         assertEq(actual, s.expected);
     }
 }

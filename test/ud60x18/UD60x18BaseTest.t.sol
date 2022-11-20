@@ -10,6 +10,14 @@ import { MAX_UD60x18, UD60x18, ZERO } from "src/UD60x18.sol";
 /// @notice Common contract members needed across UD60x18 tests.
 abstract contract UD60x18__BaseTest is PRBMath__BaseTest {
     /*//////////////////////////////////////////////////////////////////////////
+                                      CONSTANTS
+    //////////////////////////////////////////////////////////////////////////*/
+
+    /// @dev This is needed to be passed as the "expected" argument. The "set" function cannot be overridden
+    /// to have two implementations that each has two "int256" arguments.
+    UD60x18 internal constant NIL = ZERO;
+
+    /*//////////////////////////////////////////////////////////////////////////
                                        STRUCTS
     //////////////////////////////////////////////////////////////////////////*/
 
@@ -80,8 +88,28 @@ abstract contract UD60x18__BaseTest is PRBMath__BaseTest {
         return Set({ x: ud(x), y: ud(y), expected: ud(expected) });
     }
 
+    function set(uint256 x, uint256 y, UD60x18 expected) internal pure returns (Set memory) {
+        return Set({ x: ud(x), y: ud(y), expected: expected });
+    }
+
+    function set(uint256 x, UD60x18 y, uint256 expected) internal pure returns (Set memory) {
+        return Set({ x: ud(x), y: y, expected: ud(expected) });
+    }
+
+    function set(uint256 x, UD60x18 y, UD60x18 expected) internal pure returns (Set memory) {
+        return Set({ x: ud(x), y: y, expected: expected });
+    }
+
+    function set(UD60x18 x, uint256 y, uint256 expected) internal pure returns (Set memory) {
+        return Set({ x: x, y: ud(y), expected: ud(expected) });
+    }
+
     function set(UD60x18 x, UD60x18 y, uint256 expected) internal pure returns (Set memory) {
         return Set({ x: x, y: y, expected: ud(expected) });
+    }
+
+    function set(UD60x18 x, uint256 y, UD60x18 expected) internal pure returns (Set memory) {
+        return Set({ x: x, y: ud(y), expected: expected });
     }
 
     function set(UD60x18 x, UD60x18 y, UD60x18 expected) internal pure returns (Set memory) {

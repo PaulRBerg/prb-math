@@ -203,7 +203,7 @@ function ceil(SD59x18 x) pure returns (SD59x18 result) {
     }
 }
 
-/// @notice Divides two SD59x18 numbers, returning a new SD59x18 number.
+/// @notice Divides two SD59x18 numbers, returning a new SD59x18 number. Rounds towards zero.
 ///
 /// @dev This is a variant of `mulDiv` that works with signed numbers. Works by computing the signs and the absolute values
 /// separately.
