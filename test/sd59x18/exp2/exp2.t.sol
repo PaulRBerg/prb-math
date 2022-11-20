@@ -118,7 +118,7 @@ contract SD59x18__Exp2Test is SD59x18__BaseTest {
         sets.push(
             set({ x: 152.9065e18, expected: 10701459987152828635116598811554803403437267307_663014047009710338 })
         );
-        sets.push(set({ x: MAX_PERMITTED, expected: 6277101735386680759401282518710514696272_033118492751795945e18 }));
+        sets.push(set({ x: MAX_PERMITTED, expected: 6277101735386680759401282518710514696272033118492751795945e18 }));
         return sets;
     }
 

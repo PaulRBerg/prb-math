@@ -19,7 +19,7 @@ contract SD59x18__ExpTest is SD59x18__BaseTest {
     SD59x18 internal constant MAX_PERMITTED = SD59x18.wrap(133_084258667509499440);
     SD59x18 internal constant MIN_PERMITTED = SD59x18.wrap(-41_446531673892822322);
 
-    function testCannotExp__Zero() external {
+    function testExp__Zero() external {
         SD59x18 x = ZERO;
         SD59x18 actual = exp(x);
         SD59x18 expected = sd(1e18);
@@ -43,7 +43,7 @@ contract SD59x18__ExpTest is SD59x18__BaseTest {
         assertEq(actual, s.expected);
     }
 
-    function greaterThanOrEqualToMinPermittedSets() internal returns (Set[] memory) {
+    function negativeAndGreaterThanOrEqualToMinPermittedSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_PERMITTED, expected: 0.000000000000000001e18 }));
         sets.push(set({ x: -33.333333e18, expected: 0.000000000000003338e18 }));
@@ -63,7 +63,7 @@ contract SD59x18__ExpTest is SD59x18__BaseTest {
 
     function testExp__Negative__GreaterThanOrEqualToMinPermitted()
         external
-        parameterizedTest(greaterThanOrEqualToMinPermittedSets())
+        parameterizedTest(negativeAndGreaterThanOrEqualToMinPermittedSets())
         NotZero
     {
         SD59x18 actual = exp(s.x);
@@ -87,7 +87,7 @@ contract SD59x18__ExpTest is SD59x18__BaseTest {
         exp(s.x);
     }
 
-    function lessThanOrEqualToMaxPermittedSets() internal returns (Set[] memory) {
+    function positiveAndLessThanOrEqualToMaxPermittedSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.000000000000000001e18, expected: 1e18 }));
         sets.push(set({ x: 0.000000000000001e18, expected: 1000000000000001e3 }));
@@ -106,13 +106,13 @@ contract SD59x18__ExpTest is SD59x18__BaseTest {
         sets.push(
             set({ x: 88.722839111672999627e18, expected: 340282366920938463222979506443879150094_819893272894857679 })
         );
-        sets.push(set({ x: MAX_PERMITTED, expected: 6277101735386680754977611748738314679353_920434623901771623e18 }));
+        sets.push(set({ x: MAX_PERMITTED, expected: 6277101735386680754977611748738314679353920434623901771623e18 }));
         return sets;
     }
 
     function testExp__Positive__LessThanOrEqualToMaxPermitted()
         external
-        parameterizedTest(lessThanOrEqualToMaxPermittedSets())
+        parameterizedTest(positiveAndLessThanOrEqualToMaxPermittedSets())
         NotZero
     {
         SD59x18 actual = exp(s.x);
