@@ -11,9 +11,11 @@ on:
   pull_request:
     branches:
       - "main"
+      - "staging"
   push:
     branches:
       - "main"
+      - "staging"
 
 jobs:
   run-contracts-integration:
