@@ -724,7 +724,7 @@ function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
     }
 }
 
-/// @notice Calculates the square root of x, rounding down.
+/// @notice Calculates the square root of x, rounding down. Only the positive root is returned.
 /// @dev Uses the Babylonian method https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Babylonian_method.
 ///
 /// Requirements:
