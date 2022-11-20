@@ -34,7 +34,7 @@ contract SD59x18__LnTest is SD59x18__BaseTest {
         _;
     }
 
-    function lnTest() internal returns (Set[] memory) {
+    function lnSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.1e18, expected: -2_302585092994045674 }));
         sets.push(set({ x: 0.2e18, expected: -1_609437912434100365 }));
@@ -58,7 +58,7 @@ contract SD59x18__LnTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testLn() external parameterizedTest(lnTest()) NotZero Positive {
+    function testLn() external parameterizedTest(lnSets()) NotZero Positive {
         SD59x18 actual = ln(s.x);
         assertEq(actual, s.expected);
     }
