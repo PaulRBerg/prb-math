@@ -11,25 +11,24 @@ import {
     PRBMathSD59x18__GmOverflow,
     PRBMathSD59x18__GmNegativeProduct,
     SD59x18,
-    ZERO,
     gm
 } from "~/SD59x18.sol";
 import { SD59x18__BaseTest } from "../SD59x18BaseTest.t.sol";
 
 contract SD59x18__GmTest is SD59x18__BaseTest {
-    // Biggest number whose square fits within int256
+    // Greatest number whose square fits within int256
     SD59x18 internal constant SQRT_MAX_SD59x18_DIV_BY_SCALE = SD59x18.wrap(240615969168004511545_033772477625056927);
     // Smallest number whose square fits within int256
     SD59x18 internal constant SQRT_MIN_SD59x18_DIV_BY_SCALE = SD59x18.wrap(-240615969168004511545_033772477625056927);
 
-    function zeroSets() internal returns (Set[] memory) {
+    function oneOperandZeroSets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: ZERO, y: PI, expected: ZERO }));
-        sets.push(set({ x: PI, y: ZERO, expected: ZERO }));
+        sets.push(set({ x: 0, y: PI, expected: 0 }));
+        sets.push(set({ x: PI, y: 0, expected: 0 }));
         return sets;
     }
 
-    function testGm__OneOperandZero() external parameterizedTest(zeroSets()) {
+    function testGm__OneOperandZero() external parameterizedTest(oneOperandZeroSets()) {
         SD59x18 actual = gm(s.x, s.y);
         assertEq(actual, s.expected);
     }
@@ -38,16 +37,16 @@ contract SD59x18__GmTest is SD59x18__BaseTest {
         _;
     }
 
-    function negativeSets() internal returns (Set[] memory) {
+    function productNegativeSets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: -7.1e18, y: 20.05e18, expected: ZERO }));
-        sets.push(set({ x: -1e18, y: PI, expected: ZERO }));
-        sets.push(set({ x: PI, y: -1e18, expected: ZERO }));
-        sets.push(set({ x: 7.1e18, y: -20.05e18, expected: ZERO }));
+        sets.push(set({ x: -7.1e18, y: 20.05e18, expected: NIL }));
+        sets.push(set({ x: -1e18, y: PI, expected: NIL }));
+        sets.push(set({ x: PI, y: -1e18, expected: NIL }));
+        sets.push(set({ x: 7.1e18, y: -20.05e18, expected: NIL }));
         return sets;
     }
 
-    function testGm__ProductNegative() external parameterizedTest(negativeSets()) NotZeroOperands {
+    function testCannotGm__ProductNegative() external parameterizedTest(productNegativeSets()) NotZeroOperands {
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__GmNegativeProduct.selector, s.x, s.y));
         gm(s.x, s.y);
     }
@@ -56,41 +55,48 @@ contract SD59x18__GmTest is SD59x18__BaseTest {
         _;
     }
 
-    function overflowSets() internal returns (Set[] memory) {
+    function productOverflowSets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: MIN_SD59x18, y: 2, expected: ZERO }));
-        sets.push(set({ x: MIN_WHOLE_SD59x18, y: 3, expected: ZERO }));
+        sets.push(set({ x: MIN_SD59x18, y: 0.000000000000000002e18, expected: NIL }));
+        sets.push(set({ x: MIN_WHOLE_SD59x18, y: 0.000000000000000003e18, expected: NIL }));
         sets.push(
-            set({
-                x: SQRT_MIN_SD59x18_DIV_BY_SCALE,
-                y: SQRT_MIN_SD59x18_DIV_BY_SCALE.uncheckedSub(sd(1)),
-                expected: ZERO
-            })
+            set({ x: SQRT_MIN_SD59x18_DIV_BY_SCALE, y: SQRT_MIN_SD59x18_DIV_BY_SCALE.sub(sd(1)), expected: NIL })
         );
         sets.push(
             set({
-                x: SQRT_MAX_SD59x18_DIV_BY_SCALE.uncheckedAdd(sd(1)),
-                y: SQRT_MAX_SD59x18_DIV_BY_SCALE.uncheckedAdd(sd(1)),
-                expected: ZERO
+                x: SQRT_MAX_SD59x18_DIV_BY_SCALE.add(sd(1)),
+                y: SQRT_MAX_SD59x18_DIV_BY_SCALE.add(sd(1)),
+                expected: NIL
             })
         );
-        sets.push(set({ x: MAX_WHOLE_SD59x18, y: 3, expected: ZERO }));
-        sets.push(set({ x: MAX_SD59x18, y: 2, expected: ZERO }));
+        sets.push(set({ x: MAX_WHOLE_SD59x18, y: 0.000000000000000003e18, expected: NIL }));
+        sets.push(set({ x: MAX_SD59x18, y: 0.000000000000000002e18, expected: NIL }));
         return sets;
     }
 
-    function testGm__ProductOverflow() external parameterizedTest(overflowSets()) NotZeroOperands PositiveProduct {
+    function testCannotGm__ProductOverflow()
+        external
+        parameterizedTest(productOverflowSets())
+        NotZeroOperands
+        PositiveProduct
+    {
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__GmOverflow.selector, s.x, s.y));
         gm(s.x, s.y);
     }
 
-    modifier NotOverflowProduct() {
+    modifier ProductNotOverflow() {
         _;
     }
 
     function gmSets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: MIN_WHOLE_SD59x18, y: -1, expected: 240615969168004511545_033772477625056927 }));
+        sets.push(
+            set({
+                x: MIN_WHOLE_SD59x18,
+                y: -0.000000000000000001e18,
+                expected: 240615969168004511545_033772477625056927
+            })
+        );
         sets.push(
             set({
                 x: SQRT_MIN_SD59x18_DIV_BY_SCALE,
@@ -119,12 +125,20 @@ contract SD59x18__GmTest is SD59x18__BaseTest {
                 expected: 240615969168004511545_033772477625056927
             })
         );
-        sets.push(set({ x: MAX_WHOLE_SD59x18, y: 1, expected: 240615969168004511545_033772477625056927 }));
-        sets.push(set({ x: MAX_SD59x18, y: 1, expected: 240615969168004511545_033772477625056927 }));
+        sets.push(
+            set({
+                x: MAX_WHOLE_SD59x18,
+                y: 0.000000000000000001e18,
+                expected: 240615969168004511545_033772477625056927
+            })
+        );
+        sets.push(
+            set({ x: MAX_SD59x18, y: 0.000000000000000001e18, expected: 240615969168004511545_033772477625056927 })
+        );
         return sets;
     }
 
-    function testGm() external parameterizedTest(gmSets()) NotZeroOperands PositiveProduct NotOverflowProduct {
+    function testGm() external parameterizedTest(gmSets()) NotZeroOperands PositiveProduct ProductNotOverflow {
         SD59x18 actual = gm(s.x, s.y);
         assertEq(actual, s.expected);
     }

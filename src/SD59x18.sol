@@ -19,7 +19,7 @@ error PRBMathSD59x18__CeilOverflow(SD59x18 x);
 error PRBMathSD59x18__DivInputTooSmall();
 
 /// @notice Emitted when dividing two numbers and one of the intermediary unsigned results overflows SD59x18.
-error PRBMathSD59x18__DivOverflow(uint256 rAbs);
+error PRBMathSD59x18__DivOverflow(SD59x18 x, SD59x18 y);
 
 /// @notice Emitted when taking the natural exponent of a base greater than 133.084258667509499441.
 error PRBMathSD59x18__ExpInputTooBig(SD59x18 x);
@@ -43,10 +43,10 @@ error PRBMathSD59x18__LogInputTooSmall(SD59x18 x);
 error PRBMathSD59x18__MulInputTooSmall();
 
 /// @notice Emitted when multiplying two numbers and the intermediary absolute result overflows SD59x18.
-error PRBMathSD59x18__MulOverflow(uint256 rAbs);
+error PRBMathSD59x18__MulOverflow(SD59x18 x, SD59x18 y);
 
 /// @notice Emitted when raising a number to a power and hte intermediary absolute result overflows SD59x18.
-error PRBMathSD59x18__PowuOverflow(uint256 rAbs);
+error PRBMathSD59x18__PowuOverflow(SD59x18 x, uint256 y);
 
 /// @notice Emitted when taking the square root of a negative number.
 error PRBMathSD59x18__SqrtNegativeInput(SD59x18 x);
@@ -231,7 +231,7 @@ function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     // Compute the absolute value (x*SCALE)÷y. The resulting value must fit within int256.
     uint256 rAbs = mulDiv(ax, uint256(SCALE_INT), ay);
     if (rAbs > uint256(MAX_SD59x18_INT)) {
-        revert PRBMathSD59x18__DivOverflow(rAbs);
+        revert PRBMathSD59x18__DivOverflow(x, y);
     }
 
     // Check if x and y have the same sign via "(x ^ y) > -1".
@@ -611,7 +611,7 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
 /// - The result must fit within `MAX_SD59x18`.
 ///
 /// Caveats:
-/// - The body is purposely left uncommented; to understand how this works, see the NatSpec comments in `Helpers/mulDivSigned`.
+/// - To understand how this works in detail, see the NatSpec comments in `Helpers/mulDivSigned`.
 ///
 /// @param x The multiplicand as an SD59x18 number.
 /// @param y The multiplier as an SD59x18 number.
@@ -635,7 +635,7 @@ function mul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 
     uint256 rAbs = mulDiv18(ax, ay);
     if (rAbs > uint256(MAX_SD59x18_INT)) {
-        revert PRBMathSD59x18__MulOverflow(rAbs);
+        revert PRBMathSD59x18__MulOverflow(x, y);
     }
 
     // Check if x and y have the same sign via "(x ^ y) > -1".
@@ -710,7 +710,7 @@ function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
 
     // The result must fit within `MAX_SD59x18`.
     if (rAbs > uint256(MAX_SD59x18_INT)) {
-        revert PRBMathSD59x18__PowuOverflow(rAbs);
+        revert PRBMathSD59x18__PowuOverflow(x, y);
     }
 
     // Is the base negative and the exponent an odd number?

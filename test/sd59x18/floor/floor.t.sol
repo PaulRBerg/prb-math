@@ -27,26 +27,26 @@ contract SD59x18__FloorTest is SD59x18__BaseTest {
         _;
     }
 
-    function lessThanSets() internal returns (Set[] memory) {
+    function negativeAndLessThanMinPermittedSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_SD59x18 }));
-        sets.push(set({ x: MIN_WHOLE_SD59x18.uncheckedSub(sd(1)) }));
+        sets.push(set({ x: MIN_WHOLE_SD59x18.sub(sd(1)) }));
         return sets;
     }
 
-    function testFloor__LessThanMinWholeSD59x18() external parameterizedTest(lessThanSets()) NotZero {
+    function testCannotFloor__Negative__LessThanMinPermitted()
+        external
+        parameterizedTest(negativeAndLessThanMinPermittedSets())
+        NotZero
+    {
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__FloorUnderflow.selector, s.x));
         floor(s.x);
     }
 
-    modifier GreaterThanMinWholeSD59x18() {
-        _;
-    }
-
-    function greaterThanSets() internal returns (Set[] memory) {
+    function negativeAndGreaterThanOrEqualToMinPermittedSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_WHOLE_SD59x18, expected: MIN_WHOLE_SD59x18 }));
-        sets.push(set({ x: -1e36, expected: -1e36 }));
+        sets.push(set({ x: -1e24, expected: -1e24 }));
         sets.push(set({ x: -4.2e18, expected: -5e18 }));
         sets.push(set({ x: -2e18, expected: -2e18 }));
         sets.push(set({ x: -1.125e18, expected: -2e18 }));
@@ -56,27 +56,31 @@ contract SD59x18__FloorTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testFloor__Negative() external parameterizedTest(greaterThanSets()) NotZero GreaterThanMinWholeSD59x18 {
+    function testFloor__Negative__GreaterThanOrEqualToMinPermitted()
+        external
+        parameterizedTest(negativeAndGreaterThanOrEqualToMinPermittedSets())
+        NotZero
+    {
         SD59x18 actual = floor(s.x);
         assertEq(actual, s.expected);
     }
 
     function positiveSets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: 0.1e18, expected: ZERO }));
-        sets.push(set({ x: 0.5e18, expected: ZERO }));
+        sets.push(set({ x: 0.1e18, expected: 0 }));
+        sets.push(set({ x: 0.5e18, expected: 0 }));
         sets.push(set({ x: 1e18, expected: 1e18 }));
         sets.push(set({ x: 1.125e18, expected: 1e18 }));
         sets.push(set({ x: 2e18, expected: 2e18 }));
         sets.push(set({ x: PI, expected: 3e18 }));
         sets.push(set({ x: 4.2e18, expected: 4e18 }));
-        sets.push(set({ x: 1e36, expected: 1e36 }));
+        sets.push(set({ x: 1e24, expected: 1e24 }));
         sets.push(set({ x: MAX_WHOLE_SD59x18, expected: MAX_WHOLE_SD59x18 }));
         sets.push(set({ x: MAX_SD59x18, expected: MAX_WHOLE_SD59x18 }));
         return sets;
     }
 
-    function testFloor() external parameterizedTest(positiveSets()) NotZero GreaterThanMinWholeSD59x18 {
+    function testFloor__Positive() external parameterizedTest(positiveSets()) NotZero {
         SD59x18 actual = floor(s.x);
         assertEq(actual, s.expected);
     }

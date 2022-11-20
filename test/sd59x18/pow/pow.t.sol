@@ -15,9 +15,7 @@ import {
 import { SD59x18__BaseTest } from "../SD59x18BaseTest.t.sol";
 
 contract SD59x18__PowTest is SD59x18__BaseTest {
-    // 2^192
-    SD59x18 internal constant MAX_PERMITTED =
-        SD59x18.wrap(6277101735386680763835789423207666416102_355444464034512896e18);
+    SD59x18 internal constant MAX_PERMITTED = SD59x18.wrap(2**192 * 10**18 - 1);
 
     function testPow__BaseAndExponentZero() external {
         SD59x18 x = ZERO;
@@ -27,7 +25,7 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         assertEq(actual, expected);
     }
 
-    function baseZeroSets() internal returns (Set[] memory) {
+    function baseZeroExponentNotZeroSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0, y: 1e18, expected: 0 }));
         sets.push(set({ x: 0, y: E, expected: 0 }));
@@ -35,7 +33,7 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testPow__BaseZeroExponentNotZero() external parameterizedTest(baseZeroSets()) {
+    function testPow__BaseZeroExponentNotZero() external parameterizedTest(baseZeroExponentNotZeroSets()) {
         SD59x18 actual = pow(s.x, s.y);
         assertEq(actual, s.expected);
     }
@@ -44,15 +42,15 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         _;
     }
 
-    function negativeSets() internal returns (Set[] memory) {
+    function baseNegativeSets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: NEGATIVE_PI, y: 1e18, expected: 0 }));
-        sets.push(set({ x: NEGATIVE_E, y: E, expected: 0 }));
-        sets.push(set({ x: -1e18, y: PI, expected: 0 }));
+        sets.push(set({ x: NEGATIVE_PI, y: 1e18, expected: NIL }));
+        sets.push(set({ x: NEGATIVE_E, y: E, expected: NIL }));
+        sets.push(set({ x: -1e18, y: PI, expected: NIL }));
         return sets;
     }
 
-    function testPow__BaseNegative() external parameterizedTest(negativeSets()) BaseNotZero {
+    function testCannotPow__BaseNegative() external parameterizedTest(baseNegativeSets()) BaseNotZero {
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__LogInputTooSmall.selector, s.x));
         pow(s.x, s.y);
     }
@@ -63,9 +61,9 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
 
     function exponentZeroSets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: 1e18, expected: 1e18 }));
-        sets.push(set({ x: E, expected: 1e18 }));
-        sets.push(set({ x: PI, expected: 1e18 }));
+        sets.push(set({ x: 1e18, y: 0, expected: 1e18 }));
+        sets.push(set({ x: E, y: 0, expected: 1e18 }));
+        sets.push(set({ x: PI, y: 0, expected: 1e18 }));
         return sets;
     }
 
@@ -78,16 +76,16 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         _;
     }
 
-    function greaterThanOrEqualSets() internal returns (Set[] memory) {
+    function greaterThanMaxPermittedSets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: MAX_PERMITTED, y: 1e18, expected: 0 }));
-        sets.push(set({ x: MAX_SD59x18, y: 1e18, expected: 0 }));
+        sets.push(set({ x: MAX_PERMITTED.add(sd(1)), y: 1e18, expected: NIL }));
+        sets.push(set({ x: MAX_SD59x18, y: 1e18, expected: NIL }));
         return sets;
     }
 
-    function testPow__ExponentGreaterThanOrEqualToMaxPermitted()
+    function testCannotPow__ExponentGreaterThanOrEqualToMaxPermitted()
         external
-        parameterizedTest(greaterThanOrEqualSets())
+        parameterizedTest(greaterThanMaxPermittedSets())
         BaseNotZero
         BasePositive
         ExponentNotZero
@@ -96,37 +94,54 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         pow(s.x, s.y);
     }
 
-    modifier ExponentLessThanMaxPermitted() {
+    modifier ExponentLessThanOrEqualToMaxPermitted() {
         _;
     }
 
-    function powSets() internal returns (Set[] memory) {
+    function negativeExponentSets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: 1, y: -1, expected: 1e18 + 41 }));
-        sets.push(set({ x: 1e6, y: -4.4e9, expected: 1_000000121576500300 }));
+        sets.push(set({ x: 0.000000000000000001e18, y: -0.000000000000000001e18, expected: 1e18 + 41 }));
+        sets.push(set({ x: 0.000000000001e18, y: -4.4e9, expected: 1_000000121576500300 }));
         sets.push(set({ x: 0.1e18, y: -0.8e18, expected: 6_309573444801932444 }));
         sets.push(set({ x: 0.24e18, y: -11e18, expected: 6571678_991286039528731186 }));
         sets.push(set({ x: 0.5e18, y: -0.7373e18, expected: 1_667053032211341971 }));
         sets.push(set({ x: 0.799291e18, y: -69e18, expected: 5168450_048540730175583501 }));
         sets.push(set({ x: 1e18, y: -1e18, expected: 1e18 }));
         sets.push(set({ x: 1e18, y: NEGATIVE_PI, expected: 1e18 }));
-        sets.push(set({ x: 2e18, y: -1.5e18, expected: 353553390593273762 }));
-        sets.push(set({ x: E, y: NEGATIVE_E, expected: 65988035845312538 }));
-        sets.push(set({ x: E, y: -1.66976e18, expected: 188292250356449310 }));
-        sets.push(set({ x: PI, y: -1.5e18, expected: 179587122125166564 }));
+        sets.push(set({ x: 2e18, y: -1.5e18, expected: 0.353553390593273762e18 }));
+        sets.push(set({ x: E, y: NEGATIVE_E, expected: 0.065988035845312538e18 }));
+        sets.push(set({ x: E, y: -1.66976e18, expected: 0.18829225035644931e18 }));
+        sets.push(set({ x: PI, y: -1.5e18, expected: 0.179587122125166564e18 }));
         sets.push(set({ x: 11e18, y: -28.5e18, expected: 0 }));
         sets.push(set({ x: 32.15e18, y: -23.99e18, expected: 0 }));
-        sets.push(set({ x: 406e18, y: -0.25e18, expected: 222776046060941016 }));
-        sets.push(set({ x: 1729e18, y: -0.98e18, expected: 671368416373960 }));
-        sets.push(set({ x: 33441e18, y: -2.1891e18, expected: 124709713 }));
-        sets.push(set({ x: 340282366920938463463374607431768211455e18, y: -1e18, expected: 0 }));
-        sets.push(set({ x: MAX_PERMITTED.uncheckedSub(sd(1)), y: -1e18, expected: 0 }));
-        sets.push(set({ x: 1, y: 1, expected: 999999999999999959 }));
-        sets.push(set({ x: 1e6, y: 4.4e9, expected: 999999878423514480 }));
-        sets.push(set({ x: 0.1e18, y: 0.8e18, expected: 158489319246111349 }));
-        sets.push(set({ x: 0.24e18, y: 11e18, expected: 152168114316 }));
-        sets.push(set({ x: 0.5e18, y: 0.7373e18, expected: 599860940640563980 }));
-        sets.push(set({ x: 0.799291e18, y: 69e18, expected: 193481602919 }));
+        sets.push(set({ x: 406e18, y: -0.25e18, expected: 0.222776046060941016e18 }));
+        sets.push(set({ x: 1729e18, y: -0.98e18, expected: 0.00067136841637396e18 }));
+        sets.push(set({ x: 33441e18, y: -2.1891e18, expected: 0.000000000124709713e18 }));
+        sets.push(set({ x: 2**128 * 10**18 - 1, y: -1e18, expected: 0 }));
+        sets.push(set({ x: MAX_PERMITTED, y: -1e18, expected: 0 }));
+        return sets;
+    }
+
+    function testPow__NegativeExponent()
+        external
+        parameterizedTest(negativeExponentSets())
+        BaseNotZero
+        BasePositive
+        ExponentNotZero
+        ExponentLessThanOrEqualToMaxPermitted
+    {
+        SD59x18 actual = pow(s.x, s.y);
+        assertEq(actual, s.expected);
+    }
+
+    function positiveExponentSets() internal returns (Set[] memory) {
+        delete sets;
+        sets.push(set({ x: 0.000000000000000001e18, y: 0.000000000000000001e18, expected: 0.999999999999999959e18 }));
+        sets.push(set({ x: 1e6, y: 4.4e9, expected: 0.99999987842351448e18 }));
+        sets.push(set({ x: 0.1e18, y: 0.8e18, expected: 0.158489319246111349e18 }));
+        sets.push(set({ x: 0.24e18, y: 11e18, expected: 0.000000152168114316e18 }));
+        sets.push(set({ x: 0.5e18, y: 0.7373e18, expected: 0.59986094064056398e18 }));
+        sets.push(set({ x: 0.799291e18, y: 69e18, expected: 0.000000193481602919e18 }));
         sets.push(set({ x: 1e18, y: 1e18, expected: 1e18 }));
         sets.push(set({ x: 1e18, y: PI, expected: 1e18 }));
         sets.push(set({ x: 2e18, y: 1.5e18, expected: 2_828427124746190097 }));
@@ -149,7 +164,7 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         );
         sets.push(
             set({
-                x: MAX_PERMITTED.uncheckedSub(sd(1)),
+                x: MAX_PERMITTED.sub(sd(1)),
                 y: 1e18,
                 expected: 6277101735386680659358266643954607672760_949507286104301595e18
             })
@@ -157,13 +172,13 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testPow()
+    function testPow__PositiveExponent()
         external
-        parameterizedTest(powSets())
+        parameterizedTest(positiveExponentSets())
         BaseNotZero
         BasePositive
         ExponentNotZero
-        ExponentLessThanMaxPermitted
+        ExponentLessThanOrEqualToMaxPermitted
     {
         SD59x18 actual = pow(s.x, s.y);
         assertEq(actual, s.expected);

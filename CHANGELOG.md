@@ -2,7 +2,8 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
+[Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 [2.5.0]: https://github.com/paulrberg/prb-math/compare/v2.4.3...v2.5.0
 [2.4.3]: https://github.com/paulrberg/prb-math/compare/v2.4.2...v2.4.3
@@ -68,8 +69,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Fixed
 
-- Bug in `powu` function in the `PRBMathSD59x18` contract, which caused the result to be positive even if the base was negative.
-- Minor bug in `avg` function in the `PRBMathSD59x18` contract, which rounded down the result instead of up when the intermediary sum was negative.
+- Bug in `powu` function in the `PRBMathSD59x18` contract, which caused the result to be positive even if the base was
+  negative.
+- Minor bug in `avg` function in the `PRBMathSD59x18` contract, which rounded down the result instead of up when the
+  intermediary sum was negative.
 
 ## [2.3.0] - 2021-09-18
 
@@ -132,7 +135,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Code snippet for the UD60x18Typed consumer in the README.
 - English typos in NatSpec comments.
-- Minor bug in `log10` in `PRBMathUD60x18Typed.sol` which made the result inaccurate when the input was a multiple of 10.
+- Minor bug in `log10` in `PRBMathUD60x18Typed.sol` which made the result inaccurate when the input was a multiple
+  of 10.
 
 ## [2.0.0] - 2021-06-14
 
@@ -140,7 +144,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Addition and subtraction functions in the typed libraries.
 - Gas estimates for `fromInt`, `fromUint`, `pow`, `toInt` and `toUInt`.
-- Structs `PRBMath.SD59x18` and `PRBMath.UD60x18`, simple wrappers to indicate that the variables are fixed-point numbers.
+- Structs `PRBMath.SD59x18` and `PRBMath.UD60x18`, simple wrappers to indicate that the variables are fixed-point
+  numbers.
 - Typed versions of the library: `PRBMathSD59x18Typed.sol` and `PRBMathUD60x18Typed.sol`.
 
 ### Changed

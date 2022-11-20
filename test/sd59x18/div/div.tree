@@ -16,5 +16,5 @@ div.t.sol
            └── when the result does not overflow sd59x18
               ├── when the numerator and the denominator have the same sign
               │  └── it should return the correct value
-              └── when the numerator and the denominator do not have the same sign
+              └── when the numerator and the denominator have different signs
                  └── it should return the correct value

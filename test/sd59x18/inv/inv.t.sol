@@ -7,7 +7,7 @@ import { MAX_WHOLE_SD59x18, MAX_SD59x18, MIN_SD59x18, MIN_WHOLE_SD59x18, PI, SD5
 import { SD59x18__BaseTest } from "../SD59x18BaseTest.t.sol";
 
 contract SD59x18__InvTest is SD59x18__BaseTest {
-    function testInv__Zero() external {
+    function testCannotInv__Zero() external {
         SD59x18 x = ZERO;
         vm.expectRevert(stdError.divisionError);
         inv(x);
@@ -45,7 +45,7 @@ contract SD59x18__InvTest is SD59x18__BaseTest {
 
     function positiveSets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: 1, expected: 1e36 }));
+        sets.push(set({ x: 0.000000000000000001e18, expected: 1e36 }));
         sets.push(set({ x: 0.00001e18, expected: 100_000e18 }));
         sets.push(set({ x: 0.05e18, expected: 20e18 }));
         sets.push(set({ x: 0.1e18, expected: 10e18 }));

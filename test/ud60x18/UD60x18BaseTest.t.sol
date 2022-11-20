@@ -48,7 +48,7 @@ abstract contract UD60x18__BaseTest is PRBMath__BaseTest {
         console2.log(p0, UD60x18.unwrap(p1));
     }
 
-    function logUint(UD60x18 p0) internal view {
+    function logUd(UD60x18 p0) internal view {
         console2.logUint(UD60x18.unwrap(p0));
     }
 
@@ -76,27 +76,15 @@ abstract contract UD60x18__BaseTest is PRBMath__BaseTest {
         return Set({ x: x, y: ZERO, expected: expected });
     }
 
-    function set(
-        uint256 x,
-        uint256 y,
-        uint256 expected
-    ) internal pure returns (Set memory) {
+    function set(uint256 x, uint256 y, uint256 expected) internal pure returns (Set memory) {
         return Set({ x: ud(x), y: ud(y), expected: ud(expected) });
     }
 
-    function set(
-        UD60x18 x,
-        UD60x18 y,
-        uint256 expected
-    ) internal pure returns (Set memory) {
+    function set(UD60x18 x, UD60x18 y, uint256 expected) internal pure returns (Set memory) {
         return Set({ x: x, y: y, expected: ud(expected) });
     }
 
-    function set(
-        UD60x18 x,
-        UD60x18 y,
-        UD60x18 expected
-    ) internal pure returns (Set memory) {
+    function set(UD60x18 x, UD60x18 y, UD60x18 expected) internal pure returns (Set memory) {
         return Set({ x: x, y: y, expected: expected });
     }
 

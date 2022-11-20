@@ -16,10 +16,10 @@ import {
 import { SD59x18__BaseTest } from "../SD59x18BaseTest.t.sol";
 
 contract SD59x18__ExpTest is SD59x18__BaseTest {
+    SD59x18 internal constant MAX_PERMITTED = SD59x18.wrap(133_084258667509499440);
     SD59x18 internal constant MIN_PERMITTED = SD59x18.wrap(-41_446531673892822322);
-    SD59x18 internal constant MAX_PERMITTED = SD59x18.wrap(133_084258667509499441);
 
-    function testExp__Zero() external {
+    function testCannotExp__Zero() external {
         SD59x18 x = ZERO;
         SD59x18 actual = exp(x);
         SD59x18 expected = sd(1e18);
@@ -30,7 +30,7 @@ contract SD59x18__ExpTest is SD59x18__BaseTest {
         _;
     }
 
-    function lessThanMinSets() internal returns (Set[] memory) {
+    function lessThanMinPermittedSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_SD59x18 }));
         sets.push(set({ x: MIN_WHOLE_SD59x18 }));
@@ -38,69 +38,59 @@ contract SD59x18__ExpTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testExp__LessThanMinPermitted() external parameterizedTest(lessThanMinSets()) NotZero {
+    function testExp__Negative__LessThanMinPermitted() external parameterizedTest(lessThanMinPermittedSets()) NotZero {
         SD59x18 actual = exp(s.x);
         assertEq(actual, s.expected);
     }
 
-    modifier GreaterThanOrEqualToMinPermitted() {
-        _;
-    }
-
-    function greaterThanOrEqualToMinSets() internal returns (Set[] memory) {
+    function greaterThanOrEqualToMinPermittedSets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: MIN_PERMITTED, expected: 1 }));
-        sets.push(set({ x: -33.333333e18, expected: 3338 }));
-        sets.push(set({ x: -20.82e18, expected: 907797300 }));
-        sets.push(set({ x: -16e18, expected: 112535174719 }));
-        sets.push(set({ x: -11.89215e18, expected: 6843919254514 }));
-        sets.push(set({ x: -4e18, expected: 18315638888734180 }));
-        sets.push(set({ x: NEGATIVE_PI, expected: 43213918263772249 }));
-        sets.push(set({ x: -3e18, expected: 49787068367863943 }));
-        sets.push(set({ x: NEGATIVE_E, expected: 65988035845312537 }));
-        sets.push(set({ x: -2e18, expected: 135335283236612692 }));
-        sets.push(set({ x: -1e18, expected: 367879441171442322 }));
-        sets.push(set({ x: -1e3, expected: 999999999999999001 }));
+        sets.push(set({ x: MIN_PERMITTED, expected: 0.000000000000000001e18 }));
+        sets.push(set({ x: -33.333333e18, expected: 0.000000000000003338e18 }));
+        sets.push(set({ x: -20.82e18, expected: 0.0000000009077973e18 }));
+        sets.push(set({ x: -16e18, expected: 0.000000112535174719e18 }));
+        sets.push(set({ x: -11.89215e18, expected: 0.000006843919254514e18 }));
+        sets.push(set({ x: -4e18, expected: 0.01831563888873418e18 }));
+        sets.push(set({ x: NEGATIVE_PI, expected: 0.043213918263772249e18 }));
+        sets.push(set({ x: -3e18, expected: 0.049787068367863943e18 }));
+        sets.push(set({ x: NEGATIVE_E, expected: 0.065988035845312537e18 }));
+        sets.push(set({ x: -2e18, expected: 0.135335283236612692e18 }));
+        sets.push(set({ x: -1e18, expected: 0.367879441171442322e18 }));
+        sets.push(set({ x: -1e3, expected: 0.999999999999999001e18 }));
         sets.push(set({ x: -1, expected: 1e18 }));
         return sets;
     }
 
-    function testExp__Negative()
+    function testExp__Negative__GreaterThanOrEqualToMinPermitted()
         external
-        parameterizedTest(greaterThanOrEqualToMinSets())
+        parameterizedTest(greaterThanOrEqualToMinPermittedSets())
         NotZero
-        GreaterThanOrEqualToMinPermitted
     {
         SD59x18 actual = exp(s.x);
         assertEq(actual, s.expected);
     }
 
-    function greaterThanOrEqualSets() internal returns (Set[] memory) {
+    function greaterThanMaxPermittedSets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: MAX_PERMITTED, expected: ZERO }));
-        sets.push(set({ x: MAX_WHOLE_SD59x18, expected: ZERO }));
-        sets.push(set({ x: MAX_SD59x18, expected: ZERO }));
+        sets.push(set({ x: MAX_PERMITTED.add(sd(1)) }));
+        sets.push(set({ x: MAX_WHOLE_SD59x18 }));
+        sets.push(set({ x: MAX_SD59x18 }));
         return sets;
     }
 
-    function testExp__GreaterThanOrEqualToMaxPermitted()
+    function testCannotExp__Positive__GreaterThanMaxPermitted()
         external
-        parameterizedTest(greaterThanOrEqualSets())
+        parameterizedTest(greaterThanMaxPermittedSets())
         NotZero
-        GreaterThanOrEqualToMinPermitted
     {
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__ExpInputTooBig.selector, s.x));
         exp(s.x);
     }
 
-    modifier LessThanMaxPermitted() {
-        _;
-    }
-
-    function lessThanMaxSets() internal returns (Set[] memory) {
+    function lessThanOrEqualToMaxPermittedSets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: 1, expected: 1e18 }));
-        sets.push(set({ x: 1e3, expected: 1000000000000001e3 }));
+        sets.push(set({ x: 0.000000000000000001e18, expected: 1e18 }));
+        sets.push(set({ x: 0.000000000000001e18, expected: 1000000000000001e3 }));
         sets.push(set({ x: 1e18, expected: 2_718281828459045234 }));
         sets.push(set({ x: 2e18, expected: 7_389056098930650223 }));
         sets.push(set({ x: E, expected: 15_154262241479264171 }));
@@ -116,21 +106,14 @@ contract SD59x18__ExpTest is SD59x18__BaseTest {
         sets.push(
             set({ x: 88.722839111672999627e18, expected: 340282366920938463222979506443879150094_819893272894857679 })
         );
-        sets.push(
-            set({
-                x: MAX_PERMITTED.sub(sd(1)),
-                expected: 6277101735386680754977611748738314679353_920434623901771623e18
-            })
-        );
+        sets.push(set({ x: MAX_PERMITTED, expected: 6277101735386680754977611748738314679353_920434623901771623e18 }));
         return sets;
     }
 
-    function testExp()
+    function testExp__Positive__LessThanOrEqualToMaxPermitted()
         external
-        parameterizedTest(lessThanMaxSets())
+        parameterizedTest(lessThanOrEqualToMaxPermittedSets())
         NotZero
-        GreaterThanOrEqualToMinPermitted
-        LessThanMaxPermitted
     {
         SD59x18 actual = exp(s.x);
         assertEq(actual, s.expected);

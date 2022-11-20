@@ -15,7 +15,7 @@ import {
 import { SD59x18__BaseTest } from "../SD59x18BaseTest.t.sol";
 
 contract SD59x18__FromTest is SD59x18__BaseTest {
-    function lessThanSets() internal returns (Set[] memory) {
+    function lessThanAbsoluteOneSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: -1e18 + 1 }));
         sets.push(set({ x: -1 }));
@@ -25,7 +25,7 @@ contract SD59x18__FromTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testFrom__LessThanAbsoluteOne() external parameterizedTest(lessThanSets()) {
+    function testFrom__LessThanAbsoluteOne() external parameterizedTest(lessThanAbsoluteOneSets()) {
         int256 actual = fromSD59x18(s.x);
         int256 expected = 0;
         assertEq(actual, expected);
@@ -35,32 +35,33 @@ contract SD59x18__FromTest is SD59x18__BaseTest {
         _;
     }
 
-    function greaterThanSets() internal returns (Set[] memory) {
+    function greaterThanAbsoluteOneSets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: MIN_SD59x18, expected: MIN_SD59x18_SCALED }));
-        sets.push(set({ x: MIN_WHOLE_SD59x18, expected: MIN_SD59x18_SCALED }));
-        sets.push(set({ x: -4.2e45, expected: -42e26 }));
-        sets.push(set({ x: -1729e18, expected: -1729 }));
-        sets.push(set({ x: NEGATIVE_PI, expected: -3 }));
-        sets.push(set({ x: NEGATIVE_E, expected: -2 }));
-        sets.push(set({ x: -2e18, expected: -2 }));
-        sets.push(set({ x: -2e18 + 1, expected: -1 }));
-        sets.push(set({ x: -2e18 - 1, expected: -2 }));
-        sets.push(set({ x: -1e18, expected: -1 }));
-        sets.push(set({ x: 1e18, expected: 1 }));
-        sets.push(set({ x: 1e18 + 1, expected: 1 }));
-        sets.push(set({ x: 2e18 - 1, expected: 1 }));
-        sets.push(set({ x: 2e18, expected: 2 }));
-        sets.push(set({ x: E, expected: 2 }));
-        sets.push(set({ x: PI, expected: 3 }));
-        sets.push(set({ x: 1729e18, expected: 1729 }));
-        sets.push(set({ x: 4.2e45, expected: 42e26 }));
-        sets.push(set({ x: MAX_WHOLE_SD59x18, expected: MAX_SD59x18_SCALED }));
-        sets.push(set({ x: MAX_SD59x18, expected: MAX_SD59x18_SCALED }));
+        sets.push(set({ x: MIN_SD59x18, expected: MIN_SCALED_SD59x18 }));
+        sets.push(set({ x: MIN_WHOLE_SD59x18, expected: MIN_SCALED_SD59x18 }));
+        sets.push(set({ x: -4.2e45, expected: -4.2e27 }));
+        sets.push(set({ x: -1729e18, expected: -0.000000000000001729e18 }));
+        sets.push(set({ x: NEGATIVE_PI, expected: -0.000000000000000003e18 }));
+        sets.push(set({ x: NEGATIVE_E, expected: -0.000000000000000002e18 }));
+        sets.push(set({ x: -2e18 - 1, expected: -0.000000000000000002e18 }));
+        sets.push(set({ x: -2e18, expected: -0.000000000000000002e18 }));
+        sets.push(set({ x: -2e18 + 1, expected: -0.000000000000000001e18 }));
+        sets.push(set({ x: -1e18, expected: -0.000000000000000001e18 }));
+        sets.push(set({ x: 1e18, expected: 0.000000000000000001e18 }));
+        sets.push(set({ x: 1e18 + 1, expected: 0.000000000000000001e18 }));
+        sets.push(set({ x: 2e18 - 1, expected: 0.000000000000000001e18 }));
+        sets.push(set({ x: 2e18, expected: 0.000000000000000002e18 }));
+        sets.push(set({ x: 2e18 + 1, expected: 0.000000000000000002e18 }));
+        sets.push(set({ x: E, expected: 0.000000000000000002e18 }));
+        sets.push(set({ x: PI, expected: 0.000000000000000003e18 }));
+        sets.push(set({ x: 1729e18, expected: 0.000000000000001729e18 }));
+        sets.push(set({ x: 4.2e45, expected: 4.2e27 }));
+        sets.push(set({ x: MAX_WHOLE_SD59x18, expected: MAX_SCALED_SD59x18 }));
+        sets.push(set({ x: MAX_SD59x18, expected: MAX_SCALED_SD59x18 }));
         return sets;
     }
 
-    function testFrom() external parameterizedTest(greaterThanSets()) GreaterThanOrEqualToAbsoluteOne {
+    function testFrom() external parameterizedTest(greaterThanAbsoluteOneSets()) GreaterThanOrEqualToAbsoluteOne {
         int256 actual = fromSD59x18(s.x);
         int256 expected = SD59x18.unwrap(s.expected);
         assertEq(actual, expected);
