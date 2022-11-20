@@ -3,7 +3,16 @@ pragma solidity >=0.8.13;
 
 import { stdError } from "forge-std/StdError.sol";
 
-import { MAX_WHOLE_SD59x18, MAX_SD59x18, MIN_SD59x18, MIN_WHOLE_SD59x18, PI, SD59x18, ZERO, inv } from "~/SD59x18.sol";
+import {
+    MAX_WHOLE_SD59x18,
+    MAX_SD59x18,
+    MIN_SD59x18,
+    MIN_WHOLE_SD59x18,
+    PI,
+    SD59x18,
+    ZERO,
+    inv
+} from "src/SD59x18.sol";
 import { SD59x18__BaseTest } from "../SD59x18BaseTest.t.sol";
 
 contract SD59x18__InvTest is SD59x18__BaseTest {

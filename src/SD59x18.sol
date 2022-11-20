@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity >=0.8.13;
 
-import { msb, mulDiv, mulDiv18, prbExp2, prbSqrt } from "./Helpers.sol";
+import { msb, mulDiv, mulDiv18, prbExp2, prbSqrt } from "./Core.sol";
 
 /// @notice The signed 59.18-decimal fixed-point number representation. Can have up to 59 digits and up to 18 decimals.
 /// The values are bound by the minimum and the maximum values permitted by the Solidity type int256.
@@ -234,7 +234,7 @@ function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     // Compute the absolute value (x*SCALE)÷y. The resulting value must fit within int256.
     uint256 rAbs = mulDiv(ax, SCALE_UINT, ay);
     if (rAbs > MAX_SD59x18_UINT) {
-        revert PRBMathSD59x18__DivOverflow(rAbs);
+        revert PRBMathSD59x18__DivOverflow(x, y);
     }
 
     // Check if x and y have the same sign via "(x ^ y) > -1".
@@ -638,7 +638,7 @@ function mul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 
     uint256 rAbs = mulDiv18(ax, ay);
     if (rAbs > MAX_SD59x18_UINT) {
-        revert PRBMathSD59x18__MulOverflow(rAbs);
+        revert PRBMathSD59x18__MulOverflow(x, y);
     }
 
     // Check if x and y have the same sign via "(x ^ y) > -1".
@@ -713,7 +713,7 @@ function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
 
     // The result must fit within `MAX_SD59x18`.
     if (rAbs > MAX_SD59x18_UINT) {
-        revert PRBMathSD59x18__PowuOverflow(rAbs);
+        revert PRBMathSD59x18__PowuOverflow(x, y);
     }
 
     // Is the base negative and the exponent an odd number?

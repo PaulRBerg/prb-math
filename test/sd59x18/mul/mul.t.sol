@@ -15,8 +15,8 @@ import {
     SD59x18,
     ZERO,
     mul
-} from "~/SD59x18.sol";
-import { PRBMath__MulDiv18Overflow } from "~/Helpers.sol";
+} from "src/SD59x18.sol";
+import { PRBMath__MulDiv18Overflow } from "src/Core.sol";
 import { SD59x18__BaseTest } from "../SD59x18BaseTest.t.sol";
 
 contract SD59x18__MulTest is SD59x18__BaseTest {

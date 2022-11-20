@@ -5,9 +5,9 @@ import { StdCheats, StdUtils } from "forge-std/Components.sol";
 import { console2 } from "forge-std/console2.sol";
 import { PRBTest } from "@prb/test/PRBTest.sol";
 
-import { Assertions as PRBMathAssertions } from "~/test/Assertions.sol";
-import { SD59x18 } from "~/SD59x18.sol";
-import { UD60x18 } from "~/UD60x18.sol";
+import { Assertions as PRBMathAssertions } from "src/test/Assertions.sol";
+import { SD59x18 } from "src/SD59x18.sol";
+import { UD60x18 } from "src/UD60x18.sol";
 
 /// @title PRBMath__BaseTest
 /// @author Paul Razvan Berg

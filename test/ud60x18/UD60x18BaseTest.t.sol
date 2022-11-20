@@ -3,7 +3,7 @@ pragma solidity >=0.8.13;
 
 import { console2 } from "forge-std/console2.sol";
 import { PRBMath__BaseTest } from "../PRBMathBaseTest.t.sol";
-import { MAX_UD60x18, UD60x18, ZERO } from "~/UD60x18.sol";
+import { MAX_UD60x18, UD60x18, ZERO } from "src/UD60x18.sol";
 
 /// @title UD60x18__BaseTest
 /// @author Paul Razvan Berg

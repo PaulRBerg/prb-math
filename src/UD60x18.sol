@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity >=0.8.13;
 
-import { msb, mulDiv, mulDiv18, prbExp2, prbSqrt } from "./Helpers.sol";
+import { msb, mulDiv, mulDiv18, prbExp2, prbSqrt } from "./Core.sol";
 
 /// @notice The unsigned 60.18-decimal fixed-point number representation. Can have up to 60 digits and up to 18 decimals.
 /// The numbers are bound by the minimum and the maximum values permitted by the Solidity type uint256.

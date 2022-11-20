@@ -11,7 +11,7 @@ import {
     SD59x18,
     ZERO,
     ceil
-} from "~/SD59x18.sol";
+} from "src/SD59x18.sol";
 import { SD59x18__BaseTest } from "../SD59x18BaseTest.t.sol";
 
 contract SD59x18__CeilTest is SD59x18__BaseTest {

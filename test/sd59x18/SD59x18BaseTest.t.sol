@@ -3,7 +3,7 @@ pragma solidity >=0.8.13;
 
 import { console2 } from "forge-std/console2.sol";
 import { PRBMath__BaseTest } from "../PRBMathBaseTest.t.sol";
-import { SD59x18, ZERO } from "~/SD59x18.sol";
+import { SD59x18, ZERO } from "src/SD59x18.sol";
 
 /// @title SD59x18__BaseTest
 /// @author Paul Razvan Berg
