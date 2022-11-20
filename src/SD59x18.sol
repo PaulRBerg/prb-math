@@ -568,7 +568,7 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
         }
     }
 
-    // Calculate the integer part of the logarithm and add it to the result and finally calculate y = x * 2^(-n).
+    // Calculate the integer part of the logarithm and add it to the result and finally calculate $y = x * 2^(-n)$.
     uint256 n = msb(uint256(SD59x18.unwrap(x.uncheckedDiv(SCALE))));
 
     // This is the integer part of the logarithm as an SD59x18 number. The operation can't overflow
@@ -589,7 +589,7 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
     for (SD59x18 delta = HALF_SCALE; delta.gt(ZERO); delta = delta.rshift(1)) {
         y = y.uncheckedMul(y).uncheckedDiv(SCALE);
 
-        // Is y^2 > 2 and so in the range [2,4)?
+        // Is $y^2 > 2$ and so in the range [2,4)?
         if (y.gte(DOUBLE_SCALE)) {
             // Add the 2^{-m} factor to the logarithm.
             result = result.uncheckedAdd(delta);
@@ -715,9 +715,11 @@ function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
     }
 
     // Is the base negative and the exponent an odd number?
-    SD59x18 resultSD59x18 = SD59x18.wrap(int256(rAbs));
+    result = SD59x18.wrap(int256(rAbs));
     bool isNegative = x.lt(ZERO) && y & 1 == 1;
-    result = isNegative ? uncheckedUnary(resultSD59x18) : resultSD59x18;
+    if (isNegative) {
+        result = uncheckedUnary(result);
+    }
 }
 
 /// @notice Calculates the square root of x, rounding down.
