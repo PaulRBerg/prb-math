@@ -12,7 +12,7 @@ import { UD60x18 } from "~/UD60x18.sol";
 /// @title PRBMath__BaseTest
 /// @author Paul Razvan Berg
 /// @notice Common contract members needed across tests.
-abstract contract PRBMath__BaseTest is PRBTest, StdCheats, StdUtils, PRBMathAssertions {
+abstract contract PRBMath__BaseTest is PRBTest, PRBMathAssertions, StdCheats, StdUtils {
     /*//////////////////////////////////////////////////////////////////////////
                                        STRUCTS
     //////////////////////////////////////////////////////////////////////////*/

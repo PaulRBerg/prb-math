@@ -28,7 +28,7 @@ contract SD59x18__InvTest is SD59x18__BaseTest {
         sets.push(set({ x: -100.135e18, expected: -0.00998651820042942e18 }));
         sets.push(set({ x: -22e18, expected: -0.045454545454545454e18 }));
         sets.push(set({ x: -4e18, expected: -0.25e18 }));
-        sets.push(set({ x: -3.141592653589793238e18, expected: -0.318309886183790671e18 }));
+        sets.push(set({ x: NEGATIVE_PI, expected: -0.318309886183790671e18 }));
         sets.push(set({ x: -2e18, expected: -0.5e18 }));
         sets.push(set({ x: -1e18, expected: -1e18 }));
         sets.push(set({ x: -0.1e18, expected: -10e18 }));
@@ -45,7 +45,7 @@ contract SD59x18__InvTest is SD59x18__BaseTest {
 
     function positiveSets() internal returns (Set[] memory) {
         delete sets;
-        sets.push((set({ x: 1, expected: 1e36 })));
+        sets.push(set({ x: 0.000000000000000001e18, expected: 1e36 }));
         sets.push(set({ x: 0.00001e18, expected: 100_000e18 }));
         sets.push(set({ x: 0.05e18, expected: 20e18 }));
         sets.push(set({ x: 0.1e18, expected: 10e18 }));

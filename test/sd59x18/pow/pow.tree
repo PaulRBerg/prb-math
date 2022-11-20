@@ -11,7 +11,10 @@ pow.t.sol
       ├── when the exponent is zero
       │  └── it should return one
       └── when the exponent is not zero
-         ├── when the exponent is greater than or equal to 192
+         ├── when the exponent is greater than the maximum permitted
          │  └── it should revert
-         └── when the exponent is less than 192
-            └── it should return the correct value
+         └── when the exponent is less than or equal to the maximum permitted
+            ├── when the exponent is negative
+            │  └── it should return the correct value
+            └── when the exponent is positive
+               └── it should return the correct value

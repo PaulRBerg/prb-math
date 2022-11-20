@@ -17,9 +17,9 @@ contract UD60x18__InvTest is UD60x18__BaseTest {
         _;
     }
 
-    function testSets() internal returns (Set[] memory) {
+    function invSets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: 1, expected: 1e36 }));
+        sets.push(set({ x: 0.000000000000000001e18, expected: 1e36 }));
         sets.push(set({ x: 0.00001e18, expected: 100_000e18 }));
         sets.push(set({ x: 0.05e18, expected: 20e18 }));
         sets.push(set({ x: 0.1e18, expected: 10e18 }));
@@ -31,14 +31,14 @@ contract UD60x18__InvTest is UD60x18__BaseTest {
         sets.push(set({ x: 100.135e18, expected: 0.00998651820042942e18 }));
         sets.push(set({ x: 772.05e18, expected: 0.001295252898128359e18 }));
         sets.push(set({ x: 2503e18, expected: 0.000399520575309628e18 }));
-        sets.push(set({ x: 1e36, expected: 1 }));
+        sets.push(set({ x: 1e36, expected: 0.000000000000000001e18 }));
         sets.push(set({ x: 1e36 + 1, expected: 0 }));
         sets.push(set({ x: MAX_WHOLE_UD60x18, expected: 0 }));
         sets.push(set({ x: MAX_UD60x18, expected: 0 }));
         return sets;
     }
 
-    function testInv() external parameterizedTest(testSets()) NotZero {
+    function testInv() external parameterizedTest(invSets()) NotZero {
         UD60x18 actual = inv(s.x);
         assertEq(actual, s.expected);
     }
