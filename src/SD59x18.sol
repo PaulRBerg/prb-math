@@ -82,6 +82,7 @@ SD59x18 constant MAX_SD59x18 = SD59x18.wrap(
     57896044618658097711785492504343953926634992332820282019728_792003956564819967
 );
 int256 constant MAX_SD59x18_INT = 57896044618658097711785492504343953926634992332820282019728_792003956564819967;
+uint256 constant MAX_SD59x18_UINT = 57896044618658097711785492504343953926634992332820282019728_792003956564819967;
 
 /// @dev The maximum whole value an SD59x18 number can have.
 SD59x18 constant MAX_WHOLE_SD59x18 = SD59x18.wrap(
@@ -107,6 +108,7 @@ SD59x18 constant PI = SD59x18.wrap(3_141592653589793238);
 /// @dev The unit amount which implies how many trailing decimals can be represented.
 SD59x18 constant SCALE = SD59x18.wrap(1e18);
 int256 constant SCALE_INT = 1e18;
+uint256 constant SCALE_UINT = 1e18;
 
 /// @dev Zero as an SD59x18 number.
 SD59x18 constant ZERO = SD59x18.wrap(0);
@@ -147,23 +149,24 @@ function abs(SD59x18 x) pure returns (SD59x18 result) {
     result = x.lt(ZERO) ? uncheckedUnary(x) : x;
 }
 
-/// @notice Calculates the arithmetic average of x and y, rounding down.
+/// @notice Calculates the arithmetic average of x and y, rounding towards zero.
 /// @param x The first operand as an SD59x18 number.
 /// @param y The second operand as an SD59x18 number.
 /// @return result The arithmetic average as an SD59x18 number.
 function avg(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
-    // These operations can never overflow.
+    // This is equivalent to "x / 2 +  y / 2" but faster.
+    // This operation can never overflow.
     SD59x18 sum = x.rshift(1).uncheckedAdd(y.rshift(1));
 
     if (sum.lt(ZERO)) {
-        // If at least one of x and y is odd, we add 1 to the result. Shifting negative numbers to the right rounds
+        // If at least one of x and y is odd, we add 1 to the result, since shifting negative numbers to the right rounds
         // down to infinity. The right part is equivalent to "sum + (x % 2 == 1 || y % 2 == 1)" but faster.
         assembly {
             result := add(sum, and(or(x, y), 1))
         }
     } else {
         // We need to add 1 if both x and y are odd to account for the double 0.5 remainder that is truncated after shifting.
-        // This is equivalent to "sum + x & y & 1".
+        // The right part is equivalent to "sum + x & y & 1".
         result = sum.uncheckedAdd(x.and(SD59x18.unwrap(y)).and(1));
     }
 }
@@ -229,9 +232,9 @@ function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     }
 
     // Compute the absolute value (x*SCALE)÷y. The resulting value must fit within int256.
-    uint256 rAbs = mulDiv(ax, uint256(SCALE_INT), ay);
-    if (rAbs > uint256(MAX_SD59x18_INT)) {
-        revert PRBMathSD59x18__DivOverflow(x, y);
+    uint256 rAbs = mulDiv(ax, SCALE_UINT, ay);
+    if (rAbs > MAX_SD59x18_UINT) {
+        revert PRBMathSD59x18__DivOverflow(rAbs);
     }
 
     // Check if x and y have the same sign via "(x ^ y) > -1".
@@ -368,7 +371,7 @@ function frac(SD59x18 x) pure returns (SD59x18 result) {
 /// @param y The second operand as an SD59x18 number.
 /// @return result The result as an SD59x18 number.
 function gm(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
-    if (x.isZero()) {
+    if (x.isZero() || y.isZero()) {
         return ZERO;
     }
 
@@ -567,7 +570,7 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
         }
     }
 
-    // Calculate the integer part of the logarithm and add it to the result and finally calculate y = x * 2^(-n).
+    // Calculate the integer part of the logarithm and add it to the result and finally calculate $y = x * 2^(-n)$.
     uint256 n = msb(uint256(SD59x18.unwrap(x.uncheckedDiv(SCALE))));
 
     // This is the integer part of the logarithm as an SD59x18 number. The operation can't overflow
@@ -588,7 +591,7 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
     for (SD59x18 delta = HALF_SCALE; delta.gt(ZERO); delta = delta.rshift(1)) {
         y = y.uncheckedMul(y).uncheckedDiv(SCALE);
 
-        // Is y^2 > 2 and so in the range [2,4)?
+        // Is $y^2 > 2$ and so in the range [2,4)?
         if (y.gte(DOUBLE_SCALE)) {
             // Add the 2^{-m} factor to the logarithm.
             result = result.uncheckedAdd(delta);
@@ -634,8 +637,8 @@ function mul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     }
 
     uint256 rAbs = mulDiv18(ax, ay);
-    if (rAbs > uint256(MAX_SD59x18_INT)) {
-        revert PRBMathSD59x18__MulOverflow(x, y);
+    if (rAbs > MAX_SD59x18_UINT) {
+        revert PRBMathSD59x18__MulOverflow(rAbs);
     }
 
     // Check if x and y have the same sign via "(x ^ y) > -1".
@@ -695,7 +698,7 @@ function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
     uint256 xAbs = uint256(SD59x18.unwrap(abs(x)));
 
     // Calculate the first iteration of the loop in advance.
-    uint256 rAbs = y & 1 > 0 ? xAbs : uint256(SCALE_INT);
+    uint256 rAbs = y & 1 > 0 ? xAbs : SCALE_UINT;
 
     // Equivalent to "for(y /= 2; y > 0; y /= 2)" but faster.
     uint256 yAux = y;
@@ -709,17 +712,19 @@ function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
     }
 
     // The result must fit within `MAX_SD59x18`.
-    if (rAbs > uint256(MAX_SD59x18_INT)) {
-        revert PRBMathSD59x18__PowuOverflow(x, y);
+    if (rAbs > MAX_SD59x18_UINT) {
+        revert PRBMathSD59x18__PowuOverflow(rAbs);
     }
 
     // Is the base negative and the exponent an odd number?
-    SD59x18 resultSD59x18 = SD59x18.wrap(int256(rAbs));
+    result = SD59x18.wrap(int256(rAbs));
     bool isNegative = x.lt(ZERO) && y & 1 == 1;
-    result = isNegative ? uncheckedUnary(resultSD59x18) : resultSD59x18;
+    if (isNegative) {
+        result = uncheckedUnary(result);
+    }
 }
 
-/// @notice Calculates the square root of x, rounding down.
+/// @notice Calculates the square root of x, rounding down. Only the positive root is returned.
 /// @dev Uses the Babylonian method https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Babylonian_method.
 ///
 /// Requirements:
@@ -859,7 +864,7 @@ function xor(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 
 /// HELPER FUNCTIONS ///
 
-/// @notice Converts an SD59x18 number to basic integer form, rounding down in the process.
+/// @notice Converts an SD59x18 number to basic integer form, rounding towards zero in the process.
 /// @param x The SD59x18 number to convert.
 /// @return result The same number in basic integer form.
 function fromSD59x18(SD59x18 x) pure returns (int256 result) {

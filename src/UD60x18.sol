@@ -87,7 +87,7 @@ using { avg, ceil, div, exp, exp2, floor, frac, gm, inv, ln, log10, log2, mul, p
 /// avg(x, y) = (x >> 1) + (y >> 1) + (x & y & 1)
 /// $$
 //
-/// In English, this means:
+/// In English, what this formula does is:
 ///
 ///     1. Shift x one bit to the right.
 ///     2. Shift y one bit to the left.
@@ -227,7 +227,7 @@ function frac(UD60x18 x) pure returns (UD60x18 result) {
 /// @param y The second operand as an UD60x18 number.
 /// @return result The result as an UD60x18 number.
 function gm(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
-    if (x.isZero()) {
+    if (x.isZero() || y.isZero()) {
         return ZERO;
     }
 
