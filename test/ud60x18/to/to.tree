@@ -1,5 +1,5 @@
 to.t.sol
-├── when x is greater than max ud60x18 divided by scale
+├── when x is greater than the maximum permitted
 │  └── it should revert
-└── when x is less than or equal to max ud60x18 divided by scale
+└── when x is less than or equal to the maximum permitted
    └── it should return the correct value
