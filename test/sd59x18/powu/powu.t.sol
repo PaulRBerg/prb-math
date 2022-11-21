@@ -99,7 +99,7 @@ contract SD59x18__PowuTest is SD59x18__BaseTest {
         powu(x, y);
     }
 
-    modifier ResultDoesNotOverflowOrUnderflowSd59x18() {
+    modifier ResultDoesNotOverflowOrUnderflowSD59x18() {
         _;
     }
 
@@ -148,7 +148,7 @@ contract SD59x18__PowuTest is SD59x18__BaseTest {
         BaseNotZero
         ExponentNotZero
         ResultDoesNotOverflowUint256
-        ResultDoesNotOverflowOrUnderflowSd59x18
+        ResultDoesNotOverflowOrUnderflowSD59x18
     {
         SD59x18 actual = powu(s.x, sdToUint(s.y));
         assertEq(actual, s.expected);
@@ -199,7 +199,7 @@ contract SD59x18__PowuTest is SD59x18__BaseTest {
         BaseNotZero
         ExponentNotZero
         ResultDoesNotOverflowUint256
-        ResultDoesNotOverflowOrUnderflowSd59x18
+        ResultDoesNotOverflowOrUnderflowSD59x18
     {
         SD59x18 actual = powu(s.x, sdToUint(s.y));
         assertEq(actual, s.expected);

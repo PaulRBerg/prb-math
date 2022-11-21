@@ -23,8 +23,8 @@ contract SD59x18__MulTest is SD59x18__BaseTest {
     function oneOperandZeroSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_SD59x18.add(sd(1)), y: 0, expected: 0 }));
-        sets.push(set({ x: 0.5e18, y: 0, expected: 0 }));
-        sets.push(set({ x: 0, y: 0.5e18, expected: 0 }));
+        sets.push(set({ x: 0, y: MIN_SD59x18.add(sd(1)), expected: 0 }));
+        sets.push(set({ x: 0, y: MAX_SD59x18, expected: 0 }));
         sets.push(set({ x: MAX_SD59x18, y: 0, expected: 0 }));
         return sets;
     }
@@ -56,26 +56,21 @@ contract SD59x18__MulTest is SD59x18__BaseTest {
         _;
     }
 
-    function resultOverflowSD59x18Sets() internal returns (Set[] memory) {
-        delete sets;
-        sets.push(set({ x: MIN_SD59x18.add(sd(1)), y: 2e18, expected: NIL }));
-        sets.push(set({ x: NEGATIVE_SQRT_MAX_SD59x18, y: NEGATIVE_SQRT_MAX_SD59x18.sub(sd(1)), expected: NIL }));
-        sets.push(set({ x: 2e18, y: MAX_SD59x18, expected: NIL }));
-        sets.push(set({ x: SQRT_MAX_SD59x18, y: SQRT_MAX_SD59x18.add(sd(1)), expected: NIL }));
-        return sets;
+    function testCannotMul__ResultOverflowSD59x18_1() external NeitherOperandZero NeitherOperandMinSD59x18 {
+        SD59x18 x = NEGATIVE_SQRT_MAX_SD59x18;
+        SD59x18 y = NEGATIVE_SQRT_MAX_SD59x18.sub(sd(1));
+        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__MulOverflow.selector, x, y));
+        mul(x, y);
     }
 
-    function testCannotMul__ResultOverflowSD59x18()
-        external
-        parameterizedTest(resultOverflowSD59x18Sets())
-        NeitherOperandZero
-        NeitherOperandMinSD59x18
-    {
-        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__MulOverflow.selector, s.x, s.y));
-        mul(s.x, s.y);
+    function testCannotMul__ResultOverflowSD59x18_2() external NeitherOperandZero NeitherOperandMinSD59x18 {
+        SD59x18 x = SQRT_MAX_SD59x18;
+        SD59x18 y = SQRT_MAX_SD59x18.add(sd(1));
+        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__MulOverflow.selector, x, y));
+        mul(x, y);
     }
 
-    modifier ResultDoesNotOverflowSd59x18() {
+    modifier ResultDoesNotOverflowSD59x18() {
         _;
     }
 
@@ -97,7 +92,7 @@ contract SD59x18__MulTest is SD59x18__BaseTest {
         parameterizedTest(resultOverflowUint256Sets())
         NeitherOperandZero
         NeitherOperandMinSD59x18
-        ResultDoesNotOverflowSd59x18
+        ResultDoesNotOverflowSD59x18
     {
         vm.expectRevert(
             abi.encodeWithSelector(
@@ -161,7 +156,7 @@ contract SD59x18__MulTest is SD59x18__BaseTest {
         parameterizedTest(operandsSameSignSets())
         NeitherOperandZero
         NeitherOperandMinSD59x18
-        ResultDoesNotOverflowSd59x18
+        ResultDoesNotOverflowSD59x18
         ResultDoesNotOverflowUint256
     {
         SD59x18 actual = mul(s.x, s.y);
@@ -216,7 +211,7 @@ contract SD59x18__MulTest is SD59x18__BaseTest {
         parameterizedTest(operandsDifferentSignsSets())
         NeitherOperandZero
         NeitherOperandMinSD59x18
-        ResultDoesNotOverflowSd59x18
+        ResultDoesNotOverflowSD59x18
         ResultDoesNotOverflowUint256
     {
         SD59x18 actual = mul(s.x, s.y);

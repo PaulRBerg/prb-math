@@ -393,8 +393,8 @@ function gm(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
         revert PRBMathSD59x18__GmNegativeProduct(x, y);
     }
 
-    // We don't need to multiply by `SCALE` here because the x*y product had already picked up a factor of `SCALE`
-    // during multiplication. See the comments within the `sqrt` function.
+    // We don't need to multiply the result by `SCALE` here because the x*y product had picked up a factor of `SCALE`
+    // during multiplication. See the comments within the `prbSqrt` function.
     uint256 resultUint = prbSqrt(uint256(SD59x18.unwrap(xy)));
     result = SD59x18.wrap(int256(resultUint));
 }

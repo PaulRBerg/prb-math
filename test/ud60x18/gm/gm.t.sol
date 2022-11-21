@@ -5,8 +5,8 @@ import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, PRBMathUD60x18__GmOverflow, UD60
 import { UD60x18__BaseTest } from "../UD60x18BaseTest.t.sol";
 
 contract UD60x18__GmTest is UD60x18__BaseTest {
-    // Biggest number whose square fits within uint256
-    UD60x18 internal constant SQRT_MAX_UD60x18_DIV_BY_SCALE = UD60x18.wrap(340282366920938463463_374607431768211455);
+    // Biggest number whose non-fixed-point square fits within uint256
+    UD60x18 internal constant SQRT_MAX_UINT256 = UD60x18.wrap(340282366920938463463374607431768211455);
 
     function oneOperandZeroSets() internal returns (Set[] memory) {
         delete sets;
@@ -25,8 +25,8 @@ contract UD60x18__GmTest is UD60x18__BaseTest {
     }
 
     function testCannotGm__ProductOverflow() external NotZeroOperands {
-        UD60x18 x = SQRT_MAX_UD60x18_DIV_BY_SCALE.add(ud(1));
-        UD60x18 y = SQRT_MAX_UD60x18_DIV_BY_SCALE.add(ud(1));
+        UD60x18 x = SQRT_MAX_UD60x18.add(ud(1));
+        UD60x18 y = SQRT_MAX_UD60x18.add(ud(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__GmOverflow.selector, x, y));
         gm(x, y);
     }
@@ -44,15 +44,9 @@ contract UD60x18__GmTest is UD60x18__BaseTest {
         sets.push(set({ x: PI, y: 8.2e18, expected: 5_075535416036056441 }));
         sets.push(set({ x: 322.47e18, y: 674.77e18, expected: 466_468736251423392217 }));
         sets.push(set({ x: 2404.8e18, y: 7899.210662e18, expected: 4358_442588812843362311 }));
-        sets.push(
-            set({
-                x: SQRT_MAX_UD60x18_DIV_BY_SCALE,
-                y: SQRT_MAX_UD60x18_DIV_BY_SCALE,
-                expected: SQRT_MAX_UD60x18_DIV_BY_SCALE
-            })
-        );
-        sets.push(set({ x: MAX_WHOLE_UD60x18, y: 0.000000000000000001e18, expected: SQRT_MAX_UD60x18_DIV_BY_SCALE }));
-        sets.push(set({ x: MAX_UD60x18, y: 0.000000000000000001e18, expected: SQRT_MAX_UD60x18_DIV_BY_SCALE }));
+        sets.push(set({ x: SQRT_MAX_UINT256, y: SQRT_MAX_UINT256, expected: SQRT_MAX_UINT256 }));
+        sets.push(set({ x: MAX_WHOLE_UD60x18, y: 0.000000000000000001e18, expected: SQRT_MAX_UINT256 }));
+        sets.push(set({ x: MAX_UD60x18, y: 0.000000000000000001e18, expected: SQRT_MAX_UINT256 }));
         return sets;
     }
 

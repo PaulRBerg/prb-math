@@ -243,8 +243,8 @@ function gm(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
         revert PRBMathUD60x18__GmOverflow(x, y);
     }
 
-    // We don't need to multiply by `SCALE` here because the x*y product had already picked up a factor of `SCALE`
-    // during multiplication. See the comments in the `sqrt` function.
+    // We don't need to multiply the result by `SCALE` here because the x*y product had picked up a factor of `SCALE`
+    // during multiplication. See the comments in the `prbSqrt` function.
     result = UD60x18.wrap(prbSqrt(UD60x18.unwrap(xy)));
 }
 

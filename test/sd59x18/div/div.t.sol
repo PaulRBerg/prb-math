@@ -184,7 +184,7 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
         sets.push(set({ x: 772.05e18, y: -199.98e18, expected: -3_860636063606360636 }));
         sets.push(set({ x: 2503e18, y: -918882.11e18, expected: -0.002723962054283546e18 }));
         sets.push(set({ x: 1e24, y: -1e18, expected: -1e24 }));
-        sets.push(set({ x: MIN_SCALED_SD59x18, y: 0.000000000000000001e18, expected: MAX_WHOLE_SD59x18 }));
+        sets.push(set({ x: MAX_SCALED_SD59x18, y: 0.000000000000000001e18, expected: MAX_WHOLE_SD59x18 }));
         return sets;
     }
 
