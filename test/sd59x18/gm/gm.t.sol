@@ -26,45 +26,50 @@ contract SD59x18__GmTest is SD59x18__BaseTest {
         _;
     }
 
-    function productNegativeSets() internal returns (Set[] memory) {
-        delete sets;
-        sets.push(set({ x: -7.1e18, y: 20.05e18, expected: NIL }));
-        sets.push(set({ x: -1e18, y: PI, expected: NIL }));
-        sets.push(set({ x: PI, y: -1e18, expected: NIL }));
-        sets.push(set({ x: 7.1e18, y: -20.05e18, expected: NIL }));
-        return sets;
+    function testCannotGm__ProductNegative__1() external NotZeroOperands {
+        SD59x18 x = sd(-1e18);
+        SD59x18 y = PI;
+        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__GmNegativeProduct.selector, x, y));
+        gm(x, y);
     }
 
-    /// @dev This doesn't work as expected, see https://github.com/foundry-rs/foundry/issues/858#issuecomment-1321886457.
-    function testCannotGm__ProductNegative() external parameterizedTest(productNegativeSets()) NotZeroOperands {
-        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__GmNegativeProduct.selector, s.x, s.y));
-        gm(s.x, s.y);
+    function testCannotGm__ProductNegative__2() external NotZeroOperands {
+        SD59x18 x = PI;
+        SD59x18 y = sd(-1e18);
+        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__GmNegativeProduct.selector, x, y));
+        gm(x, y);
     }
 
     modifier PositiveProduct() {
         _;
     }
 
-    function productOverflowSets() internal returns (Set[] memory) {
-        delete sets;
-        sets.push(set({ x: MIN_SD59x18, y: 0.000000000000000002e18, expected: NIL }));
-        sets.push(set({ x: MIN_WHOLE_SD59x18, y: 0.000000000000000003e18, expected: NIL }));
-        sets.push(set({ x: NEGATIVE_SQRT_MAX_INT256, y: NEGATIVE_SQRT_MAX_INT256.sub(wrap(1)), expected: NIL }));
-        sets.push(set({ x: SQRT_MAX_INT256.add(wrap(1)), y: SQRT_MAX_INT256.add(wrap(1)), expected: NIL }));
-        sets.push(set({ x: MAX_WHOLE_SD59x18, y: 0.000000000000000003e18, expected: NIL }));
-        sets.push(set({ x: MAX_SD59x18, y: 0.000000000000000002e18, expected: NIL }));
-        return sets;
+    function testCannotGm__ProductOverflow__1() external NotZeroOperands PositiveProduct {
+        SD59x18 x = MIN_SD59x18;
+        SD59x18 y = wrap(0.000000000000000002e18);
+        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__GmOverflow.selector, x, y));
+        gm(x, y);
     }
 
-    /// @dev This doesn't work as expected, see https://github.com/foundry-rs/foundry/issues/858#issuecomment-1321886457.
-    function testCannotGm__ProductOverflow()
-        external
-        parameterizedTest(productOverflowSets())
-        NotZeroOperands
-        PositiveProduct
-    {
-        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__GmOverflow.selector, s.x, s.y));
-        gm(s.x, s.y);
+    function testCannotGm__ProductOverflow__2() external NotZeroOperands PositiveProduct {
+        SD59x18 x = NEGATIVE_SQRT_MAX_INT256;
+        SD59x18 y = NEGATIVE_SQRT_MAX_INT256.sub(wrap(1));
+        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__GmOverflow.selector, x, y));
+        gm(x, y);
+    }
+
+    function testCannotGm__ProductOverflow__3() external NotZeroOperands PositiveProduct {
+        SD59x18 x = SQRT_MAX_INT256.add(wrap(1));
+        SD59x18 y = SQRT_MAX_INT256.add(wrap(1));
+        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__GmOverflow.selector, x, y));
+        gm(x, y);
+    }
+
+    function testCannotGm__ProductOverflow__4() external NotZeroOperands PositiveProduct {
+        SD59x18 x = MAX_SD59x18;
+        SD59x18 y = wrap(0.000000000000000002e18);
+        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__GmOverflow.selector, x, y));
+        gm(x, y);
     }
 
     modifier ProductNotOverflow() {
