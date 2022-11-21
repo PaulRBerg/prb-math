@@ -14,9 +14,6 @@ import {
 import { SD59x18__BaseTest } from "../SD59x18BaseTest.t.sol";
 
 contract SD59x18__SqrtTest is SD59x18__BaseTest {
-    SD59x18 internal constant MAX_PERMITTED =
-        SD59x18.wrap(57896044618658097711785492504343953926634_992332820282019728);
-
     function testSqrt__Zero() external {
         SD59x18 x = ZERO;
         SD59x18 actual = sqrt(x);
@@ -39,7 +36,7 @@ contract SD59x18__SqrtTest is SD59x18__BaseTest {
     }
 
     function testCannotSqrt__GreaterThanMaxPermitted() external NotZero Positive {
-        SD59x18 x = MAX_PERMITTED.add(sd(1));
+        SD59x18 x = MAX_SCALED_SD59x18.add(sd(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__SqrtOverflow.selector, x));
         sqrt(x);
     }
@@ -69,7 +66,7 @@ contract SD59x18__SqrtTest is SD59x18__BaseTest {
         );
         sets.push(set({ x: 1e58, expected: 1e38 }));
         sets.push(set({ x: 5e58, expected: 223606797749978969640_917366873127623544 }));
-        sets.push(set({ x: MAX_PERMITTED, expected: 240615969168004511545_033772477625056927 }));
+        sets.push(set({ x: MAX_SCALED_SD59x18, expected: 240615969168004511545_033772477625056927 }));
         return sets;
     }
 

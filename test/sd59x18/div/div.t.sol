@@ -19,13 +19,8 @@ import {
 import { SD59x18__BaseTest } from "../SD59x18BaseTest.t.sol";
 
 contract SD59x18__DivTest is SD59x18__BaseTest {
-    SD59x18 internal constant MAX_SD59x18_DIV_BY_SCALE =
-        SD59x18.wrap(57896044618658097711785492504343953926634_992332820282019728);
-    SD59x18 internal constant MIN_SD59x18_DIV_BY_SCALE =
-        SD59x18.wrap(-57896044618658097711785492504343953926634_992332820282019728);
-
     function testCannotDiv__DenominatorZero() external {
-        SD59x18 x = sd(1);
+        SD59x18 x = sd(1e18);
         SD59x18 y = ZERO;
         vm.expectRevert(stdError.divisionError);
         div(x, y);
@@ -36,7 +31,7 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
     }
 
     function testCannotDiv__DenominatorMinSD59x18() external DenominatorNotZero {
-        SD59x18 x = sd(1);
+        SD59x18 x = sd(1e18);
         SD59x18 y = MIN_SD59x18;
         vm.expectRevert(PRBMathSD59x18__DivInputTooSmall.selector);
         div(x, y);
@@ -49,11 +44,13 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
     function numeratorZeroSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0, y: NEGATIVE_PI, expected: 0 }));
+        sets.push(set({ x: 0, y: -1e24, expected: 0 }));
         sets.push(set({ x: 0, y: -1e18, expected: 0 }));
-        sets.push(set({ x: 0, y: -1, expected: 0 }));
-        sets.push(set({ x: 0, y: 1, expected: 0 }));
+        sets.push(set({ x: 0, y: -0.000000000000000001e18, expected: 0 }));
+        sets.push(set({ x: 0, y: 0.000000000000000001e18, expected: 0 }));
         sets.push(set({ x: 0, y: 1e18, expected: 0 }));
         sets.push(set({ x: 0, y: PI, expected: 0 }));
+        sets.push(set({ x: 0, y: 1e24, expected: 0 }));
         return sets;
     }
 
@@ -78,7 +75,7 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
         NumeratorNotZero
     {
         SD59x18 x = MIN_SD59x18;
-        SD59x18 y = sd(1);
+        SD59x18 y = sd(0.000000000000000001e18);
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__DivInputTooSmall.selector));
         div(x, y);
     }
@@ -87,26 +84,26 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
         _;
     }
 
-    function testCannotDiv__ResultOverflow()
+    function testCannotDiv__ResultOverflowSD59x18()
         external
         DenominatorNotZero
         DenominatorNotMinSD59x18
         NumeratorNotZero
         NumeratorNotMinSD59x18
     {
-        SD59x18 x = MIN_SD59x18_DIV_BY_SCALE.sub(sd(1));
+        SD59x18 x = MIN_SCALED_SD59x18.sub(sd(1));
         SD59x18 y = sd(0.000000000000000001e18);
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__DivOverflow.selector, x, y));
         div(x, y);
     }
 
-    modifier ResultNotOverflow() {
+    modifier ResultNotOverflowSD59x18() {
         _;
     }
 
     function numeratorDenominatorSameSignSets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: MIN_SD59x18_DIV_BY_SCALE, y: -0.000000000000000001e18, expected: MAX_WHOLE_SD59x18 }));
+        sets.push(set({ x: MIN_SCALED_SD59x18, y: -0.000000000000000001e18, expected: MAX_WHOLE_SD59x18 }));
         sets.push(set({ x: -1e24, y: -1e18, expected: 1e24 }));
         sets.push(set({ x: -2503e18, y: -918882.11e18, expected: 0.002723962054283546e18 }));
         sets.push(set({ x: -772.05e18, y: -199.98e18, expected: 3_860636063606360636 }));
@@ -137,7 +134,7 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
         sets.push(set({ x: 772.05e18, y: 199.98e18, expected: 3_860636063606360636 }));
         sets.push(set({ x: 2503e18, y: 918882.11e18, expected: 0.002723962054283546e18 }));
         sets.push(set({ x: 1e24, y: 1e18, expected: 1e24 }));
-        sets.push(set({ x: MAX_SD59x18_DIV_BY_SCALE, y: 1, expected: MAX_WHOLE_SD59x18 }));
+        sets.push(set({ x: MAX_SCALED_SD59x18, y: 0.000000000000000001e18, expected: MAX_WHOLE_SD59x18 }));
         return sets;
     }
 
@@ -148,7 +145,7 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
         DenominatorNotMinSD59x18
         NumeratorNotZero
         NumeratorNotMinSD59x18
-        ResultNotOverflow
+        ResultNotOverflowSD59x18
     {
         SD59x18 actual = div(s.x, s.y);
         assertEq(actual, s.expected);
@@ -156,7 +153,7 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
 
     function numeratorDenominatorDifferentSignSets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: MIN_SD59x18_DIV_BY_SCALE, y: 1, expected: MIN_WHOLE_SD59x18 }));
+        sets.push(set({ x: MIN_SCALED_SD59x18, y: 0.000000000000000001e18, expected: MIN_WHOLE_SD59x18 }));
         sets.push(set({ x: -1e24, y: 1e18, expected: -1e24 }));
         sets.push(set({ x: -2503e18, y: 918882.11e18, expected: -0.002723962054283546e18 }));
         sets.push(set({ x: -772.05e18, y: 199.98e18, expected: -3_860636063606360636 }));
@@ -187,7 +184,7 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
         sets.push(set({ x: 772.05e18, y: -199.98e18, expected: -3_860636063606360636 }));
         sets.push(set({ x: 2503e18, y: -918882.11e18, expected: -0.002723962054283546e18 }));
         sets.push(set({ x: 1e24, y: -1e18, expected: -1e24 }));
-        sets.push(set({ x: MAX_SD59x18_DIV_BY_SCALE, y: 1, expected: MAX_WHOLE_SD59x18 }));
+        sets.push(set({ x: MIN_SCALED_SD59x18, y: 0.000000000000000001e18, expected: MAX_WHOLE_SD59x18 }));
         return sets;
     }
 
@@ -198,7 +195,7 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
         DenominatorNotMinSD59x18
         NumeratorNotZero
         NumeratorNotMinSD59x18
-        ResultNotOverflow
+        ResultNotOverflowSD59x18
     {
         SD59x18 actual = div(s.x, s.y);
         assertEq(actual, s.expected);
