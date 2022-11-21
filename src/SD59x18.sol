@@ -209,13 +209,13 @@ function ceil(SD59x18 x) pure returns (SD59x18 result) {
 /// separately.
 ///
 /// Requirements:
-/// - All from `Helpers/mulDiv`.
+/// - All from `Core/mulDiv`.
 /// - None of the inputs can be `MIN_SD59x18`.
 /// - The denominator cannot be zero.
 /// - The result must fit within int256.
 ///
 /// Caveats:
-/// - All from `Helpers/mulDiv`.
+/// - All from `Core/mulDiv`.
 ///
 /// @param x The numerator as an SD59x18 number.
 /// @param y The denominator as an SD59x18 number.
@@ -616,12 +616,12 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
 /// is always 1e18.
 ///
 /// Requirements:
-/// - All from `Helpers/mulDiv18`.
+/// - All from `Core/mulDiv18`.
 /// - None of the inputs can be `MIN_SD59x18`.
 /// - The result must fit within `MAX_SD59x18`.
 ///
 /// Caveats:
-/// - To understand how this works in detail, see the NatSpec comments in `Helpers/mulDivSigned`.
+/// - To understand how this works in detail, see the NatSpec comments in `Core/mulDivSigned`.
 ///
 /// @param x The multiplicand as an SD59x18 number.
 /// @param y The multiplier as an SD59x18 number.
@@ -691,11 +691,11 @@ function pow(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 /// @dev See https://en.wikipedia.org/wiki/Exponentiation_by_squaring
 ///
 /// Requirements:
-/// - All from `abs` and `Helpers/mulDiv18`.
+/// - All from `abs` and `Core/mulDiv18`.
 /// - The result must fit within `MAX_SD59x18`.
 ///
 /// Caveats:
-/// - All from `Helpers/mulDiv18`.
+/// - All from `Core/mulDiv18`.
 /// - Assumes 0^0 is 1.
 ///
 /// @param x The base as an SD59x18 number.

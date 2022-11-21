@@ -448,7 +448,7 @@ function log2(UD60x18 x) pure returns (UD60x18 result) {
 }
 
 /// @notice Multiplies two UD60x18 numbers together, returning a new UD60x18 number.
-/// @dev See the documentation for the `Helpers/mulDiv18` function.
+/// @dev See the documentation for the `Core/mulDiv18` function.
 /// @param x The multiplicand as an UD60x18 number.
 /// @param y The multiplier as an UD60x18 number.
 /// @return result The product as an UD60x18 number.
@@ -491,7 +491,7 @@ function pow(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// - The result must fit within `MAX_UD60x18`.
 ///
 /// Caveats:
-/// - All from "Helpers/mulDiv18".
+/// - All from "Core/mulDiv18".
 /// - Assumes 0^0 is 1.
 ///
 /// @param x The base as an UD60x18 number.

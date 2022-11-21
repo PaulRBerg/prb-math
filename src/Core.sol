@@ -80,7 +80,7 @@ function msb(uint256 x) pure returns (uint256 result) {
 
 /// @notice Calculates floor(x*y÷denominator) with full precision.
 ///
-/// @dev Credit to Remco Bloemen under MIT license https://xn--2-umb.com/21/muldiv.
+/// @dev Credits to Remco Bloemen under MIT license https://xn--2-umb.com/21/muldiv.
 ///
 /// Requirements:
 /// - The denominator cannot be zero.
@@ -524,8 +524,9 @@ function prbExp2(uint256 x) pure returns (uint256 result) {
     }
 }
 
-/// @notice Calculates the square root of x, rounding down.
+/// @notice Calculates the square root of x, rounding down if x is not a perfect square.
 /// @dev Uses the Babylonian method https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Babylonian_method.
+/// Credits to OpenZeppelin for the explanations in code comments below.
 ///
 /// Caveats:
 /// - This function does not work with fixed-point numbers.
@@ -533,12 +534,33 @@ function prbExp2(uint256 x) pure returns (uint256 result) {
 /// @param x The uint256 number for which to calculate the square root.
 /// @return result The result as an uint256.
 function prbSqrt(uint256 x) pure returns (uint256 result) {
-    // Equivalent to "x == 0" but faster.
-    if (x > 0 == false) {
+    if (x == 0) {
         return 0;
     }
 
-    // Set the initial guess to the least power of two that is greater than or equal to sqrt(x).
+    // For our first guess, we get the biggest power of 2 which is smaller than the square root of x.
+    //
+    // We know that the "msb" (most significant bit) of x is a power of 2 such that we have:
+    //
+    // $$
+    // msb(x) <= x <= 2*msb(x)$
+    // $$
+    //
+    // We write $msb(x)$ as $2^k$ and we get:
+    //
+    // $$
+    // k = log_2(x)
+    // $$
+    //
+    // Thus we can write the initial inequality as:
+    //
+    // $$
+    // 2^{log_2(x)} <= x <= 2*2^{log_2(x)+1} \\
+    // sqrt(2^k) <= sqrt(x) < sqrt(2^{k+1}) \\
+    // 2^{k/2} <= sqrt(x) < 2^{(k+1)/2} <= 2^{(k/2)+1}
+    // $$
+    //
+    // Consequently, $2^{log_2(x) /2}` is a good first approximation of sqrt(x) with at least one correct bit.
     uint256 xAux = uint256(x);
     result = 1;
     if (xAux >= 2**128) {
@@ -569,9 +591,11 @@ function prbSqrt(uint256 x) pure returns (uint256 result) {
         result <<= 1;
     }
 
-    // The operations can never overflow because the result is max 2^127 when it enters this block.
+    // At this point, `result` is an estimation with at least one bit of precision. We know the true value has at
+    // most 128 bits, since  it is the square root of a uint256. Newton's method converges quadratically (precision
+    // doubles at every iteration). We thus need at most 7 iteration to turn our partial result with one bit of
+    // precision into the expected uint128 result.
     unchecked {
-        // Seven iterations should be enough
         result = (result + x / result) >> 1;
         result = (result + x / result) >> 1;
         result = (result + x / result) >> 1;
@@ -580,7 +604,7 @@ function prbSqrt(uint256 x) pure returns (uint256 result) {
         result = (result + x / result) >> 1;
         result = (result + x / result) >> 1;
 
-        // Round down the result.
+        // Round down the result in case x is not a perfect square.
         uint256 roundedDownResult = x / result;
         if (result >= roundedDownResult) {
             result = roundedDownResult;
