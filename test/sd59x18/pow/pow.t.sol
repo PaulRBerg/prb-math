@@ -76,21 +76,21 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         _;
     }
 
-    function greaterThanMaxPermittedSets() internal returns (Set[] memory) {
+    function exponentGreaterThanMaxPermittedSets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: MAX_PERMITTED.add(sd(1)), y: 1e18, expected: NIL }));
-        sets.push(set({ x: MAX_SD59x18, y: 1e18, expected: NIL }));
+        sets.push(set({ x: MAX_PERMITTED.add(sd(1)), y: 1e18, expected: sd(192e18) }));
+        sets.push(set({ x: MAX_SD59x18, y: 1e18, expected: sd(192e18) }));
         return sets;
     }
 
     function testCannotPow__ExponentGreaterThanOrEqualToMaxPermitted()
         external
-        parameterizedTest(greaterThanMaxPermittedSets())
+        parameterizedTest(exponentGreaterThanMaxPermittedSets())
         BaseNotZero
         BasePositive
         ExponentNotZero
     {
-        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__Exp2InputTooBig.selector, sd(192e18)));
+        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__Exp2InputTooBig.selector, s.expected));
         pow(s.x, s.y);
     }
 
