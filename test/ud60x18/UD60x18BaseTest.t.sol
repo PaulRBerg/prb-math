@@ -13,6 +13,9 @@ abstract contract UD60x18__BaseTest is PRBMath__BaseTest {
                                       CONSTANTS
     //////////////////////////////////////////////////////////////////////////*/
 
+    UD60x18 internal constant MAX_SCALED_UD60x18 =
+        UD60x18.wrap(115792089237316195423570985008687907853269984665640564039457);
+
     /// @dev This is needed to be passed as the "expected" argument. The "set" function cannot be overridden
     /// to have two implementations that each has two "int256" arguments.
     UD60x18 internal constant NIL = ZERO;
