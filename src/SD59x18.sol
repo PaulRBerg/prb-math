@@ -173,7 +173,7 @@ function avg(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     } else {
         // We need to add 1 if both x and y are odd to account for the double 0.5 remainder that is truncated after shifting.
         // The right part is equivalent to "sum + x & y & 1".
-        result = sum.uncheckedAdd(x.and(SD59x18.unwrap(y)).and(1));
+        result = sum.uncheckedAdd(x.and(unwrap(y)).and(1));
     }
 }
 
@@ -226,8 +226,8 @@ function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     }
 
     // Unwrap x and y.
-    int256 xInt = SD59x18.unwrap(x);
-    int256 yInt = SD59x18.unwrap(y);
+    int256 xInt = unwrap(x);
+    int256 yInt = unwrap(y);
 
     // Get hold of the absolute values of x and y.
     uint256 ax;
@@ -245,11 +245,11 @@ function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 
     // Check if x and y have the same sign via "(x ^ y) > -1".
     // This works thanks to two's complement, the left-most bit is the sign bit.
-    bool sameSign = x.xor(y).gt(SD59x18.wrap(-1));
+    bool sameSign = x.xor(y).gt(wrap(-1));
 
     // If the inputs don't have the same sign, the result should be negative. Otherwise, it should be positive.
     unchecked {
-        result = SD59x18.wrap(sameSign ? int256(rAbs) : -int256(rAbs));
+        result = wrap(sameSign ? int256(rAbs) : -int256(rAbs));
     }
 }
 
@@ -272,7 +272,7 @@ function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 /// @param x The exponent as an SD59x18 number.
 /// @return result The result as an SD59x18 number.
 function exp(SD59x18 x) pure returns (SD59x18 result) {
-    int256 xInt = SD59x18.unwrap(x);
+    int256 xInt = unwrap(x);
     // Without this check, the value passed to `exp2` would be less than -59.794705707972522261.
     if (xInt < -41_446531673892822322) {
         return ZERO;
@@ -308,7 +308,7 @@ function exp(SD59x18 x) pure returns (SD59x18 result) {
 /// @param x The exponent as an SD59x18 number.
 /// @return result The result as an SD59x18 number.
 function exp2(SD59x18 x) pure returns (SD59x18 result) {
-    int256 xInt = SD59x18.unwrap(x);
+    int256 xInt = unwrap(x);
     if (x.lt(ZERO)) {
         // 2^59.794705707972522262 is the maximum number whose inverse does not truncate down to zero.
         if (xInt < -59_794705707972522261) {
@@ -317,7 +317,7 @@ function exp2(SD59x18 x) pure returns (SD59x18 result) {
 
         // Do the fixed-point inversion inline to save gas. 1e36 is SCALE * SCALE.
         // Unchecked unary gets the absolute value of x.
-        result = SD59x18.wrap(1e36).uncheckedDiv(exp2(uncheckedUnary(x)));
+        result = wrap(1e36).uncheckedDiv(exp2(uncheckedUnary(x)));
     } else {
         // 2^192 doesn't fit within the 192.64-bit format used internally in this function.
         if (xInt >= 192e18) {
@@ -325,10 +325,10 @@ function exp2(SD59x18 x) pure returns (SD59x18 result) {
         }
 
         // Convert x to the 192.64-bit fixed-point format.
-        uint256 x_192x64 = uint256(SD59x18.unwrap(x.lshift(64).uncheckedDiv(SCALE)));
+        uint256 x_192x64 = uint256(unwrap(x.lshift(64).uncheckedDiv(SCALE)));
 
         // It is safe to convert the result to SD59x18 with no checks because the maximum input allowed in this function is 192.
-        result = SD59x18.wrap(int256(prbExp2(x_192x64)));
+        result = wrap(int256(prbExp2(x_192x64)));
     }
 }
 
@@ -395,8 +395,8 @@ function gm(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 
     // We don't need to multiply the result by `SCALE` here because the x*y product had picked up a factor of `SCALE`
     // during multiplication. See the comments within the `prbSqrt` function.
-    uint256 resultUint = prbSqrt(uint256(SD59x18.unwrap(xy)));
-    result = SD59x18.wrap(int256(resultUint));
+    uint256 resultUint = prbSqrt(uint256(unwrap(xy)));
+    result = wrap(int256(resultUint));
 }
 
 /// @notice Calculates 1 / x, rounding toward zero.
@@ -408,7 +408,7 @@ function gm(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 /// @return result The inverse as an SD59x18 number.
 function inv(SD59x18 x) pure returns (SD59x18 result) {
     // 1e36 is SCALE * SCALE.
-    result = SD59x18.wrap(1e36).uncheckedDiv(x);
+    result = wrap(1e36).uncheckedDiv(x);
 }
 
 /// @notice Calculates the natural logarithm of x.
@@ -568,9 +568,9 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
     // This works because $log_2{x} = -log_2{\frac{1}{x}}$.
     SD59x18 sign;
     if (x.gte(SCALE)) {
-        sign = SD59x18.wrap(1);
+        sign = wrap(1);
     } else {
-        sign = SD59x18.wrap(-1);
+        sign = wrap(-1);
         // Do the fixed-point inversion inline to save gas. The numerator is SCALE * SCALE.
         assembly {
             x := div(1000000000000000000000000000000000000, x)
@@ -578,11 +578,11 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
     }
 
     // Calculate the integer part of the logarithm and add it to the result and finally calculate $y = x * 2^(-n)$.
-    uint256 n = msb(uint256(SD59x18.unwrap(x.uncheckedDiv(SCALE))));
+    uint256 n = msb(uint256(unwrap(x.uncheckedDiv(SCALE))));
 
     // This is the integer part of the logarithm as an SD59x18 number. The operation can't overflow
     // because n is maximum 255, SCALE is 1e18 and sign is either 1 or -1.
-    result = SD59x18.wrap(int256(n)).uncheckedMul(SCALE);
+    result = wrap(int256(n)).uncheckedMul(SCALE);
 
     // This is $y = x * 2^{-n}$.
     SD59x18 y = x.rshift(n);
@@ -594,7 +594,7 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
 
     // Calculate the fractional part via the iterative approximation.
     // The "delta >>= 1" part is equivalent to "delta /= 2", but shifting bits is faster.
-    SD59x18 DOUBLE_SCALE = SD59x18.wrap(2e18);
+    SD59x18 DOUBLE_SCALE = wrap(2e18);
     for (SD59x18 delta = HALF_SCALE; delta.gt(ZERO); delta = delta.rshift(1)) {
         y = y.uncheckedMul(y).uncheckedDiv(SCALE);
 
@@ -632,8 +632,8 @@ function mul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     }
 
     // Unwrap x and y.
-    int256 xInt = SD59x18.unwrap(x);
-    int256 yInt = SD59x18.unwrap(y);
+    int256 xInt = unwrap(x);
+    int256 yInt = unwrap(y);
 
     // Get hold of the absolute values of x and y.
     uint256 ax;
@@ -650,11 +650,11 @@ function mul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 
     // Check if x and y have the same sign via "(x ^ y) > -1".
     // This works thanks to two's complement, the left-most bit is the sign bit.
-    bool sameSign = x.xor(y).gt(SD59x18.wrap(-1));
+    bool sameSign = x.xor(y).gt(wrap(-1));
 
     // If the inputs have the same sign, the result should be negative. Otherwise, it should be positive.
     unchecked {
-        result = SD59x18.wrap(sameSign ? int256(rAbs) : -int256(rAbs));
+        result = wrap(sameSign ? int256(rAbs) : -int256(rAbs));
     }
 }
 
@@ -702,7 +702,7 @@ function pow(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 /// @param y The exponent as an uint256.
 /// @return result The result as an SD59x18 number.
 function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
-    uint256 xAbs = uint256(SD59x18.unwrap(abs(x)));
+    uint256 xAbs = uint256(unwrap(abs(x)));
 
     // Calculate the first iteration of the loop in advance.
     uint256 rAbs = y & 1 > 0 ? xAbs : SCALE_UINT;
@@ -724,7 +724,7 @@ function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
     }
 
     // Is the base negative and the exponent an odd number?
-    result = SD59x18.wrap(int256(rAbs));
+    result = wrap(int256(rAbs));
     bool isNegative = x.lt(ZERO) && y & 1 == 1;
     if (isNegative) {
         result = uncheckedUnary(result);
@@ -750,8 +750,8 @@ function sqrt(SD59x18 x) pure returns (SD59x18 result) {
 
     // Multiply x by `SCALE` to account for the factor of `SCALE` that is picked up when multiplying two SD59x18
     // numbers together (in this case, the two numbers are both the square root).
-    uint256 resultUint = prbSqrt(uint256(SD59x18.unwrap(x.uncheckedMul(SCALE))));
-    result = SD59x18.wrap(int256(resultUint));
+    uint256 resultUint = prbSqrt(uint256(unwrap(x.uncheckedMul(SCALE))));
+    result = wrap(int256(resultUint));
 }
 
 /*//////////////////////////////////////////////////////////////////////////
@@ -780,95 +780,95 @@ using {
 
 /// @notice Implements the checked addition operation (+) in the SD59x18 type.
 function add(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
-    return SD59x18.wrap(SD59x18.unwrap(x) + SD59x18.unwrap(y));
+    return wrap(unwrap(x) + unwrap(y));
 }
 
 /// @notice Implements the AND (&) bitwise operation in the SD59x18 type.
 function and(SD59x18 x, int256 bits) pure returns (SD59x18 result) {
-    return SD59x18.wrap(SD59x18.unwrap(x) & bits);
+    return wrap(unwrap(x) & bits);
 }
 
 /// @notice Implements the equal (=) operation in the SD59x18 type.
 function eq(SD59x18 x, SD59x18 y) pure returns (bool result) {
-    result = SD59x18.unwrap(x) == SD59x18.unwrap(y);
+    result = unwrap(x) == unwrap(y);
 }
 
 /// @notice Implements the greater than operation (>) in the SD59x18 type.
 function gt(SD59x18 x, SD59x18 y) pure returns (bool result) {
-    result = SD59x18.unwrap(x) > SD59x18.unwrap(y);
+    result = unwrap(x) > unwrap(y);
 }
 
 /// @notice Implements the greater than or equal to operation (>=) in the SD59x18 type.
 function gte(SD59x18 x, SD59x18 y) pure returns (bool result) {
-    result = SD59x18.unwrap(x) >= SD59x18.unwrap(y);
+    result = unwrap(x) >= unwrap(y);
 }
 
 /// @notice Implements a zero comparison check function in the SD59x18 type.
 function isZero(SD59x18 x) pure returns (bool result) {
-    result = SD59x18.unwrap(x) == 0;
+    result = unwrap(x) == 0;
 }
 
 /// @notice Implements the lower than operation (<) in the SD59x18 type.
 function lt(SD59x18 x, SD59x18 y) pure returns (bool result) {
-    result = SD59x18.unwrap(x) < SD59x18.unwrap(y);
+    result = unwrap(x) < unwrap(y);
 }
 
 /// @notice Implements the lower than or equal to operation (<=) in the SD59x18 type.
 function lte(SD59x18 x, SD59x18 y) pure returns (bool result) {
-    result = SD59x18.unwrap(x) <= SD59x18.unwrap(y);
+    result = unwrap(x) <= unwrap(y);
 }
 
 /// @notice Implements the left shift operation (<<) in the SD59x18 type.
 function lshift(SD59x18 x, uint256 bits) pure returns (SD59x18 result) {
-    result = SD59x18.wrap(SD59x18.unwrap(x) << bits);
+    result = wrap(unwrap(x) << bits);
 }
 
 /// @notice Implements the not equal operation (!=) in the SD59x18 type.
 function neq(SD59x18 x, SD59x18 y) pure returns (bool result) {
-    result = SD59x18.unwrap(x) != SD59x18.unwrap(y);
+    result = unwrap(x) != unwrap(y);
 }
 
 /// @notice Implements the right shift operation (>>) in the SD59x18 type.
 function rshift(SD59x18 x, uint256 bits) pure returns (SD59x18 result) {
-    result = SD59x18.wrap(SD59x18.unwrap(x) >> bits);
+    result = wrap(unwrap(x) >> bits);
 }
 
 /// @notice Implements the checked subtraction operation (-) in the SD59x18 type.
 function sub(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
-    result = SD59x18.wrap(SD59x18.unwrap(x) - SD59x18.unwrap(y));
+    result = wrap(unwrap(x) - unwrap(y));
 }
 
 /// @notice Implements the unchecked addition operation (+) in the SD59x18 type.
 function uncheckedAdd(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     unchecked {
-        result = SD59x18.wrap(SD59x18.unwrap(x) + SD59x18.unwrap(y));
+        result = wrap(unwrap(x) + unwrap(y));
     }
 }
 
 /// @notice Implements the unchecked modulo operation (%) in the SD59x18 type.
 function uncheckedMod(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     unchecked {
-        result = SD59x18.wrap(SD59x18.unwrap(x) % SD59x18.unwrap(y));
+        result = wrap(unwrap(x) % unwrap(y));
     }
 }
 
 /// @notice Implements the unchecked subtraction operation (-) in the SD59x18 type.
 function uncheckedSub(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     unchecked {
-        result = SD59x18.wrap(SD59x18.unwrap(x) - SD59x18.unwrap(y));
+        result = wrap(unwrap(x) - unwrap(y));
     }
 }
 
 /// @notice Implements the unchecked unary minus operation (-) in the SD59x18 type.
 function uncheckedUnary(SD59x18 x) pure returns (SD59x18 result) {
     unchecked {
-        result = SD59x18.wrap(-SD59x18.unwrap(x));
+        result = wrap(-unwrap(x));
     }
 }
 
 /// @notice Implements the XOR (^) bitwise operation in the SD59x18 type.
 function xor(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
-    result = SD59x18.wrap(SD59x18.unwrap(x) ^ SD59x18.unwrap(y));
+    result = wrap(unwrap(x) ^ unwrap(y));
 }
 
 /*//////////////////////////////////////////////////////////////////////////
@@ -879,18 +879,18 @@ function xor(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 /// @param x The SD59x18 number to convert.
 /// @return result The same number in basic integer form.
 function fromSD59x18(SD59x18 x) pure returns (int256 result) {
-    result = SD59x18.unwrap(x.uncheckedDiv(SCALE));
+    result = unwrap(x.uncheckedDiv(SCALE));
 }
 
 /// @notice Wraps a signed integer into the SD59x18 type.
 function sd(int256 x) pure returns (SD59x18 result) {
-    result = SD59x18.wrap(x);
+    result = wrap(x);
 }
 
 /// @notice Wraps a signed integer into the SD59x18 type.
 /// @dev Alias for the "sd" function defined above.
 function sd59x18(int256 x) pure returns (SD59x18 result) {
-    result = SD59x18.wrap(x);
+    result = wrap(x);
 }
 
 /// @notice Converts a number from basic integer form to SD59x18.
@@ -909,8 +909,18 @@ function toSD59x18(int256 x) pure returns (SD59x18 result) {
         revert PRBMathSD59x18__ToSD59x18Overflow(x);
     }
     unchecked {
-        result = SD59x18.wrap(x * SCALE_INT);
+        result = wrap(x * SCALE_INT);
     }
+}
+
+/// @notice Unwraps an SD59x18 number into the underlying signed integer.
+function unwrap(SD59x18 x) pure returns (int256 result) {
+    result = SD59x18.unwrap(x);
+}
+
+/// @notice Wraps a signed integer into the SD59x18 type.
+function wrap(int256 x) pure returns (SD59x18 result) {
+    result = SD59x18.wrap(x);
 }
 
 /*//////////////////////////////////////////////////////////////////////////
@@ -922,13 +932,13 @@ using { uncheckedDiv, uncheckedMul } for SD59x18;
 /// @notice Implements the unchecked standard division operation in the SD59x18 type.
 function uncheckedDiv(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     unchecked {
-        result = SD59x18.wrap(SD59x18.unwrap(x) / SD59x18.unwrap(y));
+        result = wrap(unwrap(x) / unwrap(y));
     }
 }
 
 /// @notice Implements the unchecked standard multiplication operation in the SD59x18 type.
 function uncheckedMul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     unchecked {
-        result = SD59x18.wrap(SD59x18.unwrap(x) * SD59x18.unwrap(y));
+        result = wrap(unwrap(x) * unwrap(y));
     }
 }

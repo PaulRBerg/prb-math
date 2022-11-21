@@ -3,27 +3,15 @@ pragma solidity >=0.8.13;
 
 import { stdError } from "forge-std/StdError.sol";
 
-import {
-    E,
-    MAX_SD59x18,
-    MAX_WHOLE_SD59x18,
-    MIN_SD59x18,
-    MIN_WHOLE_SD59x18,
-    PI,
-    PRBMathSD59x18__MulInputTooSmall,
-    PRBMathSD59x18__MulOverflow,
-    SD59x18,
-    ZERO,
-    mul
-} from "src/SD59x18.sol";
+import "src/SD59x18.sol";
 import { PRBMath__MulDiv18Overflow } from "src/Core.sol";
 import { SD59x18__BaseTest } from "../SD59x18BaseTest.t.sol";
 
 contract SD59x18__MulTest is SD59x18__BaseTest {
     function oneOperandZeroSets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: MIN_SD59x18.add(sd(1)), y: 0, expected: 0 }));
-        sets.push(set({ x: 0, y: MIN_SD59x18.add(sd(1)), expected: 0 }));
+        sets.push(set({ x: MIN_SD59x18.add(wrap(1)), y: 0, expected: 0 }));
+        sets.push(set({ x: 0, y: MIN_SD59x18.add(wrap(1)), expected: 0 }));
         sets.push(set({ x: 0, y: MAX_SD59x18, expected: 0 }));
         sets.push(set({ x: MAX_SD59x18, y: 0, expected: 0 }));
         return sets;
@@ -58,14 +46,14 @@ contract SD59x18__MulTest is SD59x18__BaseTest {
 
     function testCannotMul__ResultOverflowSD59x18_1() external NeitherOperandZero NeitherOperandMinSD59x18 {
         SD59x18 x = NEGATIVE_SQRT_MAX_SD59x18;
-        SD59x18 y = NEGATIVE_SQRT_MAX_SD59x18.sub(sd(1));
+        SD59x18 y = NEGATIVE_SQRT_MAX_SD59x18.sub(wrap(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__MulOverflow.selector, x, y));
         mul(x, y);
     }
 
     function testCannotMul__ResultOverflowSD59x18_2() external NeitherOperandZero NeitherOperandMinSD59x18 {
         SD59x18 x = SQRT_MAX_SD59x18;
-        SD59x18 y = SQRT_MAX_SD59x18.add(sd(1));
+        SD59x18 y = SQRT_MAX_SD59x18.add(wrap(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__MulOverflow.selector, x, y));
         mul(x, y);
     }
@@ -76,12 +64,12 @@ contract SD59x18__MulTest is SD59x18__BaseTest {
 
     function resultOverflowUint256Sets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: MIN_SD59x18.add(sd(1)), y: MIN_SD59x18.add(sd(1)), expected: NIL }));
+        sets.push(set({ x: MIN_SD59x18.add(wrap(1)), y: MIN_SD59x18.add(wrap(1)), expected: NIL }));
         sets.push(set({ x: MIN_WHOLE_SD59x18, y: MIN_WHOLE_SD59x18, expected: NIL }));
         sets.push(
-            set({ x: NEGATIVE_SQRT_MAX_UD60x18.sub(sd(1)), y: NEGATIVE_SQRT_MAX_UD60x18.sub(sd(1)), expected: NIL })
+            set({ x: NEGATIVE_SQRT_MAX_UD60x18.sub(wrap(1)), y: NEGATIVE_SQRT_MAX_UD60x18.sub(wrap(1)), expected: NIL })
         );
-        sets.push(set({ x: SQRT_MAX_UD60x18.add(sd(1)), y: SQRT_MAX_UD60x18.add(sd(1)), expected: NIL }));
+        sets.push(set({ x: SQRT_MAX_UD60x18.add(wrap(1)), y: SQRT_MAX_UD60x18.add(wrap(1)), expected: NIL }));
         sets.push(set({ x: MAX_WHOLE_SD59x18, y: MAX_WHOLE_SD59x18, expected: NIL }));
         sets.push(set({ x: MAX_SD59x18, y: MAX_SD59x18, expected: NIL }));
         return sets;
@@ -111,10 +99,10 @@ contract SD59x18__MulTest is SD59x18__BaseTest {
     function operandsSameSignSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(
-            set({ x: MIN_SD59x18.add(sd(0.5e18 + 1)), y: -0.000000000000000001e18, expected: MAX_SCALED_SD59x18 })
+            set({ x: MIN_SD59x18.add(wrap(0.5e18 + 1)), y: -0.000000000000000001e18, expected: MAX_SCALED_SD59x18 })
         );
         sets.push(
-            set({ x: MIN_WHOLE_SD59x18.add(sd(0.5e18)), y: -0.000000000000000001e18, expected: MAX_SCALED_SD59x18 })
+            set({ x: MIN_WHOLE_SD59x18.add(wrap(0.5e18)), y: -0.000000000000000001e18, expected: MAX_SCALED_SD59x18 })
         );
         sets.push(set({ x: -1e24, y: -1e20, expected: 1e26 }));
         sets.push(set({ x: -12_983.989e18, y: -782.99e18, expected: 1_016_6333.54711e18 }));
@@ -145,9 +133,9 @@ contract SD59x18__MulTest is SD59x18__BaseTest {
         sets.push(set({ x: 12_983.989e18, y: 782.99e18, expected: 1_016_6333.54711e18 }));
         sets.push(set({ x: 1e24, y: 1e20, expected: 1e26 }));
         sets.push(
-            set({ x: MAX_WHOLE_SD59x18.sub(sd(0.5e18)), y: 0.000000000000000001e18, expected: MAX_SCALED_SD59x18 })
+            set({ x: MAX_WHOLE_SD59x18.sub(wrap(0.5e18)), y: 0.000000000000000001e18, expected: MAX_SCALED_SD59x18 })
         );
-        sets.push(set({ x: MAX_SD59x18.sub(sd(0.5e18)), y: 0.000000000000000001e18, expected: MAX_SCALED_SD59x18 }));
+        sets.push(set({ x: MAX_SD59x18.sub(wrap(0.5e18)), y: 0.000000000000000001e18, expected: MAX_SCALED_SD59x18 }));
         return sets;
     }
 
@@ -166,10 +154,10 @@ contract SD59x18__MulTest is SD59x18__BaseTest {
     function operandsDifferentSignsSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(
-            set({ x: MIN_SD59x18.add(sd(0.5e18 + 1)), y: 0.000000000000000001e18, expected: MIN_SCALED_SD59x18 })
+            set({ x: MIN_SD59x18.add(wrap(0.5e18 + 1)), y: 0.000000000000000001e18, expected: MIN_SCALED_SD59x18 })
         );
         sets.push(
-            set({ x: MIN_WHOLE_SD59x18.add(sd(0.5e18)), y: 0.000000000000000001e18, expected: MIN_SCALED_SD59x18 })
+            set({ x: MIN_WHOLE_SD59x18.add(wrap(0.5e18)), y: 0.000000000000000001e18, expected: MIN_SCALED_SD59x18 })
         );
         sets.push(set({ x: -1e24, y: 1e20, expected: -1e26 }));
         sets.push(set({ x: -12_983.989e18, y: 782.99e18, expected: -1_016_6333.54711e18 }));
@@ -200,9 +188,9 @@ contract SD59x18__MulTest is SD59x18__BaseTest {
         sets.push(set({ x: 12_983.989e18, y: -782.99e18, expected: -1_016_6333.54711e18 }));
         sets.push(set({ x: 1e24, y: -1e20, expected: -1e26 }));
         sets.push(
-            set({ x: MAX_WHOLE_SD59x18.sub(sd(0.5e18)), y: -0.000000000000000001e18, expected: MIN_SCALED_SD59x18 })
+            set({ x: MAX_WHOLE_SD59x18.sub(wrap(0.5e18)), y: -0.000000000000000001e18, expected: MIN_SCALED_SD59x18 })
         );
-        sets.push(set({ x: MAX_SD59x18.sub(sd(0.5e18)), y: -0.000000000000000001e18, expected: MIN_SCALED_SD59x18 }));
+        sets.push(set({ x: MAX_SD59x18.sub(wrap(0.5e18)), y: -0.000000000000000001e18, expected: MIN_SCALED_SD59x18 }));
         return sets;
     }
 

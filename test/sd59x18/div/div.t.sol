@@ -3,19 +3,7 @@ pragma solidity >=0.8.13;
 
 import { stdError } from "forge-std/StdError.sol";
 
-import {
-    MAX_SD59x18,
-    MAX_WHOLE_SD59x18,
-    MIN_SD59x18,
-    MIN_WHOLE_SD59x18,
-    PI,
-    PRBMathSD59x18__DivInputTooSmall,
-    PRBMathSD59x18__DivOverflow,
-    SCALE,
-    SD59x18,
-    ZERO,
-    div
-} from "src/SD59x18.sol";
+import "src/SD59x18.sol";
 import { SD59x18__BaseTest } from "../SD59x18BaseTest.t.sol";
 
 contract SD59x18__DivTest is SD59x18__BaseTest {
@@ -91,7 +79,7 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
         NumeratorNotZero
         NumeratorNotMinSD59x18
     {
-        SD59x18 x = MIN_SCALED_SD59x18.sub(sd(1));
+        SD59x18 x = MIN_SCALED_SD59x18.sub(wrap(1));
         SD59x18 y = sd(0.000000000000000001e18);
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__DivOverflow.selector, x, y));
         div(x, y);
@@ -118,7 +106,7 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
         sets.push(set({ x: -1e13, y: -1e13, expected: 1e18 }));
         sets.push(set({ x: -0.000000000000000001e18, y: -1e18, expected: 0.000000000000000001e18 }));
         sets.push(set({ x: -0.000000000000000001e18, y: -1.000000000000000001e18, expected: 0 }));
-        sets.push(set({ x: -0.000000000000000001e18, y: MIN_SD59x18.add(sd(1)), expected: 0 }));
+        sets.push(set({ x: -0.000000000000000001e18, y: MIN_SD59x18.add(wrap(1)), expected: 0 }));
         sets.push(set({ x: 0.000000000000000001e18, y: MAX_SD59x18, expected: 0 }));
         sets.push(set({ x: 0.000000000000000001e18, y: 1.000000000000000001e18, expected: 0 }));
         sets.push(set({ x: 0.000000000000000001e18, y: 1e18, expected: 0.000000000000000001e18 }));
@@ -169,7 +157,7 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
         sets.push(set({ x: -0.000000000000000001e18, y: 1e18, expected: -0.000000000000000001e18 }));
         sets.push(set({ x: -0.000000000000000001e18, y: 1.000000000000000001e18, expected: 0 }));
         sets.push(set({ x: -0.000000000000000001e18, y: MAX_SD59x18, expected: 0 }));
-        sets.push(set({ x: 0.000000000000000001e18, y: MIN_SD59x18.add(sd(1)), expected: 0 }));
+        sets.push(set({ x: 0.000000000000000001e18, y: MIN_SD59x18.add(wrap(1)), expected: 0 }));
         sets.push(set({ x: 0.000000000000000001e18, y: -1.000000000000000001e18, expected: 0 }));
         sets.push(set({ x: 0.000000000000000001e18, y: -1e18, expected: -0.000000000000000001e18 }));
         sets.push(set({ x: 1e13, y: -1e13, expected: -1e18 }));

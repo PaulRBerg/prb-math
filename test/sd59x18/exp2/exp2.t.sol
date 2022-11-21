@@ -1,16 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.13;
 
-import {
-    E,
-    MIN_SD59x18,
-    MIN_WHOLE_SD59x18,
-    PI,
-    PRBMathSD59x18__Exp2InputTooBig,
-    SD59x18,
-    ZERO,
-    exp2
-} from "src/SD59x18.sol";
+import "src/SD59x18.sol";
 import { SD59x18__BaseTest } from "../SD59x18BaseTest.t.sol";
 
 contract SD59x18__Exp2Test is SD59x18__BaseTest {
@@ -32,7 +23,7 @@ contract SD59x18__Exp2Test is SD59x18__BaseTest {
         delete sets;
         sets.push(set({ x: MIN_SD59x18, expected: 0 }));
         sets.push(set({ x: MIN_WHOLE_SD59x18, expected: 0 }));
-        sets.push(set({ x: MIN_PERMITTED.sub(sd(1)), expected: 0 }));
+        sets.push(set({ x: MIN_PERMITTED.sub(wrap(1)), expected: 0 }));
         return sets;
     }
 
@@ -73,7 +64,7 @@ contract SD59x18__Exp2Test is SD59x18__BaseTest {
     }
 
     function testCannotExp2__Positive__GreaterThanMaxPermitted() external NotZero {
-        SD59x18 x = MAX_PERMITTED.add(sd(1));
+        SD59x18 x = MAX_PERMITTED.add(wrap(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__Exp2InputTooBig.selector, x));
         exp2(x);
     }

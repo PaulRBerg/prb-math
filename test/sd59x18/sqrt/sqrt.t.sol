@@ -1,16 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.13;
 
-import {
-    E,
-    MAX_WHOLE_SD59x18,
-    PI,
-    PRBMathSD59x18__SqrtOverflow,
-    PRBMathSD59x18__SqrtNegativeInput,
-    SD59x18,
-    ZERO,
-    sqrt
-} from "src/SD59x18.sol";
+import "src/SD59x18.sol";
 import { SD59x18__BaseTest } from "../SD59x18BaseTest.t.sol";
 
 contract SD59x18__SqrtTest is SD59x18__BaseTest {
@@ -36,7 +27,7 @@ contract SD59x18__SqrtTest is SD59x18__BaseTest {
     }
 
     function testCannotSqrt__GreaterThanMaxPermitted() external NotZero Positive {
-        SD59x18 x = MAX_SCALED_SD59x18.add(sd(1));
+        SD59x18 x = MAX_SCALED_SD59x18.add(wrap(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__SqrtOverflow.selector, x));
         sqrt(x);
     }

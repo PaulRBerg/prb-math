@@ -1,19 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.13;
 
-import {
-    E,
-    MAX_SD59x18,
-    MAX_SD59x18_INT,
-    MAX_WHOLE_SD59x18,
-    MIN_SD59x18,
-    MIN_WHOLE_SD59x18,
-    PI,
-    PRBMathSD59x18__PowuOverflow,
-    SD59x18,
-    ZERO,
-    powu
-} from "src/SD59x18.sol";
+import "src/SD59x18.sol";
 import { PRBMath__MulDiv18Overflow } from "src/Core.sol";
 import { SD59x18__BaseTest } from "../SD59x18BaseTest.t.sol";
 
@@ -45,12 +33,12 @@ contract SD59x18__PowuTest is SD59x18__BaseTest {
 
     function exponentZeroSets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: MIN_SD59x18.add(sd(1)), expected: 1e18 }));
+        sets.push(set({ x: MIN_SD59x18.add(wrap(1)), expected: 1e18 }));
         sets.push(set({ x: NEGATIVE_PI, expected: 1e18 }));
         sets.push(set({ x: -1e18, expected: 1e18 }));
         sets.push(set({ x: 1e18, expected: 1e18 }));
         sets.push(set({ x: PI, expected: 1e18 }));
-        sets.push(set({ x: MAX_SD59x18.sub(sd(1)), expected: 1e18 }));
+        sets.push(set({ x: MAX_SD59x18.sub(wrap(1)), expected: 1e18 }));
         return sets;
     }
 
@@ -64,7 +52,7 @@ contract SD59x18__PowuTest is SD59x18__BaseTest {
     }
 
     function testCannotPowu__ResultOverflowUint256() external BaseNotZero ExponentNotZero {
-        SD59x18 x = MIN_SD59x18.add(sd(1));
+        SD59x18 x = MIN_SD59x18.add(wrap(1));
         uint256 y = 2;
         vm.expectRevert(
             abi.encodeWithSelector(
@@ -86,14 +74,14 @@ contract SD59x18__PowuTest is SD59x18__BaseTest {
         ExponentNotZero
         ResultDoesNotOverflowUint256
     {
-        SD59x18 x = NEGATIVE_SQRT_MAX_SD59x18.sub(sd(1));
+        SD59x18 x = NEGATIVE_SQRT_MAX_SD59x18.sub(wrap(1));
         uint256 y = 2;
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__PowuOverflow.selector, x, y));
         powu(x, y);
     }
 
     function testCannotPowu__ResultOverflowSD59x18() external BaseNotZero ExponentNotZero ResultDoesNotOverflowUint256 {
-        SD59x18 x = SQRT_MAX_SD59x18.add(sd(1));
+        SD59x18 x = SQRT_MAX_SD59x18.add(wrap(1));
         uint256 y = 2;
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__PowuOverflow.selector, x, y));
         powu(x, y);
@@ -105,7 +93,7 @@ contract SD59x18__PowuTest is SD59x18__BaseTest {
 
     function negativeBaseSets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: MIN_SD59x18.add(sd(1)), y: 1, expected: MIN_SD59x18.add(sd(1)) }));
+        sets.push(set({ x: MIN_SD59x18.add(wrap(1)), y: 1, expected: MIN_SD59x18.add(wrap(1)) }));
         sets.push(set({ x: MIN_WHOLE_SD59x18, y: 1, expected: MIN_WHOLE_SD59x18 }));
         sets.push(
             set({

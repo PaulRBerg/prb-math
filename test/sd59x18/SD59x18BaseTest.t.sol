@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.13;
 
+import "src/SD59x18.sol";
 import { console2 } from "forge-std/console2.sol";
 import { PRBMath__BaseTest } from "../PRBMathBaseTest.t.sol";
-import { SD59x18, ZERO } from "src/SD59x18.sol";
 
 /// @title SD59x18__BaseTest
 /// @author Paul Razvan Berg
@@ -67,15 +67,11 @@ abstract contract SD59x18__BaseTest is PRBMath__BaseTest {
     //////////////////////////////////////////////////////////////////////////*/
 
     function logSd(SD59x18 p0) internal view {
-        console2.logInt(SD59x18.unwrap(p0));
-    }
-
-    function sd(int256 x) internal pure returns (SD59x18 result) {
-        result = SD59x18.wrap(x);
+        console2.logInt(unwrap(p0));
     }
 
     function sdToUint(SD59x18 x) internal pure returns (uint256 result) {
-        result = uint256(SD59x18.unwrap(x));
+        result = uint256(unwrap(x));
     }
 
     function set(int256 x) internal pure returns (Set memory) {

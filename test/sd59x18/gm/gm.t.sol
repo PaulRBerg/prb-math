@@ -1,18 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.13;
 
-import {
-    E,
-    MAX_SD59x18,
-    MAX_WHOLE_SD59x18,
-    MIN_SD59x18,
-    MIN_WHOLE_SD59x18,
-    PI,
-    PRBMathSD59x18__GmOverflow,
-    PRBMathSD59x18__GmNegativeProduct,
-    SD59x18,
-    gm
-} from "src/SD59x18.sol";
+import "src/SD59x18.sol";
 import { SD59x18__BaseTest } from "../SD59x18BaseTest.t.sol";
 
 contract SD59x18__GmTest is SD59x18__BaseTest {
@@ -60,8 +49,8 @@ contract SD59x18__GmTest is SD59x18__BaseTest {
         delete sets;
         sets.push(set({ x: MIN_SD59x18, y: 0.000000000000000002e18, expected: NIL }));
         sets.push(set({ x: MIN_WHOLE_SD59x18, y: 0.000000000000000003e18, expected: NIL }));
-        sets.push(set({ x: NEGATIVE_SQRT_MAX_INT256, y: NEGATIVE_SQRT_MAX_INT256.sub(sd(1)), expected: NIL }));
-        sets.push(set({ x: SQRT_MAX_INT256.add(sd(1)), y: SQRT_MAX_INT256.add(sd(1)), expected: NIL }));
+        sets.push(set({ x: NEGATIVE_SQRT_MAX_INT256, y: NEGATIVE_SQRT_MAX_INT256.sub(wrap(1)), expected: NIL }));
+        sets.push(set({ x: SQRT_MAX_INT256.add(wrap(1)), y: SQRT_MAX_INT256.add(wrap(1)), expected: NIL }));
         sets.push(set({ x: MAX_WHOLE_SD59x18, y: 0.000000000000000003e18, expected: NIL }));
         sets.push(set({ x: MAX_SD59x18, y: 0.000000000000000002e18, expected: NIL }));
         return sets;

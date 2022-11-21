@@ -3,7 +3,7 @@ pragma solidity >=0.8.13;
 
 import { stdError } from "forge-std/StdError.sol";
 
-import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, SCALE_UINT, UD60x18, ZERO, mul } from "src/UD60x18.sol";
+import "src/UD60x18.sol";
 import { PRBMath__MulDiv18Overflow } from "src/Core.sol";
 import { UD60x18__BaseTest } from "../UD60x18BaseTest.t.sol";
 

@@ -1,15 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.13;
 
-import {
-    E,
-    PI,
-    PRBMathSD59x18__Exp2InputTooBig,
-    PRBMathSD59x18__LogInputTooSmall,
-    SD59x18,
-    ZERO,
-    pow
-} from "src/SD59x18.sol";
+import "src/SD59x18.sol";
 import { SD59x18__BaseTest } from "../SD59x18BaseTest.t.sol";
 
 contract SD59x18__PowTest is SD59x18__BaseTest {
@@ -69,7 +61,7 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
     }
 
     function testCannotPow__ExponentGreaterThanMaxPermitted() external BaseNotZero BasePositive ExponentNotZero {
-        SD59x18 x = MAX_PERMITTED.add(sd(1));
+        SD59x18 x = MAX_PERMITTED.add(wrap(1));
         SD59x18 y = sd(1e18);
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__Exp2InputTooBig.selector, sd(192e18)));
         pow(x, y);

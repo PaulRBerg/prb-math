@@ -108,7 +108,7 @@ function avg(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     // prettier-ignore
     result = x.rshift(1)
                 .uncheckedAdd(y.rshift(1))
-                .uncheckedAdd(x.and(UD60x18.unwrap(y)).and(1));
+                .uncheckedAdd(x.and(unwrap(y)).and(1));
 }
 
 /// @notice Yields the least UD60x18 number greater than or equal to x.
@@ -148,7 +148,7 @@ function ceil(UD60x18 x) pure returns (UD60x18 result) {
 /// @param y The denominator as an UD60x18 number.
 /// @param result The quotient as an UD60x18 number.
 function div(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
-    result = UD60x18.wrap(mulDiv(UD60x18.unwrap(x), SCALE_UINT, UD60x18.unwrap(y)));
+    result = wrap(mulDiv(unwrap(x), SCALE_UINT, unwrap(y)));
 }
 
 /// @notice Calculates the natural exponent of x.
@@ -167,7 +167,7 @@ function div(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// @return result The result as an UD60x18 number.
 function exp(UD60x18 x) pure returns (UD60x18 result) {
     // Without this check, the value passed to `exp2` would be greater than 192.
-    if (UD60x18.unwrap(x) >= 133_084258667509499441) {
+    if (unwrap(x) >= 133_084258667509499441) {
         revert PRBMathUD60x18__ExpInputTooBig(x);
     }
 
@@ -188,15 +188,15 @@ function exp(UD60x18 x) pure returns (UD60x18 result) {
 /// @return result The result as an UD60x18 number.
 function exp2(UD60x18 x) pure returns (UD60x18 result) {
     // Numbers greater than or equal to 2^192 don't fit within the 192.64-bit format.
-    if (UD60x18.unwrap(x) >= 192e18) {
+    if (unwrap(x) >= 192e18) {
         revert PRBMathUD60x18__Exp2InputTooBig(x);
     }
 
     // Convert x to the 192.64-bit fixed-point format.
-    uint256 x_192x64 = UD60x18.unwrap(x.lshift(64).uncheckedDiv(SCALE));
+    uint256 x_192x64 = unwrap(x.lshift(64).uncheckedDiv(SCALE));
 
     // Pass x to the `prbExp2` function, which uses the 192.64-bit fixed-point number representation.
-    result = UD60x18.wrap(prbExp2(x_192x64));
+    result = wrap(prbExp2(x_192x64));
 }
 
 /// @notice Yields the greatest UD60x18 number less than or equal to x.
@@ -245,7 +245,7 @@ function gm(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 
     // We don't need to multiply the result by `SCALE` here because the x*y product had picked up a factor of `SCALE`
     // during multiplication. See the comments in the `prbSqrt` function.
-    result = UD60x18.wrap(prbSqrt(UD60x18.unwrap(xy)));
+    result = wrap(prbSqrt(unwrap(xy)));
 }
 
 /// @notice Calculates 1 / x, rounding toward zero.
@@ -257,7 +257,7 @@ function gm(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// @return result The inverse as an UD60x18 number.
 function inv(UD60x18 x) pure returns (UD60x18 result) {
     // 1e36 is SCALE * SCALE.
-    result = UD60x18.wrap(1e36).uncheckedDiv(x);
+    result = wrap(1e36).uncheckedDiv(x);
 }
 
 /// @notice Calculates the natural logarithm of x.
@@ -416,11 +416,11 @@ function log2(UD60x18 x) pure returns (UD60x18 result) {
         revert PRBMathUD60x18__LogInputTooSmall(x);
     }
     // Calculate the integer part of the logarithm, add it to the result and finally calculate y = x * 2^(-n).
-    uint256 n = msb(UD60x18.unwrap(x.uncheckedDiv(SCALE)));
+    uint256 n = msb(unwrap(x.uncheckedDiv(SCALE)));
 
     // This is the integer part of the logarithm as an UD60x18 number. The operation can't overflow because n
     // n is maximum 255 and SCALE is 1e18.
-    result = UD60x18.wrap(n).uncheckedMul(SCALE);
+    result = wrap(n).uncheckedMul(SCALE);
 
     // This is $y = x * 2^{-n}$.
     UD60x18 y = x.rshift(n);
@@ -432,7 +432,7 @@ function log2(UD60x18 x) pure returns (UD60x18 result) {
 
     // Calculate the fractional part via the iterative approximation.
     // The "delta.rshift(1)" part is equivalent to "delta /= 2", but shifting bits is faster.
-    UD60x18 DOUBLE_SCALE = UD60x18.wrap(2e18);
+    UD60x18 DOUBLE_SCALE = wrap(2e18);
     for (UD60x18 delta = HALF_SCALE; delta.gt(ZERO); delta = delta.rshift(1)) {
         y = y.uncheckedMul(y).uncheckedDiv(SCALE);
 
@@ -453,7 +453,7 @@ function log2(UD60x18 x) pure returns (UD60x18 result) {
 /// @param y The multiplier as an UD60x18 number.
 /// @return result The product as an UD60x18 number.
 function mul(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
-    result = UD60x18.wrap(mulDiv18(UD60x18.unwrap(x), UD60x18.unwrap(y)));
+    result = wrap(mulDiv18(unwrap(x), unwrap(y)));
 }
 
 /// @notice Raises x to the power of y.
@@ -503,11 +503,11 @@ function powu(UD60x18 x, uint256 y) pure returns (UD60x18 result) {
 
     // Equivalent to "for(y /= 2; y > 0; y /= 2)" but faster.
     for (y >>= 1; y > 0; y >>= 1) {
-        x = UD60x18.wrap(mulDiv18(UD60x18.unwrap(x), UD60x18.unwrap(x)));
+        x = wrap(mulDiv18(unwrap(x), unwrap(x)));
 
         // Equivalent to "y % 2 == 1" but faster.
         if (y & 1 > 0) {
-            result = UD60x18.wrap(mulDiv18(UD60x18.unwrap(result), UD60x18.unwrap(x)));
+            result = wrap(mulDiv18(unwrap(result), unwrap(x)));
         }
     }
 }
@@ -526,7 +526,7 @@ function sqrt(UD60x18 x) pure returns (UD60x18 result) {
     }
     // Multiply x by `SCALE` to account for the factor of `SCALE` that is picked up when multiplying two UD60x18
     // numbers together (in this case, the two numbers are both the square root).
-    result = UD60x18.wrap(prbSqrt(UD60x18.unwrap(x.uncheckedMul(SCALE))));
+    result = wrap(prbSqrt(unwrap(x.uncheckedMul(SCALE))));
 }
 
 /*//////////////////////////////////////////////////////////////////////////
@@ -552,89 +552,89 @@ using {
 
 /// @notice Implements the checked addition operation (+) in the UD60x18 type.
 function add(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
-    result = UD60x18.wrap(UD60x18.unwrap(x) + UD60x18.unwrap(y));
+    result = wrap(unwrap(x) + unwrap(y));
 }
 
 /// @notice Implements the AND (&) bitwise operation in the UD60x18 type.
 function and(UD60x18 x, uint256 bits) pure returns (UD60x18 result) {
-    result = UD60x18.wrap(UD60x18.unwrap(x) & bits);
+    result = wrap(unwrap(x) & bits);
 }
 
 /// @notice Implements the equal operation (==) in the UD60x18 type.
 function eq(UD60x18 x, UD60x18 y) pure returns (bool result) {
-    result = UD60x18.unwrap(x) == UD60x18.unwrap(y);
+    result = unwrap(x) == unwrap(y);
 }
 
 /// @notice Implements the greater than operation (>) in the UD60x18 type.
 function gt(UD60x18 x, UD60x18 y) pure returns (bool result) {
-    result = UD60x18.unwrap(x) > UD60x18.unwrap(y);
+    result = unwrap(x) > unwrap(y);
 }
 
 /// @notice Implements the greater than or equal to operation (>=) in the UD60x18 type.
 function gte(UD60x18 x, UD60x18 y) pure returns (bool result) {
-    result = UD60x18.unwrap(x) >= UD60x18.unwrap(y);
+    result = unwrap(x) >= unwrap(y);
 }
 
 /// @notice Implements a zero comparison check function in the UD60x18 type.
 function isZero(UD60x18 x) pure returns (bool result) {
     // This wouldn't work if x could be negative.
-    result = UD60x18.unwrap(x) > 0 == false;
+    result = unwrap(x) > 0 == false;
 }
 
 /// @notice Implements the lower than operation (<) in the UD60x18 type.
 function lt(UD60x18 x, UD60x18 y) pure returns (bool result) {
-    result = UD60x18.unwrap(x) < UD60x18.unwrap(y);
+    result = unwrap(x) < unwrap(y);
 }
 
 /// @notice Implements the lower than or equal to operation (<=) in the UD60x18 type.
 function lte(UD60x18 x, UD60x18 y) pure returns (bool result) {
-    result = UD60x18.unwrap(x) <= UD60x18.unwrap(y);
+    result = unwrap(x) <= unwrap(y);
 }
 
 /// @notice Implements the left shift operation (<<) in the UD60x18 type.
 function lshift(UD60x18 x, uint256 bits) pure returns (UD60x18 result) {
-    result = UD60x18.wrap(UD60x18.unwrap(x) << bits);
+    result = wrap(unwrap(x) << bits);
 }
 
 /// @notice Implements the not equal operation (!=) in the UD60x18 type
 function neq(UD60x18 x, UD60x18 y) pure returns (bool result) {
-    result = UD60x18.unwrap(x) != UD60x18.unwrap(y);
+    result = unwrap(x) != unwrap(y);
 }
 
 /// @notice Implements the right shift operation (>>) in the UD60x18 type.
 function rshift(UD60x18 x, uint256 bits) pure returns (UD60x18 result) {
-    result = UD60x18.wrap(UD60x18.unwrap(x) >> bits);
+    result = wrap(unwrap(x) >> bits);
 }
 
 /// @notice Implements the checked subtraction operation (-) in the UD60x18 type.
 function sub(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
-    result = UD60x18.wrap(UD60x18.unwrap(x) - UD60x18.unwrap(y));
+    result = wrap(unwrap(x) - unwrap(y));
 }
 
 /// @notice Implements the unchecked addition operation (+) in the UD60x18 type.
 function uncheckedAdd(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     unchecked {
-        result = UD60x18.wrap(UD60x18.unwrap(x) + UD60x18.unwrap(y));
+        result = wrap(unwrap(x) + unwrap(y));
     }
 }
 
 /// @notice Implements the unchecked modulo operation (%) in the UD60x18 type.
 function uncheckedMod(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     unchecked {
-        result = UD60x18.wrap(UD60x18.unwrap(x) % UD60x18.unwrap(y));
+        result = wrap(unwrap(x) % unwrap(y));
     }
 }
 
 /// @notice Implements the unchecked subtraction operation (-) in the UD60x18 type.
 function uncheckedSub(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     unchecked {
-        result = UD60x18.wrap(UD60x18.unwrap(x) - UD60x18.unwrap(y));
+        result = wrap(unwrap(x) - unwrap(y));
     }
 }
 
 /// @notice Implements the XOR (^) bitwise operation in the UD60x18 type.
 function xor(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
-    result = UD60x18.wrap(UD60x18.unwrap(x) ^ UD60x18.unwrap(y));
+    result = wrap(unwrap(x) ^ unwrap(y));
 }
 
 /*//////////////////////////////////////////////////////////////////////////
@@ -646,7 +646,7 @@ function xor(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// @param x The UD60x18 number to convert.
 /// @return result The same number in basic integer form.
 function fromUD60x18(UD60x18 x) pure returns (uint256 result) {
-    result = UD60x18.unwrap(x.uncheckedDiv(SCALE));
+    result = unwrap(x.uncheckedDiv(SCALE));
 }
 
 /// @notice Multiplies the given number by `SCALE` to convert to the UD60x18 type.
@@ -661,18 +661,28 @@ function toUD60x18(uint256 x) pure returns (UD60x18 result) {
         revert PRBMathUD60x18__ToUD60x18Overflow(x);
     }
     unchecked {
-        result = UD60x18.wrap(x * SCALE_UINT);
+        result = wrap(x * SCALE_UINT);
     }
 }
 
-/// @notice Wraps a signed integer into the UD60x18 type.
+/// @notice Wraps an unsigned integer into the UD60x18 type.
 function ud(uint256 x) pure returns (UD60x18 result) {
-    result = UD60x18.wrap(x);
+    result = wrap(x);
 }
 
-/// @notice Wraps a signed integer into the UD60x18 type.
+/// @notice Wraps an unsigned integer into the UD60x18 type.
 /// @dev Alias for the "ud" function defined above.
 function ud60x18(uint256 x) pure returns (UD60x18 result) {
+    result = wrap(x);
+}
+
+/// @notice Unwraps an UD60x18 number into the underlying unsigned integer.
+function unwrap(UD60x18 x) pure returns (uint256 result) {
+    result = UD60x18.unwrap(x);
+}
+
+/// @notice Wraps an unsigned integer into the UD60x18 type.
+function wrap(uint256 x) pure returns (UD60x18 result) {
     result = UD60x18.wrap(x);
 }
 
@@ -685,13 +695,13 @@ using { uncheckedDiv, uncheckedMul } for UD60x18;
 /// @notice Implements the unchecked standard division operation in the UD60x18 type.
 function uncheckedDiv(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     unchecked {
-        result = UD60x18.wrap(UD60x18.unwrap(x) / UD60x18.unwrap(y));
+        result = wrap(unwrap(x) / unwrap(y));
     }
 }
 
 /// @notice Implements the unchecked standard multiplication operation in the UD60x18 type.
 function uncheckedMul(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     unchecked {
-        result = UD60x18.wrap(UD60x18.unwrap(x) * UD60x18.unwrap(y));
+        result = wrap(unwrap(x) * unwrap(y));
     }
 }
