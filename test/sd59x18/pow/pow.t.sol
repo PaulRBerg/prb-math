@@ -3,8 +3,6 @@ pragma solidity >=0.8.13;
 
 import {
     E,
-    MAX_SD59x18,
-    MAX_WHOLE_SD59x18,
     PI,
     PRBMathSD59x18__Exp2InputTooBig,
     PRBMathSD59x18__LogInputTooSmall,
@@ -42,17 +40,11 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         _;
     }
 
-    function baseNegativeSets() internal returns (Set[] memory) {
-        delete sets;
-        sets.push(set({ x: NEGATIVE_PI, y: 1e18, expected: NIL }));
-        sets.push(set({ x: NEGATIVE_E, y: E, expected: NIL }));
-        sets.push(set({ x: -1e18, y: PI, expected: NIL }));
-        return sets;
-    }
-
-    function testCannotPow__BaseNegative() external parameterizedTest(baseNegativeSets()) BaseNotZero {
-        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__LogInputTooSmall.selector, s.x));
-        pow(s.x, s.y);
+    function testCannotPow__BaseNegative() external BaseNotZero {
+        SD59x18 x = sd(-0.000000000000000001e18);
+        SD59x18 y = sd(1e18);
+        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__LogInputTooSmall.selector, x));
+        pow(x, y);
     }
 
     modifier BasePositive() {
@@ -76,22 +68,11 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         _;
     }
 
-    function exponentGreaterThanMaxPermittedSets() internal returns (Set[] memory) {
-        delete sets;
-        sets.push(set({ x: MAX_PERMITTED.add(sd(1)), y: 1e18, expected: sd(192e18) }));
-        sets.push(set({ x: MAX_SD59x18, y: 1e18, expected: sd(192e18) }));
-        return sets;
-    }
-
-    function testCannotPow__ExponentGreaterThanOrEqualToMaxPermitted()
-        external
-        parameterizedTest(exponentGreaterThanMaxPermittedSets())
-        BaseNotZero
-        BasePositive
-        ExponentNotZero
-    {
-        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__Exp2InputTooBig.selector, s.expected));
-        pow(s.x, s.y);
+    function testCannotPow__ExponentGreaterThanMaxPermitted() external BaseNotZero BasePositive ExponentNotZero {
+        SD59x18 x = MAX_PERMITTED.add(sd(1));
+        SD59x18 y = sd(1e18);
+        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__Exp2InputTooBig.selector, sd(192e18)));
+        pow(x, y);
     }
 
     modifier ExponentLessThanOrEqualToMaxPermitted() {
@@ -163,11 +144,7 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
             })
         );
         sets.push(
-            set({
-                x: MAX_PERMITTED.sub(sd(1)),
-                y: 1e18,
-                expected: 6277101735386680659358266643954607672760_949507286104301595e18
-            })
+            set({ x: MAX_PERMITTED, y: 1e18, expected: 6277101735386680659358266643954607672760_949507286104301595e18 })
         );
         return sets;
     }

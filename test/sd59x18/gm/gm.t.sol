@@ -47,6 +47,7 @@ contract SD59x18__GmTest is SD59x18__BaseTest {
         return sets;
     }
 
+    /// @dev This doesn't work as expected, see https://github.com/foundry-rs/foundry/issues/858#issuecomment-1321886457.
     function testCannotGm__ProductNegative() external parameterizedTest(productNegativeSets()) NotZeroOperands {
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__GmNegativeProduct.selector, s.x, s.y));
         gm(s.x, s.y);
@@ -79,6 +80,7 @@ contract SD59x18__GmTest is SD59x18__BaseTest {
         return sets;
     }
 
+    /// @dev This doesn't work as expected, see https://github.com/foundry-rs/foundry/issues/858#issuecomment-1321886457.
     function testCannotGm__ProductOverflow()
         external
         parameterizedTest(productOverflowSets())

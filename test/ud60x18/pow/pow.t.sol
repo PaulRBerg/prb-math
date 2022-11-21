@@ -42,17 +42,11 @@ contract UD60x18__PowTest is UD60x18__BaseTest {
         _;
     }
 
-    function baseLessThanOneSets() internal returns (Set[] memory) {
-        delete sets;
-        sets.push(set({ x: 0.000000000000000001e18, y: 1e18, expected: NIL }));
-        sets.push(set({ x: 0.00000000001e18, y: E, expected: NIL }));
-        sets.push(set({ x: 1e18 - 1, y: PI, expected: NIL }));
-        return sets;
-    }
-
-    function testCannotPow__BaseLessThanOne() external parameterizedTest(baseLessThanOneSets()) BaseNotZero {
-        vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__LogInputTooSmall.selector, s.x));
-        pow(s.x, s.y);
+    function testCannotPow__BaseLessThanOne() external BaseNotZero {
+        UD60x18 x = ud(1e18 - 1);
+        UD60x18 y = PI;
+        vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__LogInputTooSmall.selector, x));
+        pow(x, y);
     }
 
     modifier BaseGreaterThanOrEqualToOne() {
@@ -81,21 +75,11 @@ contract UD60x18__PowTest is UD60x18__BaseTest {
         _;
     }
 
-    function exponentGreaterThanMaxPermittedSets() internal returns (Set[] memory) {
-        delete sets;
-        sets.push(set({ x: MAX_PERMITTED.add(ud(1)), y: 1e18, expected: ud(192e18) }));
-        sets.push(set({ x: MAX_UD60x18, y: 1e18, expected: ud(192e18) }));
-        return sets;
-    }
-
-    function testCannotPow__ExponentGreaterThanOrEqualToMaxPermitted()
-        external
-        parameterizedTest(exponentGreaterThanMaxPermittedSets())
-        BaseNotZero
-        ExponentNotZero
-    {
-        vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__Exp2InputTooBig.selector, s.expected));
-        pow(s.x, s.y);
+    function testCannotPow__ExponentGreaterThanOrEqualToMaxPermitted() external BaseNotZero ExponentNotZero {
+        UD60x18 x = MAX_PERMITTED.add(ud(1));
+        UD60x18 y = ud(1e18);
+        vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__Exp2InputTooBig.selector, ud(192e18)));
+        pow(x, y);
     }
 
     modifier ExponentLessThanOrEqualToMaxPermitted() {
@@ -125,11 +109,7 @@ contract UD60x18__PowTest is UD60x18__BaseTest {
             })
         );
         sets.push(
-            set({
-                x: MAX_PERMITTED.sub(ud(1)),
-                y: 1e18,
-                expected: 6277101735386680659358266643954607672760_949507286104301595e18
-            })
+            set({ x: MAX_PERMITTED, y: 1e18, expected: 6277101735386680659358266643954607672760_949507286104301595e18 })
         );
         return sets;
     }

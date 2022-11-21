@@ -3,7 +3,6 @@ pragma solidity >=0.8.13;
 
 import {
     MAX_WHOLE_SD59x18,
-    MAX_SD59x18,
     MIN_SD59x18,
     MIN_WHOLE_SD59x18,
     PI,
@@ -15,7 +14,7 @@ import {
 import { SD59x18__BaseTest } from "../SD59x18BaseTest.t.sol";
 
 contract SD59x18__CeilTest is SD59x18__BaseTest {
-    function testCannotCeil__Zero() external {
+    function testCeil__Zero() external {
         SD59x18 x = ZERO;
         SD59x18 actual = ceil(x);
         SD59x18 expected = ZERO;
@@ -46,20 +45,10 @@ contract SD59x18__CeilTest is SD59x18__BaseTest {
         assertEq(actual, s.expected);
     }
 
-    function greaterThanMaxPermittedSets() internal returns (Set[] memory) {
-        delete sets;
-        sets.push(set({ x: MAX_WHOLE_SD59x18.add(sd(1)) }));
-        sets.push(set({ x: MAX_SD59x18 }));
-        return sets;
-    }
-
-    function testCannotCeil__GreaterThanMaxPermitted()
-        external
-        parameterizedTest(greaterThanMaxPermittedSets())
-        NotZero
-    {
-        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__CeilOverflow.selector, s.x));
-        ceil(s.x);
+    function testCannotCeil__GreaterThanMaxPermitted() external NotZero {
+        SD59x18 x = MAX_WHOLE_SD59x18.add(sd(1));
+        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__CeilOverflow.selector, x));
+        ceil(x);
     }
 
     modifier LessThanOrEqualToMaxPermitted() {

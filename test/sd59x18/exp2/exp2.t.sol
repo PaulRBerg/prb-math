@@ -3,8 +3,6 @@ pragma solidity >=0.8.13;
 
 import {
     E,
-    MAX_WHOLE_SD59x18,
-    MAX_SD59x18,
     MIN_SD59x18,
     MIN_WHOLE_SD59x18,
     PI,
@@ -74,21 +72,10 @@ contract SD59x18__Exp2Test is SD59x18__BaseTest {
         assertEq(actual, s.expected);
     }
 
-    function positiveAndGreaterThanMaxPermittedSets() internal returns (Set[] memory) {
-        delete sets;
-        sets.push(set({ x: MAX_PERMITTED.add(sd(1)) }));
-        sets.push(set({ x: MAX_WHOLE_SD59x18 }));
-        sets.push(set({ x: MAX_SD59x18 }));
-        return sets;
-    }
-
-    function testCannotExp2__Positive__GreaterThanMaxPermitted()
-        external
-        parameterizedTest(positiveAndGreaterThanMaxPermittedSets())
-        NotZero
-    {
-        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__Exp2InputTooBig.selector, s.x));
-        exp2(s.x);
+    function testCannotExp2__Positive__GreaterThanMaxPermitted() external NotZero {
+        SD59x18 x = MAX_PERMITTED.add(sd(1));
+        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__Exp2InputTooBig.selector, x));
+        exp2(x);
     }
 
     modifier LessThanMaxPermitted() {

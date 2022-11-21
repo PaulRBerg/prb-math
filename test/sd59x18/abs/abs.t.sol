@@ -15,7 +15,7 @@ import {
 import { SD59x18__BaseTest } from "../SD59x18BaseTest.t.sol";
 
 contract SD59x18__AbsTest is SD59x18__BaseTest {
-    function testCannotAbs__Zero() external {
+    function testAbs__Zero() external {
         SD59x18 x = ZERO;
         SD59x18 actual = abs(x);
         SD59x18 expected = ZERO;

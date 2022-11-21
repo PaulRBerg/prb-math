@@ -29,8 +29,8 @@ contract SD59x18__PowuTest is SD59x18__BaseTest {
     function baseZeroExponentNotZeroSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0, y: 1e18, expected: 0 }));
-        sets.push(set({ x: 0, y: E, expected: 0 }));
-        sets.push(set({ x: 0, y: PI, expected: 0 }));
+        sets.push(set({ x: 0, y: 2, expected: 0 }));
+        sets.push(set({ x: 0, y: 3, expected: 0 }));
         return sets;
     }
 
@@ -63,49 +63,40 @@ contract SD59x18__PowuTest is SD59x18__BaseTest {
         _;
     }
 
-    function overflowUint256Sets() internal returns (Set[] memory) {
-        delete sets;
-        sets.push(set({ x: MIN_SD59x18.add(sd(1)), y: 0.000000000000000002e18, expected: NIL }));
-        sets.push(set({ x: MIN_WHOLE_SD59x18, y: 0.000000000000000002e18, expected: NIL }));
-        sets.push(set({ x: MAX_WHOLE_SD59x18, y: 0.000000000000000002e18, expected: NIL }));
-        sets.push(set({ x: MAX_SD59x18, y: 0.000000000000000002e18, expected: NIL }));
-        return sets;
-    }
-
-    function testCannotPowu__ResultOverflowUint256()
-        external
-        parameterizedTest(overflowUint256Sets())
-        BaseNotZero
-        ExponentNotZero
-    {
+    function testCannotPowu__ResultOverflowUint256() external BaseNotZero ExponentNotZero {
+        SD59x18 x = MIN_SD59x18.add(sd(1));
+        uint256 y = 2;
         vm.expectRevert(
-            abi.encodeWithSelector(PRBMath__MulDiv18Overflow.selector, sdToUint(MAX_SD59x18), sdToUint(MAX_SD59x18))
+            abi.encodeWithSelector(
+                PRBMath__MulDiv18Overflow.selector,
+                uint256(MAX_SD59x18_INT),
+                uint256(MAX_SD59x18_INT)
+            )
         );
-        powu(s.x, sdToUint(s.y));
+        powu(x, y);
     }
 
     modifier ResultDoesNotOverflowUint256() {
         _;
     }
 
-    function overflowOrUnderflowSD59x18Sets() internal returns (Set[] memory) {
-        delete sets;
-        sets.push(set({ x: NEGATIVE_SQRT_MAX_SD59x18.sub(sd(1)), y: 0.000000000000000002e18, expected: NIL }));
-        sets.push(set({ x: -38685626227668133590.597632e18, y: 0.000000000000000003e18, expected: NIL }));
-        sets.push(set({ x: 38685626227668133590.597632e18, y: 0.000000000000000003e18, expected: NIL }));
-        sets.push(set({ x: SQRT_MAX_SD59x18.sub(sd(1)), y: 0.000000000000000002e18, expected: NIL }));
-        return sets;
-    }
-
-    function testCannotPowu__ResultOverflowOrUnderflowSD59x18()
+    function testCannotPowu__ResultUnderflowSD59x18()
         external
-        parameterizedTest(overflowOrUnderflowSD59x18Sets())
         BaseNotZero
         ExponentNotZero
         ResultDoesNotOverflowUint256
     {
-        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__PowuOverflow.selector, s.x, s.y));
-        powu(s.x, sdToUint(s.y));
+        SD59x18 x = NEGATIVE_SQRT_MAX_SD59x18.sub(sd(1));
+        uint256 y = 2;
+        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__PowuOverflow.selector, x, y));
+        powu(x, y);
+    }
+
+    function testCannotPowu__ResultOverflowSD59x18() external BaseNotZero ExponentNotZero ResultDoesNotOverflowUint256 {
+        SD59x18 x = SQRT_MAX_SD59x18.add(sd(1));
+        uint256 y = 2;
+        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__PowuOverflow.selector, x, y));
+        powu(x, y);
     }
 
     modifier ResultDoesNotOverflowOrUnderflowSd59x18() {

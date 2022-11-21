@@ -87,23 +87,17 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
         _;
     }
 
-    function resultOverflowSets() internal returns (Set[] memory) {
-        delete sets;
-        sets.push(set({ x: MIN_SD59x18_DIV_BY_SCALE.sub(sd(1)), y: 0.000000000000000001e18, expected: 0 }));
-        sets.push(set({ x: MAX_SD59x18_DIV_BY_SCALE.sub(sd(1)), y: 0.000000000000000001e18, expected: 0 }));
-        return sets;
-    }
-
     function testCannotDiv__ResultOverflow()
         external
-        parameterizedTest(resultOverflowSets())
         DenominatorNotZero
         DenominatorNotMinSD59x18
         NumeratorNotZero
         NumeratorNotMinSD59x18
     {
-        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__DivOverflow.selector, s.x, s.y));
-        div(s.x, s.y);
+        SD59x18 x = MIN_SD59x18_DIV_BY_SCALE.sub(sd(1));
+        SD59x18 y = sd(0.000000000000000001e18);
+        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__DivOverflow.selector, x, y));
+        div(x, y);
     }
 
     modifier ResultNotOverflow() {

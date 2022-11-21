@@ -14,7 +14,8 @@ abstract contract UD60x18__BaseTest is PRBMath__BaseTest {
     //////////////////////////////////////////////////////////////////////////*/
 
     UD60x18 internal constant MAX_SCALED_UD60x18 =
-        UD60x18.wrap(115792089237316195423570985008687907853269984665640564039457);
+        UD60x18.wrap(115792089237316195423570985008687907853269_984665640564039457);
+    UD60x18 internal constant SQRT_MAX_UD60x18 = UD60x18.wrap(340282366920938463463374607431_768211455999999999);
 
     /// @dev This is needed to be passed as the "expected" argument. The "set" function cannot be overridden
     /// to have two implementations that each has two "int256" arguments.
@@ -42,7 +43,8 @@ abstract contract UD60x18__BaseTest is PRBMath__BaseTest {
     //////////////////////////////////////////////////////////////////////////*/
 
     modifier parameterizedTest(Set[] memory testSets) {
-        for (uint256 i = 0; i < testSets.length; ) {
+        uint256 length = testSets.length;
+        for (uint256 i = 0; i < length; ) {
             s = testSets[i];
             _;
             unchecked {

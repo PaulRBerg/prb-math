@@ -4,7 +4,6 @@ pragma solidity >=0.8.13;
 import {
     E,
     MAX_WHOLE_SD59x18,
-    MAX_SD59x18,
     PI,
     PRBMathSD59x18__SqrtOverflow,
     PRBMathSD59x18__SqrtNegativeInput,
@@ -39,22 +38,10 @@ contract SD59x18__SqrtTest is SD59x18__BaseTest {
         _;
     }
 
-    function greaterThanMaxPermittedSets() internal returns (Set[] memory) {
-        delete sets;
-        sets.push(set({ x: MAX_PERMITTED.add(sd(1)) }));
-        sets.push(set({ x: MAX_WHOLE_SD59x18 }));
-        sets.push(set({ x: MAX_SD59x18 }));
-        return sets;
-    }
-
-    function testCannotSqrt__GreaterThanMaxPermitted()
-        external
-        parameterizedTest(greaterThanMaxPermittedSets())
-        NotZero
-        Positive
-    {
-        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__SqrtOverflow.selector, s.x));
-        sqrt(s.x);
+    function testCannotSqrt__GreaterThanMaxPermitted() external NotZero Positive {
+        SD59x18 x = MAX_PERMITTED.add(sd(1));
+        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__SqrtOverflow.selector, x));
+        sqrt(x);
     }
 
     modifier LessThanOrEqualToMaxPermitted() {

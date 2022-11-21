@@ -24,23 +24,11 @@ contract UD60x18__GmTest is UD60x18__BaseTest {
         _;
     }
 
-    function productOverflowSets() internal returns (Set[] memory) {
-        delete sets;
-        sets.push(
-            set({
-                x: SQRT_MAX_UD60x18_DIV_BY_SCALE.add(ud(1)),
-                y: SQRT_MAX_UD60x18_DIV_BY_SCALE.add(ud(1)),
-                expected: NIL
-            })
-        );
-        sets.push(set({ x: MAX_WHOLE_UD60x18, y: 0.000000000000000003e18, expected: NIL }));
-        sets.push(set({ x: MAX_UD60x18, y: 0.000000000000000002e18, expected: NIL }));
-        return sets;
-    }
-
-    function testCannotGm__ProductOverflow() external parameterizedTest(productOverflowSets()) NotZeroOperands {
-        vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__GmOverflow.selector, s.x, s.y));
-        gm(s.x, s.y);
+    function testCannotGm__ProductOverflow() external NotZeroOperands {
+        UD60x18 x = SQRT_MAX_UD60x18_DIV_BY_SCALE.add(ud(1));
+        UD60x18 y = SQRT_MAX_UD60x18_DIV_BY_SCALE.add(ud(1));
+        vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__GmOverflow.selector, x, y));
+        gm(x, y);
     }
 
     modifier ProductNotOverflow() {

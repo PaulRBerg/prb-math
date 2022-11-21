@@ -1,16 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.13;
 
-import {
-    E,
-    MAX_WHOLE_UD60x18,
-    MAX_UD60x18,
-    PI,
-    PRBMathUD60x18__SqrtOverflow,
-    UD60x18,
-    ZERO,
-    sqrt
-} from "src/UD60x18.sol";
+import { E, PI, PRBMathUD60x18__SqrtOverflow, UD60x18, ZERO, sqrt } from "src/UD60x18.sol";
 import { UD60x18__BaseTest } from "../UD60x18BaseTest.t.sol";
 
 contract UD60x18__SqrtTest is UD60x18__BaseTest {
@@ -28,21 +19,10 @@ contract UD60x18__SqrtTest is UD60x18__BaseTest {
         _;
     }
 
-    function greaterThanMaxPermittedSets() internal returns (Set[] memory) {
-        delete sets;
-        sets.push(set({ x: MAX_PERMITTED.add(ud(1)) }));
-        sets.push(set({ x: MAX_WHOLE_UD60x18 }));
-        sets.push(set({ x: MAX_UD60x18 }));
-        return sets;
-    }
-
-    function testCannotSqrt__GreaterThanMaxPermitted()
-        external
-        parameterizedTest(greaterThanMaxPermittedSets())
-        NotZero
-    {
-        vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__SqrtOverflow.selector, s.x));
-        sqrt(s.x);
+    function testCannotSqrt__GreaterThanMaxPermitted() external NotZero {
+        UD60x18 x = MAX_PERMITTED.add(ud(1));
+        vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__SqrtOverflow.selector, x));
+        sqrt(x);
     }
 
     modifier LessThanOrEqualToMaxPermitted() {

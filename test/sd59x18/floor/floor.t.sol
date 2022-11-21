@@ -27,20 +27,10 @@ contract SD59x18__FloorTest is SD59x18__BaseTest {
         _;
     }
 
-    function negativeAndLessThanMinPermittedSets() internal returns (Set[] memory) {
-        delete sets;
-        sets.push(set({ x: MIN_SD59x18 }));
-        sets.push(set({ x: MIN_WHOLE_SD59x18.sub(sd(1)) }));
-        return sets;
-    }
-
-    function testCannotFloor__Negative__LessThanMinPermitted()
-        external
-        parameterizedTest(negativeAndLessThanMinPermittedSets())
-        NotZero
-    {
-        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__FloorUnderflow.selector, s.x));
-        floor(s.x);
+    function testCannotFloor__Negative__LessThanMinPermitted() external NotZero {
+        SD59x18 x = MIN_WHOLE_SD59x18.sub(sd(1));
+        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__FloorUnderflow.selector, x));
+        floor(x);
     }
 
     function negativeAndGreaterThanOrEqualToMinPermittedSets() internal returns (Set[] memory) {

@@ -38,20 +38,18 @@ contract SD59x18__MulTest is SD59x18__BaseTest {
         _;
     }
 
-    function oneOperandMinSD59x18Sets() internal returns (Set[] memory) {
-        delete sets;
-        sets.push(set({ x: MIN_SD59x18, y: 0.000000000000000001e18, expected: NIL }));
-        sets.push(set({ x: 0.000000000000000001e18, y: MIN_SD59x18, expected: NIL }));
-        return sets;
+    function testCannotMul__OneOperandMinSD59x18__1() external NeitherOperandZero {
+        SD59x18 x = MIN_SD59x18;
+        SD59x18 y = sd(0.000000000000000001e18);
+        vm.expectRevert(PRBMathSD59x18__MulInputTooSmall.selector);
+        mul(x, y);
     }
 
-    function testCannotMul__OneOperandMinSD59x18()
-        external
-        parameterizedTest(oneOperandMinSD59x18Sets())
-        NeitherOperandZero
-    {
+    function testCannotMul__OneOperandMinSD59x18__2() external NeitherOperandZero {
+        SD59x18 x = sd(0.000000000000000001e18);
+        SD59x18 y = MIN_SD59x18;
         vm.expectRevert(PRBMathSD59x18__MulInputTooSmall.selector);
-        mul(s.x, s.y);
+        mul(x, y);
     }
 
     modifier NeitherOperandMinSD59x18() {

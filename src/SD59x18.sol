@@ -316,6 +316,7 @@ function exp2(SD59x18 x) pure returns (SD59x18 result) {
         }
 
         // Do the fixed-point inversion inline to save gas. 1e36 is SCALE * SCALE.
+        // Unchecked unary gets the absolute value of x.
         result = SD59x18.wrap(1e36).uncheckedDiv(exp2(uncheckedUnary(x)));
     } else {
         // 2^192 doesn't fit within the 192.64-bit format used internally in this function.

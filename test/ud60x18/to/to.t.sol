@@ -1,20 +1,12 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.13;
 
-import { MAX_UD60x18, MAX_WHOLE_UD60x18, PRBMathUD60x18__ToUD60x18Overflow, UD60x18, toUD60x18 } from "src/UD60x18.sol";
+import { MAX_WHOLE_UD60x18, PRBMathUD60x18__ToUD60x18Overflow, UD60x18, toUD60x18 } from "src/UD60x18.sol";
 import { UD60x18__BaseTest } from "../UD60x18BaseTest.t.sol";
 
 contract UD60x18__ToTest is UD60x18__BaseTest {
-    function greaterThanMaxPermittedSets() internal returns (Set[] memory) {
-        delete sets;
-        sets.push(set({ x: MAX_SCALED_UD60x18.add(ud(1)) }));
-        sets.push(set({ x: MAX_WHOLE_UD60x18 }));
-        sets.push(set({ x: MAX_UD60x18 }));
-        return sets;
-    }
-
-    function testCannotTo__GreaterThanMaxPermitted() external parameterizedTest(greaterThanMaxPermittedSets()) {
-        uint256 x = UD60x18.unwrap(s.x);
+    function testCannotTo__GreaterThanMaxPermitted() external {
+        uint256 x = UD60x18.unwrap(MAX_SCALED_UD60x18) + 1;
         vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__ToUD60x18Overflow.selector, x));
         toUD60x18(x);
     }

@@ -16,17 +16,10 @@ import {
 import { UD60x18__BaseTest } from "../UD60x18BaseTest.t.sol";
 
 contract UD60x18__LnTest is UD60x18__BaseTest {
-    function lessThanOneSets() internal returns (Set[] memory) {
-        delete sets;
-        sets.push(set({ x: ZERO }));
-        sets.push(set({ x: 0.0625e18 }));
-        sets.push(set({ x: 1e18 - 1 }));
-        return sets;
-    }
-
-    function testCannotLog10__LessThanOne() external parameterizedTest(lessThanOneSets()) {
-        vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__LogInputTooSmall.selector, s.x));
-        ln(s.x);
+    function testCannotLog10__LessThanOne() external {
+        UD60x18 x = ud(1e18 - 1);
+        vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__LogInputTooSmall.selector, x));
+        ln(x);
     }
 
     modifier GreaterThanOrEqualToOne() {
