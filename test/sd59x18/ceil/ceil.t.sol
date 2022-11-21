@@ -37,7 +37,7 @@ contract SD59x18__CeilTest is SD59x18__BaseTest {
     }
 
     function testCannotCeil__GreaterThanMaxPermitted() external NotZero {
-        SD59x18 x = MAX_WHOLE_SD59x18.add(wrap(1));
+        SD59x18 x = MAX_WHOLE_SD59x18.add(sd(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__CeilOverflow.selector, x));
         ceil(x);
     }

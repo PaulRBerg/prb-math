@@ -61,7 +61,7 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
     }
 
     function testCannotPow__ExponentGreaterThanMaxPermitted() external BaseNotZero BasePositive ExponentNotZero {
-        SD59x18 x = MAX_PERMITTED.add(wrap(1));
+        SD59x18 x = MAX_PERMITTED.add(sd(1));
         SD59x18 y = sd(1e18);
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__Exp2InputTooBig.selector, sd(192e18)));
         pow(x, y);

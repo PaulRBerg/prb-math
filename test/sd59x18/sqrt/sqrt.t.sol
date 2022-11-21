@@ -27,7 +27,7 @@ contract SD59x18__SqrtTest is SD59x18__BaseTest {
     }
 
     function testCannotSqrt__GreaterThanMaxPermitted() external NotZero Positive {
-        SD59x18 x = MAX_SCALED_SD59x18.add(wrap(1));
+        SD59x18 x = MAX_SCALED_SD59x18.add(sd(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__SqrtOverflow.selector, x));
         sqrt(x);
     }

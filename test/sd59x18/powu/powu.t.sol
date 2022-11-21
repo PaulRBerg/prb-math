@@ -33,12 +33,12 @@ contract SD59x18__PowuTest is SD59x18__BaseTest {
 
     function exponentZeroSets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: MIN_SD59x18.add(wrap(1)), expected: 1e18 }));
+        sets.push(set({ x: MIN_SD59x18.add(sd(1)), expected: 1e18 }));
         sets.push(set({ x: NEGATIVE_PI, expected: 1e18 }));
         sets.push(set({ x: -1e18, expected: 1e18 }));
         sets.push(set({ x: 1e18, expected: 1e18 }));
         sets.push(set({ x: PI, expected: 1e18 }));
-        sets.push(set({ x: MAX_SD59x18.sub(wrap(1)), expected: 1e18 }));
+        sets.push(set({ x: MAX_SD59x18.sub(sd(1)), expected: 1e18 }));
         return sets;
     }
 
@@ -52,7 +52,7 @@ contract SD59x18__PowuTest is SD59x18__BaseTest {
     }
 
     function testCannotPowu__ResultOverflowUint256() external BaseNotZero ExponentNotZero {
-        SD59x18 x = MIN_SD59x18.add(wrap(1));
+        SD59x18 x = MIN_SD59x18.add(sd(1));
         uint256 y = 2;
         vm.expectRevert(
             abi.encodeWithSelector(
@@ -74,14 +74,14 @@ contract SD59x18__PowuTest is SD59x18__BaseTest {
         ExponentNotZero
         ResultDoesNotOverflowUint256
     {
-        SD59x18 x = NEGATIVE_SQRT_MAX_SD59x18.sub(wrap(1));
+        SD59x18 x = NEGATIVE_SQRT_MAX_SD59x18.sub(sd(1));
         uint256 y = 2;
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__PowuOverflow.selector, x, y));
         powu(x, y);
     }
 
     function testCannotPowu__ResultOverflowSD59x18() external BaseNotZero ExponentNotZero ResultDoesNotOverflowUint256 {
-        SD59x18 x = SQRT_MAX_SD59x18.add(wrap(1));
+        SD59x18 x = SQRT_MAX_SD59x18.add(sd(1));
         uint256 y = 2;
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__PowuOverflow.selector, x, y));
         powu(x, y);
@@ -93,7 +93,7 @@ contract SD59x18__PowuTest is SD59x18__BaseTest {
 
     function negativeBaseSets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: MIN_SD59x18.add(wrap(1)), y: 1, expected: MIN_SD59x18.add(wrap(1)) }));
+        sets.push(set({ x: MIN_SD59x18.add(sd(1)), y: 1, expected: MIN_SD59x18.add(sd(1)) }));
         sets.push(set({ x: MIN_WHOLE_SD59x18, y: 1, expected: MIN_WHOLE_SD59x18 }));
         sets.push(
             set({

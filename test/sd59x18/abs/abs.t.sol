@@ -28,7 +28,7 @@ contract SD59x18__AbsTest is SD59x18__BaseTest {
 
     function negativeSets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: MIN_SD59x18.add(wrap(1)), expected: MAX_SD59x18 }));
+        sets.push(set({ x: MIN_SD59x18.add(sd(1)), expected: MAX_SD59x18 }));
         sets.push(set({ x: MIN_WHOLE_SD59x18, expected: MAX_WHOLE_SD59x18 }));
         sets.push(set({ x: -1e24, expected: 1e24 }));
         sets.push(set({ x: -4.2e18, expected: 4.2e18 }));

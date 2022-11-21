@@ -53,14 +53,14 @@ contract SD59x18__GmTest is SD59x18__BaseTest {
 
     function testCannotGm__ProductOverflow__2() external NotZeroOperands PositiveProduct {
         SD59x18 x = NEGATIVE_SQRT_MAX_INT256;
-        SD59x18 y = NEGATIVE_SQRT_MAX_INT256.sub(wrap(1));
+        SD59x18 y = NEGATIVE_SQRT_MAX_INT256.sub(sd(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__GmOverflow.selector, x, y));
         gm(x, y);
     }
 
     function testCannotGm__ProductOverflow__3() external NotZeroOperands PositiveProduct {
-        SD59x18 x = SQRT_MAX_INT256.add(wrap(1));
-        SD59x18 y = SQRT_MAX_INT256.add(wrap(1));
+        SD59x18 x = SQRT_MAX_INT256.add(sd(1));
+        SD59x18 y = SQRT_MAX_INT256.add(sd(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__GmOverflow.selector, x, y));
         gm(x, y);
     }

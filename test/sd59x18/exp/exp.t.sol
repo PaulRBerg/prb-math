@@ -23,7 +23,7 @@ contract SD59x18__ExpTest is SD59x18__BaseTest {
         delete sets;
         sets.push(set({ x: MIN_SD59x18 }));
         sets.push(set({ x: MIN_WHOLE_SD59x18 }));
-        sets.push(set({ x: MIN_PERMITTED.sub(wrap(1)) }));
+        sets.push(set({ x: MIN_PERMITTED.sub(sd(1)) }));
         return sets;
     }
 
@@ -60,7 +60,7 @@ contract SD59x18__ExpTest is SD59x18__BaseTest {
     }
 
     function testCannotExp__Positive__GreaterThanMaxPermitted() external NotZero {
-        SD59x18 x = MAX_PERMITTED.add(wrap(1));
+        SD59x18 x = MAX_PERMITTED.add(sd(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__ExpInputTooBig.selector, x));
         exp(x);
     }
