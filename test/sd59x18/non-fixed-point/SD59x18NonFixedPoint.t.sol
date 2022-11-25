@@ -39,8 +39,8 @@ contract SD59x18__NonFixedPointTest is SD59x18__BaseTest {
         assertEq(actual, expected);
     }
 
-    function testEq(int256 x, int256 y) external {
-        vm.assume(x == y);
+    function testEq(int256 x) external {
+        int256 y = x;
         bool actual = eq(wrap(x), wrap(y));
         bool expected = true;
         assertEq(actual, expected);

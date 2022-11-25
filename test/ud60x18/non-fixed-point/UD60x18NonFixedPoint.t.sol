@@ -22,8 +22,8 @@ contract UD60x18__NonFixedPointTest is UD60x18__BaseTest {
         assertEq(actual, expected);
     }
 
-    function testEq(uint256 x, uint256 y) external {
-        vm.assume(x == y);
+    function testEq(uint256 x) external {
+        uint256 y = x;
         bool actual = eq(wrap(x), wrap(y));
         bool expected = true;
         assertEq(actual, expected);
