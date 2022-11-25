@@ -224,6 +224,14 @@ function frac(UD60x18 x) pure returns (UD60x18 result) {
     }
 }
 
+/// @notice Divides an UD60x18 number by `SCALE` to convert to basic integer form.
+/// @dev Rounds down in the process.
+/// @param x The UD60x18 number to convert.
+/// @return result The same number in basic integer form.
+function fromUD60x18(UD60x18 x) pure returns (uint256 result) {
+    result = unwrap(x.uncheckedDiv(SCALE));
+}
+
 /// @notice Calculates the geometric mean of x and y, i.e. $$sqrt(x * y)$$, rounding down.
 ///
 /// @dev Requirements:
@@ -529,6 +537,22 @@ function sqrt(UD60x18 x) pure returns (UD60x18 result) {
     result = wrap(prbSqrt(unwrap(x.uncheckedMul(SCALE))));
 }
 
+/// @notice Multiplies the given number by `SCALE` to convert to the UD60x18 type.
+///
+/// @dev Requirements:
+/// - x must be less than or equal to `MAX_UD60x18` divided by `SCALE`.
+///
+/// @param x The basic integer to convert.
+/// @param result The same number converted to UD60x18.
+function toUD60x18(uint256 x) pure returns (UD60x18 result) {
+    if (x > MAX_UD60x18_UINT / SCALE_UINT) {
+        revert PRBMathUD60x18__ToUD60x18Overflow(x);
+    }
+    unchecked {
+        result = wrap(x * SCALE_UINT);
+    }
+}
+
 /*//////////////////////////////////////////////////////////////////////////
                     GLOBAL-SCOPED NON-FIXED-POINT FUNCTIONS
 //////////////////////////////////////////////////////////////////////////*/
@@ -543,11 +567,14 @@ using {
     lshift,
     lt,
     lte,
+    mod,
     neq,
+    or,
     rshift,
     sub,
     uncheckedAdd,
-    uncheckedSub
+    uncheckedSub,
+    xor
 } for UD60x18 global;
 
 /// @notice Implements the checked addition operation (+) in the UD60x18 type.
@@ -581,6 +608,11 @@ function isZero(UD60x18 x) pure returns (bool result) {
     result = unwrap(x) > 0 == false;
 }
 
+/// @notice Implements the left shift operation (<<) in the UD60x18 type.
+function lshift(UD60x18 x, uint256 bits) pure returns (UD60x18 result) {
+    result = wrap(unwrap(x) << bits);
+}
+
 /// @notice Implements the lower than operation (<) in the UD60x18 type.
 function lt(UD60x18 x, UD60x18 y) pure returns (bool result) {
     result = unwrap(x) < unwrap(y);
@@ -591,14 +623,19 @@ function lte(UD60x18 x, UD60x18 y) pure returns (bool result) {
     result = unwrap(x) <= unwrap(y);
 }
 
-/// @notice Implements the left shift operation (<<) in the UD60x18 type.
-function lshift(UD60x18 x, uint256 bits) pure returns (UD60x18 result) {
-    result = wrap(unwrap(x) << bits);
+/// @notice Implements the checked modulo operation (%) in the UD60x18 type.
+function mod(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
+    result = wrap(unwrap(x) % unwrap(y));
 }
 
 /// @notice Implements the not equal operation (!=) in the UD60x18 type
 function neq(UD60x18 x, UD60x18 y) pure returns (bool result) {
     result = unwrap(x) != unwrap(y);
+}
+
+/// @notice Implements the OR (|) bitwise operation in the UD60x18 type.
+function or(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
+    result = wrap(unwrap(x) | unwrap(y));
 }
 
 /// @notice Implements the right shift operation (>>) in the UD60x18 type.
@@ -618,13 +655,6 @@ function uncheckedAdd(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     }
 }
 
-/// @notice Implements the unchecked modulo operation (%) in the UD60x18 type.
-function uncheckedMod(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
-    unchecked {
-        result = wrap(unwrap(x) % unwrap(y));
-    }
-}
-
 /// @notice Implements the unchecked subtraction operation (-) in the UD60x18 type.
 function uncheckedSub(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     unchecked {
@@ -638,32 +668,28 @@ function xor(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 }
 
 /*//////////////////////////////////////////////////////////////////////////
-                                HELPER FUNCTIONS
+                    FILE-SCOPED NON-FIXED-POINT FUNCTIONS
 //////////////////////////////////////////////////////////////////////////*/
 
-/// @notice Divides an UD60x18 number by `SCALE` to convert to basic integer form.
-/// @dev Rounds down in the process.
-/// @param x The UD60x18 number to convert.
-/// @return result The same number in basic integer form.
-function fromUD60x18(UD60x18 x) pure returns (uint256 result) {
-    result = unwrap(x.uncheckedDiv(SCALE));
+using { uncheckedDiv, uncheckedMul } for UD60x18;
+
+/// @notice Implements the unchecked standard division operation in the UD60x18 type.
+function uncheckedDiv(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
+    unchecked {
+        result = wrap(unwrap(x) / unwrap(y));
+    }
 }
 
-/// @notice Multiplies the given number by `SCALE` to convert to the UD60x18 type.
-///
-/// @dev Requirements:
-/// - x must be less than or equal to `MAX_UD60x18` divided by `SCALE`.
-///
-/// @param x The basic integer to convert.
-/// @param result The same number converted to UD60x18.
-function toUD60x18(uint256 x) pure returns (UD60x18 result) {
-    if (x > MAX_UD60x18_UINT / SCALE_UINT) {
-        revert PRBMathUD60x18__ToUD60x18Overflow(x);
-    }
+/// @notice Implements the unchecked standard multiplication operation in the UD60x18 type.
+function uncheckedMul(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     unchecked {
-        result = wrap(x * SCALE_UINT);
+        result = wrap(unwrap(x) * unwrap(y));
     }
 }
+
+/*//////////////////////////////////////////////////////////////////////////
+                                HELPER FUNCTIONS
+//////////////////////////////////////////////////////////////////////////*/
 
 /// @notice Wraps an unsigned integer into the UD60x18 type.
 function ud(uint256 x) pure returns (UD60x18 result) {
@@ -684,24 +710,4 @@ function unwrap(UD60x18 x) pure returns (uint256 result) {
 /// @notice Wraps an unsigned integer into the UD60x18 type.
 function wrap(uint256 x) pure returns (UD60x18 result) {
     result = UD60x18.wrap(x);
-}
-
-/*//////////////////////////////////////////////////////////////////////////
-                            FILE-SCOPED FUNCTIONS
-//////////////////////////////////////////////////////////////////////////*/
-
-using { uncheckedDiv, uncheckedMul } for UD60x18;
-
-/// @notice Implements the unchecked standard division operation in the UD60x18 type.
-function uncheckedDiv(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
-    unchecked {
-        result = wrap(unwrap(x) / unwrap(y));
-    }
-}
-
-/// @notice Implements the unchecked standard multiplication operation in the UD60x18 type.
-function uncheckedMul(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
-    unchecked {
-        result = wrap(unwrap(x) * unwrap(y));
-    }
 }

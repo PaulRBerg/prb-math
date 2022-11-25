@@ -191,7 +191,7 @@ function ceil(SD59x18 x) pure returns (SD59x18 result) {
     if (x.gt(MAX_WHOLE_SD59x18)) {
         revert PRBMathSD59x18__CeilOverflow(x);
     }
-    SD59x18 remainder = x.uncheckedMod(SCALE);
+    SD59x18 remainder = x.mod(SCALE);
     if (remainder.isZero()) {
         result = x;
     } else {
@@ -347,7 +347,7 @@ function floor(SD59x18 x) pure returns (SD59x18 result) {
         revert PRBMathSD59x18__FloorUnderflow(x);
     }
 
-    SD59x18 remainder = x.uncheckedMod(SCALE);
+    SD59x18 remainder = x.mod(SCALE);
     if (remainder.isZero()) {
         result = x;
     } else {
@@ -365,7 +365,14 @@ function floor(SD59x18 x) pure returns (SD59x18 result) {
 /// @param x The SD59x18 number to get the fractional part of.
 /// @param result The fractional part of x as an SD59x18 number.
 function frac(SD59x18 x) pure returns (SD59x18 result) {
-    result = x.uncheckedMod(SCALE);
+    result = x.mod(SCALE);
+}
+
+/// @notice Converts an SD59x18 number to basic integer form, rounding towards zero in the process.
+/// @param x The SD59x18 number to convert.
+/// @return result The same number in basic integer form.
+function fromSD59x18(SD59x18 x) pure returns (int256 result) {
+    result = unwrap(x.uncheckedDiv(SCALE));
 }
 
 /// @notice Calculates the geometric mean of x and y, i.e. sqrt(x * y), rounding down.
@@ -754,6 +761,26 @@ function sqrt(SD59x18 x) pure returns (SD59x18 result) {
     result = wrap(int256(resultUint));
 }
 
+/// @notice Converts a number from basic integer form to SD59x18.
+///
+/// @dev Requirements:
+/// - x must be greater than or equal to `MIN_SD59x18` divided by `SCALE`.
+/// - x must be less than or equal to `MAX_SD59x18` divided by `SCALE`.
+///
+/// @param x The basic integer to convert.
+/// @param result The same number converted to SD59x18.
+function toSD59x18(int256 x) pure returns (SD59x18 result) {
+    if (x < MIN_SD59x18_INT / SCALE_INT) {
+        revert PRBMathSD59x18__ToSD59x18Underflow(x);
+    }
+    if (x > MAX_SD59x18_INT / SCALE_INT) {
+        revert PRBMathSD59x18__ToSD59x18Overflow(x);
+    }
+    unchecked {
+        result = wrap(x * SCALE_INT);
+    }
+}
+
 /*//////////////////////////////////////////////////////////////////////////
                     GLOBAL-SCOPED NON-FIXED-POINT FUNCTIONS
 //////////////////////////////////////////////////////////////////////////*/
@@ -768,11 +795,12 @@ using {
     lshift,
     lt,
     lte,
+    mod,
     neq,
+    or,
     rshift,
     sub,
     uncheckedAdd,
-    uncheckedMod,
     uncheckedSub,
     uncheckedUnary,
     xor
@@ -808,6 +836,11 @@ function isZero(SD59x18 x) pure returns (bool result) {
     result = unwrap(x) == 0;
 }
 
+/// @notice Implements the left shift operation (<<) in the SD59x18 type.
+function lshift(SD59x18 x, uint256 bits) pure returns (SD59x18 result) {
+    result = wrap(unwrap(x) << bits);
+}
+
 /// @notice Implements the lower than operation (<) in the SD59x18 type.
 function lt(SD59x18 x, SD59x18 y) pure returns (bool result) {
     result = unwrap(x) < unwrap(y);
@@ -818,14 +851,19 @@ function lte(SD59x18 x, SD59x18 y) pure returns (bool result) {
     result = unwrap(x) <= unwrap(y);
 }
 
-/// @notice Implements the left shift operation (<<) in the SD59x18 type.
-function lshift(SD59x18 x, uint256 bits) pure returns (SD59x18 result) {
-    result = wrap(unwrap(x) << bits);
+/// @notice Implements the unchecked modulo operation (%) in the SD59x18 type.
+function mod(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
+    result = wrap(unwrap(x) % unwrap(y));
 }
 
 /// @notice Implements the not equal operation (!=) in the SD59x18 type.
 function neq(SD59x18 x, SD59x18 y) pure returns (bool result) {
     result = unwrap(x) != unwrap(y);
+}
+
+/// @notice Implements the OR (|) bitwise operation in the SD59x18 type.
+function or(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
+    result = wrap(unwrap(x) | unwrap(y));
 }
 
 /// @notice Implements the right shift operation (>>) in the SD59x18 type.
@@ -842,13 +880,6 @@ function sub(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 function uncheckedAdd(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     unchecked {
         result = wrap(unwrap(x) + unwrap(y));
-    }
-}
-
-/// @notice Implements the unchecked modulo operation (%) in the SD59x18 type.
-function uncheckedMod(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
-    unchecked {
-        result = wrap(unwrap(x) % unwrap(y));
     }
 }
 
@@ -872,59 +903,7 @@ function xor(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 }
 
 /*//////////////////////////////////////////////////////////////////////////
-                                HELPER FUNCTIONS
-//////////////////////////////////////////////////////////////////////////*/
-
-/// @notice Converts an SD59x18 number to basic integer form, rounding towards zero in the process.
-/// @param x The SD59x18 number to convert.
-/// @return result The same number in basic integer form.
-function fromSD59x18(SD59x18 x) pure returns (int256 result) {
-    result = unwrap(x.uncheckedDiv(SCALE));
-}
-
-/// @notice Wraps a signed integer into the SD59x18 type.
-function sd(int256 x) pure returns (SD59x18 result) {
-    result = wrap(x);
-}
-
-/// @notice Wraps a signed integer into the SD59x18 type.
-/// @dev Alias for the "sd" function defined above.
-function sd59x18(int256 x) pure returns (SD59x18 result) {
-    result = wrap(x);
-}
-
-/// @notice Converts a number from basic integer form to SD59x18.
-///
-/// @dev Requirements:
-/// - x must be greater than or equal to `MIN_SD59x18` divided by `SCALE`.
-/// - x must be less than or equal to `MAX_SD59x18` divided by `SCALE`.
-///
-/// @param x The basic integer to convert.
-/// @param result The same number converted to SD59x18.
-function toSD59x18(int256 x) pure returns (SD59x18 result) {
-    if (x < MIN_SD59x18_INT / SCALE_INT) {
-        revert PRBMathSD59x18__ToSD59x18Underflow(x);
-    }
-    if (x > MAX_SD59x18_INT / SCALE_INT) {
-        revert PRBMathSD59x18__ToSD59x18Overflow(x);
-    }
-    unchecked {
-        result = wrap(x * SCALE_INT);
-    }
-}
-
-/// @notice Unwraps an SD59x18 number into the underlying signed integer.
-function unwrap(SD59x18 x) pure returns (int256 result) {
-    result = SD59x18.unwrap(x);
-}
-
-/// @notice Wraps a signed integer into the SD59x18 type.
-function wrap(int256 x) pure returns (SD59x18 result) {
-    result = SD59x18.wrap(x);
-}
-
-/*//////////////////////////////////////////////////////////////////////////
-                            FILE-SCOPED FUNCTIONS
+                    FILE-SCOPED NON-FIXED-POINT FUNCTIONS
 //////////////////////////////////////////////////////////////////////////*/
 
 using { uncheckedDiv, uncheckedMul } for SD59x18;
@@ -941,4 +920,29 @@ function uncheckedMul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     unchecked {
         result = wrap(unwrap(x) * unwrap(y));
     }
+}
+
+/*//////////////////////////////////////////////////////////////////////////
+                                HELPER FUNCTIONS
+//////////////////////////////////////////////////////////////////////////*/
+
+/// @notice Wraps a signed integer into the SD59x18 type.
+function sd(int256 x) pure returns (SD59x18 result) {
+    result = wrap(x);
+}
+
+/// @notice Wraps a signed integer into the SD59x18 type.
+/// @dev Alias for the "sd" function defined above.
+function sd59x18(int256 x) pure returns (SD59x18 result) {
+    result = wrap(x);
+}
+
+/// @notice Unwraps an SD59x18 number into the underlying signed integer.
+function unwrap(SD59x18 x) pure returns (int256 result) {
+    result = SD59x18.unwrap(x);
+}
+
+/// @notice Wraps a signed integer into the SD59x18 type.
+function wrap(int256 x) pure returns (SD59x18 result) {
+    result = SD59x18.wrap(x);
 }
