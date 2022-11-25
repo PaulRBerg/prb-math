@@ -688,7 +688,11 @@ function pow(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     if (x.isZero()) {
         result = y.isZero() ? UNIT : ZERO;
     } else {
-        result = exp2(mul(log2(x), y));
+        if (y.eq(UNIT)) {
+            result = x;
+        } else {
+            result = exp2(log2(x).mul(y));
+        }
     }
 }
 

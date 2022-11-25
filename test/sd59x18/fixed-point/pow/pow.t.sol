@@ -34,7 +34,7 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
 
     function testCannotPow__BaseNegative() external BaseNotZero {
         SD59x18 x = sd(-0.000000000000000001e18);
-        SD59x18 y = sd(1e18);
+        SD59x18 y = sd(2e18);
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__LogInputTooSmall.selector, x));
         pow(x, y);
     }
@@ -60,10 +60,39 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         _;
     }
 
-    function testCannotPow__ExponentGreaterThanMaxPermitted() external BaseNotZero BasePositive ExponentNotZero {
+    function exponentOneSets() internal returns (Set[] memory) {
+        delete sets;
+        sets.push(set({ x: 1e18, y: 1e18, expected: 1e18 }));
+        sets.push(set({ x: E, y: 1e18, expected: E }));
+        sets.push(set({ x: PI, y: 1e18, expected: PI }));
+        return sets;
+    }
+
+    function testPow__ExponentOne()
+        external
+        parameterizedTest(exponentOneSets())
+        BaseNotZero
+        BasePositive
+        ExponentNotZero
+    {
+        SD59x18 actual = pow(s.x, s.y);
+        assertEq(actual, s.expected);
+    }
+
+    modifier ExponentNotOne() {
+        _;
+    }
+
+    function testCannotPow__ExponentGreaterThanMaxPermitted()
+        external
+        BaseNotZero
+        BasePositive
+        ExponentNotZero
+        ExponentNotOne
+    {
         SD59x18 x = MAX_PERMITTED.add(sd(1));
-        SD59x18 y = sd(1e18);
-        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__Exp2InputTooBig.selector, sd(192e18)));
+        SD59x18 y = sd(1e18 + 1);
+        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__Exp2InputTooBig.selector, sd(192e18 + 192)));
         pow(x, y);
     }
 
@@ -101,6 +130,7 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         BaseNotZero
         BasePositive
         ExponentNotZero
+        ExponentNotOne
         ExponentLessThanOrEqualToMaxPermitted
     {
         SD59x18 actual = pow(s.x, s.y);
@@ -115,7 +145,7 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         sets.push(set({ x: 0.24e18, y: 11e18, expected: 0.000000152168114316e18 }));
         sets.push(set({ x: 0.5e18, y: 0.7373e18, expected: 0.59986094064056398e18 }));
         sets.push(set({ x: 0.799291e18, y: 69e18, expected: 0.000000193481602919e18 }));
-        sets.push(set({ x: 1e18, y: 1e18, expected: 1e18 }));
+        sets.push(set({ x: 1e18, y: 2e18, expected: 1e18 }));
         sets.push(set({ x: 1e18, y: PI, expected: 1e18 }));
         sets.push(set({ x: 2e18, y: 1.5e18, expected: 2_828427124746190097 }));
         sets.push(set({ x: E, y: E, expected: 15_154262241479263804 }));
@@ -131,12 +161,16 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         sets.push(
             set({
                 x: 340282366920938463463374607431768211455e18,
-                y: 1e18,
-                expected: 340282366920938457799636748773271041925_182187238234989391
+                y: 1e18 + 1,
+                expected: 340282366920938487979097481391762860220_000000000004665573
             })
         );
         sets.push(
-            set({ x: MAX_PERMITTED, y: 1e18, expected: 6277101735386680659358266643954607672760_949507286104301595e18 })
+            set({
+                x: MAX_PERMITTED,
+                y: 1e18 - 1,
+                expected: 6277101735386679823624773486129835356722228023657461399187e18
+            })
         );
         return sets;
     }
@@ -147,6 +181,7 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         BaseNotZero
         BasePositive
         ExponentNotZero
+        ExponentNotOne
         ExponentLessThanOrEqualToMaxPermitted
     {
         SD59x18 actual = pow(s.x, s.y);

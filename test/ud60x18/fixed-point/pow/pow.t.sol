@@ -65,10 +65,40 @@ contract UD60x18__PowTest is UD60x18__BaseTest {
         _;
     }
 
-    function testCannotPow__ExponentGreaterThanOrEqualToMaxPermitted() external BaseNotZero ExponentNotZero {
+    function exponentOneSets() internal returns (Set[] memory) {
+        delete sets;
+        sets.push(set({ x: 1e18, y: 1e18, expected: 1e18 }));
+        sets.push(set({ x: E, y: 1e18, expected: E }));
+        sets.push(set({ x: PI, y: 1e18, expected: PI }));
+        return sets;
+    }
+
+    function testPow__ExponentOne()
+        external
+        parameterizedTest(exponentOneSets())
+        BaseNotZero
+        BaseGreaterThanOrEqualToOne
+        ExponentNotZero
+        ExponentLessThanOrEqualToMaxPermitted
+    {
+        UD60x18 actual = pow(s.x, s.y);
+        assertEq(actual, s.expected);
+    }
+
+    modifier ExponentNotOne() {
+        _;
+    }
+
+    function testCannotPow__ExponentGreaterThanOrEqualToMaxPermitted()
+        external
+        BaseNotZero
+        BaseGreaterThanOrEqualToOne
+        ExponentNotZero
+        ExponentNotOne
+    {
         UD60x18 x = MAX_PERMITTED.add(ud(1));
-        UD60x18 y = ud(1e18);
-        vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__Exp2InputTooBig.selector, ud(192e18)));
+        UD60x18 y = ud(1e18 + 1);
+        vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__Exp2InputTooBig.selector, ud(192e18 + 192)));
         pow(x, y);
     }
 
@@ -78,11 +108,11 @@ contract UD60x18__PowTest is UD60x18__BaseTest {
 
     function powSets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: 1e18, y: 1e18, expected: 1e18 }));
+        sets.push(set({ x: 1e18, y: 2e18, expected: 1e18 }));
         sets.push(set({ x: 1e18, y: PI, expected: 1e18 }));
         sets.push(set({ x: 2e18, y: 1.5e18, expected: 2_828427124746190097 }));
-        sets.push(set({ x: E, y: E, expected: 15_154262241479263804 }));
         sets.push(set({ x: E, y: 1.66976e18, expected: 5_310893029888037563 }));
+        sets.push(set({ x: E, y: E, expected: 15_154262241479263804 }));
         sets.push(set({ x: PI, y: PI, expected: 36_462159607207910473 }));
         sets.push(set({ x: 11e18, y: 28.5e18, expected: 478290249106383504726311660571_903531944106436935 }));
         sets.push(
@@ -94,12 +124,16 @@ contract UD60x18__PowTest is UD60x18__BaseTest {
         sets.push(
             set({
                 x: 340282366920938463463374607431768211455e18,
-                y: 1e18,
-                expected: 340282366920938457799636748773271041925_182187238234989391
+                y: 1e18 + 1,
+                expected: 340282366920938487979097481391762860220_000000000004665573
             })
         );
         sets.push(
-            set({ x: MAX_PERMITTED, y: 1e18, expected: 6277101735386680659358266643954607672760_949507286104301595e18 })
+            set({
+                x: MAX_PERMITTED,
+                y: 1e18 - 1,
+                expected: 6277101735386679823624773486129835356722228023657461399187e18
+            })
         );
         return sets;
     }
@@ -109,6 +143,7 @@ contract UD60x18__PowTest is UD60x18__BaseTest {
         parameterizedTest(powSets())
         BaseNotZero
         ExponentNotZero
+        ExponentNotOne
         ExponentLessThanOrEqualToMaxPermitted
     {
         UD60x18 actual = pow(s.x, s.y);
