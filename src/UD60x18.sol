@@ -172,7 +172,7 @@ function exp(UD60x18 x) pure returns (UD60x18 result) {
 
     // We do the fixed-point multiplication inline rather than via the `mul` function to save gas.
     UD60x18 doubleUnitProduct = x.uncheckedMul(LOG2_E);
-    result = exp2(doubleUnitProduct.uncheckedAdd(HALF_UNIT).uncheckedDiv(UNIT));
+    result = exp2(doubleUnitProduct.uncheckedDiv(UNIT));
 }
 
 /// @notice Calculates the binary exponent of x using the binary fraction method.

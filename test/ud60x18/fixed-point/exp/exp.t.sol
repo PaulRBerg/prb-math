@@ -31,19 +31,19 @@ contract UD60x18__ExpTest is UD60x18__BaseTest {
     function expSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.000000000000000001e18, expected: 1e18 }));
-        sets.push(set({ x: 0.000000000000001e18, expected: 1000000000000001e3 }));
+        sets.push(set({ x: 0.000000000000001e18, expected: 1.000000000000000999e18 }));
         sets.push(set({ x: 1e18, expected: 2_718281828459045234 }));
         sets.push(set({ x: 2e18, expected: 7_389056098930650223 }));
         sets.push(set({ x: E, expected: 15_154262241479264171 }));
         sets.push(set({ x: 3e18, expected: 20_085536923187667724 }));
-        sets.push(set({ x: PI, expected: 23_140692632779268977 }));
+        sets.push(set({ x: PI, expected: 23_140692632779268962 }));
         sets.push(set({ x: 4e18, expected: 54_598150033144239019 }));
-        sets.push(set({ x: 11.89215e18, expected: 146115_107851442195849083 }));
+        sets.push(set({ x: 11.89215e18, expected: 146115_107851442195738190 }));
         sets.push(set({ x: 16e18, expected: 8886110_520507872601090007 }));
-        sets.push(set({ x: 20.82e18, expected: 1101567497_354306723238329100 }));
+        sets.push(set({ x: 20.82e18, expected: 1101567497_354306722521735975 }));
         sets.push(set({ x: 33.333333e18, expected: 299559147061116_199277615819889397 }));
         sets.push(set({ x: 64e18, expected: 6235149080811616783682415370_612321304359995711 }));
-        sets.push(set({ x: 71.002e18, expected: 6851360256686184003424071446459_846369495614777170 }));
+        sets.push(set({ x: 71.002e18, expected: 6851360256686183998595702657852_843771046889809565 }));
         sets.push(
             set({ x: 88.722839111672999627e18, expected: 340282366920938463222979506443879150094_819893272894857679 })
         );
