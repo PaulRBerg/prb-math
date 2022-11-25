@@ -34,7 +34,6 @@ contract SD59x18__NonFixedPointTest is SD59x18__BaseTest {
     }
 
     function testAnd(int256 x, int256 y) external {
-        vm.assume(y <= 512);
         int256 actual = unwrap(and(wrap(x), y));
         int256 expected = x & y;
         assertEq(actual, expected);
@@ -69,7 +68,7 @@ contract SD59x18__NonFixedPointTest is SD59x18__BaseTest {
     }
 
     function testLshift(int256 x, uint256 y) external {
-        vm.assume(y <= 512);
+        bound(y, 0, 512);
         int256 actual = unwrap(lshift(wrap(x), y));
         int256 expected = x << y;
         assertEq(actual, expected);
@@ -110,7 +109,7 @@ contract SD59x18__NonFixedPointTest is SD59x18__BaseTest {
     }
 
     function testRshift(int256 x, uint256 y) external {
-        vm.assume(y <= 512);
+        bound(y, 0, 512);
         int256 actual = unwrap(rshift(wrap(x), y));
         int256 expected = x >> y;
         assertEq(actual, expected);
@@ -180,7 +179,6 @@ contract SD59x18__NonFixedPointTest is SD59x18__BaseTest {
     }
 
     function testXor(int256 x, int256 y) external {
-        vm.assume(y <= 512);
         int256 actual = unwrap(xor(wrap(x), wrap(y)));
         int256 expected = x ^ y;
         assertEq(actual, expected);

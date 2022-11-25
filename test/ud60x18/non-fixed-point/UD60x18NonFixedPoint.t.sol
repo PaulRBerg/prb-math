@@ -17,7 +17,6 @@ contract UD60x18__NonFixedPointTest is UD60x18__BaseTest {
     }
 
     function testAnd(uint256 x, uint256 y) external {
-        vm.assume(y <= 512);
         uint256 actual = unwrap(and(wrap(x), y));
         uint256 expected = x & y;
         assertEq(actual, expected);
@@ -144,7 +143,6 @@ contract UD60x18__NonFixedPointTest is UD60x18__BaseTest {
     }
 
     function testXor(uint256 x, uint256 y) external {
-        vm.assume(y <= 512);
         uint256 actual = unwrap(xor(wrap(x), wrap(y)));
         uint256 expected = x ^ y;
         assertEq(actual, expected);
