@@ -66,45 +66,45 @@ error PRBMathSD59x18__ToSD59x18Underflow(int256 x);
                                     CONSTANTS
 //////////////////////////////////////////////////////////////////////////*/
 
+/// NOTICE: the "u" prefix stands for "unwrapped".
+
 /// @dev Euler's number as an SD59x18 number.
 SD59x18 constant E = SD59x18.wrap(2_718281828459045235);
 
 /// @dev Half the UNIT number.
-int256 constant HALF_UNIT_INT256 = 0.5e18;
-SD59x18 constant HALF_UNIT = SD59x18.wrap(HALF_UNIT_INT256);
+int256 constant uHALF_UNIT = 0.5e18;
+SD59x18 constant HALF_UNIT = SD59x18.wrap(uHALF_UNIT);
 
 /// @dev log2(10) as an SD59x18 number.
-int256 constant LOG2_10_INT256 = 3_321928094887362347;
-SD59x18 constant LOG2_10 = SD59x18.wrap(LOG2_10_INT256);
+int256 constant uLOG2_10 = 3_321928094887362347;
+SD59x18 constant LOG2_10 = SD59x18.wrap(uLOG2_10);
 
 /// @dev log2(e) as an SD59x18 number.
-int256 constant LOG2_E_INT256 = 1_442695040888963407;
-SD59x18 constant LOG2_E = SD59x18.wrap(LOG2_E_INT256);
+int256 constant uLOG2_E = 1_442695040888963407;
+SD59x18 constant LOG2_E = SD59x18.wrap(uLOG2_E);
 
 /// @dev The maximum value an SD59x18 number can have.
-int256 constant MAX_SD59x18_INT256 = 57896044618658097711785492504343953926634992332820282019728_792003956564819967;
-SD59x18 constant MAX_SD59x18 = SD59x18.wrap(MAX_SD59x18_INT256);
-uint256 constant MAX_SD59x18_UINT256 = 57896044618658097711785492504343953926634992332820282019728_792003956564819967;
+int256 constant uMAX_SD59x18 = 57896044618658097711785492504343953926634992332820282019728_792003956564819967;
+SD59x18 constant MAX_SD59x18 = SD59x18.wrap(uMAX_SD59x18);
 
 /// @dev The maximum whole value an SD59x18 number can have.
-int256 constant MAX_WHOLE_SD59x18_INT256 = 57896044618658097711785492504343953926634992332820282019728_000000000000000000;
-SD59x18 constant MAX_WHOLE_SD59x18 = SD59x18.wrap(MAX_WHOLE_SD59x18_INT256);
+int256 constant uMAX_WHOLE_SD59x18 = 57896044618658097711785492504343953926634992332820282019728_000000000000000000;
+SD59x18 constant MAX_WHOLE_SD59x18 = SD59x18.wrap(uMAX_WHOLE_SD59x18);
 
 /// @dev The minimum value an SD59x18 number can have.
-int256 constant MIN_SD59x18_INT256 = -57896044618658097711785492504343953926634992332820282019728_792003956564819968;
-SD59x18 constant MIN_SD59x18 = SD59x18.wrap(MIN_SD59x18_INT256);
+int256 constant uMIN_SD59x18 = -57896044618658097711785492504343953926634992332820282019728_792003956564819968;
+SD59x18 constant MIN_SD59x18 = SD59x18.wrap(uMIN_SD59x18);
 
 /// @dev The minimum whole value an SD59x18 number can have.
-int256 constant MIN_WHOLE_SD59x18_INT256 = -57896044618658097711785492504343953926634992332820282019728_000000000000000000;
-SD59x18 constant MIN_WHOLE_SD59x18 = SD59x18.wrap(MIN_WHOLE_SD59x18_INT256);
+int256 constant uMIN_WHOLE_SD59x18 = -57896044618658097711785492504343953926634992332820282019728_000000000000000000;
+SD59x18 constant MIN_WHOLE_SD59x18 = SD59x18.wrap(uMIN_WHOLE_SD59x18);
 
 /// @dev PI as an SD59x18 number.
 SD59x18 constant PI = SD59x18.wrap(3_141592653589793238);
 
 /// @dev The unit amount which implies how many trailing decimals can be represented.
 SD59x18 constant UNIT = SD59x18.wrap(1e18);
-int256 constant UNIT_INT256 = 1e18;
-uint256 constant UNIT_UINT256 = 1e18;
+int256 constant uUNIT = 1e18;
 
 /// @dev Zero as an SD59x18 number.
 SD59x18 constant ZERO = SD59x18.wrap(0);
@@ -142,7 +142,7 @@ using {
 /// @param result The absolute value of x as an SD59x18 number.
 function abs(SD59x18 x) pure returns (SD59x18 result) {
     int256 xInt = unwrap(x);
-    if (xInt == MIN_SD59x18_INT256) {
+    if (xInt == uMIN_SD59x18) {
         revert PRBMathSD59x18__AbsMinSD59x18();
     }
     result = xInt < 0 ? wrap(-xInt) : x;
@@ -187,11 +187,11 @@ function avg(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 /// @param result The least number greater than or equal to x, as an SD59x18 number.
 function ceil(SD59x18 x) pure returns (SD59x18 result) {
     int256 xInt = unwrap(x);
-    if (xInt > MAX_WHOLE_SD59x18_INT256) {
+    if (xInt > uMAX_WHOLE_SD59x18) {
         revert PRBMathSD59x18__CeilOverflow(x);
     }
 
-    int256 remainder = xInt % UNIT_INT256;
+    int256 remainder = xInt % uUNIT;
     if (remainder == 0) {
         result = x;
     } else {
@@ -199,7 +199,7 @@ function ceil(SD59x18 x) pure returns (SD59x18 result) {
             // Solidity uses C fmod style, which returns a modulus with the same sign as x.
             int256 resultInt = xInt - remainder;
             if (xInt > 0) {
-                resultInt += UNIT_INT256;
+                resultInt += uUNIT;
             }
             result = wrap(resultInt);
         }
@@ -226,7 +226,7 @@ function ceil(SD59x18 x) pure returns (SD59x18 result) {
 function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     int256 xInt = unwrap(x);
     int256 yInt = unwrap(y);
-    if (xInt == MIN_SD59x18_INT256 || yInt == MIN_SD59x18_INT256) {
+    if (xInt == uMIN_SD59x18 || yInt == uMIN_SD59x18) {
         revert PRBMathSD59x18__DivInputTooSmall();
     }
 
@@ -239,8 +239,8 @@ function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     }
 
     // Compute the absolute value (x*UNIT)÷y. The resulting value must fit within int256.
-    uint256 resultAbs = mulDiv(xAbs, UNIT_UINT256, yAbs);
-    if (resultAbs > MAX_SD59x18_UINT256) {
+    uint256 resultAbs = mulDiv(xAbs, uint256(uUNIT), yAbs);
+    if (resultAbs > uint256(uMAX_SD59x18)) {
         revert PRBMathSD59x18__DivOverflow(x, y);
     }
 
@@ -286,8 +286,8 @@ function exp(SD59x18 x) pure returns (SD59x18 result) {
 
     unchecked {
         // Do the fixed-point multiplication inline to save gas.
-        int256 doubleUnitProduct = xInt * LOG2_E_INT256;
-        result = exp2(wrap(doubleUnitProduct / UNIT_INT256));
+        int256 doubleUnitProduct = xInt * uLOG2_E;
+        result = exp2(wrap(doubleUnitProduct / uUNIT));
     }
 }
 
@@ -330,7 +330,7 @@ function exp2(SD59x18 x) pure returns (SD59x18 result) {
 
         unchecked {
             // Convert x to the 192.64-bit fixed-point format.
-            uint256 x_192x64 = uint256((xInt << 64) / UNIT_INT256);
+            uint256 x_192x64 = uint256((xInt << 64) / uUNIT);
 
             // It is safe to convert the result to int256 with no checks because the maximum input allowed in this function is 192.
             result = wrap(int256(prbExp2(x_192x64)));
@@ -350,11 +350,11 @@ function exp2(SD59x18 x) pure returns (SD59x18 result) {
 /// @param result The greatest integer less than or equal to x, as an SD59x18 number.
 function floor(SD59x18 x) pure returns (SD59x18 result) {
     int256 xInt = unwrap(x);
-    if (xInt < MIN_WHOLE_SD59x18_INT256) {
+    if (xInt < uMIN_WHOLE_SD59x18) {
         revert PRBMathSD59x18__FloorUnderflow(x);
     }
 
-    int256 remainder = xInt % UNIT_INT256;
+    int256 remainder = xInt % uUNIT;
     if (remainder == 0) {
         result = x;
     } else {
@@ -362,7 +362,7 @@ function floor(SD59x18 x) pure returns (SD59x18 result) {
             // Solidity uses C fmod style, which returns a modulus with the same sign as x.
             int256 resultInt = xInt - remainder;
             if (xInt < 0) {
-                resultInt -= UNIT_INT256;
+                resultInt -= uUNIT;
             }
             result = wrap(resultInt);
         }
@@ -375,14 +375,14 @@ function floor(SD59x18 x) pure returns (SD59x18 result) {
 /// @param x The SD59x18 number to get the fractional part of.
 /// @param result The fractional part of x as an SD59x18 number.
 function frac(SD59x18 x) pure returns (SD59x18 result) {
-    result = wrap(unwrap(x) % UNIT_INT256);
+    result = wrap(unwrap(x) % uUNIT);
 }
 
 /// @notice Converts an SD59x18 number to basic integer form, rounding towards zero in the process.
 /// @param x The SD59x18 number to convert.
 /// @return result The same number in basic integer form.
 function fromSD59x18(SD59x18 x) pure returns (int256 result) {
-    result = unwrap(x) / UNIT_INT256;
+    result = unwrap(x) / uUNIT;
 }
 
 /// @notice Calculates the geometric mean of x and y, i.e. sqrt(x * y), rounding down.
@@ -452,7 +452,7 @@ function inv(SD59x18 x) pure returns (SD59x18 result) {
 function ln(SD59x18 x) pure returns (SD59x18 result) {
     // Do the fixed-point multiplication inline to save gas. This is overflow-safe because the maximum value that log2(x)
     // can return is 195.205294292027477728.
-    result = wrap((unwrap(log2(x)) * UNIT_INT256) / LOG2_E_INT256);
+    result = wrap((unwrap(log2(x)) * uUNIT) / uLOG2_E);
 }
 
 /// @notice Calculates the common logarithm of x.
@@ -482,92 +482,92 @@ function log10(SD59x18 x) pure returns (SD59x18 result) {
     // prettier-ignore
     assembly {
         switch x
-        case 1 { result := mul(UNIT_INT256, sub(0, 18)) }
-        case 10 { result := mul(UNIT_INT256, sub(1, 18)) }
-        case 100 { result := mul(UNIT_INT256, sub(2, 18)) }
-        case 1000 { result := mul(UNIT_INT256, sub(3, 18)) }
-        case 10000 { result := mul(UNIT_INT256, sub(4, 18)) }
-        case 100000 { result := mul(UNIT_INT256, sub(5, 18)) }
-        case 1000000 { result := mul(UNIT_INT256, sub(6, 18)) }
-        case 10000000 { result := mul(UNIT_INT256, sub(7, 18)) }
-        case 100000000 { result := mul(UNIT_INT256, sub(8, 18)) }
-        case 1000000000 { result := mul(UNIT_INT256, sub(9, 18)) }
-        case 10000000000 { result := mul(UNIT_INT256, sub(10, 18)) }
-        case 100000000000 { result := mul(UNIT_INT256, sub(11, 18)) }
-        case 1000000000000 { result := mul(UNIT_INT256, sub(12, 18)) }
-        case 10000000000000 { result := mul(UNIT_INT256, sub(13, 18)) }
-        case 100000000000000 { result := mul(UNIT_INT256, sub(14, 18)) }
-        case 1000000000000000 { result := mul(UNIT_INT256, sub(15, 18)) }
-        case 10000000000000000 { result := mul(UNIT_INT256, sub(16, 18)) }
-        case 100000000000000000 { result := mul(UNIT_INT256, sub(17, 18)) }
+        case 1 { result := mul(uUNIT, sub(0, 18)) }
+        case 10 { result := mul(uUNIT, sub(1, 18)) }
+        case 100 { result := mul(uUNIT, sub(2, 18)) }
+        case 1000 { result := mul(uUNIT, sub(3, 18)) }
+        case 10000 { result := mul(uUNIT, sub(4, 18)) }
+        case 100000 { result := mul(uUNIT, sub(5, 18)) }
+        case 1000000 { result := mul(uUNIT, sub(6, 18)) }
+        case 10000000 { result := mul(uUNIT, sub(7, 18)) }
+        case 100000000 { result := mul(uUNIT, sub(8, 18)) }
+        case 1000000000 { result := mul(uUNIT, sub(9, 18)) }
+        case 10000000000 { result := mul(uUNIT, sub(10, 18)) }
+        case 100000000000 { result := mul(uUNIT, sub(11, 18)) }
+        case 1000000000000 { result := mul(uUNIT, sub(12, 18)) }
+        case 10000000000000 { result := mul(uUNIT, sub(13, 18)) }
+        case 100000000000000 { result := mul(uUNIT, sub(14, 18)) }
+        case 1000000000000000 { result := mul(uUNIT, sub(15, 18)) }
+        case 10000000000000000 { result := mul(uUNIT, sub(16, 18)) }
+        case 100000000000000000 { result := mul(uUNIT, sub(17, 18)) }
         case 1000000000000000000 { result := 0 }
-        case 10000000000000000000 { result := UNIT_INT256 }
-        case 100000000000000000000 { result := mul(UNIT_INT256, 2) }
-        case 1000000000000000000000 { result := mul(UNIT_INT256, 3) }
-        case 10000000000000000000000 { result := mul(UNIT_INT256, 4) }
-        case 100000000000000000000000 { result := mul(UNIT_INT256, 5) }
-        case 1000000000000000000000000 { result := mul(UNIT_INT256, 6) }
-        case 10000000000000000000000000 { result := mul(UNIT_INT256, 7) }
-        case 100000000000000000000000000 { result := mul(UNIT_INT256, 8) }
-        case 1000000000000000000000000000 { result := mul(UNIT_INT256, 9) }
-        case 10000000000000000000000000000 { result := mul(UNIT_INT256, 10) }
-        case 100000000000000000000000000000 { result := mul(UNIT_INT256, 11) }
-        case 1000000000000000000000000000000 { result := mul(UNIT_INT256, 12) }
-        case 10000000000000000000000000000000 { result := mul(UNIT_INT256, 13) }
-        case 100000000000000000000000000000000 { result := mul(UNIT_INT256, 14) }
-        case 1000000000000000000000000000000000 { result := mul(UNIT_INT256, 15) }
-        case 10000000000000000000000000000000000 { result := mul(UNIT_INT256, 16) }
-        case 100000000000000000000000000000000000 { result := mul(UNIT_INT256, 17) }
-        case 1000000000000000000000000000000000000 { result := mul(UNIT_INT256, 18) }
-        case 10000000000000000000000000000000000000 { result := mul(UNIT_INT256, 19) }
-        case 100000000000000000000000000000000000000 { result := mul(UNIT_INT256, 20) }
-        case 1000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 21) }
-        case 10000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 22) }
-        case 100000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 23) }
-        case 1000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 24) }
-        case 10000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 25) }
-        case 100000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 26) }
-        case 1000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 27) }
-        case 10000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 28) }
-        case 100000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 29) }
-        case 1000000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 30) }
-        case 10000000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 31) }
-        case 100000000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 32) }
-        case 1000000000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 33) }
-        case 10000000000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 34) }
-        case 100000000000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 35) }
-        case 1000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 36) }
-        case 10000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 37) }
-        case 100000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 38) }
-        case 1000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 39) }
-        case 10000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 40) }
-        case 100000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 41) }
-        case 1000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 42) }
-        case 10000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 43) }
-        case 100000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 44) }
-        case 1000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 45) }
-        case 10000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 46) }
-        case 100000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 47) }
-        case 1000000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 48) }
-        case 10000000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 49) }
-        case 100000000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 50) }
-        case 1000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 51) }
-        case 10000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 52) }
-        case 100000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 53) }
-        case 1000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 54) }
-        case 10000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 55) }
-        case 100000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 56) }
-        case 1000000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 57) }
-        case 10000000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_INT256, 58) }
+        case 10000000000000000000 { result := uUNIT }
+        case 100000000000000000000 { result := mul(uUNIT, 2) }
+        case 1000000000000000000000 { result := mul(uUNIT, 3) }
+        case 10000000000000000000000 { result := mul(uUNIT, 4) }
+        case 100000000000000000000000 { result := mul(uUNIT, 5) }
+        case 1000000000000000000000000 { result := mul(uUNIT, 6) }
+        case 10000000000000000000000000 { result := mul(uUNIT, 7) }
+        case 100000000000000000000000000 { result := mul(uUNIT, 8) }
+        case 1000000000000000000000000000 { result := mul(uUNIT, 9) }
+        case 10000000000000000000000000000 { result := mul(uUNIT, 10) }
+        case 100000000000000000000000000000 { result := mul(uUNIT, 11) }
+        case 1000000000000000000000000000000 { result := mul(uUNIT, 12) }
+        case 10000000000000000000000000000000 { result := mul(uUNIT, 13) }
+        case 100000000000000000000000000000000 { result := mul(uUNIT, 14) }
+        case 1000000000000000000000000000000000 { result := mul(uUNIT, 15) }
+        case 10000000000000000000000000000000000 { result := mul(uUNIT, 16) }
+        case 100000000000000000000000000000000000 { result := mul(uUNIT, 17) }
+        case 1000000000000000000000000000000000000 { result := mul(uUNIT, 18) }
+        case 10000000000000000000000000000000000000 { result := mul(uUNIT, 19) }
+        case 100000000000000000000000000000000000000 { result := mul(uUNIT, 20) }
+        case 1000000000000000000000000000000000000000 { result := mul(uUNIT, 21) }
+        case 10000000000000000000000000000000000000000 { result := mul(uUNIT, 22) }
+        case 100000000000000000000000000000000000000000 { result := mul(uUNIT, 23) }
+        case 1000000000000000000000000000000000000000000 { result := mul(uUNIT, 24) }
+        case 10000000000000000000000000000000000000000000 { result := mul(uUNIT, 25) }
+        case 100000000000000000000000000000000000000000000 { result := mul(uUNIT, 26) }
+        case 1000000000000000000000000000000000000000000000 { result := mul(uUNIT, 27) }
+        case 10000000000000000000000000000000000000000000000 { result := mul(uUNIT, 28) }
+        case 100000000000000000000000000000000000000000000000 { result := mul(uUNIT, 29) }
+        case 1000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 30) }
+        case 10000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 31) }
+        case 100000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 32) }
+        case 1000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 33) }
+        case 10000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 34) }
+        case 100000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 35) }
+        case 1000000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 36) }
+        case 10000000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 37) }
+        case 100000000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 38) }
+        case 1000000000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 39) }
+        case 10000000000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 40) }
+        case 100000000000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 41) }
+        case 1000000000000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 42) }
+        case 10000000000000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 43) }
+        case 100000000000000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 44) }
+        case 1000000000000000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 45) }
+        case 10000000000000000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 46) }
+        case 100000000000000000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 47) }
+        case 1000000000000000000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 48) }
+        case 10000000000000000000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 49) }
+        case 100000000000000000000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 50) }
+        case 1000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 51) }
+        case 10000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 52) }
+        case 100000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 53) }
+        case 1000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 54) }
+        case 10000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 55) }
+        case 100000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 56) }
+        case 1000000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 57) }
+        case 10000000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 58) }
         default {
-            result := MAX_SD59x18_INT256
+            result := uMAX_SD59x18
         }
     }
 
-    if (unwrap(result) == MAX_SD59x18_INT256) {
+    if (unwrap(result) == uMAX_SD59x18) {
         unchecked {
             // Do the fixed-point division inline to save gas.
-            result = wrap((unwrap(log2(x)) * UNIT_INT256) / LOG2_10_INT256);
+            result = wrap((unwrap(log2(x)) * uUNIT) / uLOG2_10);
         }
     }
 }
@@ -598,7 +598,7 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
         // log_2{x} = -log_2{\frac{1}{x}}
         // $$
         int256 sign;
-        if (xInt >= UNIT_INT256) {
+        if (xInt >= uUNIT) {
             sign = 1;
         } else {
             sign = -1;
@@ -607,25 +607,25 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
         }
 
         // Calculate the integer part of the logarithm and add it to the result and finally calculate $y = x * 2^(-n)$.
-        uint256 n = msb(uint256(xInt / UNIT_INT256));
+        uint256 n = msb(uint256(xInt / uUNIT));
 
         // This is the integer part of the logarithm as an SD59x18 number. The operation can't overflow
         // because n is maximum 255, UNIT is 1e18 and sign is either 1 or -1.
-        int256 resultInt = int256(n) * UNIT_INT256;
+        int256 resultInt = int256(n) * uUNIT;
 
         // This is $y = x * 2^{-n}$.
         int256 y = xInt >> n;
 
         // If y is 1, the fractional part is zero.
-        if (y == UNIT_INT256) {
+        if (y == uUNIT) {
             return wrap(resultInt * sign);
         }
 
         // Calculate the fractional part via the iterative approximation.
         // The "delta >>= 1" part is equivalent to "delta /= 2", but shifting bits is faster.
         int256 DOUBLE_UNIT = 2e18;
-        for (int256 delta = HALF_UNIT_INT256; delta > 0; delta >= 1) {
-            y = (y * y) / UNIT_INT256;
+        for (int256 delta = uHALF_UNIT; delta > 0; delta >= 1) {
+            y = (y * y) / uUNIT;
 
             // Is $y^2 > 2$ and so in the range [2,4)?
             if (y >= DOUBLE_UNIT) {
@@ -660,7 +660,7 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
 function mul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     int256 xInt = unwrap(x);
     int256 yInt = unwrap(y);
-    if (xInt == MIN_SD59x18_INT256 || yInt == MIN_SD59x18_INT256) {
+    if (xInt == uMIN_SD59x18 || yInt == uMIN_SD59x18) {
         revert PRBMathSD59x18__MulInputTooSmall();
     }
 
@@ -673,7 +673,7 @@ function mul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     }
 
     uint256 resultAbs = mulDiv18(xAbs, yAbs);
-    if (resultAbs > MAX_SD59x18_UINT256) {
+    if (resultAbs > uint256(uMAX_SD59x18)) {
         revert PRBMathSD59x18__MulOverflow(x, y);
     }
 
@@ -713,7 +713,7 @@ function pow(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     if (xInt == 0) {
         result = yInt == 0 ? UNIT : ZERO;
     } else {
-        if (yInt == UNIT_INT256) {
+        if (yInt == uUNIT) {
             result = x;
         } else {
             result = exp2(mul(log2(x), y));
@@ -741,7 +741,7 @@ function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
     uint256 xAbs = uint256(unwrap(abs(x)));
 
     // Calculate the first iteration of the loop in advance.
-    uint256 resultAbs = y & 1 > 0 ? xAbs : UNIT_UINT256;
+    uint256 resultAbs = y & 1 > 0 ? xAbs : uint256(uUNIT);
 
     // Equivalent to "for(y /= 2; y > 0; y /= 2)" but faster.
     uint256 yAux = y;
@@ -755,7 +755,7 @@ function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
     }
 
     // The result must fit within `MAX_SD59x18`.
-    if (resultAbs > MAX_SD59x18_UINT256) {
+    if (resultAbs > uint256(uMAX_SD59x18)) {
         revert PRBMathSD59x18__PowuOverflow(x, y);
     }
 
@@ -784,14 +784,14 @@ function sqrt(SD59x18 x) pure returns (SD59x18 result) {
     if (xInt < 0) {
         revert PRBMathSD59x18__SqrtNegativeInput(x);
     }
-    if (xInt > MAX_SD59x18_INT256 / UNIT_INT256) {
+    if (xInt > uMAX_SD59x18 / uUNIT) {
         revert PRBMathSD59x18__SqrtOverflow(x);
     }
 
     unchecked {
         // Multiply x by `UNIT` to account for the factor of `UNIT` that is picked up when multiplying two SD59x18
         // numbers together (in this case, the two numbers are both the square root).
-        uint256 resultUint = prbSqrt(uint256(xInt * UNIT_INT256));
+        uint256 resultUint = prbSqrt(uint256(xInt * uUNIT));
         result = wrap(int256(resultUint));
     }
 }
@@ -805,14 +805,14 @@ function sqrt(SD59x18 x) pure returns (SD59x18 result) {
 /// @param x The basic integer to convert.
 /// @param result The same number converted to SD59x18.
 function toSD59x18(int256 x) pure returns (SD59x18 result) {
-    if (x < MIN_SD59x18_INT256 / UNIT_INT256) {
+    if (x < uMIN_SD59x18 / uUNIT) {
         revert PRBMathSD59x18__ToSD59x18Underflow(x);
     }
-    if (x > MAX_SD59x18_INT256 / UNIT_INT256) {
+    if (x > uMAX_SD59x18 / uUNIT) {
         revert PRBMathSD59x18__ToSD59x18Overflow(x);
     }
     unchecked {
-        result = wrap(x * UNIT_INT256);
+        result = wrap(x * uUNIT);
     }
 }
 
