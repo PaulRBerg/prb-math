@@ -457,22 +457,22 @@ function log2(UD60x18 x) pure returns (UD60x18 result) {
 
         // If y is 1, the fractional part is zero.
         if (y == uUNIT) {
-            return result;
+            return wrap(resultUint);
         }
 
         // Calculate the fractional part via the iterative approximation.
         // The "delta.rshift(1)" part is equivalent to "delta /= 2", but shifting bits is faster.
         uint256 DOUBLE_UNIT = 2e18;
-        for (uint256 delta = uHALF_UNIT; delta > 0; delta >= 1) {
+        for (uint256 delta = uHALF_UNIT; delta > 0; delta >>= 1) {
             y = (y * y) / uUNIT;
 
             // Is y^2 > 2 and so in the range [2,4)?
             if (y >= DOUBLE_UNIT) {
                 // Add the 2^{-m} factor to the logarithm.
-                resultUint = resultUint + delta;
+                resultUint += delta;
 
                 // Corresponds to z/2 on Wikipedia.
-                y >= 1;
+                y >>= 1;
             }
         }
         result = wrap(resultUint);
