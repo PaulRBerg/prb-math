@@ -37,7 +37,7 @@ contract UD60x18__DivTest is UD60x18__BaseTest {
         UD60x18 x = MAX_SCALED_UD60x18.add(ud(1));
         UD60x18 y = ud(0.000000000000000001e18);
         vm.expectRevert(
-            abi.encodeWithSelector(PRBMath__MulDivOverflow.selector, UD60x18.unwrap(x), SCALE_UINT, UD60x18.unwrap(y))
+            abi.encodeWithSelector(PRBMath__MulDivOverflow.selector, UD60x18.unwrap(x), UNIT_UINT, UD60x18.unwrap(y))
         );
         div(x, y);
     }

@@ -25,13 +25,13 @@ error PRBMath__MulDivSignedOverflow(int256 x, int256 y);
 //////////////////////////////////////////////////////////////////////////*/
 
 /// @dev How many trailing decimals can be represented.
-uint256 constant SCALE = 1e18;
+uint256 constant UNIT = 1e18;
 
-/// @dev Largest power of two that is a divisor of `SCALE`.
-uint256 constant SCALE_LPOTD = 262144;
+/// @dev Largest power of two that is a divisor of `UNIT`.
+uint256 constant UNIT_LPOTD = 262144;
 
-/// @dev The `SCALE` number inverted mod 2^256.
-uint256 constant SCALE_INVERSE = 78156646155174841979727994598816262306175212592076161876661_508869554232690281;
+/// @dev The `UNIT` number inverted mod 2^256.
+uint256 constant UNIT_INVERSE = 78156646155174841979727994598816262306175212592076161876661_508869554232690281;
 
 /*//////////////////////////////////////////////////////////////////////////
                                     FUNCTIONS
@@ -176,7 +176,7 @@ function mulDiv(uint256 x, uint256 y, uint256 denominator) pure returns (uint256
 /// @notice Calculates floor(x*y÷1e18) with full precision.
 ///
 /// @dev Variant of `mulDiv` with constant folding, i.e. in which the denominator is always 1e18. Before returning the
-/// final result, we add 1 if `(x * y) % SCALE >= HALF_SCALE`. Without this adjustment, 6.6e-19 would be truncated to 0
+/// final result, we add 1 if `(x * y) % UNIT >= HALF_UNIT`. Without this adjustment, 6.6e-19 would be truncated to 0
 /// instead of being rounded to 1e-18. See "Listing 6" and text above it at https://accu.org/index.php/journals/1717.
 ///
 /// Requirements:
@@ -185,8 +185,8 @@ function mulDiv(uint256 x, uint256 y, uint256 denominator) pure returns (uint256
 /// Caveats:
 /// - The body is purposely left uncommented; to understand how this works, see the NatSpec comments in `mulDiv`.
 /// - It is assumed that the result can never be `type(uint256).max` when x and y solve the following two equations:
-///     1. x * y = type(uint256).max * SCALE
-///     2. (x * y) % SCALE >= SCALE / 2
+///     1. x * y = type(uint256).max * UNIT
+///     2. (x * y) % UNIT >= UNIT / 2
 ///
 /// @param x The multiplicand as an unsigned 60.18-decimal fixed-point number.
 /// @param y The multiplier as an unsigned 60.18-decimal fixed-point number.
@@ -200,20 +200,20 @@ function mulDiv18(uint256 x, uint256 y) pure returns (uint256 result) {
         prod1 := sub(sub(mm, prod0), lt(mm, prod0))
     }
 
-    if (prod1 >= SCALE) {
+    if (prod1 >= UNIT) {
         revert PRBMath__MulDiv18Overflow(x, y);
     }
 
     uint256 remainder;
     uint256 roundUpUnit;
     assembly {
-        remainder := mulmod(x, y, SCALE)
+        remainder := mulmod(x, y, UNIT)
         roundUpUnit := gt(remainder, 499999999999999999)
     }
 
     if (prod1 > 0 == false) {
         unchecked {
-            return (prod0 / SCALE) + roundUpUnit;
+            return (prod0 / UNIT) + roundUpUnit;
         }
     }
 
@@ -221,10 +221,10 @@ function mulDiv18(uint256 x, uint256 y) pure returns (uint256 result) {
         result := add(
             mul(
                 or(
-                    div(sub(prod0, remainder), SCALE_LPOTD),
-                    mul(sub(prod1, gt(remainder, prod0)), add(div(sub(0, SCALE_LPOTD), SCALE_LPOTD), 1))
+                    div(sub(prod0, remainder), UNIT_LPOTD),
+                    mul(sub(prod1, gt(remainder, prod0)), add(div(sub(0, UNIT_LPOTD), UNIT_LPOTD), 1))
                 ),
-                SCALE_INVERSE
+                UNIT_INVERSE
             ),
             roundUpUnit
         )
@@ -519,7 +519,7 @@ function prbExp2(uint256 x) pure returns (uint256 result) {
         //   2. Convert the result to the unsigned 60.18-decimal fixed-point format.
         //
         // This works because 2^(191-ip) = 2^ip / 2^191, where "ip" is the integer part "2^n".
-        result *= SCALE;
+        result *= UNIT;
         result >>= (191 - (x >> 64));
     }
 }

@@ -45,9 +45,8 @@ error PRBMathUD60x18__ToUD60x18Overflow(uint256 x);
 /// @dev Euler's number as an UD60x18 number.
 UD60x18 constant E = UD60x18.wrap(2_718281828459045235);
 
-/// @dev Half the SCALE number.
-UD60x18 constant HALF_SCALE = UD60x18.wrap(5e17);
-uint256 constant HALF_SCALE_UINT = 5e17;
+/// @dev Half the UNIT number.
+UD60x18 constant HALF_UNIT = UD60x18.wrap(5e17);
 
 /// @dev log2(10) as an UD60x18 number.
 UD60x18 constant LOG2_10 = UD60x18.wrap(3_321928094887362347);
@@ -73,8 +72,8 @@ uint256 constant MAX_WHOLE_UD60x18_UINT = 11579208923731619542357098500868790785
 UD60x18 constant PI = UD60x18.wrap(3_141592653589793238);
 
 /// @dev The unit amount which implies how many trailing decimals can be represented.
-UD60x18 constant SCALE = UD60x18.wrap(1e18);
-uint256 constant SCALE_UINT = 1e18;
+UD60x18 constant UNIT = UD60x18.wrap(1e18);
+uint256 constant UNIT_UINT = 1e18;
 
 /// @dev Zero as an UD60x18 number.
 UD60x18 constant ZERO = UD60x18.wrap(0);
@@ -126,11 +125,11 @@ function ceil(UD60x18 x) pure returns (UD60x18 result) {
         revert PRBMathUD60x18__CeilOverflow(x);
     }
     assembly {
-        // Equivalent to "x % SCALE" but faster.
-        let remainder := mod(x, SCALE_UINT)
+        // Equivalent to "x % UNIT" but faster.
+        let remainder := mod(x, UNIT_UINT)
 
-        // Equivalent to "SCALE - remainder" but faster.
-        let delta := sub(SCALE_UINT, remainder)
+        // Equivalent to "UNIT - remainder" but faster.
+        let delta := sub(UNIT_UINT, remainder)
 
         // Equivalent to "x + delta * (remainder > 0 ? 1 : 0)" but faster.
         result := add(x, mul(delta, gt(remainder, 0)))
@@ -148,7 +147,7 @@ function ceil(UD60x18 x) pure returns (UD60x18 result) {
 /// @param y The denominator as an UD60x18 number.
 /// @param result The quotient as an UD60x18 number.
 function div(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
-    result = wrap(mulDiv(unwrap(x), SCALE_UINT, unwrap(y)));
+    result = wrap(mulDiv(unwrap(x), UNIT_UINT, unwrap(y)));
 }
 
 /// @notice Calculates the natural exponent of x.
@@ -172,8 +171,8 @@ function exp(UD60x18 x) pure returns (UD60x18 result) {
     }
 
     // We do the fixed-point multiplication inline rather than via the `mul` function to save gas.
-    UD60x18 doubleScaleProduct = x.uncheckedMul(LOG2_E);
-    result = exp2(doubleScaleProduct.uncheckedAdd(HALF_SCALE).uncheckedDiv(SCALE));
+    UD60x18 doubleUnitProduct = x.uncheckedMul(LOG2_E);
+    result = exp2(doubleUnitProduct.uncheckedAdd(HALF_UNIT).uncheckedDiv(UNIT));
 }
 
 /// @notice Calculates the binary exponent of x using the binary fraction method.
@@ -193,7 +192,7 @@ function exp2(UD60x18 x) pure returns (UD60x18 result) {
     }
 
     // Convert x to the 192.64-bit fixed-point format.
-    uint256 x_192x64 = unwrap(x.lshift(64).uncheckedDiv(SCALE));
+    uint256 x_192x64 = unwrap(x.lshift(64).uncheckedDiv(UNIT));
 
     // Pass x to the `prbExp2` function, which uses the 192.64-bit fixed-point number representation.
     result = wrap(prbExp2(x_192x64));
@@ -206,8 +205,8 @@ function exp2(UD60x18 x) pure returns (UD60x18 result) {
 /// @param result The greatest integer less than or equal to x, as an UD60x18 number.
 function floor(UD60x18 x) pure returns (UD60x18 result) {
     assembly {
-        // Equivalent to "x % SCALE" but faster.
-        let remainder := mod(x, SCALE_UINT)
+        // Equivalent to "x % UNIT" but faster.
+        let remainder := mod(x, UNIT_UINT)
 
         // Equivalent to "x - remainder * (remainder > 0 ? 1 : 0)" but faster.
         result := sub(x, mul(remainder, gt(remainder, 0)))
@@ -220,16 +219,16 @@ function floor(UD60x18 x) pure returns (UD60x18 result) {
 /// @param result The fractional part of x as an UD60x18 number.
 function frac(UD60x18 x) pure returns (UD60x18 result) {
     assembly {
-        result := mod(x, SCALE_UINT)
+        result := mod(x, UNIT_UINT)
     }
 }
 
-/// @notice Divides an UD60x18 number by `SCALE` to convert to basic integer form.
+/// @notice Divides an UD60x18 number by `UNIT` to convert to basic integer form.
 /// @dev Rounds down in the process.
 /// @param x The UD60x18 number to convert.
 /// @return result The same number in basic integer form.
 function fromUD60x18(UD60x18 x) pure returns (uint256 result) {
-    result = unwrap(x.uncheckedDiv(SCALE));
+    result = unwrap(x.uncheckedDiv(UNIT));
 }
 
 /// @notice Calculates the geometric mean of x and y, i.e. $$sqrt(x * y)$$, rounding down.
@@ -251,7 +250,7 @@ function gm(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
         revert PRBMathUD60x18__GmOverflow(x, y);
     }
 
-    // We don't need to multiply the result by `SCALE` here because the x*y product had picked up a factor of `SCALE`
+    // We don't need to multiply the result by `UNIT` here because the x*y product had picked up a factor of `UNIT`
     // during multiplication. See the comments in the `prbSqrt` function.
     result = wrap(prbSqrt(unwrap(xy)));
 }
@@ -264,7 +263,7 @@ function gm(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// @param x The UD60x18 number for which to calculate the inverse.
 /// @return result The inverse as an UD60x18 number.
 function inv(UD60x18 x) pure returns (UD60x18 result) {
-    // 1e36 is SCALE * SCALE.
+    // 1e36 is UNIT * UNIT.
     result = wrap(1e36).uncheckedDiv(x);
 }
 
@@ -288,7 +287,7 @@ function inv(UD60x18 x) pure returns (UD60x18 result) {
 function ln(UD60x18 x) pure returns (UD60x18 result) {
     // We do the fixed-point multiplication inline to save gas. This is overflow-safe because the maximum value
     // that `log2` can return is 196.205294292027477728.
-    result = log2(x).uncheckedMul(SCALE).uncheckedDiv(LOG2_E);
+    result = log2(x).uncheckedMul(UNIT).uncheckedDiv(LOG2_E);
 }
 
 /// @notice Calculates the common logarithm of x.
@@ -309,7 +308,7 @@ function ln(UD60x18 x) pure returns (UD60x18 result) {
 /// @param x The UD60x18 number for which to calculate the common logarithm.
 /// @return result The common logarithm as an UD60x18 number.
 function log10(UD60x18 x) pure returns (UD60x18 result) {
-    if (x.lt(SCALE)) {
+    if (x.lt(UNIT)) {
         revert PRBMathUD60x18__LogInputTooSmall(x);
     }
 
@@ -317,84 +316,84 @@ function log10(UD60x18 x) pure returns (UD60x18 result) {
     // prettier-ignore
     assembly {
         switch x
-        case 1 { result := mul(SCALE_UINT, sub(0, 18)) }
-        case 10 { result := mul(SCALE_UINT, sub(1, 18)) }
-        case 100 { result := mul(SCALE_UINT, sub(2, 18)) }
-        case 1000 { result := mul(SCALE_UINT, sub(3, 18)) }
-        case 10000 { result := mul(SCALE_UINT, sub(4, 18)) }
-        case 100000 { result := mul(SCALE_UINT, sub(5, 18)) }
-        case 1000000 { result := mul(SCALE_UINT, sub(6, 18)) }
-        case 10000000 { result := mul(SCALE_UINT, sub(7, 18)) }
-        case 100000000 { result := mul(SCALE_UINT, sub(8, 18)) }
-        case 1000000000 { result := mul(SCALE_UINT, sub(9, 18)) }
-        case 10000000000 { result := mul(SCALE_UINT, sub(10, 18)) }
-        case 100000000000 { result := mul(SCALE_UINT, sub(11, 18)) }
-        case 1000000000000 { result := mul(SCALE_UINT, sub(12, 18)) }
-        case 10000000000000 { result := mul(SCALE_UINT, sub(13, 18)) }
-        case 100000000000000 { result := mul(SCALE_UINT, sub(14, 18)) }
-        case 1000000000000000 { result := mul(SCALE_UINT, sub(15, 18)) }
-        case 10000000000000000 { result := mul(SCALE_UINT, sub(16, 18)) }
-        case 100000000000000000 { result := mul(SCALE_UINT, sub(17, 18)) }
+        case 1 { result := mul(UNIT_UINT, sub(0, 18)) }
+        case 10 { result := mul(UNIT_UINT, sub(1, 18)) }
+        case 100 { result := mul(UNIT_UINT, sub(2, 18)) }
+        case 1000 { result := mul(UNIT_UINT, sub(3, 18)) }
+        case 10000 { result := mul(UNIT_UINT, sub(4, 18)) }
+        case 100000 { result := mul(UNIT_UINT, sub(5, 18)) }
+        case 1000000 { result := mul(UNIT_UINT, sub(6, 18)) }
+        case 10000000 { result := mul(UNIT_UINT, sub(7, 18)) }
+        case 100000000 { result := mul(UNIT_UINT, sub(8, 18)) }
+        case 1000000000 { result := mul(UNIT_UINT, sub(9, 18)) }
+        case 10000000000 { result := mul(UNIT_UINT, sub(10, 18)) }
+        case 100000000000 { result := mul(UNIT_UINT, sub(11, 18)) }
+        case 1000000000000 { result := mul(UNIT_UINT, sub(12, 18)) }
+        case 10000000000000 { result := mul(UNIT_UINT, sub(13, 18)) }
+        case 100000000000000 { result := mul(UNIT_UINT, sub(14, 18)) }
+        case 1000000000000000 { result := mul(UNIT_UINT, sub(15, 18)) }
+        case 10000000000000000 { result := mul(UNIT_UINT, sub(16, 18)) }
+        case 100000000000000000 { result := mul(UNIT_UINT, sub(17, 18)) }
         case 1000000000000000000 { result := 0 }
-        case 10000000000000000000 { result := SCALE_UINT }
-        case 100000000000000000000 { result := mul(SCALE_UINT, 2) }
-        case 1000000000000000000000 { result := mul(SCALE_UINT, 3) }
-        case 10000000000000000000000 { result := mul(SCALE_UINT, 4) }
-        case 100000000000000000000000 { result := mul(SCALE_UINT, 5) }
-        case 1000000000000000000000000 { result := mul(SCALE_UINT, 6) }
-        case 10000000000000000000000000 { result := mul(SCALE_UINT, 7) }
-        case 100000000000000000000000000 { result := mul(SCALE_UINT, 8) }
-        case 1000000000000000000000000000 { result := mul(SCALE_UINT, 9) }
-        case 10000000000000000000000000000 { result := mul(SCALE_UINT, 10) }
-        case 100000000000000000000000000000 { result := mul(SCALE_UINT, 11) }
-        case 1000000000000000000000000000000 { result := mul(SCALE_UINT, 12) }
-        case 10000000000000000000000000000000 { result := mul(SCALE_UINT, 13) }
-        case 100000000000000000000000000000000 { result := mul(SCALE_UINT, 14) }
-        case 1000000000000000000000000000000000 { result := mul(SCALE_UINT, 15) }
-        case 10000000000000000000000000000000000 { result := mul(SCALE_UINT, 16) }
-        case 100000000000000000000000000000000000 { result := mul(SCALE_UINT, 17) }
-        case 1000000000000000000000000000000000000 { result := mul(SCALE_UINT, 18) }
-        case 10000000000000000000000000000000000000 { result := mul(SCALE_UINT, 19) }
-        case 100000000000000000000000000000000000000 { result := mul(SCALE_UINT, 20) }
-        case 1000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 21) }
-        case 10000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 22) }
-        case 100000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 23) }
-        case 1000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 24) }
-        case 10000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 25) }
-        case 100000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 26) }
-        case 1000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 27) }
-        case 10000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 28) }
-        case 100000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 29) }
-        case 1000000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 30) }
-        case 10000000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 31) }
-        case 100000000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 32) }
-        case 1000000000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 33) }
-        case 10000000000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 34) }
-        case 100000000000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 35) }
-        case 1000000000000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 36) }
-        case 10000000000000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 37) }
-        case 100000000000000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 38) }
-        case 1000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 39) }
-        case 10000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 40) }
-        case 100000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 41) }
-        case 1000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 42) }
-        case 10000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 43) }
-        case 100000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 44) }
-        case 1000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 45) }
-        case 10000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 46) }
-        case 100000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 47) }
-        case 1000000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 48) }
-        case 10000000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 49) }
-        case 100000000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 50) }
-        case 1000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 51) }
-        case 10000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 52) }
-        case 100000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 53) }
-        case 1000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 54) }
-        case 10000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 55) }
-        case 100000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 56) }
-        case 1000000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 57) }
-        case 10000000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 58) }
-        case 100000000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(SCALE_UINT, 59) }
+        case 10000000000000000000 { result := UNIT_UINT }
+        case 100000000000000000000 { result := mul(UNIT_UINT, 2) }
+        case 1000000000000000000000 { result := mul(UNIT_UINT, 3) }
+        case 10000000000000000000000 { result := mul(UNIT_UINT, 4) }
+        case 100000000000000000000000 { result := mul(UNIT_UINT, 5) }
+        case 1000000000000000000000000 { result := mul(UNIT_UINT, 6) }
+        case 10000000000000000000000000 { result := mul(UNIT_UINT, 7) }
+        case 100000000000000000000000000 { result := mul(UNIT_UINT, 8) }
+        case 1000000000000000000000000000 { result := mul(UNIT_UINT, 9) }
+        case 10000000000000000000000000000 { result := mul(UNIT_UINT, 10) }
+        case 100000000000000000000000000000 { result := mul(UNIT_UINT, 11) }
+        case 1000000000000000000000000000000 { result := mul(UNIT_UINT, 12) }
+        case 10000000000000000000000000000000 { result := mul(UNIT_UINT, 13) }
+        case 100000000000000000000000000000000 { result := mul(UNIT_UINT, 14) }
+        case 1000000000000000000000000000000000 { result := mul(UNIT_UINT, 15) }
+        case 10000000000000000000000000000000000 { result := mul(UNIT_UINT, 16) }
+        case 100000000000000000000000000000000000 { result := mul(UNIT_UINT, 17) }
+        case 1000000000000000000000000000000000000 { result := mul(UNIT_UINT, 18) }
+        case 10000000000000000000000000000000000000 { result := mul(UNIT_UINT, 19) }
+        case 100000000000000000000000000000000000000 { result := mul(UNIT_UINT, 20) }
+        case 1000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 21) }
+        case 10000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 22) }
+        case 100000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 23) }
+        case 1000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 24) }
+        case 10000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 25) }
+        case 100000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 26) }
+        case 1000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 27) }
+        case 10000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 28) }
+        case 100000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 29) }
+        case 1000000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 30) }
+        case 10000000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 31) }
+        case 100000000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 32) }
+        case 1000000000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 33) }
+        case 10000000000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 34) }
+        case 100000000000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 35) }
+        case 1000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 36) }
+        case 10000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 37) }
+        case 100000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 38) }
+        case 1000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 39) }
+        case 10000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 40) }
+        case 100000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 41) }
+        case 1000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 42) }
+        case 10000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 43) }
+        case 100000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 44) }
+        case 1000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 45) }
+        case 10000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 46) }
+        case 100000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 47) }
+        case 1000000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 48) }
+        case 10000000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 49) }
+        case 100000000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 50) }
+        case 1000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 51) }
+        case 10000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 52) }
+        case 100000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 53) }
+        case 1000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 54) }
+        case 10000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 55) }
+        case 100000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 56) }
+        case 1000000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 57) }
+        case 10000000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 58) }
+        case 100000000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(UNIT_UINT, 59) }
         default {
             result := MAX_UD60x18_UINT
         }
@@ -402,7 +401,7 @@ function log10(UD60x18 x) pure returns (UD60x18 result) {
 
     if (result.eq(MAX_UD60x18)) {
         // Do the fixed-point division inline to save gas.
-        result = log2(x).uncheckedMul(SCALE).uncheckedDiv(LOG2_10);
+        result = log2(x).uncheckedMul(UNIT).uncheckedDiv(LOG2_10);
     }
 }
 
@@ -412,7 +411,7 @@ function log10(UD60x18 x) pure returns (UD60x18 result) {
 /// https://en.wikipedia.org/wiki/Binary_logarithm#Iterative_approximation
 ///
 /// Requirements:
-/// - x must be greater than or equal to SCALE, otherwise the result would be negative.
+/// - x must be greater than or equal to UNIT, otherwise the result would be negative.
 ///
 /// Caveats:
 /// - The results are nor perfectly accurate to the last decimal, due to the lossy precision of the iterative approximation.
@@ -420,32 +419,32 @@ function log10(UD60x18 x) pure returns (UD60x18 result) {
 /// @param x The UD60x18 number for which to calculate the binary logarithm.
 /// @return result The binary logarithm as an UD60x18 number.
 function log2(UD60x18 x) pure returns (UD60x18 result) {
-    if (x.lt(SCALE)) {
+    if (x.lt(UNIT)) {
         revert PRBMathUD60x18__LogInputTooSmall(x);
     }
     // Calculate the integer part of the logarithm, add it to the result and finally calculate y = x * 2^(-n).
-    uint256 n = msb(unwrap(x.uncheckedDiv(SCALE)));
+    uint256 n = msb(unwrap(x.uncheckedDiv(UNIT)));
 
     // This is the integer part of the logarithm as an UD60x18 number. The operation can't overflow because n
-    // n is maximum 255 and SCALE is 1e18.
-    result = wrap(n).uncheckedMul(SCALE);
+    // n is maximum 255 and UNIT is 1e18.
+    result = wrap(n).uncheckedMul(UNIT);
 
     // This is $y = x * 2^{-n}$.
     UD60x18 y = x.rshift(n);
 
     // If y is 1, the fractional part is zero.
-    if (y.eq(SCALE)) {
+    if (y.eq(UNIT)) {
         return result;
     }
 
     // Calculate the fractional part via the iterative approximation.
     // The "delta.rshift(1)" part is equivalent to "delta /= 2", but shifting bits is faster.
-    UD60x18 DOUBLE_SCALE = wrap(2e18);
-    for (UD60x18 delta = HALF_SCALE; delta.gt(ZERO); delta = delta.rshift(1)) {
-        y = y.uncheckedMul(y).uncheckedDiv(SCALE);
+    UD60x18 DOUBLE_UNIT = wrap(2e18);
+    for (UD60x18 delta = HALF_UNIT; delta.gt(ZERO); delta = delta.rshift(1)) {
+        y = y.uncheckedMul(y).uncheckedDiv(UNIT);
 
         // Is y^2 > 2 and so in the range [2,4)?
-        if (y.gte(DOUBLE_SCALE)) {
+        if (y.gte(DOUBLE_UNIT)) {
             // Add the 2^{-m} factor to the logarithm.
             result = result.uncheckedAdd(delta);
 
@@ -484,7 +483,7 @@ function mul(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// @return result x raised to power y, as an UD60x18 number.
 function pow(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     if (x.isZero()) {
-        result = y.isZero() ? SCALE : ZERO;
+        result = y.isZero() ? UNIT : ZERO;
     } else {
         result = exp2(mul(log2(x), y));
     }
@@ -507,7 +506,7 @@ function pow(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// @return result The result as an UD60x18 number.
 function powu(UD60x18 x, uint256 y) pure returns (UD60x18 result) {
     // Calculate the first iteration of the loop in advance.
-    result = y & 1 > 0 ? x : SCALE;
+    result = y & 1 > 0 ? x : UNIT;
 
     // Equivalent to "for(y /= 2; y > 0; y /= 2)" but faster.
     for (y >>= 1; y > 0; y >>= 1) {
@@ -524,32 +523,32 @@ function powu(UD60x18 x, uint256 y) pure returns (UD60x18 result) {
 /// @dev Uses the Babylonian method https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Babylonian_method.
 ///
 /// Requirements:
-/// - x must be less than `MAX_UD60x18` divided by `SCALE`.
+/// - x must be less than `MAX_UD60x18` divided by `UNIT`.
 ///
 /// @param x The UD60x18 number for which to calculate the square root.
 /// @return result The result as an UD60x18 number.
 function sqrt(UD60x18 x) pure returns (UD60x18 result) {
-    if (x.gt(MAX_UD60x18.uncheckedDiv(SCALE))) {
+    if (x.gt(MAX_UD60x18.uncheckedDiv(UNIT))) {
         revert PRBMathUD60x18__SqrtOverflow(x);
     }
-    // Multiply x by `SCALE` to account for the factor of `SCALE` that is picked up when multiplying two UD60x18
+    // Multiply x by `UNIT` to account for the factor of `UNIT` that is picked up when multiplying two UD60x18
     // numbers together (in this case, the two numbers are both the square root).
-    result = wrap(prbSqrt(unwrap(x.uncheckedMul(SCALE))));
+    result = wrap(prbSqrt(unwrap(x.uncheckedMul(UNIT))));
 }
 
-/// @notice Multiplies the given number by `SCALE` to convert to the UD60x18 type.
+/// @notice Multiplies the given number by `UNIT` to convert to the UD60x18 type.
 ///
 /// @dev Requirements:
-/// - x must be less than or equal to `MAX_UD60x18` divided by `SCALE`.
+/// - x must be less than or equal to `MAX_UD60x18` divided by `UNIT`.
 ///
 /// @param x The basic integer to convert.
 /// @param result The same number converted to UD60x18.
 function toUD60x18(uint256 x) pure returns (UD60x18 result) {
-    if (x > MAX_UD60x18_UINT / SCALE_UINT) {
+    if (x > MAX_UD60x18_UINT / UNIT_UINT) {
         revert PRBMathUD60x18__ToUD60x18Overflow(x);
     }
     unchecked {
-        result = wrap(x * SCALE_UINT);
+        result = wrap(x * UNIT_UINT);
     }
 }
 
