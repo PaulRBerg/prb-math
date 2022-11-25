@@ -230,15 +230,15 @@ function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     int256 yInt = unwrap(y);
 
     // Get hold of the absolute values of x and y.
-    uint256 absX;
-    uint256 absY;
+    uint256 xAbs;
+    uint256 yAbs;
     unchecked {
-        absX = xInt < 0 ? uint256(-xInt) : uint256(xInt);
-        absY = yInt < 0 ? uint256(-yInt) : uint256(yInt);
+        xAbs = xInt < 0 ? uint256(-xInt) : uint256(xInt);
+        yAbs = yInt < 0 ? uint256(-yInt) : uint256(yInt);
     }
 
     // Compute the absolute value (x*UNIT)÷y. The resulting value must fit within int256.
-    uint256 rAbs = mulDiv(absX, UNIT_UINT, absY);
+    uint256 rAbs = mulDiv(xAbs, UNIT_UINT, yAbs);
     if (rAbs > MAX_SD59x18_UINT) {
         revert PRBMathSD59x18__DivOverflow(x, y);
     }

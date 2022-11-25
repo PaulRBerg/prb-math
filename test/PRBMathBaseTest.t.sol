@@ -2,7 +2,6 @@
 pragma solidity >=0.8.13;
 
 import { StdCheats, StdUtils } from "forge-std/Components.sol";
-import { console2 } from "forge-std/console2.sol";
 import { PRBTest } from "@prb/test/PRBTest.sol";
 
 import { Assertions as PRBMathAssertions } from "src/test/Assertions.sol";
