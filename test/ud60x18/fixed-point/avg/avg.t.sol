@@ -74,7 +74,7 @@ contract UD60x18__AvgTest is UD60x18__BaseTest {
         sets.push(set({ x: 1e18 + 1, y: 2e18, expected: 1.5e18 }));
         sets.push(set({ x: 3e18 + 1, y: 8e18, expected: 5.5e18 }));
         sets.push(set({ x: 99e18, y: 200e18, expected: 149.5e18 }));
-        sets.push(set({ x: 1e24 + 1, y: 1e25 + 1e18, expected: 5.5e24 + 5e17 }));
+        sets.push(set({ x: 1e24 + 1, y: 1e25 + 1e18, expected: 5.5e24 + 0.5e18 }));
         sets.push(
             set({
                 x: MAX_UD60x18,

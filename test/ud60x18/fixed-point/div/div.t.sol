@@ -37,7 +37,7 @@ contract UD60x18__DivTest is UD60x18__BaseTest {
         UD60x18 x = MAX_SCALED_UD60x18.add(ud(1));
         UD60x18 y = ud(0.000000000000000001e18);
         vm.expectRevert(
-            abi.encodeWithSelector(PRBMath__MulDivOverflow.selector, UD60x18.unwrap(x), UNIT_UINT, UD60x18.unwrap(y))
+            abi.encodeWithSelector(PRBMath__MulDivOverflow.selector, UD60x18.unwrap(x), UNIT_UINT256, UD60x18.unwrap(y))
         );
         div(x, y);
     }
@@ -52,11 +52,11 @@ contract UD60x18__DivTest is UD60x18__BaseTest {
         sets.push(set({ x: 0.000000000000000001e18, y: 1.000000000000000001e18, expected: 0 }));
         sets.push(set({ x: 0.000000000000000001e18, y: 1e18, expected: 0.000000000000000001e18 }));
         sets.push(set({ x: 1e13, y: 1e13, expected: 1e18 }));
-        sets.push(set({ x: 1e13, y: 0.00002e18, expected: 5e17 }));
-        sets.push(set({ x: 0.05e18, y: 0.02e18, expected: 25e17 }));
+        sets.push(set({ x: 1e13, y: 0.00002e18, expected: 0.5e18 }));
+        sets.push(set({ x: 0.05e18, y: 0.02e18, expected: 2.5e18 }));
         sets.push(set({ x: 0.1e18, y: 0.01e18, expected: 10e18 }));
         sets.push(set({ x: 2e18, y: 2e18, expected: 1e18 }));
-        sets.push(set({ x: 2e18, y: 5e18, expected: 4e17 }));
+        sets.push(set({ x: 2e18, y: 5e18, expected: 0.4e18 }));
         sets.push(set({ x: 4e18, y: 2e18, expected: 2e18 }));
         sets.push(set({ x: 22e18, y: 7e18, expected: 3_142857142857142857 }));
         sets.push(set({ x: 100.135e18, y: 100.134e18, expected: 1_000009986617931971 }));

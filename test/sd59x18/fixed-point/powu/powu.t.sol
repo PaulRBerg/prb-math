@@ -57,8 +57,8 @@ contract SD59x18__PowuTest is SD59x18__BaseTest {
         vm.expectRevert(
             abi.encodeWithSelector(
                 PRBMath__MulDiv18Overflow.selector,
-                uint256(MAX_SD59x18_INT),
-                uint256(MAX_SD59x18_INT)
+                uint256(MAX_SD59x18_INT256),
+                uint256(MAX_SD59x18_INT256)
             )
         );
         powu(x, y);
