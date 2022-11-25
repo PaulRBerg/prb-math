@@ -111,10 +111,10 @@ contract UD60x18__PowTest is UD60x18__BaseTest {
         sets.push(set({ x: 1e18, y: 2e18, expected: 1e18 }));
         sets.push(set({ x: 1e18, y: PI, expected: 1e18 }));
         sets.push(set({ x: 2e18, y: 1.5e18, expected: 2_828427124746190097 }));
-        sets.push(set({ x: E, y: 1.66976e18, expected: 5_310893029888037563 }));
-        sets.push(set({ x: E, y: E, expected: 15_154262241479263804 }));
+        sets.push(set({ x: E, y: 1.66976e18, expected: 5_310893029888037560 }));
+        sets.push(set({ x: E, y: E, expected: 15_154262241479263793 }));
         sets.push(set({ x: PI, y: PI, expected: 36_462159607207910473 }));
-        sets.push(set({ x: 11e18, y: 28.5e18, expected: 478290249106383504726311660571_903531944106436935 }));
+        sets.push(set({ x: 11e18, y: 28.5e18, expected: 478290249106383504389245497918_050372801213485439 }));
         sets.push(
             set({ x: 32.15e18, y: 23.99e18, expected: 1436387590627448555101723413293079116_943375472179194989 })
         );
@@ -125,7 +125,7 @@ contract UD60x18__PowTest is UD60x18__BaseTest {
             set({
                 x: 340282366920938463463374607431768211455e18,
                 y: 1e18 + 1,
-                expected: 340282366920938487979097481391762860220_000000000004665573
+                expected: 340282366920938487757736552507248225013_000000000004316573
             })
         );
         sets.push(

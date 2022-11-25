@@ -102,7 +102,11 @@ contract SD59x18__MulTest is SD59x18__BaseTest {
             set({ x: MIN_SD59x18.add(sd(0.5e18 + 1)), y: -0.000000000000000001e18, expected: MAX_SCALED_SD59x18 })
         );
         sets.push(
-            set({ x: MIN_WHOLE_SD59x18.add(sd(0.5e18)), y: -0.000000000000000001e18, expected: MAX_SCALED_SD59x18 })
+            set({
+                x: MIN_WHOLE_SD59x18.add(sd(0.5e18)),
+                y: -0.000000000000000001e18,
+                expected: MAX_SCALED_SD59x18.sub(sd(1))
+            })
         );
         sets.push(set({ x: -1e24, y: -1e20, expected: 1e26 }));
         sets.push(set({ x: -12_983.989e18, y: -782.99e18, expected: 1_016_6333.54711e18 }));
@@ -117,9 +121,9 @@ contract SD59x18__MulTest is SD59x18__BaseTest {
         sets.push(set({ x: -0.00001e18, y: -0.00001e18, expected: 0.0000000001e18 }));
         sets.push(set({ x: -0.000000001e18, y: -0.000000001e18, expected: 0.000000000000000001e18 }));
         sets.push(set({ x: -0.000000000000000001e18, y: -0.000000000000000001e18, expected: 0 }));
-        sets.push(set({ x: -0.000000000000000006e18, y: -0.1e18, expected: 0.000000000000000001e18 }));
+        sets.push(set({ x: -0.000000000000000006e18, y: -0.1e18, expected: 0 }));
         sets.push(set({ x: 0.000000000000000001e18, y: 0.000000000000000001e18, expected: 0 }));
-        sets.push(set({ x: 0.000000000000000006e18, y: 0.1e18, expected: 0.000000000000000001e18 }));
+        sets.push(set({ x: 0.000000000000000006e18, y: 0.1e18, expected: 0 }));
         sets.push(set({ x: 0.000000001e18, y: 0.000000001e18, expected: 0.000000000000000001e18 }));
         sets.push(set({ x: 0.00001e18, y: 0.00001e18, expected: 0.0000000001e18 }));
         sets.push(set({ x: 0.001e18, y: 0.01e18, expected: 0.00001e18 }));
@@ -133,7 +137,11 @@ contract SD59x18__MulTest is SD59x18__BaseTest {
         sets.push(set({ x: 12_983.989e18, y: 782.99e18, expected: 1_016_6333.54711e18 }));
         sets.push(set({ x: 1e24, y: 1e20, expected: 1e26 }));
         sets.push(
-            set({ x: MAX_WHOLE_SD59x18.sub(sd(0.5e18)), y: 0.000000000000000001e18, expected: MAX_SCALED_SD59x18 })
+            set({
+                x: MAX_WHOLE_SD59x18.sub(sd(0.5e18)),
+                y: 0.000000000000000001e18,
+                expected: MAX_SCALED_SD59x18.sub(sd(1))
+            })
         );
         sets.push(set({ x: MAX_SD59x18.sub(sd(0.5e18)), y: 0.000000000000000001e18, expected: MAX_SCALED_SD59x18 }));
         return sets;
@@ -157,7 +165,11 @@ contract SD59x18__MulTest is SD59x18__BaseTest {
             set({ x: MIN_SD59x18.add(sd(0.5e18 + 1)), y: 0.000000000000000001e18, expected: MIN_SCALED_SD59x18 })
         );
         sets.push(
-            set({ x: MIN_WHOLE_SD59x18.add(sd(0.5e18)), y: 0.000000000000000001e18, expected: MIN_SCALED_SD59x18 })
+            set({
+                x: MIN_WHOLE_SD59x18.add(sd(0.5e18)),
+                y: 0.000000000000000001e18,
+                expected: MIN_SCALED_SD59x18.add(sd(1))
+            })
         );
         sets.push(set({ x: -1e24, y: 1e20, expected: -1e26 }));
         sets.push(set({ x: -12_983.989e18, y: 782.99e18, expected: -1_016_6333.54711e18 }));
@@ -172,9 +184,9 @@ contract SD59x18__MulTest is SD59x18__BaseTest {
         sets.push(set({ x: -0.00001e18, y: 0.00001e18, expected: -0.0000000001e18 }));
         sets.push(set({ x: -0.000000001e18, y: 0.000000001e18, expected: -0.000000000000000001e18 }));
         sets.push(set({ x: -0.000000000000000001e18, y: 0.000000000000000001e18, expected: 0 }));
-        sets.push(set({ x: -0.000000000000000006e18, y: 0.1e18, expected: -0.000000000000000001e18 }));
+        sets.push(set({ x: -0.000000000000000006e18, y: 0.1e18, expected: 0 }));
         sets.push(set({ x: 0.000000000000000001e18, y: -0.000000000000000001e18, expected: 0 }));
-        sets.push(set({ x: 0.000000000000000006e18, y: -0.1e18, expected: -0.000000000000000001e18 }));
+        sets.push(set({ x: 0.000000000000000006e18, y: -0.1e18, expected: 0 }));
         sets.push(set({ x: 0.000000001e18, y: -0.000000001e18, expected: -0.000000000000000001e18 }));
         sets.push(set({ x: 0.00001e18, y: -0.00001e18, expected: -0.0000000001e18 }));
         sets.push(set({ x: 0.001e18, y: -0.01e18, expected: -0.00001e18 }));
@@ -188,7 +200,11 @@ contract SD59x18__MulTest is SD59x18__BaseTest {
         sets.push(set({ x: 12_983.989e18, y: -782.99e18, expected: -1_016_6333.54711e18 }));
         sets.push(set({ x: 1e24, y: -1e20, expected: -1e26 }));
         sets.push(
-            set({ x: MAX_WHOLE_SD59x18.sub(sd(0.5e18)), y: -0.000000000000000001e18, expected: MIN_SCALED_SD59x18 })
+            set({
+                x: MAX_WHOLE_SD59x18.sub(sd(0.5e18)),
+                y: -0.000000000000000001e18,
+                expected: MIN_SCALED_SD59x18.add(sd(1))
+            })
         );
         sets.push(set({ x: MAX_SD59x18.sub(sd(0.5e18)), y: -0.000000000000000001e18, expected: MIN_SCALED_SD59x18 }));
         return sets;

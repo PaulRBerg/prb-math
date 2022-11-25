@@ -49,7 +49,7 @@ contract UD60x18__MulTest is UD60x18__BaseTest {
     function mulSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.000000000000000001e18, y: 0.000000000000000001e18, expected: 0 }));
-        sets.push(set({ x: 0.000000000000000006e18, y: 0.1e18, expected: 0.000000000000000001e18 }));
+        sets.push(set({ x: 0.000000000000000006e18, y: 0.1e18, expected: 0 }));
         sets.push(set({ x: 0.000000001e18, y: 0.000000001e18, expected: 0.000000000000000001e18 }));
         sets.push(set({ x: 0.00001e18, y: 0.00001e18, expected: 0.0000000001e18 }));
         sets.push(set({ x: 0.001e18, y: 0.01e18, expected: 0.00001e18 }));

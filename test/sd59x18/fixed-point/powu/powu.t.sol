@@ -106,7 +106,7 @@ contract SD59x18__PowuTest is SD59x18__BaseTest {
             set({
                 x: -38685626227668133590.597631999999999999e18,
                 y: 3,
-                expected: -57896044618658097711785492504343953922145259302939748255014_626107971862774100
+                expected: -57896044618658097711785492504343953922145259302939748254975_940481744194640509
             })
         );
         sets.push(set({ x: -1e24, y: 3, expected: -1e36 }));
@@ -119,9 +119,9 @@ contract SD59x18__PowuTest is SD59x18__BaseTest {
             })
         );
         sets.push(set({ x: -100e18, y: 4, expected: 1e26 }));
-        sets.push(set({ x: -5.491e18, y: 19, expected: -113077820843204_476043049664958629 }));
+        sets.push(set({ x: -5.491e18, y: 19, expected: -113077820843204_476043049664958463 }));
         sets.push(set({ x: NEGATIVE_E, y: 2, expected: 7_389056098930650225 }));
-        sets.push(set({ x: NEGATIVE_PI, y: 3, expected: -31_006276680299820162 }));
+        sets.push(set({ x: NEGATIVE_PI, y: 3, expected: -31_006276680299820158 }));
         sets.push(set({ x: -2e18, y: 100, expected: 1267650600228_229401496703205376e18 }));
         sets.push(set({ x: -2e18, y: 5, expected: -32e18 }));
         sets.push(set({ x: -1e18, y: 1, expected: -1e18 }));
@@ -150,8 +150,8 @@ contract SD59x18__PowuTest is SD59x18__BaseTest {
         sets.push(set({ x: 2e18, y: 5, expected: 32e18 }));
         sets.push(set({ x: 2e18, y: 100, expected: 1267650600228_229401496703205376e18 }));
         sets.push(set({ x: E, y: 2, expected: 7_389056098930650225 }));
-        sets.push(set({ x: PI, y: 3, expected: 31_006276680299820162 }));
-        sets.push(set({ x: 5.491e18, y: 19, expected: 113077820843204_476043049664958629 }));
+        sets.push(set({ x: PI, y: 3, expected: 31_006276680299820158 }));
+        sets.push(set({ x: 5.491e18, y: 19, expected: 113077820843204_476043049664958463 }));
         sets.push(set({ x: 100e18, y: 4, expected: 1e26 }));
         sets.push(
             set({
@@ -166,7 +166,7 @@ contract SD59x18__PowuTest is SD59x18__BaseTest {
             set({
                 x: 38685626227668133590.597631999999999999e18,
                 y: 3,
-                expected: 57896044618658097711785492504343953922145259302939748255014_626107971862774100
+                expected: 57896044618658097711785492504343953922145259302939748254975_940481744194640509
             })
         );
         sets.push(

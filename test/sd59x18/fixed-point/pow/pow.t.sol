@@ -102,7 +102,7 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
 
     function negativeExponentSets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: 0.000000000000000001e18, y: -0.000000000000000001e18, expected: 1e18 + 41 }));
+        sets.push(set({ x: 0.000000000000000001e18, y: -0.000000000000000001e18, expected: 1e18 + 40 }));
         sets.push(set({ x: 0.000000000001e18, y: -4.4e9, expected: 1_000000121576500300 }));
         sets.push(set({ x: 0.1e18, y: -0.8e18, expected: 6_309573444801932444 }));
         sets.push(set({ x: 0.24e18, y: -11e18, expected: 6571678_991286039528731186 }));
@@ -139,7 +139,7 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
 
     function positiveExponentSets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: 0.000000000000000001e18, y: 0.000000000000000001e18, expected: 0.999999999999999959e18 }));
+        sets.push(set({ x: 0.000000000000000001e18, y: 0.000000000000000001e18, expected: 0.999999999999999960e18 }));
         sets.push(set({ x: 1e6, y: 4.4e9, expected: 0.99999987842351448e18 }));
         sets.push(set({ x: 0.1e18, y: 0.8e18, expected: 0.158489319246111349e18 }));
         sets.push(set({ x: 0.24e18, y: 11e18, expected: 0.000000152168114316e18 }));
@@ -148,10 +148,10 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         sets.push(set({ x: 1e18, y: 2e18, expected: 1e18 }));
         sets.push(set({ x: 1e18, y: PI, expected: 1e18 }));
         sets.push(set({ x: 2e18, y: 1.5e18, expected: 2_828427124746190097 }));
-        sets.push(set({ x: E, y: E, expected: 15_154262241479263804 }));
-        sets.push(set({ x: E, y: 1.66976e18, expected: 5_310893029888037563 }));
+        sets.push(set({ x: E, y: E, expected: 15_154262241479263793 }));
+        sets.push(set({ x: E, y: 1.66976e18, expected: 5_310893029888037560 }));
         sets.push(set({ x: PI, y: PI, expected: 36_462159607207910473 }));
-        sets.push(set({ x: 11e18, y: 28.5e18, expected: 478290249106383504726311660571_903531944106436935 }));
+        sets.push(set({ x: 11e18, y: 28.5e18, expected: 478290249106383504389245497918_050372801213485439 }));
         sets.push(
             set({ x: 32.15e18, y: 23.99e18, expected: 1436387590627448555101723413293079116_943375472179194989 })
         );
@@ -162,7 +162,7 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
             set({
                 x: 340282366920938463463374607431768211455e18,
                 y: 1e18 + 1,
-                expected: 340282366920938487979097481391762860220_000000000004665573
+                expected: 340282366920938487757736552507248225013_000000000004316573
             })
         );
         sets.push(

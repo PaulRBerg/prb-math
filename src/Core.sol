@@ -105,8 +105,8 @@ function mulDiv(uint256 x, uint256 y, uint256 denominator) pure returns (uint256
         prod1 := sub(sub(mm, prod0), lt(mm, prod0))
     }
 
-    // Handle non-overflow cases, 256 by 256 division. "prod1 > 0 == false" is equivalent to "prod1 == 0" but faster.
-    if (prod1 > 0 == false) {
+    // Handle non-overflow cases, 256 by 256 division.
+    if (prod1 == 0) {
         unchecked {
             return prod0 / denominator;
         }
@@ -205,28 +205,23 @@ function mulDiv18(uint256 x, uint256 y) pure returns (uint256 result) {
     }
 
     uint256 remainder;
-    uint256 roundUpUnit;
     assembly {
         remainder := mulmod(x, y, UNIT)
-        roundUpUnit := gt(remainder, 499999999999999999)
     }
 
-    if (prod1 > 0 == false) {
+    if (prod1 == 0) {
         unchecked {
-            return (prod0 / UNIT) + roundUpUnit;
+            return prod0 / UNIT;
         }
     }
 
     assembly {
-        result := add(
-            mul(
-                or(
-                    div(sub(prod0, remainder), UNIT_LPOTD),
-                    mul(sub(prod1, gt(remainder, prod0)), add(div(sub(0, UNIT_LPOTD), UNIT_LPOTD), 1))
-                ),
-                UNIT_INVERSE
+        result := mul(
+            or(
+                div(sub(prod0, remainder), UNIT_LPOTD),
+                mul(sub(prod1, gt(remainder, prod0)), add(div(sub(0, UNIT_LPOTD), UNIT_LPOTD), 1))
             ),
-            roundUpUnit
+            UNIT_INVERSE
         )
     }
 }
