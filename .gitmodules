@@ -1,5 +1,5 @@
 [submodule "lib/forge-std"]
-  branch = "v0.3"
+  branch = "master"
   path = "lib/forge-std"
   url = "https://github.com/foundry-rs/forge-std"
 [submodule "lib/prb-test"]
