@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to
+The format is based on [Common Changelog](https://common-changelog.org/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 [2.5.0]: https://github.com/paulrberg/prb-math/compare/v2.4.3...v2.5.0
@@ -27,200 +27,206 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 
-- Change the package name from `prb-math` to `@prb/math`.
-- Update links to repository.
-- Upgrade to `mathjs` v10.4.0.
+- Change the package name from `prb-math` to `@prb/math` (@paulrberg)
+- Update links to repository (@paulrberg)
+- Upgrade to `mathjs` v10.4.0 (@paulrberg)
 
 ## [2.4.3] - 2022-02-02
 
 ### Fixed
 
-- Peer dependency version for `mathjs`.
+- Peer dependency version for `mathjs` (@paulrberg)
 
 ## [2.4.2] - 2022-02-02
 
 ### Changed
 
-- Upgrade to `mathjs` v10.1.1.
+- Upgrade to `mathjs` v10.1.1 (@paulrberg)
+
+### Fixed
+
+- Fix typo in comment in `sqrt` ([#67](https://github.com/paulrberg/prb-math/pull/67) (@transmissions11)
 
 ## [2.4.1] - 2021-10-27
 
 ### Changed
 
-- Upgrade to `@ethersproject/bignumber` v5.5.0.
+- Upgrade to `@ethersproject/bignumber` v5.5.0 (@paulrberg)
 
 ### Fixed
 
-- Set peer dependencies.
+- Set peer dependencies (@paulrberg)
 
 ## [2.4.0] - 2021-10-20
 
 ### Added
 
-- `@ethersproject/bignumber`, `decimal.js`, `evm-bn`, and `mathjs` as normal deps.
-- Ship JavaScript source maps with the npm package.
+- `@ethersproject/bignumber`, `decimal.js`, `evm-bn`, and `mathjs` as normal deps (@paulrberg)
+- Ship JavaScript source maps with the npm package (@paulrberg)
 
 ### Changed
 
-- Americanize spellings in NatSpec comments.
-- Move everything from the `prb-math.js` package to `prb-math`.
-- Polish NatSpec comments in `avg` function.
-- Use underscores in number literals.
+- Americanize spellings in NatSpec comments (@paulrberg)
+- Move everything from the `prb-math.js` package to `prb-math` (@paulrberg)
+- Polish NatSpec comments in `avg` function (@paulrberg)
+- Use underscores in number literals (@paulrberg)
 
 ### Fixed
 
 - Bug in `powu` function in the `PRBMathSD59x18` contract, which caused the result to be positive even if the base was
-  negative.
+  negative (@paulrberg)
 - Minor bug in `avg` function in the `PRBMathSD59x18` contract, which rounded down the result instead of up when the
-  intermediary sum was negative.
+  intermediary sum was negative (@paulrberg)
 
 ## [2.3.0] - 2021-09-18
 
 ### Added
 
-- The CHANGELOG file in the npm package bundle.
+- The CHANGELOG file in the npm package bundle (@paulrberg)
 
 ### Changed
 
-- License from "WTFPL" to "Unlicense".
-- Polish README.
+- License from "WTFPL" to "Unlicense" (@paulrberg)
+- Polish README (@paulrberg)
 
 ### Fixed
 
-- Typos in comments.
+- Typos in comments (@paulrberg)
 
 ### Removed
 
-- Stale "resolutions" field in `package.json`.
+- Remove stale "resolutions" field in `package.json` (@paulrberg)
 
 ## [2.2.0] - 2021-06-27
 
 ### Changed
 
-- Add contract name prefix to custom errors.
+- Add contract name prefix to custom errors (@paulrberg)
 
 ### Removed
 
-- `@param` tags for custom errors NatSpec.
+- `@param` tags for custom errors NatSpec (@paulrberg)
 
 ## [2.1.0] - 2021-06-27
 
-### Added
-
-- Solidity v0.8.4 custom errors.
-
 ### Changed
 
-- Define the upper limit as `MAX_UD60x18 / SCALE` in the `sqrt` function.
-- Define `xValue` var to avoid reading `x.value` multiple times.
-- Move `SCALE > prod1` check at the top of the `mulDivFixedPoint` function.
-- Refer to `add` function operands as summands.
-- Refer to `sub` function operands as minuend and subtrahend.
-- Rename `rUnsigned` var to `rAbs`.
-- Set minimum compiler version to 0.8.4.
-- Use `MIN_SD59x18` instead of `type(int256).min` where appropriate.
+- Define the upper limit as `MAX_UD60x18 / SCALE` in the `sqrt` function (@paulrberg)
+- Define `xValue` var to avoid reading `x.value` multiple times (@paulrberg)
+- Move `SCALE > prod1` check at the top of the `mulDivFixedPoint` function (@paulrberg)
+- Refer to `add` function operands as summands (@paulrberg)
+- Refer to `sub` function operands as minuend and subtrahend (@paulrberg)
+- Rename `rUnsigned` var to `rAbs` (@paulrberg)
+- Set minimum compiler version to 0.8.4 (@paulrberg)
+- Use `MIN_SD59x18` instead of `type(int256).min` where appropriate (@paulrberg)
+
+### Added
+
+- Solidity v0.8.4 custom errors (@paulrberg)
 
 ### Removed
 
-- `hardhat/console.sol` import.
-- Stale caveat in `sqrt` function NatSpec.
+- Remove stale `hardhat/console.sol` import (@paulrberg)
+- Remove stale caveat in `sqrt` function NatSpec (@paulrberg)
 
 ## [2.0.1] - 2021-06-16
 
 ### Changed
 
-- Mention the new typed flavors in the README.
+- Mention the new typed flavors in the README (@paulrberg)
 
 ### Fixed
 
-- Code snippet for the UD60x18Typed consumer in the README.
-- English typos in NatSpec comments.
-- Minor bug in `log10` in `PRBMathUD60x18Typed.sol` which made the result inaccurate when the input was a multiple
-  of 10.
+- Code snippet for the UD60x18Typed consumer in the README (@paulrberg)
+- English typos in NatSpec comments ([#40](https://github.com/paulrberg/prb-math/pull/40)) (@ggviana)
+- Minor bug in `log10` in `PRBMathUD60x18Typed.sol` which made the result inaccurate when the input was a multiple of 10
+  (@paulrberg)
 
 ## [2.0.0] - 2021-06-14
 
+### Changed
+
+- Increase the accuracy of `exp2` by using the 192.64-bit format instead of 128.128-bit (@paulrberg)
+- Rename `PRBMathCommon.sol` to `PRBMath.sol` (@paulrberg)
+- Set named parameter instead of returning result in `pow` functions (@paulrberg)
+- Update gas estimates for `exp` and `exp2` (@paulrberg)
+
 ### Added
 
-- Addition and subtraction functions in the typed libraries.
-- Gas estimates for `fromInt`, `fromUint`, `pow`, `toInt` and `toUInt`.
+- Add `add` and `sub` functions in the typed libraries (@paulrberg)
+- Add types flavors of the library: `PRBMathSD59x18Typed.sol` and `PRBMathUD60x18Typed.sol` (@paulrberg)
+- Document gas estimates for `fromInt`, `fromUint`, `pow`, `toInt` and `toUInt` (@paulrberg)
 - Structs `PRBMath.SD59x18` and `PRBMath.UD60x18`, simple wrappers to indicate that the variables are fixed-point
-  numbers.
-- Typed versions of the library: `PRBMathSD59x18Typed.sol` and `PRBMathUD60x18Typed.sol`.
-
-### Changed
-
-- Increase the accuracy of `exp2` by using the 192.64-bit format instead of 128.128-bit.
-- Rename `PRBMathCommon.sol` to `PRBMath.sol`.
-- Set named parameter instead of returning result in `pow` functions.
-- Update gas estimates for `exp` and `exp2`.
+  numbers (@paulrberg)
 
 ### Fixed
 
-- Bug in `log10` which made the result incorrect when the input was not a multiple of 10.
-- Typos in NatSpec comments.
+- Bug in `log10` which made the result incorrect when the input was not a multiple of 10 (@paulrberg)
+- Typos in NatSpec comments (@paulrberg)
 
-## [1.1.0] - 2021-05-07 [YANKED]
+## [1.1.0] - 2021-05-07
+
+_This release was yanked because it was accidentally published with the wrong version number._
+
+### Changed
+
+- Rename the previous `pow` function to `powu` (@paulrberg)
+- Speed up `exp2` by simplifying the integer part calculations (@paulrberg)
+- Use the fixed-point format in NatSpec comments (@paulrberg)
 
 ### Added
 
-- New convertor functions `fromInt` and `toInt` in `PRBMathSD59x18.sol`.
-- New convertor functions `fromUint` and `toUint` in `PRBMathUD60x18.sol`.
-- New function `mulDivSigned` in `PRBMathCommon.sol`.
-- New function `pow` in `PRBMathSD59x18.sol` and `PRBMathUD60x18.sol`
-
-### Changed
-
-- Rename the previous `pow` function to `powu`.
-- Speed up `exp2` by simplifying the integer part calculations.
-- Use the fixed-point format in NatSpec comments.
+- Add new convertor functions `fromInt` and `toInt` in `PRBMathSD59x18.sol` (@paulrberg)
+- Add new convertor functions `fromUint` and `toUint` in `PRBMathUD60x18.sol` (@paulrberg)
+- Add new function `mulDivSigned` in `PRBMathCommon.sol` (@paulrberg)
+- Add new function `pow` in `PRBMathSD59x18.sol` and `PRBMathUD60x18.sol` (@paulrberg)
 
 ### Fixed
 
-- Minor typos in NatSpec comments.
+- Fix minor typos in NatSpec comments (@paulrberg)
 
 ## [1.0.5] - 2021-04-24
 
-### Added
-
-- Link to StackExchange answer in `exp2` NatSpec comments.
-
 ### Changed
 
-- Speed up the `exp2` function in PRBMathCommon.sol by simplifying the integer part calculation.
-- Use `SCALE` instead of the 1e18 literal in `PRBMathCommon.sol`.
+- Speed up the `exp2` function in PRBMathCommon.sol by simplifying the integer part calculation (@paulrberg))
+- Use `SCALE` instead of the 1e18 literal in `PRBMathCommon.sol` (@paulrberg)
+
+### Added
+
+- Add link to StackExchange answer in `exp2` NatSpec comments (@paulrberg)
 
 ## [1.0.4] - 2021-04-20
 
 ### Changed
 
-- Optimize the `pow` function in PRBMathUD60x18.sol by calling `mulDivFixedPoint` directly.
+- Optimize the `pow` function in PRBMathUD60x18.sol by calling `mulDivFixedPoint` directly (@paulrberg)
 
 ## [1.0.3] - 2021-04-20
 
 ### Fixed
 
-- Typos in NatSpec comments.
-- Typo in example in README.
+- Fix typos in NatSpec comments (@paulrberg)
+- Fix typo in example in README (@paulrberg)
 
 ### Removed
 
-- Stale `SCALE_LPOTD` and `SCALE_INVERSE` constants in PRBMathSD59x18.sol.
+- Remove `SCALE_LPOTD` and `SCALE_INVERSE` constants in PRBMathSD59x18.sol (@paulrberg)
 
 ## [1.0.2] - 2021-04-19
 
 ### Removed
 
-- Stale `SCALE_LPOTD` and `SCALE_INVERSE` constants in PRBMathUD60x18.sol.
+- Remove stale `SCALE_LPOTD` and `SCALE_INVERSE` constants in PRBMathUD60x18.sol (@paulrberg)
 
 ## [1.0.1] - 2021-04-19
 
 ### Changed
 
-- Examples in the README.
+- Change in the README (@paulrberg)
 
 ## [1.0.0] - 2021-04-19
 
 ### Added
 
-- First release of the library.
+- First release of the library (@paulrberg)
