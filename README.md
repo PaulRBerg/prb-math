@@ -1,54 +1,68 @@
-# PRBMath [![GitHub Actions][gha-badge]][gha] [![Coverage Status][coveralls-badge]][coveralls] [![Styled with Prettier][prettier-badge]][prettier] [![License: MIT][license-badge]][license]
+# PRBMath [![GitHub Actions][gha-badge]][gha] [![Foundry][foundry-badge]][foundry] [![Styled with Prettier][prettier-badge]][prettier] [![License: MIT][license-badge]][license]
 
 [gha]: https://github.com/paulrberg/prb-math/actions
 [gha-badge]: https://github.com/paulrberg/prb-math/actions/workflows/ci.yml/badge.svg
-[coveralls]: https://coveralls.io/github/paulrberg/prb-math
-[coveralls-badge]: https://coveralls.io/repos/github/paulrberg/prb-math/badge.svg?branch=main
+[foundry]: https://getfoundry.sh/
+[foundry-badge]: https://img.shields.io/badge/Built%20with-Foundry-FFDB1C.svg
 [prettier]: https://prettier.io
 [prettier-badge]: https://img.shields.io/badge/Code_Style-Prettier-ff69b4.svg
 [license]: https://opensource.org/licenses/MIT
 [license-badge]: https://img.shields.io/badge/License-MIT-blue.svg
 
-**Smart contract library for advanced fixed-point math** that operates with signed 59.18-decimal fixed-point and
-unsigned 60.18-decimal fixed-point numbers. The name of the number formats stems from the fact that there can be up to
-59/60 digits in the integer part and up to 18 decimals in the fractional part. The numbers are bound by the minimum and
-the maximum values permitted by the Solidity types int256 and uint256.
+**Solidity library for advanced fixed-point math** that operates with signed 59.18-decimal fixed-point and unsigned
+60.18-decimal fixed-point numbers. The name of the number format is due to the integer part having up to 59/60 decimals
+and the fractional part having up to 18 decimals. The numbers are bound by the minimum and the maximum values permitted
+by the Solidity types int256 and uint256.
 
 - Operates with signed and unsigned denary fixed-point numbers, with 18 trailing decimals
 - Offers advanced math functions like logarithms, exponentials, powers and square roots
+- Provides type safety via user defined value types
 - Gas efficient, but still user-friendly
+- Ergonomic developer experience thanks to using free functions instead of libraries
 - Bakes in overflow-safe multiplication and division
 - Reverts with custom errors instead of reason strings
 - Well-documented via NatSpec comments
-- Thoroughly tested with Hardhat and Waffle
+- Built and tested with Foundry
 
 I created this because I wanted a fixed-point math library that is at the same time practical, intuitive and efficient.
-I looked at
-[ABDKMath64x64](https://github.com/abdk-consulting/abdk-libraries-solidity/blob/d8817cb600381319992d7caa038bf4faceb1097f/ABDKMath64x64.md),
-which is fast, but I didn't like that it operates with binary numbers and it limits the precision to int128. I then
-looked at [Fixidity](https://github.com/CementDAO/Fixidity), which operates with denary numbers and has wide precision,
-but is slow and susceptible to phantom overflow.
+I looked at [ABDKMath64x64][abdk-math], which is fast, but I really didn't like that it operates with binary numbers and
+it limits the precision to int128. Binary numbers are counter-intuitive and non-familiar to humans. I then looked at
+[Fixidity](https://github.com/CementDAO/Fixidity), which operates with denary numbers and has wide precision, but is
+slow and susceptible to phantom overflow.
 
 ## Install
 
-With yarn:
+### Foundry
 
-```bash
-$ yarn add @prb/math
+First, run the install step:
+
+```sh
+forge install --no-commit paulrberg/prb-math
 ```
 
-Or npm:
+Then, add this to your `remappings.txt` file:
 
-```bash
-$ npm install @prb/math
+```text
+@prb/math/=lib/prb-math/src/
+```
+
+### Node.js
+
+```sh
+yarn add @prb/math
+# or
+npm install @prb/math
 ```
 
 ## Usage
 
-PRBMath makes heavy use of the
-[user-defined value types](https://blog.soliditylang.org/2021/09/27/user-defined-value-types/) added in Solidity v0.8.8
-and the [using ... for T global](https://blog.soliditylang.org/2022/03/16/solidity-0.8.13-release-announcement/)
-directive introduced in Solidity v0.8.13. Thus, the library cannot be used in Solidity v0.8.12 and below.
+PRBMath comes in two flavors:
+
+1. SD59x18 (signed)
+2. UD60x18 (unsigned)
+
+If you don't need negative numbers, there is no need to use the signed flavor. The unsigned flavor is more gas
+efficient.
 
 ### SD59x18.sol
 
@@ -56,22 +70,20 @@ directive introduced in Solidity v0.8.13. Thus, the library cannot be used in So
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.13;
 
-import { SD59x18 } from "@prb/math/contracts/SD59x18.sol";
+import { SD59x18, UNIT } from "@prb/math/SD59x18.sol";
 
 contract SignedConsumer {
+  /// @notice Calculates 5% of the given signed number.
+  /// @dev Try this with x = 400e18.
+  function signedPercentage(SD59x18 x) external pure returns (SD59x18 result) {
+    SD9x18 fivePercent = 0.05e18;
+    result = x.mul(fivePercent).div(UNIT); // UNIT = 1e18
+  }
+
+  /// @notice Calculates the binary logarithm of the given signed number.
+  /// @dev Try this with x = 128e18.
   function signedLog2(SD59x18 x) external pure returns (SD59x18 result) {
     result = x.log2();
-  }
-
-  /// @notice Calculates x*y÷1e18 while handling possible intermediary overflow.
-  /// @dev Try this with x = type(int256).max and y = 5e17.
-  function signedMul(SD59x18 x, SD59x18 y) external pure returns (SD59x18 result) {
-    result = x.mul(y);
-  }
-
-  /// @dev Assuming that 1e18 = 100% and 1e16 = 1%.
-  function signedYield(SD59x18 principal, SD59x18 apr) external pure returns (SD59x18 result) {
-    result = principal.mul(apr);
   }
 }
 
@@ -83,65 +95,46 @@ contract SignedConsumer {
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.13;
 
-import { UD60x18 } from "@prb/math/contracts/UD60x18.sol";
+import { UD60x18, UNIT } from "@prb/math/UD60x18.sol";
 
 contract UnsignedConsumer {
-  /// @dev Note that "x" must be greater than or equal to 1e18, because UD60x18 does not support negative numbers.
-  function unsignedLog2(UD60x18 x) external pure returns (UD60x18 result) {
+  /// @notice Calculates 5% of the given signed number.
+  /// @dev Try this with x = 400e18.
+  function signedPercentage(UD60x18 x) external pure returns (UD60x18 result) {
+    UD60x18 fivePercent = 0.05e18;
+    result = x.mul(fivePercent).div(UNIT); // UNIT = 1e18
+  }
+
+  /// @notice Calculates the binary logarithm of the given signed number.
+  /// @dev Try this with x = 128e18.
+  function signedLog2(UD60x18 x) external pure returns (UD60x18 result) {
     result = x.log2();
-  }
-
-  /// @notice Calculates x*y÷1e18 while handling possible intermediary overflow.
-  /// @dev Try this with x = type(uint256).max and y = 5e17.
-  function unsignedMul(UD60x18 x, UD60x18 y) external pure returns (UD60x18 result) {
-    result = x.mul(y);
-  }
-
-  /// @dev Assuming that 1e18 = 100% and 1e16 = 1%.
-  function unsignedYield(UD60x18 principal, UD60x18 apr) external pure returns (UD60x18 result) {
-    result = principal.mul(apr);
   }
 }
 
 ```
 
-### JavaScript SDK
+## Compiler
 
-PRBMath is accompanied by a JavaScript SDK. Whatever functions there are in the Solidity library, you should find them
-replicated in the SDK. The only exception are the converter functions `fromSD59x18`, `fromUD60x18`, `toSD59x18` and
-`toUD60x18`. For conversion, you can use [evm-bn](https://github.com/paulrberg/evm-bn).
+PRBMath can only be used in [Solidity v0.8.13][solidity-v0.8.13] and above, because it makes use of the [user-defined
+value types][udvt] introduced in Solidity v0.8.8, and the [`using ... for T global`][solidity-v0.8.13] directive
+introduced in Solidity v0.8.13.
 
-Here is an example for how to calculate the binary logarithm:
-
-```typescript
-import type { BigNumber } from "@ethersproject/bignumber";
-import { log2 } from "@prb/math";
-import { fromBn, toBn } from "evm-bn";
-
-(async function () {
-  const x: BigNumber = toBn("16");
-  const result: BigNumber = log2(x);
-  console.log({ result: fromBn(result) });
-})();
-```
-
-Pro tip: see how the SDK is used in the [tests](./test/contracts) for PRBMath.
+While this means that PRBMath cannot be used in older versions of Solidity, these two features combined give users type
+safety and an ergonomic developer experience. Notice the lack of the `using for` directive in the examples above.
 
 ## Gas Efficiency
 
-PRBMath is faster than ABDKMath for `abs`, `exp`, `exp2`, `gm`, `inv`, `ln`, `log2`. Conversely, it is slower than
-ABDKMath for `avg`, `div`, `mul`, `powu` and `sqrt`. There are two technical reasons why PRBMath lags behind ABDKMath's
-`mul` and `div` functions:
+PRBMath is faster than ABDKMath for `abs`, `exp`, `exp2`, `gm`, `inv`, `ln`, `log2`, but it is slower than ABDKMath for
+`avg`, `div`, `mul`, `powu` and `sqrt`.
 
-1. PRBMath operates with 256-bit word sizes, so it has to account for possible intermediary overflow. ABDKMath operates
-   with 128-bit word sizes.
-2. PRBMath rounds up instead of truncating in certain cases (see listing 6 and text above it in this
-   [article](https://accu.org/index.php/journals/1717)). THis makes it slightly more precise than ABDKMath but comes at
-   a gas cost.
+The main reason why PRBMath lags behind ABDKMath's `mul` and `div` functions is that it operates with 256-bit word
+sizes, and so it has to account for possible intermediary overflow. ABDKMath, on the other hand, operates with 128-bit
+word sizes.
 
 ### PRBMath
 
-Based on the v2.0.1 of the library.
+Based on the [v2.0.1](https://github.com/paulrberg/prb-math/releases/tag/v2.0.1) release.
 
 | SD59x18 | Min | Max   | Avg  |     | UD60x18 | Min  | Max   | Avg  |
 | ------- | --- | ----- | ---- | --- | ------- | ---- | ----- | ---- |
@@ -165,7 +158,7 @@ Based on the v2.0.1 of the library.
 
 ### ABDKMath64x64
 
-Based on v3.0 of the library. See [abdk-gas-estimations](https://github.com/paulrberg/abdk-gas-estimations).
+Based on v3.0 of the library. See my [abdk-gas-estimations](https://github.com/paulrberg/abdk-gas-estimations).
 
 | Method | Min  | Max  | Avg  |
 | ------ | ---- | ---- | ---- |
@@ -182,10 +175,42 @@ Based on v3.0 of the library. See [abdk-gas-estimations](https://github.com/paul
 | pow    | 303  | 4740 | 1792 |
 | sqrt   | 129  | 809  | 699  |
 
+## Contributing
+
+Feel free to dive in! [Open](https://github.com/paulrberb/prb-math/issues/new) an issue,
+[start](https://github.com/paulrberb/prb-math/discussions/new) a discussion or submit a PR.
+
+### Pre Requisites
+
+You will need the following software on your machine:
+
+- [Git](https://git-scm.com/downloads)
+- [Foundry](https://github.com/foundry-rs/foundry)
+- [Node.Js](https://nodejs.org/en/download/)
+- [Yarn](https://yarnpkg.com/)
+
+In addition, familiarity with [Solidity](https://soliditylang.org/) is requisite.
+
+### Set Up
+
+Clone this repository including submodules:
+
+```sh
+$ git clone --recurse-submodules -j8 git@github.com:paulrberg/prb-math.git
+```
+
+Then, inside the project's directory, run this to install the Node.js dependencies:
+
+```sh
+$ yarn install
+```
+
+Now you can start making changes.
+
 ## Security
 
 While I set a high bar for code quality and test coverage, you should not assume that this project is completely safe to
-use. The contracts have not been audited by a security researcher.
+use. PRBMath has not been audited by a security researcher.
 
 ### Caveat Emptor
 
@@ -194,7 +219,7 @@ will not be liable for any loss, direct or indirect through continued use of thi
 
 ### Contact
 
-If you discover any security issues, please report them via [Keybase](https://keybase.io/paulrberg).
+If you discover any bugs or security issues, please report them via [Telegram](https://t.me/paulrberg).
 
 ## Acknowledgements
 
@@ -202,7 +227,14 @@ If you discover any security issues, please report them via [Keybase](https://ke
   [Math in Solidity](https://medium.com/coinmonks/math-in-solidity-part-1-numbers-384c8377f26d) series.
 - Remco Bloemen for his work on [overflow-safe multiplication and division](https://xn--2-umb.com/21/muldiv/) and for
   responding to the questions I asked him while developing the library.
+- Everyone who contributed a PR to this repository.
 
 ## License
 
 [MIT](./LICENSE.md)
+
+<!-- Links -->
+
+[abdk-math]: https://github.com/abdk-consulting/abdk-libraries-solidity
+[solidity-v0.8.13]: https://blog.soliditylang.org/2022/03/16/solidity-0.8.13-release-announcement/
+[udvt]: https://blog.soliditylang.org/2021/09/27/user-defined-value-types/
