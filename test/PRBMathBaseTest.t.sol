@@ -45,7 +45,7 @@ abstract contract PRBMath__BaseTest is PRBTest, PRBMathAssertions, StdCheats, St
     //////////////////////////////////////////////////////////////////////////*/
 
     function bn(uint256 amount, uint256 decimals) internal pure returns (uint256 result) {
-        result = amount * 10**decimals;
+        result = amount * 10 ** decimals;
     }
 
     /*//////////////////////////////////////////////////////////////////////////

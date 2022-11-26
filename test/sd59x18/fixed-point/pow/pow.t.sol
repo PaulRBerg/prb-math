@@ -5,7 +5,7 @@ import "src/SD59x18.sol";
 import { SD59x18__BaseTest } from "../../SD59x18BaseTest.t.sol";
 
 contract SD59x18__PowTest is SD59x18__BaseTest {
-    SD59x18 internal constant MAX_PERMITTED = SD59x18.wrap(2**192 * 10**18 - 1);
+    SD59x18 internal constant MAX_PERMITTED = SD59x18.wrap(2 ** 192 * 10 ** 18 - 1);
 
     function testPow__BaseAndExponentZero() external {
         SD59x18 x = ZERO;
@@ -119,7 +119,7 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         sets.push(set({ x: 406e18, y: -0.25e18, expected: 0.222776046060941016e18 }));
         sets.push(set({ x: 1729e18, y: -0.98e18, expected: 0.00067136841637396e18 }));
         sets.push(set({ x: 33441e18, y: -2.1891e18, expected: 0.000000000124709713e18 }));
-        sets.push(set({ x: 2**128 * 10**18 - 1, y: -1e18, expected: 0 }));
+        sets.push(set({ x: 2 ** 128 * 10 ** 18 - 1, y: -1e18, expected: 0 }));
         sets.push(set({ x: MAX_PERMITTED, y: -1e18, expected: 0 }));
         return sets;
     }

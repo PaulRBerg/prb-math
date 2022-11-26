@@ -5,7 +5,7 @@ import "src/UD60x18.sol";
 import { UD60x18__BaseTest } from "../../UD60x18BaseTest.t.sol";
 
 contract UD60x18__PowTest is UD60x18__BaseTest {
-    UD60x18 internal constant MAX_PERMITTED = UD60x18.wrap(2**192 * 10**18 - 1);
+    UD60x18 internal constant MAX_PERMITTED = UD60x18.wrap(2 ** 192 * 10 ** 18 - 1);
 
     function testPow__BaseAndExponentZero() external {
         UD60x18 x = ZERO;
