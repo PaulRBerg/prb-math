@@ -110,7 +110,7 @@ int256 constant uUNIT = 1e18;
 SD59x18 constant ZERO = SD59x18.wrap(0);
 
 /*//////////////////////////////////////////////////////////////////////////
-                        GLOBAL-SCOPED FIXED-POINT FUNCTIONS
+                            MATHEMATICAL FUNCTIONS
 //////////////////////////////////////////////////////////////////////////*/
 
 using {
@@ -175,7 +175,7 @@ function avg(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     }
 }
 
-/// @notice Yields the least SD59x18 number greater than or equal to x.
+/// @notice Yields the smallest whole SD59x18 number greater than or equal to x.
 ///
 /// @dev Optimized for fractional value inputs, because for every whole value there are (1e18 - 1) fractional counterparts.
 /// See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions.
@@ -338,7 +338,7 @@ function exp2(SD59x18 x) pure returns (SD59x18 result) {
     }
 }
 
-/// @notice Yields the greatest SD59x18 number less than or equal to x.
+/// @notice Yields the greatest whole SD59x18 number less than or equal to x.
 ///
 /// @dev Optimized for fractional value inputs, because for every whole value there are (1e18 - 1) fractional counterparts.
 /// See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions.
@@ -369,20 +369,13 @@ function floor(SD59x18 x) pure returns (SD59x18 result) {
     }
 }
 
-/// @notice Yields the excess beyond the floor of x for positive numbers and the part of the number to the right
+/// @notice Yields the excess beyond the floor of x for positive numbers and the part of the number to the right.
 /// of the radix point for negative numbers.
 /// @dev Based on the odd function definition. https://en.wikipedia.org/wiki/Fractional_part
 /// @param x The SD59x18 number to get the fractional part of.
 /// @param result The fractional part of x as an SD59x18 number.
 function frac(SD59x18 x) pure returns (SD59x18 result) {
     result = wrap(unwrap(x) % uUNIT);
-}
-
-/// @notice Converts an SD59x18 number to basic integer form, rounding towards zero in the process.
-/// @param x The SD59x18 number to convert.
-/// @return result The same number in basic integer form.
-function fromSD59x18(SD59x18 x) pure returns (int256 result) {
-    result = unwrap(x) / uUNIT;
 }
 
 /// @notice Calculates the geometric mean of x and y, i.e. sqrt(x * y), rounding down.
@@ -796,7 +789,29 @@ function sqrt(SD59x18 x) pure returns (SD59x18 result) {
     }
 }
 
-/// @notice Converts a number from basic integer form to SD59x18.
+/*//////////////////////////////////////////////////////////////////////////
+                            CONVERSION FUNCTIONS
+//////////////////////////////////////////////////////////////////////////*/
+
+/// @notice Converts an SD59x18 number to a simple integer by dividing it by `UNIT`. Rounds towards zero in the process.
+/// @param x The SD59x18 number to convert.
+/// @return result The same number as a simple integer.
+function fromSD59x18(SD59x18 x) pure returns (int256 result) {
+    result = unwrap(x) / uUNIT;
+}
+
+/// @notice Wraps a signed integer into the SD59x18 type.
+function sd(int256 x) pure returns (SD59x18 result) {
+    result = wrap(x);
+}
+
+/// @notice Wraps a signed integer into the SD59x18 type.
+/// @dev Alias for the "sd" function defined above.
+function sd59x18(int256 x) pure returns (SD59x18 result) {
+    result = wrap(x);
+}
+
+/// @notice Converts a simple integer to SD59x18 by multiplying it by `UNIT`.
 ///
 /// @dev Requirements:
 /// - x must be greater than or equal to `MIN_SD59x18` divided by `UNIT`.
@@ -816,8 +831,18 @@ function toSD59x18(int256 x) pure returns (SD59x18 result) {
     }
 }
 
+/// @notice Unwraps an SD59x18 number into the underlying signed integer.
+function unwrap(SD59x18 x) pure returns (int256 result) {
+    result = SD59x18.unwrap(x);
+}
+
+/// @notice Wraps a signed integer into the SD59x18 type.
+function wrap(int256 x) pure returns (SD59x18 result) {
+    result = SD59x18.wrap(x);
+}
+
 /*//////////////////////////////////////////////////////////////////////////
-                    GLOBAL-SCOPED NON-FIXED-POINT FUNCTIONS
+                        GLOBAL-SCOPED HELPER FUNCTIONS
 //////////////////////////////////////////////////////////////////////////*/
 
 using {
@@ -938,7 +963,7 @@ function xor(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 }
 
 /*//////////////////////////////////////////////////////////////////////////
-                    FILE-SCOPED NON-FIXED-POINT FUNCTIONS
+                        FILE-SCOPED HELPER FUNCTIONS
 //////////////////////////////////////////////////////////////////////////*/
 
 using { uncheckedDiv, uncheckedMul } for SD59x18;
@@ -955,29 +980,4 @@ function uncheckedMul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     unchecked {
         result = wrap(unwrap(x) * unwrap(y));
     }
-}
-
-/*//////////////////////////////////////////////////////////////////////////
-                                HELPER FUNCTIONS
-//////////////////////////////////////////////////////////////////////////*/
-
-/// @notice Wraps a signed integer into the SD59x18 type.
-function sd(int256 x) pure returns (SD59x18 result) {
-    result = wrap(x);
-}
-
-/// @notice Wraps a signed integer into the SD59x18 type.
-/// @dev Alias for the "sd" function defined above.
-function sd59x18(int256 x) pure returns (SD59x18 result) {
-    result = wrap(x);
-}
-
-/// @notice Unwraps an SD59x18 number into the underlying signed integer.
-function unwrap(SD59x18 x) pure returns (int256 result) {
-    result = SD59x18.unwrap(x);
-}
-
-/// @notice Wraps a signed integer into the SD59x18 type.
-function wrap(int256 x) pure returns (SD59x18 result) {
-    result = SD59x18.wrap(x);
 }

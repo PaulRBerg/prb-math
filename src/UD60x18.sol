@@ -78,7 +78,7 @@ UD60x18 constant UNIT = UD60x18.wrap(uUNIT);
 UD60x18 constant ZERO = UD60x18.wrap(0);
 
 /*//////////////////////////////////////////////////////////////////////////
-                        GLOBAL-SCOPED FIXED-POINT FUNCTIONS
+                            MATHEMATICAL FUNCTIONS
 //////////////////////////////////////////////////////////////////////////*/
 
 using { avg, ceil, div, exp, exp2, floor, frac, gm, inv, ln, log10, log2, mul, pow, powu, sqrt } for UD60x18 global;
@@ -110,7 +110,7 @@ function avg(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     }
 }
 
-/// @notice Yields the least UD60x18 number greater than or equal to x.
+/// @notice Yields the smallest whole UD60x18 number greater than or equal to x.
 ///
 /// @dev This is optimized for fractional value inputs, because for every whole value there are "1e18 - 1" fractional
 /// counterparts. See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions.
@@ -206,7 +206,7 @@ function exp2(UD60x18 x) pure returns (UD60x18 result) {
     result = wrap(prbExp2(x_192x64));
 }
 
-/// @notice Yields the greatest UD60x18 number less than or equal to x.
+/// @notice Yields the greatest whole UD60x18 number less than or equal to x.
 /// @dev Optimized for fractional value inputs, because for every whole value there are (1e18 - 1) fractional counterparts.
 /// See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions.
 /// @param x The UD60x18 number to floor.
@@ -229,14 +229,6 @@ function frac(UD60x18 x) pure returns (UD60x18 result) {
     assembly {
         result := mod(x, uUNIT)
     }
-}
-
-/// @notice Divides an UD60x18 number by `UNIT` to convert to basic integer form.
-/// @dev Rounds down in the process.
-/// @param x The UD60x18 number to convert.
-/// @return result The same number in basic integer form.
-function fromUD60x18(UD60x18 x) pure returns (uint256 result) {
-    result = unwrap(x) / uUNIT;
 }
 
 /// @notice Calculates the geometric mean of x and y, i.e. $$sqrt(x * y)$$, rounding down.
@@ -574,7 +566,19 @@ function sqrt(UD60x18 x) pure returns (UD60x18 result) {
     }
 }
 
-/// @notice Multiplies the given number by `UNIT` to convert to the UD60x18 type.
+/*//////////////////////////////////////////////////////////////////////////
+                            CONVERSION FUNCTIONS
+//////////////////////////////////////////////////////////////////////////*/
+
+/// @notice Converts an UD60x18 number to a simple integer by dividing it by `UNIT`. Rounds towards zero in the process.
+/// @dev Rounds down in the process.
+/// @param x The UD60x18 number to convert.
+/// @return result The same number in basic integer form.
+function fromUD60x18(UD60x18 x) pure returns (uint256 result) {
+    result = unwrap(x) / uUNIT;
+}
+
+/// @notice Converts a simple integer to UD60x18 by multiplying it by `UNIT`.
 ///
 /// @dev Requirements:
 /// - x must be less than or equal to `MAX_UD60x18` divided by `UNIT`.
@@ -590,8 +594,29 @@ function toUD60x18(uint256 x) pure returns (UD60x18 result) {
     }
 }
 
+/// @notice Wraps an unsigned integer into the UD60x18 type.
+function ud(uint256 x) pure returns (UD60x18 result) {
+    result = wrap(x);
+}
+
+/// @notice Wraps an unsigned integer into the UD60x18 type.
+/// @dev Alias for the "ud" function defined above.
+function ud60x18(uint256 x) pure returns (UD60x18 result) {
+    result = wrap(x);
+}
+
+/// @notice Unwraps an UD60x18 number into the underlying unsigned integer.
+function unwrap(UD60x18 x) pure returns (uint256 result) {
+    result = UD60x18.unwrap(x);
+}
+
+/// @notice Wraps an unsigned integer into the UD60x18 type.
+function wrap(uint256 x) pure returns (UD60x18 result) {
+    result = UD60x18.wrap(x);
+}
+
 /*//////////////////////////////////////////////////////////////////////////
-                    GLOBAL-SCOPED NON-FIXED-POINT FUNCTIONS
+                        GLOBAL-SCOPED HELPER FUNCTIONS
 //////////////////////////////////////////////////////////////////////////*/
 
 using {
@@ -705,7 +730,7 @@ function xor(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 }
 
 /*//////////////////////////////////////////////////////////////////////////
-                    FILE-SCOPED NON-FIXED-POINT FUNCTIONS
+                        FILE-SCOPED HELPER FUNCTIONS
 //////////////////////////////////////////////////////////////////////////*/
 
 using { uncheckedDiv, uncheckedMul } for UD60x18;
@@ -722,29 +747,4 @@ function uncheckedMul(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     unchecked {
         result = wrap(unwrap(x) * unwrap(y));
     }
-}
-
-/*//////////////////////////////////////////////////////////////////////////
-                                HELPER FUNCTIONS
-//////////////////////////////////////////////////////////////////////////*/
-
-/// @notice Wraps an unsigned integer into the UD60x18 type.
-function ud(uint256 x) pure returns (UD60x18 result) {
-    result = wrap(x);
-}
-
-/// @notice Wraps an unsigned integer into the UD60x18 type.
-/// @dev Alias for the "ud" function defined above.
-function ud60x18(uint256 x) pure returns (UD60x18 result) {
-    result = wrap(x);
-}
-
-/// @notice Unwraps an UD60x18 number into the underlying unsigned integer.
-function unwrap(UD60x18 x) pure returns (uint256 result) {
-    result = UD60x18.unwrap(x);
-}
-
-/// @notice Wraps an unsigned integer into the UD60x18 type.
-function wrap(uint256 x) pure returns (UD60x18 result) {
-    result = UD60x18.wrap(x);
 }
