@@ -56,8 +56,8 @@
     "postinstall": "husky install",
     "postpublish": "pinst --enable",
     "prepublishOnly": "pinst --disable",
-    "prettier": "prettier --write \"**/*.{json,md,sol,yml}\"",
-    "prettier:check": "prettier --check \"**/*.{json,md,sol,yml}\""
+    "prettier:check": "prettier --check \"**/*.{json,md,sol,yml}\"",
+    "prettier:write": "prettier --write \"**/*.{json,md,sol,yml}\""
   },
   "types": "./dist/node/index.d.ts"
 }
