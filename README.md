@@ -125,6 +125,8 @@ import "@prb/math/UD60x18.sol";
 
 ```
 
+Note that PRBMath can only be used in [Solidity v0.8.13](https://blog.soliditylang.org/2022/03/16/solidity-0.8.13-release-announcement/) or above.
+
 ### Examples
 
 #### SD59x18
