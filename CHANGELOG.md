@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Common Changelog](https://common-changelog.org/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+[3.0.0]: https://github.com/paulrberg/prb-math/compare/v2.5.0...v3.0.0
 [2.5.0]: https://github.com/paulrberg/prb-math/compare/v2.4.3...v2.5.0
 [2.4.3]: https://github.com/paulrberg/prb-math/compare/v2.4.2...v2.4.3
 [2.4.2]: https://github.com/paulrberg/prb-math/compare/v2.4.1...v2.4.2
@@ -22,6 +23,52 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 [1.0.2]: https://github.com/paulrberg/prb-math/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/paulrberg/prb-math/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/paulrberg/prb-math/releases/tag/v1.0.0
+
+## [3.0.0] - 2022-11-27
+
+### Changed
+
+- **Breaking:** Refactor the libraries into free functions and user defined value types ([`a69b4b`][a69b4b]) (@paulrberg)
+- **Breaking:** Set minimum compiler pragma to `>=0.8.13` ([`a69b4b`][a69b4b]) (@paulrberg)
+- **Breaking:** Rename `SCALE` to `UNIT` ([`4d3658`](https://github.com/paulrberg/prb-math/commit/4d3658)) (@paulrberg)
+- Always truncate instead of rounding down in multiplication functions ([21fb32](https://github.com/paulrberg/prb-math/commit/21fb32)) (@paulrberg)
+- Change license to MIT (@paulrberg)
+- Check if `y` is zero in `gm` ([`5b585c`](https://github.com/paulrberg/prb-math/commit/5b585c)) (@paulrberg)
+- Optimize `div` and `mulDivSigned` by wrapping unary operations in unchecked blocks ([`a69b4b`][a69b4b]) (@paulrberg)
+- Optimize `exp2` by batching bit checks ([#77](https://github.com/paulrberg/prb-math/pull/77)) (@k06a)
+- Optimize `msb` by using unchecked arithmetic ([`e09b9a`](https://github.com/paulrberg/prb-math/commit/e09b9a)) (@paulrberg)
+- Optimize result assignment in `powu` ([673802](https://github.com/paulrberg/prb-math/commit/673802)) (@paulrberg)
+- Rename `fromInt` to `toSD59x18` and `toInt` to `fromSD59x18` ([`a69b4b`][a69b4b]) (@paulrberg)
+- Rename `fromUint` to `toUD60x18` and `toUint` to `fromUD60x18` ([`a69b4b`][a69b4b]) (@paulrberg)
+- Rename `mostSignificantBit` to `msb` ([`a69b4b`][a69b4b]) (@paulrberg)
+- Rename `mulDivFixedPoint` to `mulDiv18` ([`4c5430`](https://github.com/paulrberg/prb-math/commit/4c5430)) (@paulrberg)
+- Rename `PRBMath.sol` to `Core.sol` ([`1b82ea`][1b82ea]) (@paulrberg)
+- Rename shared `sqrt` in `prbSqrt` ([`1b82ea`][1b82ea]) (@paulrberg)
+- Rename shared `exp2` in `prbExp2` ([`1b82ea`][1b82ea]) (@paulrberg)
+- Revert with inputs instead of computed value custom errors (@paulrberg)
+- Return base if exponent is one in `pow` ([`977d43`](https://github.com/paulrberg/prb-math/commit/977d43)) (@paulrberg)
+- Format mathematical expressions using LaTeX (@paulrberg)
+- Improve wording and formatting in comments, NatSpec documentation, and README (@paulrberg)
+
+### Added
+
+- Add constants for E and PI ([`422d87`](https://github.com/paulrberg/prb-math/commit/422d87)) (@paulrberg)
+- Add simple PRBTest-based typed assertions for testing in Foundry ([`ddb084`](https://github.com/paulrberg/prb-math/commit/ddb084)) (@paulrberg)
+- Add user defined value types `SD59x18` and `UD60x18` (@paulrberg)
+- Implement conversion and helper functions for the user defined value types (@paulrberg)
+
+### Removed
+
+- **Breaking:** Delete the `e` and `pi` functions ([422d87](https://github.com/paulrberg/prb-math/commit/422d87)) (@paulrberg)
+- **Breaking:** Remove JavaScript SDK and all paraphernalia ([`1b82ea`][1b82ea]) (@paulrberg)
+
+### Fixed
+
+- Fix upper boundary specified in `exp` NatSpec comments ([#119](https://github.com/paulrberg/prb-math/discussions/119)) (@paulrberg)
+
+### Fixed
+
+- Fix incorrect hard-coded value in `sqrt` ([#91](https://github.com/paulrberg/prb-math/pull/91)) (@Amxx, @nonergodic)
 
 ## [2.5.0] - 2022-03-08
 
@@ -73,10 +120,9 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 
 ### Fixed
 
-- Bug in `powu` function in the `PRBMathSD59x18` contract, which caused the result to be positive even if the base was
-  negative (@paulrberg)
-- Minor bug in `avg` function in the `PRBMathSD59x18` contract, which rounded down the result instead of up when the
-  intermediary sum was negative (@paulrberg)
+- Bug in `powu` function in the `PRBMathSD59x18` contract, which caused the result to be positive even if the base was negative (@paulrberg)
+- Minor bug in `avg` function in the `PRBMathSD59x18` contract, which rounded down the result instead of up when the intermediary sum was negative
+  (@paulrberg)
 
 ## [2.3.0] - 2021-09-18
 
@@ -117,12 +163,12 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 - Refer to `add` function operands as summands (@paulrberg)
 - Refer to `sub` function operands as minuend and subtrahend (@paulrberg)
 - Rename `rUnsigned` var to `rAbs` (@paulrberg)
-- Set minimum compiler version to 0.8.4 (@paulrberg)
+- Set minimum compiler pragma to `>=0.8.4` (@paulrberg)
 - Use `MIN_SD59x18` instead of `type(int256).min` where appropriate (@paulrberg)
 
 ### Added
 
-- Solidity v0.8.4 custom errors (@paulrberg)
+- Add Solidity v0.8.4 custom errors (@paulrberg)
 
 ### Removed
 
@@ -139,8 +185,7 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 
 - Code snippet for the UD60x18Typed consumer in the README (@paulrberg)
 - English typos in NatSpec comments ([#40](https://github.com/paulrberg/prb-math/pull/40)) (@ggviana)
-- Minor bug in `log10` in `PRBMathUD60x18Typed.sol` which made the result inaccurate when the input was a multiple of 10
-  (@paulrberg)
+- Minor bug in `log10` in `PRBMathUD60x18Typed.sol` which made the result inaccurate when the input was a multiple of 10 (@paulrberg)
 
 ## [2.0.0] - 2021-06-14
 
@@ -156,8 +201,7 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 - Add `add` and `sub` functions in the typed libraries (@paulrberg)
 - Add types flavors of the library: `PRBMathSD59x18Typed.sol` and `PRBMathUD60x18Typed.sol` (@paulrberg)
 - Document gas estimates for `fromInt`, `fromUint`, `pow`, `toInt` and `toUInt` (@paulrberg)
-- Structs `PRBMath.SD59x18` and `PRBMath.UD60x18`, simple wrappers to indicate that the variables are fixed-point
-  numbers (@paulrberg)
+- Structs `PRBMath.SD59x18` and `PRBMath.UD60x18`, simple wrappers to indicate that the variables are fixed-point numbers (@paulrberg)
 
 ### Fixed
 
@@ -230,3 +274,8 @@ _This release was yanked because it was accidentally published with the wrong ve
 ### Added
 
 - First release of the library (@paulrberg)
+
+<!-- Links -->
+
+[1b82ea]: https://github.com/paulrberg/prb-math/commit/1b82ea
+[a69b4b]: https://github.com/paulrberg/prb-math/commit/a69b4b
