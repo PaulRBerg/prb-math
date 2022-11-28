@@ -1,0 +1,11 @@
+floor.t.sol
+├── when x is zero
+│  └── it should return zero
+└── when x is not zero
+   ├── when x is negative
+   │  ├── when x is less than the minimum permitted
+   │  │  └── it should revert
+   │  └── when x is greater than or equal to the minimum permitted
+   │     └── it should return the correct value
+   └── when x is positive
+      └── it should return the correct value

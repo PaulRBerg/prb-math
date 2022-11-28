@@ -1,0 +1,20 @@
+div.t.sol
+├── when the denominator is zero
+│  └── it should revert
+└── when the denominator is not zero
+   ├── when the denominator is min sd59x18
+   │  └── it should revert
+   └── when the denominator is not min sd59x18
+      ├── when the numerator is zero
+      │  └── it should return zero
+      └── when the numerator is not zero
+        ├── when the numerator is min sd59x18
+        │  └── it should revert
+        └── when the numerator is not min sd59x18
+           ├── when the result overflows sd59x18
+           │  └── it should revert
+           └── when the result does not overflow sd59x18
+              ├── when the numerator and the denominator have the same sign
+              │  └── it should return the correct value
+              └── when the numerator and the denominator have different signs
+                 └── it should return the correct value

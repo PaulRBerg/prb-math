@@ -14,3 +14,6 @@ trim_trailing_whitespace = true
 
 [*.sol]
 indent_size = 4
+
+[*.tree]
+indent_size = 1

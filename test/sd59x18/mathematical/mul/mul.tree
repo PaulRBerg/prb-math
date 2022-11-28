@@ -1,0 +1,17 @@
+div.t.sol
+├── when one of the operands is zero
+│  └── it should return zero
+└── when neither of the operands is zero
+   ├── when one of the operands is min sd59x18
+   │  └── it should revert
+   └── when neither operand is min sd59x18
+      ├── when the result overflows sd59x18
+      │  └── it should revert
+      └── when the result does not overflow sd59x18
+        ├── when the result overflows uint256
+        │  └── it should revert
+        └── when the result does not overflow uint256
+           ├── when the operands have the same sign
+           │  └── it should return the correct value
+           └── when the operands do not have different signs
+              └── it should return the correct value

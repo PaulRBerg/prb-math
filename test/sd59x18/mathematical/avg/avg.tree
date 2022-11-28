@@ -1,0 +1,17 @@
+avg.t.sol
+├── when both operands are zero
+│  └── it should return zero
+├── when only one operand is zero
+│  └── it should return the correct value
+└── when neither operand is zero
+   ├── when one operand is negative and the other is positive
+   │  └── it should return the correct value
+   ├── when both operands are negative
+   │  └── it should return the correct value
+   └── when both operands are positive
+      ├── when both operands are even
+      │  └── it should return the correct value
+      ├── when both operands are odd
+      │  └── it should return the correct value
+      └── when one operand is even and the other is odd
+         └── it should return the correct value

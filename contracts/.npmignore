@@ -1,6 +1,0 @@
-# directories
-**/test
-
-# files
-.DS_Store
-.npmignore

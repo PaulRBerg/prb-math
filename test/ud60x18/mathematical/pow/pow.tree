@@ -1,0 +1,20 @@
+pow.t.sol
+├── when the base is zero
+│  ├── when the exponent is zero
+│  │  └── it should return one
+│  └── when the exponent is not zero
+│     └── it should return zero
+└── when the base is not zero
+   ├── when the base is less than one
+   │  └── it should revert
+   └── when the base is greater than or equal to one
+      ├── when the exponent is zero
+      │  └── it should return one
+      └── when the exponent is not zero
+        ├── when the exponent is one
+        │  └── it should return the base
+        └── when the exponent is not one
+           ├── when the exponent is greater than the maximum permitted
+           │  └── it should revert
+           └── when the exponent is less than or equal to the maximum permitted
+              └── it should return the correct value

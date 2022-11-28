@@ -1,0 +1,8 @@
+div.t.sol
+├── when one of the operands is zero
+│  └── it should return zero
+└── when neither of the operands is zero
+   ├── when the result overflows ud60x18
+   │  └── it should revert
+   └── when the result does not overflow ud60x18
+      └── it should return the correct value

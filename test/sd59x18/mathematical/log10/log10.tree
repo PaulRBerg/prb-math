@@ -1,0 +1,11 @@
+log10.t.sol
+├── when x is zero
+│  └── it should revert
+└── when x is not zero
+   ├── when x is negative
+   │  └── it should revert
+   └── when x is positive
+      ├── when x is a power of ten
+      │  └── it should return the correct value
+      └── when x is not a power of ten
+         └── it should return the correct value

@@ -1,0 +1,8 @@
+exp.t.sol
+├── when x is zero
+│  └── it should return one
+└── when x is not zero
+   ├── when x is greater than the maximum permitted
+   │  └── it should revert
+   └── when x is less than or equal to the maximum permitted
+      └── it should return the correct value

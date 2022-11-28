@@ -1,0 +1,8 @@
+exp2.t.sol
+├── when x is zero
+│  └── it should return one
+└── when x is not zero
+   ├── when x is greater than or equal to 192
+   │  └── it should revert
+   └── when x is less than 192
+      └── it should return the correct value
