@@ -24,7 +24,7 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 [1.0.1]: https://github.com/paulrberg/prb-math/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/paulrberg/prb-math/releases/tag/v1.0.0
 
-## [3.0.0] - 2022-11-27
+## [3.0.0] - 2022-11-28
 
 ### Changed
 
@@ -34,9 +34,10 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 - Always truncate instead of rounding down in multiplication functions ([21fb32](https://github.com/paulrberg/prb-math/commit/21fb32)) (@paulrberg)
 - Change license to MIT (@paulrberg)
 - Check if `y` is zero in `gm` ([`5b585c`](https://github.com/paulrberg/prb-math/commit/5b585c)) (@paulrberg)
+- Optimize `avg` by using the SWAR technique ([#89](https://github.com/paulrberg/prb-math/pull/89)) (@paulrberg)
 - Optimize `div` and `mulDivSigned` by wrapping unary operations in unchecked blocks ([`a69b4b`][a69b4b]) (@paulrberg)
 - Optimize `exp2` by batching bit checks ([#77](https://github.com/paulrberg/prb-math/pull/77)) (@k06a)
-- Optimize `msb` by using unchecked arithmetic ([`e09b9a`](https://github.com/paulrberg/prb-math/commit/e09b9a)) (@paulrberg)
+- Optimize `msb` by using assembly ([#135](https://github.com/paulrberg/prb-math/pull/135)) (@t4sk, @paulrberg)
 - Optimize result assignment in `powu` ([673802](https://github.com/paulrberg/prb-math/commit/673802)) (@paulrberg)
 - Rename `fromInt` to `toSD59x18` and `toInt` to `fromSD59x18` ([`a69b4b`][a69b4b]) (@paulrberg)
 - Rename `fromUint` to `toUD60x18` and `toUint` to `fromUD60x18` ([`a69b4b`][a69b4b]) (@paulrberg)

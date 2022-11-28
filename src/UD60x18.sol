@@ -93,9 +93,9 @@ using { avg, ceil, div, exp, exp2, floor, frac, gm, inv, ln, log10, log2, mul, p
 //
 /// In English, what this formula does is:
 ///
-///     1. AND x and y.
-///     2. Calculate half of XOR x and y.
-///     3. Add the two results together.
+/// 1. AND x and y.
+/// 2. Calculate half of XOR x and y.
+/// 3. Add the two results together.
 ///
 /// This technique is known as SWAR, which stands for "SIMD within a register". You can read more about it here:
 /// https://devblogs.microsoft.com/oldnewthing/20220207-00/?p=106223
