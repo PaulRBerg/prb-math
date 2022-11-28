@@ -89,7 +89,7 @@ contract SD59x18__HelpersTest is SD59x18__BaseTest {
     }
 
     function testMod(int256 x, int256 y) external {
-        vm.assume(y > 0);
+        vm.assume(y != 0);
         int256 actual = unwrap(mod(wrap(x), wrap(y)));
         int256 expected = x % y;
         assertEq(actual, expected);
@@ -151,7 +151,7 @@ contract SD59x18__HelpersTest is SD59x18__BaseTest {
     }
 
     function testUncheckedDiv(int256 x, int256 y) external {
-        vm.assume(y > 0);
+        vm.assume(y != 0);
         int256 actual = unwrap(uncheckedDiv(wrap(x), wrap(y)));
         int256 expected;
         unchecked {

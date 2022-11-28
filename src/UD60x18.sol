@@ -668,7 +668,7 @@ function gte(UD60x18 x, UD60x18 y) pure returns (bool result) {
 /// @notice Implements a zero comparison check function in the UD60x18 type.
 function isZero(UD60x18 x) pure returns (bool result) {
     // This wouldn't work if x could be negative.
-    result = unwrap(x) > 0 == false;
+    result = unwrap(x) == 0;
 }
 
 /// @notice Implements the left shift operation (<<) in the UD60x18 type.
