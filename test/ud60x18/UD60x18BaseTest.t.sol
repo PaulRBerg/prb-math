@@ -13,8 +13,7 @@ abstract contract UD60x18__BaseTest is BaseTest {
                                       CONSTANTS
     //////////////////////////////////////////////////////////////////////////*/
 
-    UD60x18 internal constant MAX_SCALED_UD60x18 =
-        UD60x18.wrap(115792089237316195423570985008687907853269_984665640564039457);
+    UD60x18 internal constant MAX_SCALED_UD60x18 = UD60x18.wrap(115792089237316195423570985008687907853269_984665640564039457);
     UD60x18 internal constant SQRT_MAX_UD60x18 = UD60x18.wrap(340282366920938463463374607431_768211455999999999);
 
     /// @dev This is needed to be passed as the "expected" argument. The "set" function cannot be overridden

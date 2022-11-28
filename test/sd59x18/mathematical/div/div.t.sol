@@ -42,12 +42,7 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testDiv__NumeratorZero()
-        external
-        parameterizedTest(numeratorZeroSets())
-        DenominatorNotZero
-        DenominatorNotMinSD59x18
-    {
+    function testDiv__NumeratorZero() external parameterizedTest(numeratorZeroSets()) DenominatorNotZero DenominatorNotMinSD59x18 {
         SD59x18 actual = div(s.x, s.y);
         assertEq(actual, s.expected);
     }
@@ -56,12 +51,7 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
         _;
     }
 
-    function testCannotDiv__NumeratorMinSD59x18()
-        external
-        DenominatorNotZero
-        DenominatorNotMinSD59x18
-        NumeratorNotZero
-    {
+    function testCannotDiv__NumeratorMinSD59x18() external DenominatorNotZero DenominatorNotMinSD59x18 NumeratorNotZero {
         SD59x18 x = MIN_SD59x18;
         SD59x18 y = sd(0.000000000000000001e18);
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__DivInputTooSmall.selector));
