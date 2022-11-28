@@ -197,8 +197,25 @@ function addRshiftEq() public pure returns (bool result) {
 
 ### Assertions
 
-PRBMath is shipped with typed assertions that you can use for writing Foundry tests with [PRBTest](https://github.com/paulrberg/prb-test). This is
-useful if, for example, you would like to assert that two SD59x18 or UD60x18 numbers are equal.
+PRBMath is shipped with typed assertions that you can use for writing tests with [PRBTest](https://github.com/paulrberg/prb-test), which is based on
+Foundry. This is useful if, for example, you would like to assert that two SD59x18 or UD60x18 numbers are equal.
+
+```solidity
+pragma solidity >=0.8.13;
+
+import { Assertions as PRBMathAssertions } from "src/test/Assertions.sol";
+import { PRBTest } from "@prb/test/PRBTest.sol";
+
+contract MyTest is PRBTest, PRBMathAssertions {
+  function testAdd() external {
+    UD60x18 x = ud(1e18);
+    UD60x18 y = ud(2e18);
+    UD60x18 z = ud(3e18);
+    assertEq(x.add(y), z);
+  }
+}
+
+```
 
 ## Gas Efficiency
 
@@ -208,14 +225,18 @@ and `sqrt`.
 The main reason why PRBMath lags behind ABDKMath's `mul` and `div` functions is that it operates with 256-bit word sizes, and so it has to account for
 possible intermediary overflow. ABDKMath, on the other hand, operates with 128-bit word sizes.
 
+**Note**: I did not find a good way to automatically generate gas reports for PRBMath. See the
+[#134](https://github.com/paulrberg/prb-math/discussions/134) discussion for more details about this issue.
+
 ### PRBMath
 
-Gas estimations based on the [v2.0.1](https://github.com/paulrberg/prb-math/releases/tag/v2.0.1) release.
+Gas estimations based on the [v2.0.1](https://github.com/paulrberg/prb-math/releases/tag/v2.0.1) and the
+[v3.0.0](https://github.com/paulrberg/prb-math/releases/tag/v3.0.0) releases.
 
 | SD59x18 | Min | Max   | Avg  |     | UD60x18 | Min  | Max   | Avg  |
 | ------- | --- | ----- | ---- | --- | ------- | ---- | ----- | ---- |
 | abs     | 68  | 72    | 70   |     | n/a     | n/a  | n/a   | n/a  |
-| avg     | 57  | 57    | 57   |     | avg     | 57   | 57    | 57   |
+| avg     | 95  | 105   | 100  |     | avg     | 57   | 57    | 57   |
 | ceil    | 82  | 117   | 101  |     | ceil    | 78   | 78    | 78   |
 | div     | 431 | 483   | 451  |     | div     | 205  | 205   | 205  |
 | exp     | 38  | 2797  | 2263 |     | exp     | 1874 | 2742  | 2244 |

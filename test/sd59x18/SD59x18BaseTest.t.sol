@@ -3,12 +3,12 @@ pragma solidity >=0.8.13;
 
 import "src/SD59x18.sol";
 import { console2 } from "forge-std/console2.sol";
-import { PRBMath__BaseTest } from "../PRBMathBaseTest.t.sol";
+import { BaseTest } from "../BaseTest.t.sol";
 
 /// @title SD59x18__BaseTest
 /// @author Paul Razvan Berg
 /// @notice Common contract members needed across SD59x18 tests.
-abstract contract SD59x18__BaseTest is PRBMath__BaseTest {
+abstract contract SD59x18__BaseTest is BaseTest {
     /*//////////////////////////////////////////////////////////////////////////
                                       CONSTANTS
     //////////////////////////////////////////////////////////////////////////*/

@@ -120,9 +120,9 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 
 ### Fixed
 
-- Bug in `powu` function in the `PRBMathSD59x18` contract, which caused the result to be positive even if the base was negative (@paulrberg)
-- Minor bug in `avg` function in the `PRBMathSD59x18` contract, which rounded down the result instead of up when the intermediary sum was negative
-  (@paulrberg)
+- Fix bug in the `powu` function of the `PRBMathSD59x18` contract, which caused the result to be positive even if the base was negative (@paulrberg)
+- Fix minor bug in the `avg` function of the `PRBMathSD59x18` contract, which rounded down the result instead of up when the intermediary sum was
+  negative (@paulrberg)
 
 ## [2.3.0] - 2021-09-18
 

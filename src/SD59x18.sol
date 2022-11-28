@@ -169,7 +169,6 @@ function avg(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
             }
         } else {
             // We need to add 1 if both x and y are odd to account for the double 0.5 remainder that is truncated after shifting.
-            // The right part is equivalent to "sum + x & y & 1".
             result = wrap(sum + (xInt & yInt & 1));
         }
     }
@@ -244,9 +243,8 @@ function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
         revert PRBMathSD59x18__DivOverflow(x, y);
     }
 
-    // Check if x and y have the same sign via "(x ^ y) > -1".
-    // This works thanks to two's complement, the left-most bit is the sign bit.
-    bool sameSign = x.xor(y).gt(wrap(-1));
+    // Check if x and y have the same sign. This works thanks to two's complement; the left-most bit is the sign bit.
+    bool sameSign = (xInt ^ yInt) > -1;
 
     // If the inputs don't have the same sign, the result should be negative. Otherwise, it should be positive.
     unchecked {
@@ -670,8 +668,7 @@ function mul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
         revert PRBMathSD59x18__MulOverflow(x, y);
     }
 
-    // Check if x and y have the same sign via "(x ^ y) > -1".
-    // This works thanks to two's complement, the left-most bit is the sign bit.
+    // Check if x and y have the same sign. This works thanks to two's complement; the left-most bit is the sign bit.
     bool sameSign = (xInt ^ yInt) > -1;
 
     // If the inputs have the same sign, the result should be negative. Otherwise, it should be positive.
