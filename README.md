@@ -62,7 +62,73 @@ PRBMath comes in two flavors:
 
 If you don't need negative numbers, there's no point in using the signed flavor. The unsigned flavor is more gas efficient.
 
-### Functions
+### Importing
+
+It is recommended that you import PRBMath in the global scope, because you will often need multiple symbols:
+
+```solidity
+pragma solidity >=0.8.13;
+
+import "@prb/math/SD59x18.sol";
+import "@prb/math/UD60x18.sol";
+
+```
+
+Note that PRBMath can only be used in [Solidity v0.8.13](https://blog.soliditylang.org/2022/03/16/solidity-0.8.13-release-announcement/) or above.
+
+### SD59x18
+
+```solidity
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity >=0.8.13;
+
+import "@prb/math/SD59x18.sol";
+
+contract SignedConsumer {
+  /// @notice Calculates 5% of the given signed number.
+  /// @dev Try this with x = 400e18.
+  function signedPercentage(SD59x18 x) external pure returns (SD59x18 result) {
+    SD9x18 fivePercent = 0.05e18;
+    result = x.mul(fivePercent).div(UNIT); // UNIT = 1e18
+  }
+
+  /// @notice Calculates the binary logarithm of the given signed number.
+  /// @dev Try this with x = 128e18.
+  function signedLog2(SD59x18 x) external pure returns (SD59x18 result) {
+    result = x.log2();
+  }
+}
+
+```
+
+### UD60x18
+
+```solidity
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity >=0.8.13;
+
+import "@prb/math/UD60x18.sol";
+
+contract UnsignedConsumer {
+  /// @notice Calculates 5% of the given signed number.
+  /// @dev Try this with x = 400e18.
+  function signedPercentage(UD60x18 x) external pure returns (UD60x18 result) {
+    UD60x18 fivePercent = 0.05e18;
+    result = x.mul(fivePercent).div(UNIT); // UNIT = 1e18
+  }
+
+  /// @notice Calculates the binary logarithm of the given signed number.
+  /// @dev Try this with x = 128e18.
+  function signedLog2(UD60x18 x) external pure returns (UD60x18 result) {
+    result = x.log2();
+  }
+}
+
+```
+
+## Features
+
+### Core Functions
 
 There's significant overlap between the functions available in SD59x18 and UD60x18, so I did not duplicate the function tables below. If in doubt,
 refer to the source code, which is well-documented with NatSpec comments.
@@ -104,7 +170,7 @@ refer to the source code, which is well-documented with NatSpec comments.
 | `unwrap`      | Unwrap an SD59x18 or UD60x18 number into a simple integer             |
 | `wrap`        | Wraps a simple integer into either SD59x18 or UD60x18                 |
 
-#### Helpers
+#### Helper Functions
 
 In addition to the mathematical and the conversion functions, PRBMath provides many other helpers for the user-defined value types, such as
 `add`,`eq`, and `rshift`. These functions are not part of the core API and are frequently updated, so I invite you to take a look at the source code
@@ -112,74 +178,6 @@ to see the full list.
 
 The goal with these helpers is not have to always unwrap and re-wrap variables to perform such basic operations as addition and equality checks.
 However, you should note that using these functions instead of the vanilla operators (e.g. `+`, `==`, and `>>`) will result in a higher gas cost.
-
-### Importing
-
-It is recommended that you import PRBMath in the global scope, because you will often need multiple symbols:
-
-```solidity
-pragma solidity >=0.8.13;
-
-import "@prb/math/SD59x18.sol";
-import "@prb/math/UD60x18.sol";
-
-```
-
-Note that PRBMath can only be used in [Solidity v0.8.13](https://blog.soliditylang.org/2022/03/16/solidity-0.8.13-release-announcement/) or above.
-
-### Examples
-
-#### SD59x18
-
-```solidity
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity >=0.8.13;
-
-import "@prb/math/SD59x18.sol";
-
-contract SignedConsumer {
-  /// @notice Calculates 5% of the given signed number.
-  /// @dev Try this with x = 400e18.
-  function signedPercentage(SD59x18 x) external pure returns (SD59x18 result) {
-    SD9x18 fivePercent = 0.05e18;
-    result = x.mul(fivePercent).div(UNIT); // UNIT = 1e18
-  }
-
-  /// @notice Calculates the binary logarithm of the given signed number.
-  /// @dev Try this with x = 128e18.
-  function signedLog2(SD59x18 x) external pure returns (SD59x18 result) {
-    result = x.log2();
-  }
-}
-
-```
-
-#### UD60x18
-
-```solidity
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity >=0.8.13;
-
-import "@prb/math/UD60x18.sol";
-
-contract UnsignedConsumer {
-  /// @notice Calculates 5% of the given signed number.
-  /// @dev Try this with x = 400e18.
-  function signedPercentage(UD60x18 x) external pure returns (UD60x18 result) {
-    UD60x18 fivePercent = 0.05e18;
-    result = x.mul(fivePercent).div(UNIT); // UNIT = 1e18
-  }
-
-  /// @notice Calculates the binary logarithm of the given signed number.
-  /// @dev Try this with x = 128e18.
-  function signedLog2(UD60x18 x) external pure returns (UD60x18 result) {
-    result = x.log2();
-  }
-}
-
-```
-
-#### Helpers
 
 ```solidity
 // SPDX-License-Identifier: UNLICENSED
@@ -196,6 +194,11 @@ function addRshiftEq() public pure returns (bool result) {
 }
 
 ```
+
+### Assertions
+
+PRBMath is shipped with typed assertions that you can use for writing Foundry tests with [PRBTest](https://github.com/paulrberg/prb-test). This is
+useful if, for example, you would like to assert that two SD59x18 or UD60x18 numbers are equal.
 
 ## Gas Efficiency
 
