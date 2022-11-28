@@ -37,7 +37,6 @@
     "typescript"
   ],
   "license": "MIT",
-  "main": "./dist/node/index.js",
   "packageManager": "yarn@3.2.4",
   "publishConfig": {
     "access": "public"
@@ -58,6 +57,5 @@
     "prepublishOnly": "pinst --disable",
     "prettier:check": "prettier --check \"**/*.{json,md,sol,yml}\"",
     "prettier:write": "prettier --write \"**/*.{json,md,sol,yml}\""
-  },
-  "types": "./dist/node/index.d.ts"
+  }
 }
