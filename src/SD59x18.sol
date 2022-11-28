@@ -113,25 +113,7 @@ SD59x18 constant ZERO = SD59x18.wrap(0);
                             MATHEMATICAL FUNCTIONS
 //////////////////////////////////////////////////////////////////////////*/
 
-using {
-    abs,
-    avg,
-    ceil,
-    div,
-    exp,
-    exp2,
-    floor,
-    frac,
-    gm,
-    inv,
-    log10,
-    log2,
-    ln,
-    mul,
-    pow,
-    powu,
-    sqrt
-} for SD59x18 global;
+using { abs, avg, ceil, div, exp, exp2, floor, frac, gm, inv, log10, log2, ln, mul, pow, powu, sqrt } for SD59x18 global;
 
 /// @notice Calculate the absolute value of x.
 ///

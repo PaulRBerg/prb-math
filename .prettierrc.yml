@@ -4,12 +4,14 @@ proseWrap: "always"
 singleQuote: false
 tabWidth: 2
 trailingComma: "all"
+useTabs: false
 
 overrides:
-  - files: ["*.md"]
+  - files: "*.md"
     options:
       printWidth: 150
-  - files: ["*.sol"]
+  - files: "*.sol"
     options:
       compiler: "0.8.17"
+      printWidth: 132
       tabWidth: 4
