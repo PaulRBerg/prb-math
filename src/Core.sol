@@ -37,44 +37,77 @@ uint256 constant UNIT_INVERSE = 781566461551748419797279945988162623061752125920
                                     FUNCTIONS
 //////////////////////////////////////////////////////////////////////////*/
 
-/// @notice Finds the zero-based index of the first 1 in the binary representation of x.
+/// @notice Finds the zero-based index of the first one in the binary representation of x.
 /// @dev See the note on msb in the "Find First Set" Wikipedia article https://en.wikipedia.org/wiki/Find_first_set
+///
+/// Each of the steps in this implementation is equivalent to this high-level code:
+///
+/// ```solidity
+/// if (x >= 2 ** 128) {
+///     x >>= 128;
+///     result += 128;
+/// }
+/// ```
+///
+/// Where 128 is swapped with each respective power of two factor. See the full high-level implementation here:
+/// https://gist.github.com/paulrberg/f932f8693f2733e30c4d479e8e980948
+///
+/// Explanations for the Yul instructions used below:
+/// - "gt" is "greater than"
+/// - "or" is the OR bitwise operator
+/// - "shl" is "shift left"
+/// - "shr" is "shift right"
+///
 /// @param x The uint256 number for which to find the index of the most significant bit.
 /// @return result The index of the most significant bit as an uint256.
 function msb(uint256 x) pure returns (uint256 result) {
-    unchecked {
-        if (x >= 2 ** 128) {
-            x >>= 128;
-            result += 128;
-        }
-        if (x >= 2 ** 64) {
-            x >>= 64;
-            result += 64;
-        }
-        if (x >= 2 ** 32) {
-            x >>= 32;
-            result += 32;
-        }
-        if (x >= 2 ** 16) {
-            x >>= 16;
-            result += 16;
-        }
-        if (x >= 2 ** 8) {
-            x >>= 8;
-            result += 8;
-        }
-        if (x >= 2 ** 4) {
-            x >>= 4;
-            result += 4;
-        }
-        if (x >= 2 ** 2) {
-            x >>= 2;
-            result += 2;
-        }
-        // No need to shift x any more.
-        if (x >= 2 ** 1) {
-            result += 1;
-        }
+    // 2^128
+    assembly {
+        let factor := shl(7, gt(x, 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF))
+        x := shr(factor, x)
+        result := or(result, factor)
+    }
+    // 2^64
+    assembly {
+        let factor := shl(6, gt(x, 0xFFFFFFFFFFFFFFFF))
+        x := shr(factor, x)
+        result := or(result, factor)
+    }
+    // 2^32
+    assembly {
+        let factor := shl(5, gt(x, 0xFFFFFFFF))
+        x := shr(factor, x)
+        result := or(result, factor)
+    }
+    // 2^16
+    assembly {
+        let factor := shl(4, gt(x, 0xFFFF))
+        x := shr(factor, x)
+        result := or(result, factor)
+    }
+    // 2^8
+    assembly {
+        let factor := shl(3, gt(x, 0xFF))
+        x := shr(factor, x)
+        result := or(result, factor)
+    }
+    // 2^4
+    assembly {
+        let factor := shl(2, gt(x, 0xF))
+        x := shr(factor, x)
+        result := or(result, factor)
+    }
+    // 2^2
+    assembly {
+        let factor := shl(1, gt(x, 0x3))
+        x := shr(factor, x)
+        result := or(result, factor)
+    }
+    // 2^1
+    // No need to shift x any more.
+    assembly {
+        let factor := gt(x, 0x1)
+        result := or(result, factor)
     }
 }
 
