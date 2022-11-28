@@ -65,11 +65,8 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 
 ### Fixed
 
-- Fix upper boundary specified in `exp` NatSpec comments ([#119](https://github.com/paulrberg/prb-math/discussions/119)) (@paulrberg)
-
-### Fixed
-
 - Fix incorrect hard-coded value in `sqrt` ([#91](https://github.com/paulrberg/prb-math/pull/91)) (@Amxx, @nonergodic)
+- Fix upper boundary specified in `exp` NatSpec comments ([#119](https://github.com/paulrberg/prb-math/discussions/119)) (@paulrberg)
 
 ## [2.5.0] - 2022-03-08
 
