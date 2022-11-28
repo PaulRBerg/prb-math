@@ -52,7 +52,7 @@ uint256 constant UNIT_INVERSE = 781566461551748419797279945988162623061752125920
 /// Where 128 is swapped with each respective power of two factor. See the full high-level implementation here:
 /// https://gist.github.com/paulrberg/f932f8693f2733e30c4d479e8e980948
 ///
-/// Explanations for the Yul instructions used below:
+/// A list of the Yul instructions used below:
 /// - "gt" is "greater than"
 /// - "or" is the OR bitwise operator
 /// - "shl" is "shift left"
@@ -157,7 +157,7 @@ function mulDiv(uint256 x, uint256 y, uint256 denominator) pure returns (uint256
     // Make division exact by subtracting the remainder from [prod1 prod0].
     uint256 remainder;
     assembly {
-        // Compute remainder using mulmod.
+        // Compute remainder using the mulmod Yul instruction.
         remainder := mulmod(x, y, denominator)
 
         // Subtract 256 bit number from 512 bit number.
