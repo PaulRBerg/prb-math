@@ -342,37 +342,44 @@ library PRBMath {
     /// @param x The uint256 number for which to find the index of the most significant bit.
     /// @return msb The index of the most significant bit as an uint256.
     function mostSignificantBit(uint256 x) internal pure returns (uint256 msb) {
-        if (x >= 2**128) {
-            x >>= 128;
-            msb += 128;
+        assembly {
+            let f := shl(7, gt(x, 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF))
+            msb := or(msb, f)
+            x := shr(f, x)
         }
-        if (x >= 2**64) {
-            x >>= 64;
-            msb += 64;
+        assembly {
+            let f := shl(6, gt(x, 0xFFFFFFFFFFFFFFFF))
+            msb := or(msb, f)
+            x := shr(f, x)
         }
-        if (x >= 2**32) {
-            x >>= 32;
-            msb += 32;
+        assembly {
+            let f := shl(5, gt(x, 0xFFFFFFFF))
+            msb := or(msb, f)
+            x := shr(f, x)
         }
-        if (x >= 2**16) {
-            x >>= 16;
-            msb += 16;
+        assembly {
+            let f := shl(4, gt(x, 0xFFFF))
+            msb := or(msb, f)
+            x := shr(f, x)
         }
-        if (x >= 2**8) {
-            x >>= 8;
-            msb += 8;
+        assembly {
+            let f := shl(3, gt(x, 0xFF))
+            msb := or(msb, f)
+            x := shr(f, x)
         }
-        if (x >= 2**4) {
-            x >>= 4;
-            msb += 4;
+        assembly {
+            let f := shl(2, gt(x, 0xF))
+            msb := or(msb, f)
+            x := shr(f, x)
         }
-        if (x >= 2**2) {
-            x >>= 2;
-            msb += 2;
+        assembly {
+            let f := shl(1, gt(x, 0x3))
+            msb := or(msb, f)
+            x := shr(f, x)
         }
-        if (x >= 2**1) {
-            // No need to shift x any more.
-            msb += 1;
+        assembly {
+            let f := gt(x, 0x1)
+            msb := or(msb, f)
         }
     }
 
