@@ -68,13 +68,7 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testPow__ExponentOne()
-        external
-        parameterizedTest(exponentOneSets())
-        BaseNotZero
-        BasePositive
-        ExponentNotZero
-    {
+    function testPow__ExponentOne() external parameterizedTest(exponentOneSets()) BaseNotZero BasePositive ExponentNotZero {
         SD59x18 actual = pow(s.x, s.y);
         assertEq(actual, s.expected);
     }
@@ -83,13 +77,7 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         _;
     }
 
-    function testCannotPow__ExponentGreaterThanMaxPermitted()
-        external
-        BaseNotZero
-        BasePositive
-        ExponentNotZero
-        ExponentNotOne
-    {
+    function testCannotPow__ExponentGreaterThanMaxPermitted() external BaseNotZero BasePositive ExponentNotZero ExponentNotOne {
         SD59x18 x = MAX_PERMITTED.add(sd(1));
         SD59x18 y = sd(1e18 + 1);
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__Exp2InputTooBig.selector, sd(192e18 + 192)));
@@ -152,9 +140,7 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         sets.push(set({ x: E, y: 1.66976e18, expected: 5_310893029888037560 }));
         sets.push(set({ x: PI, y: PI, expected: 36_462159607207910473 }));
         sets.push(set({ x: 11e18, y: 28.5e18, expected: 478290249106383504389245497918_050372801213485439 }));
-        sets.push(
-            set({ x: 32.15e18, y: 23.99e18, expected: 1436387590627448555101723413293079116_943375472179194989 })
-        );
+        sets.push(set({ x: 32.15e18, y: 23.99e18, expected: 1436387590627448555101723413293079116_943375472179194989 }));
         sets.push(set({ x: 406e18, y: 0.25e18, expected: 4_488812947719016318 }));
         sets.push(set({ x: 1729e18, y: 0.98e18, expected: 1489_495149922256917866 }));
         sets.push(set({ x: 33441e18, y: 2.1891e18, expected: 8018621589_681923269491820156 }));
@@ -165,13 +151,7 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
                 expected: 340282366920938487757736552507248225013_000000000004316573
             })
         );
-        sets.push(
-            set({
-                x: MAX_PERMITTED,
-                y: 1e18 - 1,
-                expected: 6277101735386679823624773486129835356722228023657461399187e18
-            })
-        );
+        sets.push(set({ x: MAX_PERMITTED, y: 1e18 - 1, expected: 6277101735386679823624773486129835356722228023657461399187e18 }));
         return sets;
     }
 

@@ -51,12 +51,7 @@ contract UD60x18__PowTest is UD60x18__BaseTest {
         return sets;
     }
 
-    function testPow__ExponentZero()
-        external
-        parameterizedTest(exponentZeroSets())
-        BaseNotZero
-        BaseGreaterThanOrEqualToOne
-    {
+    function testPow__ExponentZero() external parameterizedTest(exponentZeroSets()) BaseNotZero BaseGreaterThanOrEqualToOne {
         UD60x18 actual = pow(s.x, s.y);
         assertEq(actual, s.expected);
     }
@@ -115,9 +110,7 @@ contract UD60x18__PowTest is UD60x18__BaseTest {
         sets.push(set({ x: E, y: E, expected: 15_154262241479263793 }));
         sets.push(set({ x: PI, y: PI, expected: 36_462159607207910473 }));
         sets.push(set({ x: 11e18, y: 28.5e18, expected: 478290249106383504389245497918_050372801213485439 }));
-        sets.push(
-            set({ x: 32.15e18, y: 23.99e18, expected: 1436387590627448555101723413293079116_943375472179194989 })
-        );
+        sets.push(set({ x: 32.15e18, y: 23.99e18, expected: 1436387590627448555101723413293079116_943375472179194989 }));
         sets.push(set({ x: 406e18, y: 0.25e18, expected: 4_488812947719016318 }));
         sets.push(set({ x: 1729e18, y: 0.98e18, expected: 1489_495149922256917866 }));
         sets.push(set({ x: 33441e18, y: 2.1891e18, expected: 8018621589_681923269491820156 }));
@@ -128,13 +121,7 @@ contract UD60x18__PowTest is UD60x18__BaseTest {
                 expected: 340282366920938487757736552507248225013_000000000004316573
             })
         );
-        sets.push(
-            set({
-                x: MAX_PERMITTED,
-                y: 1e18 - 1,
-                expected: 6277101735386679823624773486129835356722228023657461399187e18
-            })
-        );
+        sets.push(set({ x: MAX_PERMITTED, y: 1e18 - 1, expected: 6277101735386679823624773486129835356722228023657461399187e18 }));
         return sets;
     }
 

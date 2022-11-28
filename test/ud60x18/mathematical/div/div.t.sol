@@ -36,9 +36,7 @@ contract UD60x18__DivTest is UD60x18__BaseTest {
     function testCannotDiv__ResultOverflowUD60x18() external DenominatorNotZero {
         UD60x18 x = MAX_SCALED_UD60x18.add(ud(1));
         UD60x18 y = ud(0.000000000000000001e18);
-        vm.expectRevert(
-            abi.encodeWithSelector(PRBMath__MulDivOverflow.selector, UD60x18.unwrap(x), uUNIT, UD60x18.unwrap(y))
-        );
+        vm.expectRevert(abi.encodeWithSelector(PRBMath__MulDivOverflow.selector, UD60x18.unwrap(x), uUNIT, UD60x18.unwrap(y)));
         div(x, y);
     }
 

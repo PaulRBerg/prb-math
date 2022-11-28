@@ -54,9 +54,7 @@ contract SD59x18__PowuTest is SD59x18__BaseTest {
     function testCannotPowu__ResultOverflowUint256() external BaseNotZero ExponentNotZero {
         SD59x18 x = MIN_SD59x18.add(sd(1));
         uint256 y = 2;
-        vm.expectRevert(
-            abi.encodeWithSelector(PRBMath__MulDiv18Overflow.selector, uint256(uMAX_SD59x18), uint256(uMAX_SD59x18))
-        );
+        vm.expectRevert(abi.encodeWithSelector(PRBMath__MulDiv18Overflow.selector, uint256(uMAX_SD59x18), uint256(uMAX_SD59x18)));
         powu(x, y);
     }
 
@@ -64,12 +62,7 @@ contract SD59x18__PowuTest is SD59x18__BaseTest {
         _;
     }
 
-    function testCannotPowu__ResultUnderflowSD59x18()
-        external
-        BaseNotZero
-        ExponentNotZero
-        ResultDoesNotOverflowUint256
-    {
+    function testCannotPowu__ResultUnderflowSD59x18() external BaseNotZero ExponentNotZero ResultDoesNotOverflowUint256 {
         SD59x18 x = NEGATIVE_SQRT_MAX_SD59x18.sub(sd(1));
         uint256 y = 2;
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__PowuOverflow.selector, x, y));
@@ -108,11 +101,7 @@ contract SD59x18__PowuTest is SD59x18__BaseTest {
         sets.push(set({ x: -1e24, y: 3, expected: -1e36 }));
         sets.push(set({ x: -6452.166e18, y: 7, expected: -4655204093726194074224341678_62736844121311696 }));
         sets.push(
-            set({
-                x: -478.77e18,
-                y: 20,
-                expected: 400441047687151121501368529571950234763284476825512183_793320584974037932
-            })
+            set({ x: -478.77e18, y: 20, expected: 400441047687151121501368529571950234763284476825512183_793320584974037932 })
         );
         sets.push(set({ x: -100e18, y: 4, expected: 1e26 }));
         sets.push(set({ x: -5.491e18, y: 19, expected: -113077820843204_476043049664958463 }));
@@ -150,11 +139,7 @@ contract SD59x18__PowuTest is SD59x18__BaseTest {
         sets.push(set({ x: 5.491e18, y: 19, expected: 113077820843204_476043049664958463 }));
         sets.push(set({ x: 100e18, y: 4, expected: 1e26 }));
         sets.push(
-            set({
-                x: 478.77e18,
-                y: 20,
-                expected: 400441047687151121501368529571950234763284476825512183_793320584974037932
-            })
+            set({ x: 478.77e18, y: 20, expected: 400441047687151121501368529571950234763284476825512183_793320584974037932 })
         );
         sets.push(set({ x: 6452.166e18, y: 7, expected: 4655204093726194074224341678_62736844121311696 }));
         sets.push(set({ x: 1e24, y: 3, expected: 1e36 }));

@@ -27,11 +27,7 @@ contract SD59x18__Exp2Test is SD59x18__BaseTest {
         return sets;
     }
 
-    function testExp2__Negative__LessThanMinPermitted()
-        external
-        parameterizedTest(negativeAndLessThanMinPermittedSets())
-        NotZero
-    {
+    function testExp2__Negative__LessThanMinPermitted() external parameterizedTest(negativeAndLessThanMinPermittedSets()) NotZero {
         SD59x18 actual = exp2(s.x);
         assertEq(actual, s.expected);
     }
@@ -93,9 +89,7 @@ contract SD59x18__Exp2Test is SD59x18__BaseTest {
         sets.push(set({ x: 88.7494e18, expected: 520273250104929479163928177_984511174562086061 }));
         sets.push(set({ x: 95e18, expected: 39614081257_132168796771975168e18 }));
         sets.push(set({ x: 127e18, expected: 170141183460469231731_687303715884105728e18 }));
-        sets.push(
-            set({ x: 152.9065e18, expected: 10701459987152828635116598811554803403437267307_663014047009710338 })
-        );
+        sets.push(set({ x: 152.9065e18, expected: 10701459987152828635116598811554803403437267307_663014047009710338 }));
         sets.push(set({ x: MAX_PERMITTED, expected: 6277101735386680759401282518710514696272033118492751795945e18 }));
         return sets;
     }
