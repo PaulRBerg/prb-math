@@ -24,7 +24,10 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 [1.0.1]: https://github.com/paulrberg/prb-math/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/paulrberg/prb-math/releases/tag/v1.0.0
 
-## [3.0.0] - 2022-11-28
+## [3.0.0] - 2022-11-29
+
+[1b82ea]: https://github.com/paulrberg/prb-math/commit/1b82ea
+[a69b4b]: https://github.com/paulrberg/prb-math/commit/a69b4b
 
 ### Changed
 
@@ -272,8 +275,3 @@ _This release was yanked because it was accidentally published with the wrong ve
 ### Added
 
 - First release of the library (@paulrberg)
-
-<!-- Links -->
-
-[1b82ea]: https://github.com/paulrberg/prb-math/commit/1b82ea
-[a69b4b]: https://github.com/paulrberg/prb-math/commit/a69b4b

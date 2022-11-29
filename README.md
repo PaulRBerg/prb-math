@@ -36,7 +36,7 @@ all the boxes mentioned thus far, but it doesn't offer type safety.
 First, run the install step:
 
 ```sh
-forge install --no-commit paulrberg/prb-math
+forge install --no-commit paulrberg/prb-math@v3
 ```
 
 Then, add this to your `remappings.txt` file:
