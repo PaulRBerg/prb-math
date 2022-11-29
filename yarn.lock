@@ -331,6 +331,7 @@ __metadata:
     cz-conventional-changelog: ^3.3.0
     husky: ^8.0.2
     lint-staged: ^13.0.4
+    pinst: ^3.0.0
     prettier: ^2.8.0
     prettier-plugin-solidity: ^1.0.0
     rimraf: ^3.0.2
@@ -2986,6 +2987,15 @@ __metadata:
   bin:
     pidtree: bin/pidtree.js
   checksum: 8fbc073ede9209dd15e80d616e65eb674986c93be49f42d9ddde8dbbd141bb53d628a7ca4e58ab5c370bb00383f67d75df59a9a226dede8fa801267a7030c27a
+  languageName: node
+  linkType: hard
+
+"pinst@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "pinst@npm:3.0.0"
+  bin:
+    pinst: bin.js
+  checksum: 4ae48a6a60f79c37071233af51b4d91bfc85cfa3c12b66ccda60cdb642b4d14a4ab0cb3587afc55b1f6192cea1772a5e4822026a0d0d3528296edef00cc2d61f
   languageName: node
   linkType: hard
 
