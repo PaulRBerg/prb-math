@@ -24,7 +24,7 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 [1.0.1]: https://github.com/paulrberg/prb-math/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/paulrberg/prb-math/releases/tag/v1.0.0
 
-## [3.0.0] - 2022-11-28
+## [3.0.0] - 2022-11-29
 
 ### Changed
 
