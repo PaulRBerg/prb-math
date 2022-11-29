@@ -16,8 +16,3 @@
 .pnp.*
 yarn-debug.log*
 yarn-error.log*
-
-# broadcasts
-!/broadcast
-/broadcast/*
-/broadcast/*/31337/
