@@ -42,7 +42,7 @@ forge install --no-commit paulrberg/prb-math@v3
 Then, add this to your `remappings.txt` file:
 
 ```text
-@prb/math/=lib/prb-math/src/
+prb-math/=lib/prb-math/src/
 ```
 
 ### Node.js
@@ -69,8 +69,8 @@ It is recommended that you import PRBMath in the global scope, because you will 
 ```solidity
 pragma solidity >=0.8.13;
 
-import "@prb/math/SD59x18.sol";
-import "@prb/math/UD60x18.sol";
+import "prb-math/SD59x18.sol";
+import "prb-math/UD60x18.sol";
 
 ```
 
@@ -82,7 +82,7 @@ Note that PRBMath can only be used in [Solidity v0.8.13](https://blog.solidityla
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.13;
 
-import "@prb/math/SD59x18.sol";
+import "prb-math/SD59x18.sol";
 
 contract SignedConsumer {
   /// @notice Calculates 5% of the given signed number.
@@ -107,7 +107,7 @@ contract SignedConsumer {
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.13;
 
-import "@prb/math/UD60x18.sol";
+import "prb-math/UD60x18.sol";
 
 contract UnsignedConsumer {
   /// @notice Calculates 5% of the given signed number.
@@ -128,12 +128,10 @@ contract UnsignedConsumer {
 
 ## Features
 
-### Core Functions
-
-There's significant overlap between the functions available in SD59x18 and UD60x18, so I did not duplicate the function tables below. If in doubt,
+There's significant overlap between the functions available in SD59x18 and UD60x18, so I did not duplicate the functions tables below. If in doubt,
 refer to the source code, which is well-documented with NatSpec comments.
 
-#### Mathematical
+### Mathematical Functions
 
 | Name    | Description                                      |
 | ------- | ------------------------------------------------ |
@@ -155,7 +153,7 @@ refer to the source code, which is well-documented with NatSpec comments.
 | `powu`  | Power function x^y with y simple integer         |
 | `sqrt`  | Square root                                      |
 
-#### Conversion
+### Conversion Functions
 
 | Name          | Description                                                           |
 | ------------- | --------------------------------------------------------------------- |
@@ -170,7 +168,7 @@ refer to the source code, which is well-documented with NatSpec comments.
 | `unwrap`      | Unwrap an SD59x18 or UD60x18 number into a simple integer             |
 | `wrap`        | Wraps a simple integer into either SD59x18 or UD60x18                 |
 
-#### Helper Functions
+### Helper Functions
 
 In addition to the mathematical and the conversion functions, PRBMath provides many other helpers for the user-defined value types, such as
 `add`,`eq`, and `rshift`. These functions are not part of the core API and are frequently updated, so I invite you to take a look at the source code
@@ -183,7 +181,7 @@ However, you should note that using these functions instead of the vanilla opera
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.13;
 
-import "@prb/math/UD60x18.sol";
+import "prb-math/UD60x18.sol";
 
 function addRshiftEq() pure returns (bool result) {
   UD60x18 x = ud(1e18);
@@ -203,8 +201,8 @@ Foundry. This is useful if, for example, you would like to assert that two SD59x
 ```solidity
 pragma solidity >=0.8.13;
 
-import "@prb/math/UD60x18.sol";
-import { Assertions as PRBMathAssertions } from "@prb/math/test/Assertions.sol";
+import "prb-math/UD60x18.sol";
+import { Assertions as PRBMathAssertions } from "prb-math/test/Assertions.sol";
 import { PRBTest } from "@prb/test/PRBTest.sol";
 
 contract MyTest is PRBTest, PRBMathAssertions {
