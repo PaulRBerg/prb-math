@@ -89,13 +89,13 @@ contract SignedConsumer {
   /// @dev Try this with x = 400e18.
   function signedPercentage(SD59x18 x) external pure returns (SD59x18 result) {
     SD59x18 fivePercent = sd(0.05e18);
-    result = x.mul(fivePercent).div(UNIT); // UNIT = 1e18
+    result = x.mul(fivePercent);
   }
 
   /// @notice Calculates the binary logarithm of the given signed number.
   /// @dev Try this with x = 128e18.
   function signedLog2(SD59x18 x) external pure returns (SD59x18 result) {
-    result = x.log2();
+    result = log2(x);
   }
 }
 
@@ -112,15 +112,15 @@ import "@prb/math/UD60x18.sol";
 contract UnsignedConsumer {
   /// @notice Calculates 5% of the given signed number.
   /// @dev Try this with x = 400e18.
-  function signedPercentage(UD60x18 x) external pure returns (UD60x18 result) {
+  function unsignedPercentage(UD60x18 x) external pure returns (UD60x18 result) {
     UD60x18 fivePercent = ud(0.05e18);
     result = x.mul(fivePercent).div(UNIT); // UNIT = 1e18
   }
 
   /// @notice Calculates the binary logarithm of the given signed number.
   /// @dev Try this with x = 128e18.
-  function signedLog2(UD60x18 x) external pure returns (UD60x18 result) {
-    result = x.log2();
+  function unsignedLog2(UD60x18 x) external pure returns (UD60x18 result) {
+    result = log2(x);
   }
 }
 
@@ -203,6 +203,7 @@ Foundry. This is useful if, for example, you would like to assert that two SD59x
 ```solidity
 pragma solidity >=0.8.13;
 
+import "@prb/math/UD60x18.sol";
 import { Assertions as PRBMathAssertions } from "@prb/math/test/Assertions.sol";
 import { PRBTest } from "@prb/test/PRBTest.sol";
 
