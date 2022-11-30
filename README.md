@@ -69,8 +69,8 @@ It is recommended that you import PRBMath in the global scope, because you will 
 ```solidity
 pragma solidity >=0.8.13;
 
-import "prb-math/SD59x18.sol";
-import "prb-math/UD60x18.sol";
+import "@prb/math/SD59x18.sol";
+import "@prb/math/UD60x18.sol";
 
 ```
 
@@ -82,7 +82,7 @@ Note that PRBMath can only be used in [Solidity v0.8.13](https://blog.solidityla
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.13;
 
-import "prb-math/SD59x18.sol";
+import "@prb/math/SD59x18.sol";
 
 contract SignedConsumer {
   /// @notice Calculates 5% of the given signed number.
@@ -107,7 +107,7 @@ contract SignedConsumer {
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.13;
 
-import "prb-math/UD60x18.sol";
+import "@prb/math/UD60x18.sol";
 
 contract UnsignedConsumer {
   /// @notice Calculates 5% of the given signed number.
@@ -181,7 +181,7 @@ However, you should note that using these functions instead of the vanilla opera
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.13;
 
-import "prb-math/UD60x18.sol";
+import "@prb/math/UD60x18.sol";
 
 function addRshiftEq() pure returns (bool result) {
   UD60x18 x = ud(1e18);
@@ -201,7 +201,7 @@ Foundry. This is useful if, for example, you would like to assert that two SD59x
 ```solidity
 pragma solidity >=0.8.13;
 
-import "prb-math/UD60x18.sol";
+import "@prb/math/UD60x18.sol";
 import { Assertions as PRBMathAssertions } from "prb-math/test/Assertions.sol";
 import { PRBTest } from "@prb/test/PRBTest.sol";
 
