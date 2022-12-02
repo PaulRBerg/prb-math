@@ -42,7 +42,7 @@ forge install --no-commit paulrberg/prb-math@v3
 Then, add this to your `remappings.txt` file:
 
 ```text
-prb-math/=lib/prb-math/src/
+@prb/math/=lib/prb-math/src/
 ```
 
 ### Node.js
@@ -162,7 +162,7 @@ refer to the source code, which is well-documented with NatSpec comments.
 | `sd`          | Wraps a simple integer into SD59x18                                   |
 | `sd59x18`     | Wraps a simple integer into SD59x18                                   |
 | `toSD59x18`   | Converts a simple integer to SD59x18 by multiplying it by 1e18        |
-| `toSD59x18`   | Converts a simple integer to UD60x18 by multiplying it by 1e18        |
+| `toUD60x18`   | Converts a simple integer to UD60x18 by multiplying it by 1e18        |
 | `ud`          | Wraps a simple integer into UD60x18                                   |
 | `ud60x18`     | Wraps a simple integer into UD60x18                                   |
 | `unwrap`      | Unwrap an SD59x18 or UD60x18 number into a simple integer             |
@@ -202,8 +202,8 @@ Foundry. This is useful if, for example, you would like to assert that two SD59x
 pragma solidity >=0.8.13;
 
 import "@prb/math/UD60x18.sol";
-import { Assertions as PRBMathAssertions } from "prb-math/test/Assertions.sol";
-import { PRBTest } from "@prb/test/PRBTest.sol";
+import { Assertions as PRBMathAssertions } from "@prb/math/test/Assertions.sol";
+import { PRBTest } from "@prb/math/test/PRBTest.sol";
 
 contract MyTest is PRBTest, PRBMathAssertions {
   function testAdd() external {
