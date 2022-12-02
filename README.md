@@ -159,12 +159,12 @@ refer to the source code, which is well-documented with NatSpec comments.
 | ------------- | --------------------------------------------------------------------- |
 | `fromSD59x18` | Converts an SD59x18 number to a simple integer by dividing it by 1e18 |
 | `fromUD60x18` | Converts an UD60x18 number to a simple integer by dividing it by 1e18 |
-| `sd`          | Wraps a simple integer into SD59x18                                   |
-| `sd59x18`     | Wraps a simple integer into SD59x18                                   |
+| `sd`          | Alias for `wrap`, wraps a simple integer into SD59x18                 |
+| `sd59x18`     | Alias for `wrap`, wraps a simple integer into SD59x18                 |
 | `toSD59x18`   | Converts a simple integer to SD59x18 by multiplying it by 1e18        |
 | `toUD60x18`   | Converts a simple integer to UD60x18 by multiplying it by 1e18        |
-| `ud`          | Wraps a simple integer into UD60x18                                   |
-| `ud60x18`     | Wraps a simple integer into UD60x18                                   |
+| `ud`          | Alias for `wrap`, wraps a simple integer into UD60x18                 |
+| `ud60x18`     | Alias for `wrap`, wraps a simple integer into UD60x18                 |
 | `unwrap`      | Unwrap an SD59x18 or UD60x18 number into a simple integer             |
 | `wrap`        | Wraps a simple integer into either SD59x18 or UD60x18                 |
 
