@@ -162,7 +162,7 @@ refer to the source code, which is well-documented with NatSpec comments.
 | `sd`          | Wraps a simple integer into SD59x18                                   |
 | `sd59x18`     | Wraps a simple integer into SD59x18                                   |
 | `toSD59x18`   | Converts a simple integer to SD59x18 by multiplying it by 1e18        |
-| `toSD60x18`   | Converts a simple integer to UD60x18 by multiplying it by 1e18        |
+| `toUD60x18`   | Converts a simple integer to UD60x18 by multiplying it by 1e18        |
 | `ud`          | Wraps a simple integer into UD60x18                                   |
 | `ud60x18`     | Wraps a simple integer into UD60x18                                   |
 | `unwrap`      | Unwrap an SD59x18 or UD60x18 number into a simple integer             |
