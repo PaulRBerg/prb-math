@@ -114,7 +114,7 @@ contract UnsignedConsumer {
   /// @dev Try this with x = 400e18.
   function unsignedPercentage(UD60x18 x) external pure returns (UD60x18 result) {
     UD60x18 fivePercent = ud(0.05e18);
-    result = x.mul(fivePercent).div(UNIT); // UNIT = 1e18
+    result = x.mul(fivePercent);
   }
 
   /// @notice Calculates the binary logarithm of the given signed number.
