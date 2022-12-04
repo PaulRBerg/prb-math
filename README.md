@@ -303,6 +303,13 @@ $ yarn install
 
 Now you can start making changes.
 
+### Syntax Highlighting
+
+You will need the following VSCode extensions:
+
+- [vscode-solidity](https://marketplace.visualstudio.com/items?itemName=JuanBlanco.solidity)
+- [vscode-tree-language](https://marketplace.visualstudio.com/items?itemName=CTC.vscode-tree-extension)
+
 ## Security
 
 While I set a high bar for code quality and test coverage, you should not assume that this project is completely safe to use. PRBMath has not been
