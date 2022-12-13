@@ -193,6 +193,18 @@ function addRshiftEq() pure returns (bool result) {
 
 ```
 
+### Adjacent Value Types
+
+PRBMath provides adjacent value types that serve as abstractions over other vanilla types such as `int64`. The types currently available are:
+
+- `SD1x18` (int64)
+- `UD2x18` (uint64)
+
+These are useful if you want to save gas by using a lower bit width integer, e.g. in a struct.
+
+Note that these types don't have any mathematical functionality. For that, you will have to unwrap them into a simple integer and then to the core
+types `SD59x18` and `UD60x18`.
+
 ### Assertions
 
 PRBMath is shipped with typed assertions that you can use for writing tests with [PRBTest](https://github.com/paulrberg/prb-test), which is based on

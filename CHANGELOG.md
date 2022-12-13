@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Common Changelog](https://common-changelog.org/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+[3.1.0]: https://github.com/paulrberg/prb-math/compare/v3.0.0...v3.1.0
 [3.0.0]: https://github.com/paulrberg/prb-math/compare/v2.5.0...v3.0.0
 [2.5.0]: https://github.com/paulrberg/prb-math/compare/v2.4.3...v2.5.0
 [2.4.3]: https://github.com/paulrberg/prb-math/compare/v2.4.2...v2.4.3
@@ -23,6 +24,12 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 [1.0.2]: https://github.com/paulrberg/prb-math/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/paulrberg/prb-math/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/paulrberg/prb-math/releases/tag/v1.0.0
+
+## [3.1.0] - 2022-12-13
+
+### Added
+
+- Value types `SD1x18` and `UD2x18` (@paulrberg)
 
 ## [3.0.0] - 2022-11-29
 
