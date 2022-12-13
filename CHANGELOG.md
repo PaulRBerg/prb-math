@@ -29,7 +29,7 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 
 ### Added
 
-- Value types `SD1x18` and `UD2x18` (@paulrberg)
+- Add value types `SD1x18` and `UD2x18` (@paulrberg)
 
 ## [3.0.0] - 2022-11-29
 
