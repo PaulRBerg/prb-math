@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.13;
 
-import { StdCheats, StdUtils } from "forge-std/Components.sol";
+import { StdCheats } from "forge-std/StdCheats.sol";
+import { StdUtils } from "forge-std/StdUtils.sol";
 import { PRBTest } from "@prb/test/PRBTest.sol";
 
 import { Assertions as PRBMathAssertions } from "src/test/Assertions.sol";
