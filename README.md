@@ -15,7 +15,7 @@ bound by the minimum and the maximum values permitted by the Solidity types int2
 
 - Operates with signed and unsigned denary fixed-point numbers, with 18 trailing decimals
 - Offers advanced math functions like logarithms, exponentials, powers and square roots
-- Provides type safety via user defined value types
+- Provides type safety via user-defined value types
 - Gas efficient, but still user-friendly
 - Ergonomic developer experience thanks to using free functions instead of libraries
 - Bakes in overflow-safe multiplication and division
@@ -55,7 +55,8 @@ npm install @prb/math
 
 ## Usage
 
-PRBMath comes in two flavors:
+PRBMath is not a library in the Solidity [sense](https://docs.soliditylang.org/en/v0.8.17/contracts.html#libraries). It's just a collection of free
+functions implemented for two user-defined value types:
 
 1. SD59x18 (signed)
 2. UD60x18 (unsigned)

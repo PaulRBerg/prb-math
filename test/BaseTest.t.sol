@@ -34,7 +34,7 @@ abstract contract BaseTest is PRBTest, PRBMathAssertions, StdCheats, StdUtils {
     //////////////////////////////////////////////////////////////////////////*/
 
     function setUp() public virtual {
-        // Create users for testing. Order matters.
+        // Create users for testing.
         users = Users({ alice: mkaddr("Alice"), bob: mkaddr("Bob"), eve: mkaddr("Eve") });
 
         // Make Alice the `msg.sender` and `tx.origin` for all subsequent calls.
