@@ -8,7 +8,7 @@ import { SD59x18 } from "../SD59x18.sol";
 import { UD2x18 } from "../UD2x18.sol";
 import { UD60x18 } from "../UD60x18.sol";
 
-contract Assertions is PRBTest {
+contract PRBMathAssertions is PRBTest {
     /*//////////////////////////////////////////////////////////////////////////
                                        SD1X18
     //////////////////////////////////////////////////////////////////////////*/
@@ -183,4 +183,8 @@ contract Assertions is PRBTest {
         }
         assertEq(a, b);
     }
+}
+
+contract Assertions is PRBMathAssertions {
+    // solhint-disable-previous-line no-empty-blocks
 }
