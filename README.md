@@ -55,13 +55,15 @@ npm install @prb/math
 
 ## Usage
 
-PRBMath is not a library in the Solidity [sense](https://docs.soliditylang.org/en/v0.8.17/contracts.html#libraries). It's just a collection of free
-functions implemented for two user-defined value types:
+There are two user-defined value types:
 
 1. SD59x18 (signed)
 2. UD60x18 (unsigned)
 
 If you don't need negative numbers, there's no point in using the signed flavor. The unsigned flavor is more gas efficient.
+
+Note that PRBMath is not a library in the Solidity [sense](https://docs.soliditylang.org/en/v0.8.17/contracts.html#libraries). It's just a collection
+of free functions.
 
 ### Importing
 
@@ -349,4 +351,4 @@ If you discover any bugs or security issues, please report them via [Telegram](h
 
 ## License
 
-[MIT](./LICENSE.md)
+[MIT](./LICENSE.md) © Paul Razvan Berg
