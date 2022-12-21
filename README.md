@@ -60,7 +60,9 @@ There are two user-defined value types:
 1. SD59x18 (signed)
 2. UD60x18 (unsigned)
 
-If you don't need negative numbers, there's no point in using the signed flavor. The unsigned flavor is more gas efficient.
+If you don't know what a user-defined value type is, check out [this blog post](https://blog.soliditylang.org/2021/09/27/user-defined-value-types/).
+
+If you don't need negative numbers, there's no point in using the signed flavor `SD59x18`. The unsigned flavor `UD60x18` is more gas efficient.
 
 Note that PRBMath is not a library in the Solidity [sense](https://docs.soliditylang.org/en/v0.8.17/contracts.html#libraries). It's just a collection
 of free functions.
