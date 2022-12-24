@@ -292,8 +292,8 @@ Gas estimations based on the v3.0 release of ABDKMath. See my [abdk-gas-estimati
 
 ## Contributing
 
-Feel free to dive in! [Open](https://github.com/paulrberb/prb-math/issues/new) an issue,
-[start](https://github.com/paulrberb/prb-math/discussions/new) a discussion or submit a PR.
+Feel free to dive in! [Open](https://github.com/paulrberg/prb-math/issues/new) an issue,
+[start](https://github.com/paulrberg/prb-math/discussions/new) a discussion or submit a PR.
 
 ### Pre Requisites
 
