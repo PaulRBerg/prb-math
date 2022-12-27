@@ -70,7 +70,7 @@ UD60x18 constant MAX_WHOLE_UD60x18 = UD60x18.wrap(uMAX_WHOLE_UD60x18);
 /// @dev PI as an UD60x18 number.
 UD60x18 constant PI = UD60x18.wrap(3_141592653589793238);
 
-/// @dev The unit amount which implies how many trailing decimals can be represented.
+/// @dev The unit amount that implies how many trailing decimals can be represented.
 uint256 constant uUNIT = 1e18;
 UD60x18 constant UNIT = UD60x18.wrap(uUNIT);
 
