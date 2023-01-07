@@ -50,9 +50,6 @@ error PRBMathSD59x18__MulOverflow(SD59x18 x, SD59x18 y);
 /// @notice Emitted when raising a number to a power and hte intermediary absolute result overflows SD59x18.
 error PRBMathSD59x18__PowuOverflow(SD59x18 x, uint256 y);
 
-/// @notice Emitted when trying to wrap an unsigned integer that doesn't fit in SD59x18.
-error PRBMathSD59x18__SD59x18Overflow(uint256 x);
-
 /// @notice Emitted when taking the square root of a negative number.
 error PRBMathSD59x18__SqrtNegativeInput(SD59x18 x);
 
@@ -803,6 +800,7 @@ function convert(SD59x18 x) pure returns (int256 result) {
 }
 
 /// @notice Alias for the `convert` function defined above.
+/// @dev Here for backward compatibility. Will be removed in V4.
 function fromSD59x18(SD59x18 x) pure returns (int256 result) {
     result = convert(x);
 }
@@ -812,22 +810,13 @@ function sd(int256 x) pure returns (SD59x18 result) {
     result = wrap(x);
 }
 
-/// @notice Alias for the `wrap(uint256)` function defined below.
-function sd(uint256 x) pure returns (SD59x18 result) {
-    result = wrap(x);
-}
-
 /// @notice Alias for the `convert` function defined above.
 function sd59x18(int256 x) pure returns (SD59x18 result) {
     result = wrap(x);
 }
 
-/// @notice Alias for the `wrap` function defined below.
-function sd59x18(uint256 x) pure returns (SD59x18 result) {
-    result = wrap(x);
-}
-
 /// @notice Alias for the `convert` function defined above.
+/// @dev Here for backward compatibility. Will be removed in V4.
 function toSD59x18(int256 x) pure returns (SD59x18 result) {
     result = convert(x);
 }
@@ -840,20 +829,6 @@ function unwrap(SD59x18 x) pure returns (int256 result) {
 /// @notice Wraps a signed integer into the SD59x18 type.
 function wrap(int256 x) pure returns (SD59x18 result) {
     result = SD59x18.wrap(x);
-}
-
-/// @notice Wraps an unsigned integer into the SD59x18 type.
-/// @param x The unsigned number to convert.
-///
-/// Requirements:
-/// - x must be less than or equal to `MAX_SD59x18`.
-///
-/// @return result The same number wrapped as an SD59x18 number.
-function wrap(uint256 x) pure returns (SD59x18 result) {
-    if (x > uint256(uMAX_SD59x18)) {
-        revert PRBMathSD59x18__SD59x18Overflow(x);
-    }
-    result = SD59x18.wrap(int256(x));
 }
 
 /*//////////////////////////////////////////////////////////////////////////
