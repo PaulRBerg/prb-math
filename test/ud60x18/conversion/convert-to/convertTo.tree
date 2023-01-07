@@ -1,4 +1,4 @@
-to.t.sol
+convertT.t.sol
 ├── when x is greater than the maximum permitted
 │  └── it should revert
 └── when x is less than or equal to the maximum permitted

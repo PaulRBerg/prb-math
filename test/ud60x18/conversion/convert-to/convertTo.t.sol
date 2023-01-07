@@ -4,18 +4,18 @@ pragma solidity >=0.8.13;
 import "src/UD60x18.sol";
 import { UD60x18__BaseTest } from "../../UD60x18BaseTest.t.sol";
 
-contract UD60x18__ToTest is UD60x18__BaseTest {
-    function testCannotTo__GreaterThanMaxPermitted() external {
+contract ConvertTo_Test is UD60x18__BaseTest {
+    function test_RevertWhen__GreaterThanMaxPermitted() external {
         uint256 x = UD60x18.unwrap(MAX_SCALED_UD60x18) + 1;
-        vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__ToUD60x18Overflow.selector, x));
-        toUD60x18(x);
+        vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__ConvertOverflow.selector, x));
+        convert(x);
     }
 
     modifier LessThanOrEqualToMaxPermitted() {
         _;
     }
 
-    function toSets() internal returns (Set[] memory) {
+    function convertTo_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.000000000000000001e18, expected: 1e18 }));
         sets.push(set({ x: 0.000000000000000002e18, expected: 2e18 }));
@@ -28,8 +28,8 @@ contract UD60x18__ToTest is UD60x18__BaseTest {
         return sets;
     }
 
-    function testTo() external parameterizedTest(toSets()) LessThanOrEqualToMaxPermitted {
-        UD60x18 x = toUD60x18(UD60x18.unwrap(s.x));
+    function test_ConvertTo() external parameterizedTest(convertTo_Sets()) LessThanOrEqualToMaxPermitted {
+        UD60x18 x = convert(UD60x18.unwrap(s.x));
         assertEq(x, s.expected);
     }
 }

@@ -4,10 +4,10 @@ pragma solidity >=0.8.13;
 import "src/SD59x18.sol";
 import { SD59x18__BaseTest } from "../../SD59x18BaseTest.t.sol";
 
-contract SD59x18__ToTest is SD59x18__BaseTest {
-    function testCannotTo__LessThanMinPermitted() external {
+contract ConvertTo_Test is SD59x18__BaseTest {
+    function test_RevertWhen_LessThanMinPermitted() external {
         int256 x = SD59x18.unwrap(MIN_SCALED_SD59x18) - 1;
-        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__ToSD59x18Underflow.selector, x));
+        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__ConvertUnderflow.selector, x));
         toSD59x18(x);
     }
 
@@ -15,9 +15,9 @@ contract SD59x18__ToTest is SD59x18__BaseTest {
         _;
     }
 
-    function testCannotTo__GreaterThanMaxPermitted() external GreaterThanMinPermitted {
+    function test_RevertWhen_GreaterThanMaxPermitted() external GreaterThanMinPermitted {
         int256 x = SD59x18.unwrap(MAX_SCALED_SD59x18) + 1;
-        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__ToSD59x18Overflow.selector, x));
+        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__ConvertOverflow.selector, x));
         toSD59x18(x);
     }
 
@@ -25,7 +25,7 @@ contract SD59x18__ToTest is SD59x18__BaseTest {
         _;
     }
 
-    function toSets() internal returns (Set[] memory) {
+    function convertTo_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_SCALED_SD59x18, expected: MIN_WHOLE_SD59x18 }));
         sets.push(set({ x: -3.1415e42, expected: -3.1415e60 }));
@@ -47,7 +47,7 @@ contract SD59x18__ToTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testTo() external parameterizedTest(toSets()) GreaterThanMinPermitted LessThanOrEqualToMaxPermitted {
+    function test_ConvertTo() external parameterizedTest(convertTo_Sets()) GreaterThanMinPermitted LessThanOrEqualToMaxPermitted {
         SD59x18 x = toSD59x18(SD59x18.unwrap(s.x));
         assertEq(x, s.expected);
     }

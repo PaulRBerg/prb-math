@@ -4,8 +4,8 @@ pragma solidity >=0.8.13;
 import "src/UD60x18.sol";
 import { UD60x18__BaseTest } from "../../UD60x18BaseTest.t.sol";
 
-contract UD60x18__FromTest is UD60x18__BaseTest {
-    function lessThanOneSets() internal returns (Set[] memory) {
+contract ConvertFrom_Test is UD60x18__BaseTest {
+    function lessThanOne_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: ZERO }));
         sets.push(set({ x: 1 }));
@@ -13,8 +13,8 @@ contract UD60x18__FromTest is UD60x18__BaseTest {
         return sets;
     }
 
-    function testFrom__LessThanOne() external parameterizedTest(lessThanOneSets()) {
-        uint256 actual = fromUD60x18(s.x);
+    function test_ConvertFrom_LessThanOne() external parameterizedTest(lessThanOne_Sets()) {
+        uint256 actual = convert(s.x);
         uint256 expected = 0;
         assertEq(actual, expected);
     }
@@ -23,7 +23,7 @@ contract UD60x18__FromTest is UD60x18__BaseTest {
         _;
     }
 
-    function greaterThanOneSets() internal returns (Set[] memory) {
+    function greaterThanOne_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 1e18, expected: 0.000000000000000001e18 }));
         sets.push(set({ x: 1e18 + 1, expected: 0.000000000000000001e18 }));
@@ -39,8 +39,8 @@ contract UD60x18__FromTest is UD60x18__BaseTest {
         return sets;
     }
 
-    function testFrom() external parameterizedTest(greaterThanOneSets()) GreaterThanOrEqualToOne {
-        uint256 actual = fromUD60x18(s.x);
+    function test_ConvertFrom() external parameterizedTest(greaterThanOne_Sets()) GreaterThanOrEqualToOne {
+        uint256 actual = convert(s.x);
         uint256 expected = UD60x18.unwrap(s.expected);
         assertEq(actual, expected);
     }
