@@ -50,6 +50,9 @@ error PRBMathSD59x18__MulOverflow(SD59x18 x, SD59x18 y);
 /// @notice Emitted when raising a number to a power and hte intermediary absolute result overflows SD59x18.
 error PRBMathSD59x18__PowuOverflow(SD59x18 x, uint256 y);
 
+/// @notice Emitted when trying to wrap an unsigned integer that doesn't fit in SD59x18.
+error PRBMathSD59x18__SD59x18Overflow(uint256 x);
+
 /// @notice Emitted when taking the square root of a negative number.
 error PRBMathSD59x18__SqrtNegativeInput(SD59x18 x);
 
@@ -57,10 +60,10 @@ error PRBMathSD59x18__SqrtNegativeInput(SD59x18 x);
 error PRBMathSD59x18__SqrtOverflow(SD59x18 x);
 
 /// @notice Emitted when converting a basic integer to the fixed-point format overflows SD59x18.
-error PRBMathSD59x18__ToSD59x18Overflow(int256 x);
+error PRBMathSD59x18__ConvertOverflow(int256 x);
 
 /// @notice Emitted when converting a basic integer to the fixed-point format underflows SD59x18.
-error PRBMathSD59x18__ToSD59x18Underflow(int256 x);
+error PRBMathSD59x18__ConvertUnderflow(int256 x);
 
 /*//////////////////////////////////////////////////////////////////////////
                                     CONSTANTS
@@ -772,24 +775,6 @@ function sqrt(SD59x18 x) pure returns (SD59x18 result) {
                             CONVERSION FUNCTIONS
 //////////////////////////////////////////////////////////////////////////*/
 
-/// @notice Converts an SD59x18 number to a simple integer by dividing it by `UNIT`. Rounds towards zero in the process.
-/// @param x The SD59x18 number to convert.
-/// @return result The same number as a simple integer.
-function fromSD59x18(SD59x18 x) pure returns (int256 result) {
-    result = unwrap(x) / uUNIT;
-}
-
-/// @notice Wraps a signed integer into the SD59x18 type.
-function sd(int256 x) pure returns (SD59x18 result) {
-    result = wrap(x);
-}
-
-/// @notice Wraps a signed integer into the SD59x18 type.
-/// @dev Alias for the "sd" function defined above.
-function sd59x18(int256 x) pure returns (SD59x18 result) {
-    result = wrap(x);
-}
-
 /// @notice Converts a simple integer to SD59x18 by multiplying it by `UNIT`.
 ///
 /// @dev Requirements:
@@ -798,19 +783,56 @@ function sd59x18(int256 x) pure returns (SD59x18 result) {
 ///
 /// @param x The basic integer to convert.
 /// @param result The same number converted to SD59x18.
-function toSD59x18(int256 x) pure returns (SD59x18 result) {
+function convert(int256 x) pure returns (SD59x18 result) {
     if (x < uMIN_SD59x18 / uUNIT) {
-        revert PRBMathSD59x18__ToSD59x18Underflow(x);
+        revert PRBMathSD59x18__ConvertUnderflow(x);
     }
     if (x > uMAX_SD59x18 / uUNIT) {
-        revert PRBMathSD59x18__ToSD59x18Overflow(x);
+        revert PRBMathSD59x18__ConvertOverflow(x);
     }
     unchecked {
         result = wrap(x * uUNIT);
     }
 }
 
-/// @notice Unwraps an SD59x18 number into the underlying signed integer.
+/// @notice Converts an SD59x18 number to a simple integer by dividing it by `UNIT`. Rounds towards zero in the process.
+/// @param x The SD59x18 number to convert.
+/// @return result The same number as a simple integer.
+function convert(SD59x18 x) pure returns (int256 result) {
+    result = unwrap(x) / uUNIT;
+}
+
+/// @notice Alias for the `convert` function defined above.
+function fromSD59x18(SD59x18 x) pure returns (int256 result) {
+    result = convert(x);
+}
+
+/// @notice Alias for the `wrap(int256)` function defined below.
+function sd(int256 x) pure returns (SD59x18 result) {
+    result = wrap(x);
+}
+
+/// @notice Alias for the `wrap(uint256)` function defined below.
+function sd(uint256 x) pure returns (SD59x18 result) {
+    result = wrap(x);
+}
+
+/// @notice Alias for the `convert` function defined above.
+function sd59x18(int256 x) pure returns (SD59x18 result) {
+    result = wrap(x);
+}
+
+/// @notice Alias for the `wrap` function defined below.
+function sd59x18(uint256 x) pure returns (SD59x18 result) {
+    result = wrap(x);
+}
+
+/// @notice Alias for the `convert` function defined above.
+function toSD59x18(int256 x) pure returns (SD59x18 result) {
+    result = convert(x);
+}
+
+/// @notice Unwraps an SD59x18 number into a signed integer.
 function unwrap(SD59x18 x) pure returns (int256 result) {
     result = SD59x18.unwrap(x);
 }
@@ -818,6 +840,20 @@ function unwrap(SD59x18 x) pure returns (int256 result) {
 /// @notice Wraps a signed integer into the SD59x18 type.
 function wrap(int256 x) pure returns (SD59x18 result) {
     result = SD59x18.wrap(x);
+}
+
+/// @notice Wraps an unsigned integer into the SD59x18 type.
+/// @param x The unsigned number to convert.
+///
+/// Requirements:
+/// - x must be less than or equal to `MAX_SD59x18`.
+///
+/// @return result The same number wrapped as an SD59x18 number.
+function wrap(uint256 x) pure returns (SD59x18 result) {
+    if (x > uint256(uMAX_SD59x18)) {
+        revert PRBMathSD59x18__SD59x18Overflow(x);
+    }
+    result = SD59x18.wrap(int256(x));
 }
 
 /*//////////////////////////////////////////////////////////////////////////

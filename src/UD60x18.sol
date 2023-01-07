@@ -36,7 +36,7 @@ error PRBMathUD60x18__SqrtOverflow(UD60x18 x);
 error PRBMathUD60x18__SubUnderflow(UD60x18 x, UD60x18 y);
 
 /// @notice Emitted when converting a basic integer to the fixed-point format overflows UD60x18.
-error PRBMathUD60x18__ToUD60x18Overflow(uint256 x);
+error PRBMathUD60x18__ConvertOverflow(uint256 x);
 
 /*//////////////////////////////////////////////////////////////////////////
                                     CONSTANTS
@@ -575,7 +575,7 @@ function sqrt(UD60x18 x) pure returns (UD60x18 result) {
 /// @dev Rounds down in the process.
 /// @param x The UD60x18 number to convert.
 /// @return result The same number in basic integer form.
-function fromUD60x18(UD60x18 x) pure returns (uint256 result) {
+function convert(UD60x18 x) pure returns (uint256 result) {
     result = unwrap(x) / uUNIT;
 }
 
@@ -586,22 +586,31 @@ function fromUD60x18(UD60x18 x) pure returns (uint256 result) {
 ///
 /// @param x The basic integer to convert.
 /// @param result The same number converted to UD60x18.
-function toUD60x18(uint256 x) pure returns (UD60x18 result) {
+function convert(uint256 x) pure returns (UD60x18 result) {
     if (x > uMAX_UD60x18 / uUNIT) {
-        revert PRBMathUD60x18__ToUD60x18Overflow(x);
+        revert PRBMathUD60x18__ConvertOverflow(x);
     }
     unchecked {
         result = wrap(x * uUNIT);
     }
 }
 
-/// @notice Wraps an unsigned integer into the UD60x18 type.
+/// @notice Alias for the `convert` function defined above.
+function fromUD60x18(UD60x18 x) pure returns (uint256 result) {
+    result = convert(x);
+}
+
+/// @notice Alias for the `convert` function defined above.
+function toUD60x18(uint256 x) pure returns (UD60x18 result) {
+    result = convert(x);
+}
+
+/// @notice Alias for the `wrap` function defined below.
 function ud(uint256 x) pure returns (UD60x18 result) {
     result = wrap(x);
 }
 
-/// @notice Wraps an unsigned integer into the UD60x18 type.
-/// @dev Alias for the "ud" function defined above.
+/// @notice Alias for the `wrap` function defined below.
 function ud60x18(uint256 x) pure returns (UD60x18 result) {
     result = wrap(x);
 }
