@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity >=0.8.13;
+pragma solidity >=0.8.13 <0.9.0;
 
 import "src/UD60x18.sol";
 import { PRBMath_MulDiv18Overflow } from "src/Core.sol";

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity >=0.8.13;
+pragma solidity >=0.8.13 <0.9.0;
 
 import "src/SD59x18.sol";
 import { SD59x18_Test } from "../SD59x18.t.sol";
