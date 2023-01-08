@@ -5,7 +5,7 @@ import "src/UD60x18.sol";
 import { UD60x18_Test } from "../UD60x18.t.sol";
 
 /// @dev Collection of tests for the conversion functions available in the UD60x18 type.
-contract UD60x18__HelpersTest is UD60x18_Test {
+contract UD60x18_ConversionsTest is UD60x18_Test {
     function test_Ud(uint256 x) external {
         UD60x18 actual = ud(x);
         UD60x18 expected = UD60x18.wrap(x);

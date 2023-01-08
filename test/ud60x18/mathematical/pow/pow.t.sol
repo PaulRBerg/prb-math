@@ -35,7 +35,7 @@ contract PowTest is UD60x18_Test {
     function test_RevertWhen_BaseLessThanOne() external BaseNotZero {
         UD60x18 x = ud(1e18 - 1);
         UD60x18 y = PI;
-        vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__LogInputTooSmall.selector, x));
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_UD60x18_LogInputTooSmall.selector, x));
         pow(x, y);
     }
 
@@ -93,7 +93,7 @@ contract PowTest is UD60x18_Test {
     {
         UD60x18 x = MAX_PERMITTED.add(ud(1));
         UD60x18 y = ud(1e18 + 1);
-        vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__Exp2InputTooBig.selector, ud(192e18 + 192)));
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_UD60x18_Exp2InputTooBig.selector, ud(192e18 + 192)));
         pow(x, y);
     }
 

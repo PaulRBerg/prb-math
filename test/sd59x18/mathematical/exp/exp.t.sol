@@ -8,7 +8,7 @@ contract Exp_Test is SD59x18_Test {
     SD59x18 internal constant MAX_PERMITTED = SD59x18.wrap(133_084258667509499440);
     SD59x18 internal constant MIN_PERMITTED = SD59x18.wrap(-41_446531673892822322);
 
-    function testExp__Zero() external {
+    function test_Exp_Zero() external {
         SD59x18 x = ZERO;
         SD59x18 actual = exp(x);
         SD59x18 expected = sd(1e18);
@@ -61,7 +61,7 @@ contract Exp_Test is SD59x18_Test {
 
     function test_RevertWhen_Positive_GreaterThanMaxPermitted() external NotZero {
         SD59x18 x = MAX_PERMITTED.add(sd(1));
-        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__ExpInputTooBig.selector, x));
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_ExpInputTooBig.selector, x));
         exp(x);
     }
 

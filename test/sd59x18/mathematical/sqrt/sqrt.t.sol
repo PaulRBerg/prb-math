@@ -18,7 +18,7 @@ contract Sqrt_Test is SD59x18_Test {
 
     function test_RevertWhen_Negative() external NotZero {
         SD59x18 x = sd(-1);
-        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__SqrtNegativeInput.selector, x));
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_SqrtNegativeInput.selector, x));
         sqrt(x);
     }
 
@@ -28,7 +28,7 @@ contract Sqrt_Test is SD59x18_Test {
 
     function test_RevertWhen_GreaterThanMaxPermitted() external NotZero Positive {
         SD59x18 x = MAX_SCALED_SD59x18.add(sd(1));
-        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__SqrtOverflow.selector, x));
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_SqrtOverflow.selector, x));
         sqrt(x);
     }
 

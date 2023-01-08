@@ -5,7 +5,7 @@ import "src/SD59x18.sol";
 import { SD59x18_Test } from "../SD59x18.t.sol";
 
 /// @dev Collection of tests for the conversion functions available in the SD59x18 type.
-contract SD59x18__ConversionTest is SD59x18_Test {
+contract SD59x18_ConversionsTest is SD59x18_Test {
     function test_Sd(int256 x) external {
         SD59x18 actual = sd(x);
         SD59x18 expected = SD59x18.wrap(x);

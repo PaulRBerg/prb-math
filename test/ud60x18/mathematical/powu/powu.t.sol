@@ -2,7 +2,7 @@
 pragma solidity >=0.8.13;
 
 import "src/UD60x18.sol";
-import { PRBMath__MulDiv18Overflow } from "src/Core.sol";
+import { PRBMath_MulDiv18Overflow } from "src/Core.sol";
 import { UD60x18_Test } from "../../UD60x18.t.sol";
 
 contract Powu_Test is UD60x18_Test {
@@ -51,7 +51,7 @@ contract Powu_Test is UD60x18_Test {
     function test_RevertWhen_ResultOverflowsUD60x18() external BaseNotZero ExponentNotZero {
         UD60x18 x = MAX_WHOLE_UD60x18;
         uint256 y = 2;
-        vm.expectRevert(abi.encodeWithSelector(PRBMath__MulDiv18Overflow.selector, UD60x18.unwrap(x), UD60x18.unwrap(x)));
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_MulDiv18Overflow.selector, UD60x18.unwrap(x), UD60x18.unwrap(x)));
         powu(x, y);
     }
 

@@ -18,7 +18,7 @@ contract Abs_Test is SD59x18_Test {
 
     function test_RevertWhen_MinSD59x18() external NotZero {
         SD59x18 x = MIN_SD59x18;
-        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__AbsMinSD59x18.selector));
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_AbsMinSD59x18.selector));
         abs(x);
     }
 

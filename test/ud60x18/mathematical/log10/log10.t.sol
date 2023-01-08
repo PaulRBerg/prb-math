@@ -9,7 +9,7 @@ import { UD60x18_Test } from "../../UD60x18.t.sol";
 contract Log10_Test is UD60x18_Test {
     function test_RevertWhen_LessThanOne() external {
         UD60x18 x = ud(1e18 - 1);
-        vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__LogInputTooSmall.selector, x));
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_UD60x18_LogInputTooSmall.selector, x));
         log10(x);
     }
 

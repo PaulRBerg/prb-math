@@ -9,16 +9,16 @@ pragma solidity >=0.8.13;
 //////////////////////////////////////////////////////////////////////////*/
 
 /// @notice Emitted when the ending result in the fixed-point version of `mulDiv` would overflow uint256.
-error PRBMath__MulDiv18Overflow(uint256 x, uint256 y);
+error PRBMath_MulDiv18Overflow(uint256 x, uint256 y);
 
 /// @notice Emitted when the ending result in `mulDiv` would overflow uint256.
-error PRBMath__MulDivOverflow(uint256 x, uint256 y, uint256 denominator);
+error PRBMath_MulDivOverflow(uint256 x, uint256 y, uint256 denominator);
 
 /// @notice Emitted when attempting to run `mulDiv` with one of the inputs `type(int256).min`.
-error PRBMath__MulDivSignedInputTooSmall();
+error PRBMath_MulDivSignedInputTooSmall();
 
 /// @notice Emitted when the ending result in the signed version of `mulDiv` would overflow int256.
-error PRBMath__MulDivSignedOverflow(int256 x, int256 y);
+error PRBMath_MulDivSignedOverflow(int256 x, int256 y);
 
 /*//////////////////////////////////////////////////////////////////////////
                                     CONSTANTS
@@ -147,7 +147,7 @@ function mulDiv(uint256 x, uint256 y, uint256 denominator) pure returns (uint256
 
     // Make sure the result is less than 2^256. Also prevents denominator == 0.
     if (prod1 >= denominator) {
-        revert PRBMath__MulDivOverflow(x, y, denominator);
+        revert PRBMath_MulDivOverflow(x, y, denominator);
     }
 
     ///////////////////////////////////////////////
@@ -234,7 +234,7 @@ function mulDiv18(uint256 x, uint256 y) pure returns (uint256 result) {
     }
 
     if (prod1 >= UNIT) {
-        revert PRBMath__MulDiv18Overflow(x, y);
+        revert PRBMath_MulDiv18Overflow(x, y);
     }
 
     uint256 remainder;
@@ -273,7 +273,7 @@ function mulDiv18(uint256 x, uint256 y) pure returns (uint256 result) {
 /// @return result The result as an int256.
 function mulDivSigned(int256 x, int256 y, int256 denominator) pure returns (int256 result) {
     if (x == type(int256).min || y == type(int256).min || denominator == type(int256).min) {
-        revert PRBMath__MulDivSignedInputTooSmall();
+        revert PRBMath_MulDivSignedInputTooSmall();
     }
 
     // Get hold of the absolute values of x, y and the denominator.
@@ -289,7 +289,7 @@ function mulDivSigned(int256 x, int256 y, int256 denominator) pure returns (int2
     // Compute the absolute value of (x*y)÷denominator. The result must fit within int256.
     uint256 rAbs = mulDiv(absX, absY, absD);
     if (rAbs > uint256(type(int256).max)) {
-        revert PRBMath__MulDivSignedOverflow(x, y);
+        revert PRBMath_MulDivSignedOverflow(x, y);
     }
 
     // Get the signs of x, y and the denominator.

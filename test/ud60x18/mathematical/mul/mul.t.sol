@@ -4,7 +4,7 @@ pragma solidity >=0.8.13;
 import { stdError } from "forge-std/StdError.sol";
 
 import "src/UD60x18.sol";
-import { PRBMath__MulDiv18Overflow } from "src/Core.sol";
+import { PRBMath_MulDiv18Overflow } from "src/Core.sol";
 import { UD60x18_Test } from "../../UD60x18.t.sol";
 
 contract Mul_Test is UD60x18_Test {
@@ -27,14 +27,14 @@ contract Mul_Test is UD60x18_Test {
     function test_RevertWhen_ResultOverflowUD60x18_1() external NeitherOperandZero {
         UD60x18 x = SQRT_MAX_UD60x18.add(ud(1));
         UD60x18 y = SQRT_MAX_UD60x18.add(ud(1));
-        vm.expectRevert(abi.encodeWithSelector(PRBMath__MulDiv18Overflow.selector, UD60x18.unwrap(x), UD60x18.unwrap(y)));
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_MulDiv18Overflow.selector, UD60x18.unwrap(x), UD60x18.unwrap(y)));
         mul(x, y);
     }
 
     function test_RevertWhen_ResultOverflowUD60x18_2() external NeitherOperandZero {
         UD60x18 x = SQRT_MAX_UD60x18.add(ud(1));
         UD60x18 y = SQRT_MAX_UD60x18.add(ud(1));
-        vm.expectRevert(abi.encodeWithSelector(PRBMath__MulDiv18Overflow.selector, UD60x18.unwrap(x), UD60x18.unwrap(y)));
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_MulDiv18Overflow.selector, UD60x18.unwrap(x), UD60x18.unwrap(y)));
         mul(x, y);
     }
 

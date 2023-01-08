@@ -12,31 +12,31 @@ type UD60x18 is uint256;
 //////////////////////////////////////////////////////////////////////////*/
 
 /// @notice Emitted when adding two numbers overflows UD60x18.
-error PRBMathUD60x18__AddOverflow(uint256 x, UD60x18 y);
+error PRBMath_UD60x18_AddOverflow(uint256 x, UD60x18 y);
 
 /// @notice Emitted when ceiling a number overflows UD60x18.
-error PRBMathUD60x18__CeilOverflow(UD60x18 x);
+error PRBMath_UD60x18_CeilOverflow(UD60x18 x);
 
 /// @notice Emitted when taking the natural exponent of a base greater than 133.084258667509499441.
-error PRBMathUD60x18__ExpInputTooBig(UD60x18 x);
+error PRBMath_UD60x18_ExpInputTooBig(UD60x18 x);
 
 /// @notice Emitted when taking the binary exponent of a base greater than 192.
-error PRBMathUD60x18__Exp2InputTooBig(UD60x18 x);
+error PRBMath_UD60x18_Exp2InputTooBig(UD60x18 x);
 
 /// @notice Emitted when taking the geometric mean of two numbers and multiplying them overflows UD60x18.
-error PRBMathUD60x18__GmOverflow(UD60x18 x, UD60x18 y);
+error PRBMath_UD60x18_GmOverflow(UD60x18 x, UD60x18 y);
 
 /// @notice Emitted when taking the logarithm of a number less than 1.
-error PRBMathUD60x18__LogInputTooSmall(UD60x18 x);
+error PRBMath_UD60x18_LogInputTooSmall(UD60x18 x);
 
 /// @notice Emitted when calculating the square root overflows UD60x18.
-error PRBMathUD60x18__SqrtOverflow(UD60x18 x);
+error PRBMath_UD60x18_SqrtOverflow(UD60x18 x);
 
 /// @notice Emitted when subtracting one number from another underflows UD60x18.
-error PRBMathUD60x18__SubUnderflow(UD60x18 x, UD60x18 y);
+error PRBMath_UD60x18_SubUnderflow(UD60x18 x, UD60x18 y);
 
 /// @notice Emitted when converting a basic integer to the fixed-point format overflows UD60x18.
-error PRBMathUD60x18__ConvertOverflow(uint256 x);
+error PRBMath_UD60x18_ConvertOverflow(uint256 x);
 
 /*//////////////////////////////////////////////////////////////////////////
                                     CONSTANTS
@@ -124,7 +124,7 @@ function avg(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 function ceil(UD60x18 x) pure returns (UD60x18 result) {
     uint256 xUint = unwrap(x);
     if (xUint > uMAX_WHOLE_UD60x18) {
-        revert PRBMathUD60x18__CeilOverflow(x);
+        revert PRBMath_UD60x18_CeilOverflow(x);
     }
 
     assembly {
@@ -172,7 +172,7 @@ function exp(UD60x18 x) pure returns (UD60x18 result) {
 
     // Without this check, the value passed to `exp2` would be greater than 192.
     if (xUint >= 133_084258667509499441) {
-        revert PRBMathUD60x18__ExpInputTooBig(x);
+        revert PRBMath_UD60x18_ExpInputTooBig(x);
     }
 
     unchecked {
@@ -197,7 +197,7 @@ function exp2(UD60x18 x) pure returns (UD60x18 result) {
 
     // Numbers greater than or equal to 2^192 don't fit within the 192.64-bit format.
     if (xUint >= 192e18) {
-        revert PRBMathUD60x18__Exp2InputTooBig(x);
+        revert PRBMath_UD60x18_Exp2InputTooBig(x);
     }
 
     // Convert x to the 192.64-bit fixed-point format.
@@ -251,7 +251,7 @@ function gm(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
         // Checking for overflow this way is faster than letting Solidity do it.
         uint256 xyUint = xUint * yUint;
         if (xyUint / xUint != yUint) {
-            revert PRBMathUD60x18__GmOverflow(x, y);
+            revert PRBMath_UD60x18_GmOverflow(x, y);
         }
 
         // We don't need to multiply the result by `UNIT` here because the x*y product had picked up a factor of `UNIT`
@@ -319,7 +319,7 @@ function ln(UD60x18 x) pure returns (UD60x18 result) {
 function log10(UD60x18 x) pure returns (UD60x18 result) {
     uint256 xUint = unwrap(x);
     if (xUint < uUNIT) {
-        revert PRBMathUD60x18__LogInputTooSmall(x);
+        revert PRBMath_UD60x18_LogInputTooSmall(x);
     }
 
     // Note that the `mul` in this assembly block is the assembly multiplication operation, not the UD60x18 `mul`.
@@ -434,7 +434,7 @@ function log2(UD60x18 x) pure returns (UD60x18 result) {
     uint256 xUint = unwrap(x);
 
     if (xUint < uUNIT) {
-        revert PRBMathUD60x18__LogInputTooSmall(x);
+        revert PRBMath_UD60x18_LogInputTooSmall(x);
     }
 
     unchecked {
@@ -559,7 +559,7 @@ function sqrt(UD60x18 x) pure returns (UD60x18 result) {
 
     unchecked {
         if (xUint > uMAX_UD60x18 / uUNIT) {
-            revert PRBMathUD60x18__SqrtOverflow(x);
+            revert PRBMath_UD60x18_SqrtOverflow(x);
         }
         // Multiply x by `UNIT` to account for the factor of `UNIT` that is picked up when multiplying two UD60x18
         // numbers together (in this case, the two numbers are both the square root).
@@ -588,7 +588,7 @@ function convert(UD60x18 x) pure returns (uint256 result) {
 /// @param result The same number converted to UD60x18.
 function convert(uint256 x) pure returns (UD60x18 result) {
     if (x > uMAX_UD60x18 / uUNIT) {
-        revert PRBMathUD60x18__ConvertOverflow(x);
+        revert PRBMath_UD60x18_ConvertOverflow(x);
     }
     unchecked {
         result = wrap(x * uUNIT);

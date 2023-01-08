@@ -5,9 +5,9 @@ import "src/UD60x18.sol";
 import { UD60x18_Test } from "../../UD60x18.t.sol";
 
 contract ConvertTo_Test is UD60x18_Test {
-    function test_RevertWhen__GreaterThanMaxPermitted() external {
+    function test_RevertWhen_GreaterThanMaxPermitted() external {
         uint256 x = UD60x18.unwrap(MAX_SCALED_UD60x18) + 1;
-        vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__ConvertOverflow.selector, x));
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_UD60x18_ConvertOverflow.selector, x));
         convert(x);
     }
 

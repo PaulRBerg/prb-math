@@ -61,7 +61,7 @@ contract Exp2_Test is SD59x18_Test {
 
     function test_RevertWhen_Positive_GreaterThanMaxPermitted() external NotZero {
         SD59x18 x = MAX_PERMITTED.add(sd(1));
-        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__Exp2InputTooBig.selector, x));
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Exp2InputTooBig.selector, x));
         exp2(x);
     }
 

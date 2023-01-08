@@ -20,7 +20,7 @@ contract Sqrt_Test is UD60x18_Test {
 
     function test_RevertWhen_GreaterThanMaxPermitted() external NotZero {
         UD60x18 x = MAX_PERMITTED.add(ud(1));
-        vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__SqrtOverflow.selector, x));
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_UD60x18_SqrtOverflow.selector, x));
         sqrt(x);
     }
 

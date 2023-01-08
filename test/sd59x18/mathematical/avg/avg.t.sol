@@ -4,7 +4,7 @@ pragma solidity >=0.8.13;
 import "src/SD59x18.sol";
 import { SD59x18_Test } from "../../SD59x18.t.sol";
 
-contract SD59x18__AvgTest is SD59x18_Test {
+contract Avg_Test is SD59x18_Test {
     function test_Avg_BothOperandsZero() external {
         SD59x18 x = ZERO;
         SD59x18 y = ZERO;

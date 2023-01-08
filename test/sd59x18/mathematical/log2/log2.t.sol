@@ -7,7 +7,7 @@ import { SD59x18_Test } from "../../SD59x18.t.sol";
 contract Log2_Test is SD59x18_Test {
     function test_RevertWhen_Zero() external {
         SD59x18 x = ZERO;
-        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__LogInputTooSmall.selector, x));
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_LogInputTooSmall.selector, x));
         log2(x);
     }
 
@@ -17,7 +17,7 @@ contract Log2_Test is SD59x18_Test {
 
     function test_RevertWhen_Negative() external NotZero {
         SD59x18 x = sd(-1);
-        vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__LogInputTooSmall.selector, x));
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_LogInputTooSmall.selector, x));
         log2(x);
     }
 
