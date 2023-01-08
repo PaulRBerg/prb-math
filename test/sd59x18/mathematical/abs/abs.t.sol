@@ -2,10 +2,10 @@
 pragma solidity >=0.8.13;
 
 import "src/SD59x18.sol";
-import { SD59x18__BaseTest } from "../../SD59x18BaseTest.t.sol";
+import { SD59x18_Test } from "../../SD59x18.t.sol";
 
-contract SD59x18__AbsTest is SD59x18__BaseTest {
-    function testAbs__Zero() external {
+contract Abs_Test is SD59x18_Test {
+    function test_Abs_Zero() external {
         SD59x18 x = ZERO;
         SD59x18 actual = abs(x);
         SD59x18 expected = ZERO;
@@ -16,7 +16,7 @@ contract SD59x18__AbsTest is SD59x18__BaseTest {
         _;
     }
 
-    function testCannotAbs__MinSD59x18() external NotZero {
+    function test_RevertWhen_MinSD59x18() external NotZero {
         SD59x18 x = MIN_SD59x18;
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__AbsMinSD59x18.selector));
         abs(x);
@@ -26,7 +26,7 @@ contract SD59x18__AbsTest is SD59x18__BaseTest {
         _;
     }
 
-    function negativeSets() internal returns (Set[] memory) {
+    function negative_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_SD59x18.add(sd(1)), expected: MAX_SD59x18 }));
         sets.push(set({ x: MIN_WHOLE_SD59x18, expected: MAX_WHOLE_SD59x18 }));
@@ -41,12 +41,12 @@ contract SD59x18__AbsTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testAbs__Negative() external parameterizedTest(negativeSets()) NotZero NotMinSD59x18 {
+    function test_Abs_Negative() external parameterizedTest(negative_Sets()) NotZero NotMinSD59x18 {
         SD59x18 actual = abs(s.x);
         assertEq(actual, s.expected);
     }
 
-    function positiveSets() internal returns (Set[] memory) {
+    function positive_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.1e18, expected: 0.1e18 }));
         sets.push(set({ x: 0.5e18, expected: 0.5e18 }));
@@ -61,7 +61,7 @@ contract SD59x18__AbsTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testAbs() external parameterizedTest(positiveSets()) NotZero NotMinSD59x18 {
+    function test_Abs() external parameterizedTest(positive_Sets()) NotZero NotMinSD59x18 {
         SD59x18 actual = abs(s.x);
         assertEq(actual, s.expected);
     }

@@ -2,10 +2,10 @@
 pragma solidity >=0.8.13;
 
 import "src/SD59x18.sol";
-import { SD59x18__BaseTest } from "../../SD59x18BaseTest.t.sol";
+import { SD59x18_Test } from "../../SD59x18.t.sol";
 
-contract SD59x18__LnTest is SD59x18__BaseTest {
-    function testCannotLn__Zero() external {
+contract Ln_Test is SD59x18_Test {
+    function test_RevertWhen_Zero() external {
         SD59x18 x = ZERO;
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__LogInputTooSmall.selector, x));
         ln(x);
@@ -15,7 +15,7 @@ contract SD59x18__LnTest is SD59x18__BaseTest {
         _;
     }
 
-    function testCannotLn__Negative() external NotZero {
+    function test_RevertWhen_Negative() external NotZero {
         SD59x18 x = sd(-1);
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__LogInputTooSmall.selector, x));
         ln(x);
@@ -25,7 +25,7 @@ contract SD59x18__LnTest is SD59x18__BaseTest {
         _;
     }
 
-    function lnSets() internal returns (Set[] memory) {
+    function ln_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.1e18, expected: -2_302585092994045674 }));
         sets.push(set({ x: 0.2e18, expected: -1_609437912434100365 }));
@@ -49,7 +49,7 @@ contract SD59x18__LnTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testLn() external parameterizedTest(lnSets()) NotZero Positive {
+    function test_Ln() external parameterizedTest(ln_Sets()) NotZero Positive {
         SD59x18 actual = ln(s.x);
         assertEq(actual, s.expected);
     }

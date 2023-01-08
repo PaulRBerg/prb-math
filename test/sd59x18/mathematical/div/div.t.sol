@@ -4,10 +4,10 @@ pragma solidity >=0.8.13;
 import { stdError } from "forge-std/StdError.sol";
 
 import "src/SD59x18.sol";
-import { SD59x18__BaseTest } from "../../SD59x18BaseTest.t.sol";
+import { SD59x18_Test } from "../../SD59x18.t.sol";
 
-contract SD59x18__DivTest is SD59x18__BaseTest {
-    function testCannotDiv__DenominatorZero() external {
+contract Div_Test is SD59x18_Test {
+    function test_RevertWhen_DenominatorZero() external {
         SD59x18 x = sd(1e18);
         SD59x18 y = ZERO;
         vm.expectRevert(stdError.divisionError);
@@ -18,7 +18,7 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
         _;
     }
 
-    function testCannotDiv__DenominatorMinSD59x18() external DenominatorNotZero {
+    function test_RevertWhen_DenominatorMinSD59x18() external DenominatorNotZero {
         SD59x18 x = sd(1e18);
         SD59x18 y = MIN_SD59x18;
         vm.expectRevert(PRBMathSD59x18__DivInputTooSmall.selector);
@@ -29,7 +29,7 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
         _;
     }
 
-    function numeratorZeroSets() internal returns (Set[] memory) {
+    function numeratorZero_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0, y: NEGATIVE_PI, expected: 0 }));
         sets.push(set({ x: 0, y: -1e24, expected: 0 }));
@@ -42,7 +42,7 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testDiv__NumeratorZero() external parameterizedTest(numeratorZeroSets()) DenominatorNotZero DenominatorNotMinSD59x18 {
+    function test_Div_NumeratorZero() external parameterizedTest(numeratorZero_Sets()) DenominatorNotZero DenominatorNotMinSD59x18 {
         SD59x18 actual = div(s.x, s.y);
         assertEq(actual, s.expected);
     }
@@ -51,7 +51,7 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
         _;
     }
 
-    function testCannotDiv__NumeratorMinSD59x18() external DenominatorNotZero DenominatorNotMinSD59x18 NumeratorNotZero {
+    function test_RevertWhen_NumeratorMinSD59x18() external DenominatorNotZero DenominatorNotMinSD59x18 NumeratorNotZero {
         SD59x18 x = MIN_SD59x18;
         SD59x18 y = sd(0.000000000000000001e18);
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__DivInputTooSmall.selector));
@@ -62,7 +62,7 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
         _;
     }
 
-    function testCannotDiv__ResultOverflowSD59x18()
+    function test_RevertWhen_ResultOverflowSD59x18()
         external
         DenominatorNotZero
         DenominatorNotMinSD59x18
@@ -79,7 +79,7 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
         _;
     }
 
-    function numeratorDenominatorSameSignSets() internal returns (Set[] memory) {
+    function numeratorDenominatorSameSign_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_SCALED_SD59x18, y: -0.000000000000000001e18, expected: MAX_WHOLE_SD59x18 }));
         sets.push(set({ x: -1e24, y: -1e18, expected: 1e24 }));
@@ -116,9 +116,9 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testDiv__NumeratorDenominatorSameSign()
+    function test_Div_NumeratorDenominatorSameSign()
         external
-        parameterizedTest(numeratorDenominatorSameSignSets())
+        parameterizedTest(numeratorDenominatorSameSign_Sets())
         DenominatorNotZero
         DenominatorNotMinSD59x18
         NumeratorNotZero
@@ -129,7 +129,7 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
         assertEq(actual, s.expected);
     }
 
-    function numeratorDenominatorDifferentSignSets() internal returns (Set[] memory) {
+    function numeratorDenominatorDifferentSign_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_SCALED_SD59x18, y: 0.000000000000000001e18, expected: MIN_WHOLE_SD59x18 }));
         sets.push(set({ x: -1e24, y: 1e18, expected: -1e24 }));
@@ -166,9 +166,9 @@ contract SD59x18__DivTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testDiv__NumeratorDenominatorDifferentSign()
+    function test_Div_NumeratorDenominatorDifferentSign()
         external
-        parameterizedTest(numeratorDenominatorDifferentSignSets())
+        parameterizedTest(numeratorDenominatorDifferentSign_Sets())
         DenominatorNotZero
         DenominatorNotMinSD59x18
         NumeratorNotZero

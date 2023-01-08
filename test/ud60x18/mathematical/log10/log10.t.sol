@@ -4,10 +4,10 @@ pragma solidity >=0.8.13;
 import { stdError } from "forge-std/StdError.sol";
 
 import "src/UD60x18.sol";
-import { UD60x18__BaseTest } from "../../UD60x18BaseTest.t.sol";
+import { UD60x18_Test } from "../../UD60x18.t.sol";
 
-contract UD60x18__Log10Test is UD60x18__BaseTest {
-    function testCannotLog10__LessThanOne() external {
+contract Log10_Test is UD60x18_Test {
+    function test_RevertWhen_LessThanOne() external {
         UD60x18 x = ud(1e18 - 1);
         vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__LogInputTooSmall.selector, x));
         log10(x);
@@ -17,7 +17,7 @@ contract UD60x18__Log10Test is UD60x18__BaseTest {
         _;
     }
 
-    function powerOfTenSets() internal returns (Set[] memory) {
+    function powerOfTen_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 1e18, expected: 0 }));
         sets.push(set({ x: 10e18, expected: 1e18 }));
@@ -29,12 +29,12 @@ contract UD60x18__Log10Test is UD60x18__BaseTest {
         return sets;
     }
 
-    function testLog10__PowerOfTen() external parameterizedTest(powerOfTenSets()) GreaterThanOrEqualToOne {
+    function test_Log10_PowerOfTen() external parameterizedTest(powerOfTen_Sets()) GreaterThanOrEqualToOne {
         UD60x18 actual = log10(s.x);
         assertEq(actual, s.expected);
     }
 
-    function notPowerOfTenSets() internal returns (Set[] memory) {
+    function notPowerOfTen_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 1.00000000000001e18, expected: 0.000000000000004341e18 }));
         sets.push(set({ x: E, expected: 0.434294481903251823e18 }));
@@ -51,7 +51,7 @@ contract UD60x18__Log10Test is UD60x18__BaseTest {
         return sets;
     }
 
-    function testLog10__NotPowerOfTen() external parameterizedTest(notPowerOfTenSets()) GreaterThanOrEqualToOne {
+    function test_Log10_NotPowerOfTen() external parameterizedTest(notPowerOfTen_Sets()) GreaterThanOrEqualToOne {
         UD60x18 actual = log10(s.x);
         assertEq(actual, s.expected);
     }

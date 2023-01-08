@@ -2,20 +2,20 @@
 pragma solidity >=0.8.13;
 
 import "src/UD60x18.sol";
-import { UD60x18__BaseTest } from "../../UD60x18BaseTest.t.sol";
+import { UD60x18_Test } from "../../UD60x18.t.sol";
 
-contract UD60x18__GmTest is UD60x18__BaseTest {
+contract Gm_Test is UD60x18_Test {
     // Biggest number whose non-fixed-point square fits within uint256
     uint256 internal constant SQRT_MAX_UINT256 = 340282366920938463463374607431768211455;
 
-    function oneOperandZeroSets() internal returns (Set[] memory) {
+    function oneOperandZero_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0, y: PI, expected: 0 }));
         sets.push(set({ x: PI, y: 0, expected: 0 }));
         return sets;
     }
 
-    function testGm__OneOperandZero() external parameterizedTest(oneOperandZeroSets()) {
+    function test_Gm_OneOperandZero() external parameterizedTest(oneOperandZero_Sets()) {
         UD60x18 actual = gm(s.x, s.y);
         assertEq(actual, s.expected);
     }
@@ -24,7 +24,7 @@ contract UD60x18__GmTest is UD60x18__BaseTest {
         _;
     }
 
-    function testCannotGm__ProductOverflow() external NotZeroOperands {
+    function test_RevertWhen_ProductOverflow() external NotZeroOperands {
         UD60x18 x = SQRT_MAX_UD60x18.add(ud(1));
         UD60x18 y = SQRT_MAX_UD60x18.add(ud(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__GmOverflow.selector, x, y));
@@ -35,7 +35,7 @@ contract UD60x18__GmTest is UD60x18__BaseTest {
         _;
     }
 
-    function gmSets() internal returns (Set[] memory) {
+    function gm_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 1e18, y: 1e18, expected: 1e18 }));
         sets.push(set({ x: 1e18, y: 4e18, expected: 2e18 }));
@@ -50,7 +50,7 @@ contract UD60x18__GmTest is UD60x18__BaseTest {
         return sets;
     }
 
-    function testGm() external parameterizedTest(gmSets()) NotZeroOperands ProductNotOverflow {
+    function test_Gm() external parameterizedTest(gm_Sets()) NotZeroOperands ProductNotOverflow {
         UD60x18 actual = gm(s.x, s.y);
         assertEq(actual, s.expected);
     }

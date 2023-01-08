@@ -2,9 +2,9 @@
 pragma solidity >=0.8.13;
 
 import "src/UD60x18.sol";
-import { UD60x18__BaseTest } from "../../UD60x18BaseTest.t.sol";
+import { UD60x18_Test } from "../../UD60x18.t.sol";
 
-contract ConvertFrom_Test is UD60x18__BaseTest {
+contract ConvertFrom_Test is UD60x18_Test {
     function lessThanOne_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: ZERO }));

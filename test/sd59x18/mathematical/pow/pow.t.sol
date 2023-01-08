@@ -2,12 +2,12 @@
 pragma solidity >=0.8.13;
 
 import "src/SD59x18.sol";
-import { SD59x18__BaseTest } from "../../SD59x18BaseTest.t.sol";
+import { SD59x18_Test } from "../../SD59x18.t.sol";
 
-contract SD59x18__PowTest is SD59x18__BaseTest {
+contract Pow_Test is SD59x18_Test {
     SD59x18 internal constant MAX_PERMITTED = SD59x18.wrap(2 ** 192 * 10 ** 18 - 1);
 
-    function testPow__BaseAndExponentZero() external {
+    function test_Pow_BaseAndExponentZero() external {
         SD59x18 x = ZERO;
         SD59x18 y = ZERO;
         SD59x18 actual = pow(x, y);
@@ -15,7 +15,7 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         assertEq(actual, expected);
     }
 
-    function baseZeroExponentNotZeroSets() internal returns (Set[] memory) {
+    function baseZeroExponentNotZero_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0, y: 1e18, expected: 0 }));
         sets.push(set({ x: 0, y: E, expected: 0 }));
@@ -23,7 +23,7 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testPow__BaseZeroExponentNotZero() external parameterizedTest(baseZeroExponentNotZeroSets()) {
+    function test_Pow_BaseZeroExponentNotZero() external parameterizedTest(baseZeroExponentNotZero_Sets()) {
         SD59x18 actual = pow(s.x, s.y);
         assertEq(actual, s.expected);
     }
@@ -32,7 +32,7 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         _;
     }
 
-    function testCannotPow__BaseNegative() external BaseNotZero {
+    function test_RevertWhen_BaseNegative() external BaseNotZero {
         SD59x18 x = sd(-0.000000000000000001e18);
         SD59x18 y = sd(2e18);
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__LogInputTooSmall.selector, x));
@@ -43,7 +43,7 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         _;
     }
 
-    function exponentZeroSets() internal returns (Set[] memory) {
+    function exponentZero_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 1e18, y: 0, expected: 1e18 }));
         sets.push(set({ x: E, y: 0, expected: 1e18 }));
@@ -51,7 +51,7 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testPow__ExponentZero() external parameterizedTest(exponentZeroSets()) BaseNotZero BasePositive {
+    function test_Pow_ExponentZero() external parameterizedTest(exponentZero_Sets()) BaseNotZero BasePositive {
         SD59x18 actual = pow(s.x, s.y);
         assertEq(actual, s.expected);
     }
@@ -60,7 +60,7 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         _;
     }
 
-    function exponentOneSets() internal returns (Set[] memory) {
+    function exponentOne_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 1e18, y: 1e18, expected: 1e18 }));
         sets.push(set({ x: E, y: 1e18, expected: E }));
@@ -68,7 +68,7 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testPow__ExponentOne() external parameterizedTest(exponentOneSets()) BaseNotZero BasePositive ExponentNotZero {
+    function test_Pow_ExponentOne() external parameterizedTest(exponentOne_Sets()) BaseNotZero BasePositive ExponentNotZero {
         SD59x18 actual = pow(s.x, s.y);
         assertEq(actual, s.expected);
     }
@@ -77,7 +77,7 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         _;
     }
 
-    function testCannotPow__ExponentGreaterThanMaxPermitted() external BaseNotZero BasePositive ExponentNotZero ExponentNotOne {
+    function test_RevertWhen_ExponentGreaterThanMaxPermitted() external BaseNotZero BasePositive ExponentNotZero ExponentNotOne {
         SD59x18 x = MAX_PERMITTED.add(sd(1));
         SD59x18 y = sd(1e18 + 1);
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__Exp2InputTooBig.selector, sd(192e18 + 192)));
@@ -88,7 +88,7 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         _;
     }
 
-    function negativeExponentSets() internal returns (Set[] memory) {
+    function negativeExponent_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.000000000000000001e18, y: -0.000000000000000001e18, expected: 1e18 + 40 }));
         sets.push(set({ x: 0.000000000001e18, y: -4.4e9, expected: 1_000000121576500300 }));
@@ -112,9 +112,9 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testPow__NegativeExponent()
+    function test_Pow_NegativeExponent()
         external
-        parameterizedTest(negativeExponentSets())
+        parameterizedTest(negativeExponent_Sets())
         BaseNotZero
         BasePositive
         ExponentNotZero
@@ -125,7 +125,7 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         assertEq(actual, s.expected);
     }
 
-    function positiveExponentSets() internal returns (Set[] memory) {
+    function positiveExponent_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.000000000000000001e18, y: 0.000000000000000001e18, expected: 0.999999999999999960e18 }));
         sets.push(set({ x: 1e6, y: 4.4e9, expected: 0.99999987842351448e18 }));
@@ -155,9 +155,9 @@ contract SD59x18__PowTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testPow__PositiveExponent()
+    function test_Pow_PositiveExponent()
         external
-        parameterizedTest(positiveExponentSets())
+        parameterizedTest(positiveExponent_Sets())
         BaseNotZero
         BasePositive
         ExponentNotZero

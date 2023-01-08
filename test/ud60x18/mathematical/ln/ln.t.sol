@@ -4,10 +4,10 @@ pragma solidity >=0.8.13;
 import { stdError } from "forge-std/StdError.sol";
 
 import "src/UD60x18.sol";
-import { UD60x18__BaseTest } from "../../UD60x18BaseTest.t.sol";
+import { UD60x18_Test } from "../../UD60x18.t.sol";
 
-contract UD60x18__LnTest is UD60x18__BaseTest {
-    function testCannotLog10__LessThanOne() external {
+contract Ln_Test is UD60x18_Test {
+    function test_RevertWhen_LessThanOne() external {
         UD60x18 x = ud(1e18 - 1);
         vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__LogInputTooSmall.selector, x));
         ln(x);
@@ -17,7 +17,7 @@ contract UD60x18__LnTest is UD60x18__BaseTest {
         _;
     }
 
-    function lnSets() internal returns (Set[] memory) {
+    function ln_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 1e18, expected: 0 }));
         sets.push(set({ x: 1.125e18, expected: 0.117783035656383442e18 }));
@@ -32,7 +32,7 @@ contract UD60x18__LnTest is UD60x18__BaseTest {
         return sets;
     }
 
-    function testLn() external parameterizedTest(lnSets()) GreaterThanOrEqualToOne {
+    function test_Ln() external parameterizedTest(ln_Sets()) GreaterThanOrEqualToOne {
         UD60x18 actual = ln(s.x);
         assertEq(actual, s.expected);
     }

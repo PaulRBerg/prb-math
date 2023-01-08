@@ -2,12 +2,12 @@
 pragma solidity >=0.8.13;
 
 import "src/UD60x18.sol";
-import { UD60x18__BaseTest } from "../../UD60x18BaseTest.t.sol";
+import { UD60x18_Test } from "../../UD60x18.t.sol";
 
-contract UD60x18__PowTest is UD60x18__BaseTest {
+contract PowTest is UD60x18_Test {
     UD60x18 internal constant MAX_PERMITTED = UD60x18.wrap(2 ** 192 * 10 ** 18 - 1);
 
-    function testPow__BaseAndExponentZero() external {
+    function test_Pow_BaseAndExponentZero() external {
         UD60x18 x = ZERO;
         UD60x18 y = ZERO;
         UD60x18 actual = pow(x, y);
@@ -15,7 +15,7 @@ contract UD60x18__PowTest is UD60x18__BaseTest {
         assertEq(actual, expected);
     }
 
-    function baseZeroExponentNotZeroSets() internal returns (Set[] memory) {
+    function baseZeroExponentNotZero_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0, y: 1e18, expected: 0 }));
         sets.push(set({ x: 0, y: E, expected: 0 }));
@@ -23,7 +23,7 @@ contract UD60x18__PowTest is UD60x18__BaseTest {
         return sets;
     }
 
-    function testPow__BaseZeroExponentNotZero() external parameterizedTest(baseZeroExponentNotZeroSets()) {
+    function test_Pow_BaseZeroExponentNotZero() external parameterizedTest(baseZeroExponentNotZero_Sets()) {
         UD60x18 actual = pow(s.x, s.y);
         assertEq(actual, s.expected);
     }
@@ -32,7 +32,7 @@ contract UD60x18__PowTest is UD60x18__BaseTest {
         _;
     }
 
-    function testCannotPow__BaseLessThanOne() external BaseNotZero {
+    function test_RevertWhen_BaseLessThanOne() external BaseNotZero {
         UD60x18 x = ud(1e18 - 1);
         UD60x18 y = PI;
         vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__LogInputTooSmall.selector, x));
@@ -43,7 +43,7 @@ contract UD60x18__PowTest is UD60x18__BaseTest {
         _;
     }
 
-    function exponentZeroSets() internal returns (Set[] memory) {
+    function exponentZero_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 1e18, y: 0, expected: 1e18 }));
         sets.push(set({ x: E, y: 0, expected: 1e18 }));
@@ -51,7 +51,7 @@ contract UD60x18__PowTest is UD60x18__BaseTest {
         return sets;
     }
 
-    function testPow__ExponentZero() external parameterizedTest(exponentZeroSets()) BaseNotZero BaseGreaterThanOrEqualToOne {
+    function test_Pow_ExponentZero() external parameterizedTest(exponentZero_Sets()) BaseNotZero BaseGreaterThanOrEqualToOne {
         UD60x18 actual = pow(s.x, s.y);
         assertEq(actual, s.expected);
     }
@@ -60,7 +60,7 @@ contract UD60x18__PowTest is UD60x18__BaseTest {
         _;
     }
 
-    function exponentOneSets() internal returns (Set[] memory) {
+    function exponentOne_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 1e18, y: 1e18, expected: 1e18 }));
         sets.push(set({ x: E, y: 1e18, expected: E }));
@@ -68,9 +68,9 @@ contract UD60x18__PowTest is UD60x18__BaseTest {
         return sets;
     }
 
-    function testPow__ExponentOne()
+    function test_Pow_ExponentOne()
         external
-        parameterizedTest(exponentOneSets())
+        parameterizedTest(exponentOne_Sets())
         BaseNotZero
         BaseGreaterThanOrEqualToOne
         ExponentNotZero
@@ -84,7 +84,7 @@ contract UD60x18__PowTest is UD60x18__BaseTest {
         _;
     }
 
-    function testCannotPow__ExponentGreaterThanOrEqualToMaxPermitted()
+    function test_RevertWhen_ExponentGreaterThanOrEqualToMaxPermitted()
         external
         BaseNotZero
         BaseGreaterThanOrEqualToOne
@@ -101,7 +101,7 @@ contract UD60x18__PowTest is UD60x18__BaseTest {
         _;
     }
 
-    function powSets() internal returns (Set[] memory) {
+    function pow_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 1e18, y: 2e18, expected: 1e18 }));
         sets.push(set({ x: 1e18, y: PI, expected: 1e18 }));
@@ -125,9 +125,9 @@ contract UD60x18__PowTest is UD60x18__BaseTest {
         return sets;
     }
 
-    function testPow()
+    function test_Pow()
         external
-        parameterizedTest(powSets())
+        parameterizedTest(pow_Sets())
         BaseNotZero
         ExponentNotZero
         ExponentNotOne

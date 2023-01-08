@@ -1,148 +1,109 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.13;
 
-import "src/SD59x18.sol";
-import { SD59x18__BaseTest } from "../SD59x18BaseTest.t.sol";
 import { stdMath } from "forge-std/StdMath.sol";
 
+import "src/SD59x18.sol";
+import { SD59x18_Test } from "../SD59x18.t.sol";
+
 /// @dev Collection of tests for the helpers functions available in the SD59x18 type.
-contract SD59x18__HelpersTest is SD59x18__BaseTest {
-    function testAdd() external {
-        int256 x = 1;
-        int256 y = 3;
-        SD59x18 actual = add(wrap(x), wrap(y));
-        SD59x18 expected = wrap(x + y);
-        assertEq(actual, expected);
+contract SD59x18_HelpersTest is SD59x18_Test {
+    int256 internal constant HALF_MAX_INT256 = type(int256).max / 2;
+    int256 internal constant HALF_MIN_INT256 = type(int256).min / 2;
 
-        x = -1;
-        y = 3;
-        actual = add(wrap(x), wrap(y));
-        expected = wrap(x + y);
-        assertEq(actual, expected);
-
-        x = 1;
-        y = -3;
-        actual = add(wrap(x), wrap(y));
-        expected = wrap(x + y);
-        assertEq(actual, expected);
-
-        x = -1;
-        y = -3;
-        actual = add(wrap(x), wrap(y));
-        expected = wrap(x + y);
+    function testFuzz_Add(int256 x, int256 y) external {
+        x = bound(x, HALF_MIN_INT256, HALF_MAX_INT256);
+        y = bound(y, HALF_MIN_INT256, HALF_MAX_INT256);
+        SD59x18 actual = add(sd(x), sd(y));
+        SD59x18 expected = sd(x + y);
         assertEq(actual, expected);
     }
 
-    function testAnd(int256 x, int256 y) external {
-        int256 actual = unwrap(and(wrap(x), y));
+    function testFuzz_And(int256 x, int256 y) external {
+        int256 actual = unwrap(and(sd(x), y));
         int256 expected = x & y;
         assertEq(actual, expected);
     }
 
-    function testEq(int256 x) external {
+    function testFuzz_Eq(int256 x) external {
         int256 y = x;
-        bool actual = eq(wrap(x), wrap(y));
-        bool expected = true;
-        assertEq(actual, expected);
+        bool result = eq(sd(x), sd(y));
+        assertTrue(result);
     }
 
-    function testGt(int256 x, int256 y) external {
+    function testFuzz_Gt(int256 x, int256 y) external {
         vm.assume(x > y);
-        bool actual = gt(wrap(x), wrap(y));
-        bool expected = true;
-        assertEq(actual, expected);
+        bool result = gt(sd(x), sd(y));
+        assertTrue(result);
     }
 
-    function testGte(int256 x, int256 y) external {
+    function testFuzz_Gte(int256 x, int256 y) external {
         vm.assume(x >= y);
-        bool actual = gte(wrap(x), wrap(y));
-        bool expected = true;
-        assertEq(actual, expected);
+        bool result = gte(sd(x), sd(y));
+        assertTrue(result);
     }
 
-    function testIsZero() external {
-        SD59x18 x = wrap(0);
-        bool actual = isZero(x);
-        bool expected = true;
-        assertEq(actual, expected);
+    function test_IsZero() external {
+        SD59x18 x = sd(0);
+        bool result = isZero(x);
+        assertTrue(result);
     }
 
-    function testLshift(int256 x, uint256 y) external {
+    function testFuzz_Lshift(int256 x, uint256 y) external {
         bound(y, 0, 512);
-        int256 actual = unwrap(lshift(wrap(x), y));
+        int256 actual = unwrap(lshift(sd(x), y));
         int256 expected = x << y;
         assertEq(actual, expected);
     }
 
-    function testLt(int256 x, int256 y) external {
+    function testFuzz_Lt(int256 x, int256 y) external {
         vm.assume(x < y);
-        bool actual = lt(wrap(x), wrap(y));
-        bool expected = true;
-        assertEq(actual, expected);
+        bool result = lt(sd(x), sd(y));
+        assertTrue(result);
     }
 
-    function testLte(int256 x, int256 y) external {
+    function testFuzz_Lte(int256 x, int256 y) external {
         vm.assume(x <= y);
-        bool actual = lte(wrap(x), wrap(y));
-        bool expected = true;
-        assertEq(actual, expected);
+        bool result = lte(sd(x), sd(y));
+        assertTrue(result);
     }
 
-    function testMod(int256 x, int256 y) external {
+    function testFuzz_Mod(int256 x, int256 y) external {
         vm.assume(y != 0);
-        int256 actual = unwrap(mod(wrap(x), wrap(y)));
+        int256 actual = unwrap(mod(sd(x), sd(y)));
         int256 expected = x % y;
         assertEq(actual, expected);
     }
 
-    function testNeq(int256 x, int256 y) external {
+    function testFuzz_Neq(int256 x, int256 y) external {
         vm.assume(x != y);
-        bool actual = neq(wrap(x), wrap(y));
-        bool expected = true;
-        assertEq(actual, expected);
+        bool result = neq(sd(x), sd(y));
+        assertTrue(result);
     }
 
-    function testOr(int256 x, int256 y) external {
-        int256 actual = unwrap(or(wrap(x), wrap(y)));
+    function testFuzz_Or(int256 x, int256 y) external {
+        int256 actual = unwrap(or(sd(x), sd(y)));
         int256 expected = x | y;
         assertEq(actual, expected);
     }
 
-    function testRshift(int256 x, uint256 y) external {
+    function testFuzz_Rshift(int256 x, uint256 y) external {
         bound(y, 0, 512);
-        int256 actual = unwrap(rshift(wrap(x), y));
+        int256 actual = unwrap(rshift(sd(x), y));
         int256 expected = x >> y;
         assertEq(actual, expected);
     }
 
-    function testSub() external {
-        int256 x = 1;
-        int256 y = 3;
-        SD59x18 actual = sub(wrap(x), wrap(y));
-        SD59x18 expected = wrap(x - y);
-        assertEq(actual, expected);
-
-        x = -1;
-        y = 3;
-        actual = sub(wrap(x), wrap(y));
-        expected = wrap(x - y);
-        assertEq(actual, expected);
-
-        x = 1;
-        y = -3;
-        actual = sub(wrap(x), wrap(y));
-        expected = wrap(x - y);
-        assertEq(actual, expected);
-
-        x = -1;
-        y = -3;
-        actual = sub(wrap(x), wrap(y));
-        expected = wrap(x - y);
+    function testFuzz_Sub(int256 x, int256 y) external {
+        x = bound(x, HALF_MIN_INT256, HALF_MAX_INT256);
+        y = bound(y, HALF_MIN_INT256, HALF_MAX_INT256);
+        SD59x18 actual = sub(sd(x), sd(y));
+        SD59x18 expected = sd(x - y);
         assertEq(actual, expected);
     }
 
-    function testUncheckedAdd(int256 x, int256 y) external {
-        int256 actual = unwrap(uncheckedAdd(wrap(x), wrap(y)));
+    function testFuzz_UncheckedAdd(int256 x, int256 y) external {
+        int256 actual = unwrap(uncheckedAdd(sd(x), sd(y)));
         int256 expected;
         unchecked {
             expected = x + y;
@@ -150,9 +111,9 @@ contract SD59x18__HelpersTest is SD59x18__BaseTest {
         assertEq(actual, expected);
     }
 
-    function testUncheckedDiv(int256 x, int256 y) external {
+    function testFuzz_UncheckedDiv(int256 x, int256 y) external {
         vm.assume(y != 0);
-        int256 actual = unwrap(uncheckedDiv(wrap(x), wrap(y)));
+        int256 actual = unwrap(uncheckedDiv(sd(x), sd(y)));
         int256 expected;
         unchecked {
             expected = x / y;
@@ -160,8 +121,8 @@ contract SD59x18__HelpersTest is SD59x18__BaseTest {
         assertEq(actual, expected);
     }
 
-    function testUncheckedMul(int256 x, int256 y) external {
-        int256 actual = unwrap(uncheckedMul(wrap(x), wrap(y)));
+    function testFuzz_UncheckedMul(int256 x, int256 y) external {
+        int256 actual = unwrap(uncheckedMul(sd(x), sd(y)));
         int256 expected;
         unchecked {
             expected = x * y;
@@ -169,8 +130,8 @@ contract SD59x18__HelpersTest is SD59x18__BaseTest {
         assertEq(actual, expected);
     }
 
-    function testUncheckedSub(int256 x, int256 y) external {
-        int256 actual = unwrap(uncheckedSub(wrap(x), wrap(y)));
+    function testFuzz_UncheckedSub(int256 x, int256 y) external {
+        int256 actual = unwrap(uncheckedSub(sd(x), sd(y)));
         int256 expected;
         unchecked {
             expected = x - y;
@@ -178,8 +139,8 @@ contract SD59x18__HelpersTest is SD59x18__BaseTest {
         assertEq(actual, expected);
     }
 
-    function testXor(int256 x, int256 y) external {
-        int256 actual = unwrap(xor(wrap(x), wrap(y)));
+    function testFuzz_Xor(int256 x, int256 y) external {
+        int256 actual = unwrap(xor(sd(x), sd(y)));
         int256 expected = x ^ y;
         assertEq(actual, expected);
     }

@@ -4,10 +4,10 @@ pragma solidity >=0.8.13;
 import { stdError } from "forge-std/StdError.sol";
 
 import "src/SD59x18.sol";
-import { SD59x18__BaseTest } from "../../SD59x18BaseTest.t.sol";
+import { SD59x18_Test } from "../../SD59x18.t.sol";
 
-contract SD59x18__InvTest is SD59x18__BaseTest {
-    function testCannotInv__Zero() external {
+contract Inv_Test is SD59x18_Test {
+    function test_RevertWhen_Zero() external {
         SD59x18 x = ZERO;
         vm.expectRevert(stdError.divisionError);
         inv(x);
@@ -17,7 +17,7 @@ contract SD59x18__InvTest is SD59x18__BaseTest {
         _;
     }
 
-    function negativeSets() internal returns (Set[] memory) {
+    function negative_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_SD59x18, expected: 0 }));
         sets.push(set({ x: MIN_WHOLE_SD59x18, expected: 0 }));
@@ -38,12 +38,12 @@ contract SD59x18__InvTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testInv__Negative() external parameterizedTest(negativeSets()) NotZero {
+    function test_Inv_Negative() external parameterizedTest(negative_Sets()) NotZero {
         SD59x18 actual = inv(s.x);
         assertEq(actual, s.expected);
     }
 
-    function positiveSets() internal returns (Set[] memory) {
+    function positive_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.000000000000000001e18, expected: 1e36 }));
         sets.push(set({ x: 0.00001e18, expected: 100_000e18 }));
@@ -64,7 +64,7 @@ contract SD59x18__InvTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testInv__Positive() external parameterizedTest(positiveSets()) NotZero {
+    function test_Inv_Positive() external parameterizedTest(positive_Sets()) NotZero {
         SD59x18 actual = inv(s.x);
         assertEq(actual, s.expected);
     }

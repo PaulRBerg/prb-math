@@ -2,10 +2,10 @@
 pragma solidity >=0.8.13;
 
 import "src/UD60x18.sol";
-import { UD60x18__BaseTest } from "../../UD60x18BaseTest.t.sol";
+import { UD60x18_Test } from "../../UD60x18.t.sol";
 
-contract UD60x18__FloorTest is UD60x18__BaseTest {
-    function testFloor__Zero() external {
+contract Floor_Test is UD60x18_Test {
+    function test_Floor_Zero() external {
         UD60x18 x = ZERO;
         UD60x18 actual = floor(x);
         UD60x18 expected = ZERO;
@@ -16,7 +16,7 @@ contract UD60x18__FloorTest is UD60x18__BaseTest {
         _;
     }
 
-    function floorSets() internal returns (Set[] memory) {
+    function floor_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.1e18, expected: 0 }));
         sets.push(set({ x: 0.5e18, expected: 0 }));
@@ -31,7 +31,7 @@ contract UD60x18__FloorTest is UD60x18__BaseTest {
         return sets;
     }
 
-    function testFloor__Positive() external parameterizedTest(floorSets()) NotZero {
+    function test_Floor_Positive() external parameterizedTest(floor_Sets()) NotZero {
         UD60x18 actual = floor(s.x);
         assertEq(actual, s.expected);
     }

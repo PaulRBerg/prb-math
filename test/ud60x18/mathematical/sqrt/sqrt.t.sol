@@ -2,12 +2,12 @@
 pragma solidity >=0.8.13;
 
 import "src/UD60x18.sol";
-import { UD60x18__BaseTest } from "../../UD60x18BaseTest.t.sol";
+import { UD60x18_Test } from "../../UD60x18.t.sol";
 
-contract UD60x18__SqrtTest is UD60x18__BaseTest {
+contract Sqrt_Test is UD60x18_Test {
     UD60x18 internal constant MAX_PERMITTED = UD60x18.wrap(115792089237316195423570985008687907853269_984665640564039457);
 
-    function testSqrt__Zero() external {
+    function test_Sqrt_Zero() external {
         UD60x18 x = ZERO;
         UD60x18 actual = sqrt(x);
         UD60x18 expected = ZERO;
@@ -18,7 +18,7 @@ contract UD60x18__SqrtTest is UD60x18__BaseTest {
         _;
     }
 
-    function testCannotSqrt__GreaterThanMaxPermitted() external NotZero {
+    function test_RevertWhen_GreaterThanMaxPermitted() external NotZero {
         UD60x18 x = MAX_PERMITTED.add(ud(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__SqrtOverflow.selector, x));
         sqrt(x);
@@ -28,7 +28,7 @@ contract UD60x18__SqrtTest is UD60x18__BaseTest {
         _;
     }
 
-    function sqrtSets() internal returns (Set[] memory) {
+    function sqrt_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.000000000000000001e18, expected: 0.000000001e18 }));
         sets.push(set({ x: 0.000000000000001e18, expected: 0.000000031622776601e18 }));
@@ -50,7 +50,7 @@ contract UD60x18__SqrtTest is UD60x18__BaseTest {
         return sets;
     }
 
-    function testSqrt() external parameterizedTest(sqrtSets()) NotZero LessThanOrEqualToMaxPermitted {
+    function test_Sqrt() external parameterizedTest(sqrt_Sets()) NotZero LessThanOrEqualToMaxPermitted {
         UD60x18 actual = sqrt(s.x);
         assertEq(actual, s.expected);
     }

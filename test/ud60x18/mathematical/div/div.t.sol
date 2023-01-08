@@ -5,10 +5,10 @@ import { stdError } from "forge-std/StdError.sol";
 
 import "src/UD60x18.sol";
 import { PRBMath__MulDivOverflow } from "src/Core.sol";
-import { UD60x18__BaseTest } from "../../UD60x18BaseTest.t.sol";
+import { UD60x18_Test } from "../../UD60x18.t.sol";
 
-contract UD60x18__DivTest is UD60x18__BaseTest {
-    function testCannotDiv__DenominatorZero() external {
+contract Div_Test is UD60x18_Test {
+    function test_RevertWhen_DenominatorZero() external {
         UD60x18 x = ud(1e18);
         UD60x18 y = ZERO;
         vm.expectRevert(stdError.divisionError);
@@ -19,7 +19,7 @@ contract UD60x18__DivTest is UD60x18__BaseTest {
         _;
     }
 
-    function numeratorZeroSets() internal returns (Set[] memory) {
+    function numeratorZero_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0, y: 0.000000000000000001e18, expected: 0 }));
         sets.push(set({ x: 0, y: 1e18, expected: 0 }));
@@ -28,12 +28,12 @@ contract UD60x18__DivTest is UD60x18__BaseTest {
         return sets;
     }
 
-    function testDiv__NumeratorZero() external parameterizedTest(numeratorZeroSets()) DenominatorNotZero {
+    function test_Div_NumeratorZero() external parameterizedTest(numeratorZero_Sets()) DenominatorNotZero {
         UD60x18 actual = div(s.x, s.y);
         assertEq(actual, s.expected);
     }
 
-    function testCannotDiv__ResultOverflowUD60x18() external DenominatorNotZero {
+    function test_RevertWhen_ResultOverflowUD60x18() external DenominatorNotZero {
         UD60x18 x = MAX_SCALED_UD60x18.add(ud(1));
         UD60x18 y = ud(0.000000000000000001e18);
         vm.expectRevert(abi.encodeWithSelector(PRBMath__MulDivOverflow.selector, UD60x18.unwrap(x), uUNIT, UD60x18.unwrap(y)));
@@ -44,7 +44,7 @@ contract UD60x18__DivTest is UD60x18__BaseTest {
         _;
     }
 
-    function divSets() internal returns (Set[] memory) {
+    function div_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.000000000000000001e18, y: MAX_UD60x18, expected: 0 }));
         sets.push(set({ x: 0.000000000000000001e18, y: 1.000000000000000001e18, expected: 0 }));
@@ -65,7 +65,7 @@ contract UD60x18__DivTest is UD60x18__BaseTest {
         return sets;
     }
 
-    function testDiv() external parameterizedTest(divSets()) DenominatorNotZero ResultNotOverflowUD60x18 {
+    function test_Div() external parameterizedTest(div_Sets()) DenominatorNotZero ResultNotOverflowUD60x18 {
         UD60x18 actual = div(s.x, s.y);
         assertEq(actual, s.expected);
     }

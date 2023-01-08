@@ -2,10 +2,10 @@
 pragma solidity >=0.8.13;
 
 import "src/SD59x18.sol";
-import { SD59x18__BaseTest } from "../../SD59x18BaseTest.t.sol";
+import { SD59x18_Test } from "../../SD59x18.t.sol";
 
-contract SD59x18__AvgTest is SD59x18__BaseTest {
-    function testAvg__BothOperandsZero() external {
+contract SD59x18__AvgTest is SD59x18_Test {
+    function test_Avg_BothOperandsZero() external {
         SD59x18 x = ZERO;
         SD59x18 y = ZERO;
         SD59x18 actual = avg(x, y);
@@ -13,7 +13,7 @@ contract SD59x18__AvgTest is SD59x18__BaseTest {
         assertEq(actual, expected);
     }
 
-    function onlyOneOperandZeroSets() internal returns (Set[] memory) {
+    function onlyOneOperandZero_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: -3e18, y: 0, expected: -1.5e18 }));
         sets.push(set({ x: 0, y: -3e18, expected: -1.5e18 }));
@@ -22,7 +22,7 @@ contract SD59x18__AvgTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testAvg__OnlyOneOperandZero() external parameterizedTest(onlyOneOperandZeroSets()) {
+    function test_Avg_OnlyOneOperandZero() external parameterizedTest(onlyOneOperandZero_Sets()) {
         SD59x18 actual = avg(s.x, s.y);
         assertEq(actual, s.expected);
     }
@@ -31,7 +31,7 @@ contract SD59x18__AvgTest is SD59x18__BaseTest {
         _;
     }
 
-    function oneOperandNegativeTheOtherPositiveSets() internal returns (Set[] memory) {
+    function oneOperandNegativeTheOtherPositive_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_SD59x18, y: MAX_SD59x18, expected: 0 }));
         sets.push(set({ x: MIN_WHOLE_SD59x18, y: MAX_WHOLE_SD59x18, expected: 0 }));
@@ -43,16 +43,16 @@ contract SD59x18__AvgTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testAvg__OneOperandNegativeTheOtherPositive()
+    function test_Avg_OneOperandNegativeTheOtherPositive()
         external
-        parameterizedTest(oneOperandNegativeTheOtherPositiveSets())
+        parameterizedTest(oneOperandNegativeTheOtherPositive_Sets())
         NeitherOperandZero
     {
         SD59x18 actual = avg(s.x, s.y);
         assertEq(actual, s.expected);
     }
 
-    function bothOperandsNegativeSets() internal returns (Set[] memory) {
+    function bothOperandsNegative_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(
             set({
@@ -69,7 +69,7 @@ contract SD59x18__AvgTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testAvg__BothOperandsNegative() external parameterizedTest(bothOperandsNegativeSets()) NeitherOperandZero {
+    function test_Avg_BothOperandsNegative() external parameterizedTest(bothOperandsNegative_Sets()) NeitherOperandZero {
         SD59x18 actual = avg(s.x, s.y);
         assertEq(actual, s.expected);
     }
@@ -78,7 +78,7 @@ contract SD59x18__AvgTest is SD59x18__BaseTest {
         _;
     }
 
-    function bothOperandsEvenSets() internal returns (Set[] memory) {
+    function bothOperandsEven_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.000000000000000002e18, y: 0.000000000000000004e18, expected: 0.000000000000000003e18 }));
         sets.push(set({ x: 2e18, y: 2e18, expected: 2e18 }));
@@ -88,9 +88,9 @@ contract SD59x18__AvgTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testAvg__BothOperandsEven()
+    function test_Avg_BothOperandsEven()
         external
-        parameterizedTest(bothOperandsEvenSets())
+        parameterizedTest(bothOperandsEven_Sets())
         NeitherOperandZero
         BothOperandsPositive
     {
@@ -98,7 +98,7 @@ contract SD59x18__AvgTest is SD59x18__BaseTest {
         assertEq(actual, s.expected);
     }
 
-    function bothOperandsOddSets() internal returns (Set[] memory) {
+    function bothOperandsOdd_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.000000000000000001e18, y: 0.000000000000000003e18, expected: 0.000000000000000002e18 }));
         sets.push(set({ x: 1e18 + 1, y: 1e18 + 1, expected: 1e18 + 1 }));
@@ -109,14 +109,14 @@ contract SD59x18__AvgTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testAvg__BothOperandsOdd() external parameterizedTest(bothOperandsOddSets()) {
+    function test_Avg_BothOperandsOdd() external parameterizedTest(bothOperandsOdd_Sets()) {
         SD59x18 actual = avg(s.x, s.y);
         logSd(s.x);
         logSd(s.y);
         assertEq(actual, s.expected);
     }
 
-    function oneOperandEvenTheOtherOddSets() internal returns (Set[] memory) {
+    function oneOperandEvenTheOtherOdd_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.000000000000000001e18, y: 0.000000000000000002e18, expected: 0.000000000000000001e18 }));
         sets.push(set({ x: 1e18 + 1, y: 2e18, expected: 1.5e18 }));
@@ -133,7 +133,7 @@ contract SD59x18__AvgTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testAvg__OneOperandEvenTheOtherOdd() external parameterizedTest(oneOperandEvenTheOtherOddSets()) {
+    function test_Avg_OneOperandEvenTheOtherOdd() external parameterizedTest(oneOperandEvenTheOtherOdd_Sets()) {
         SD59x18 actual = avg(s.x, s.y);
         assertEq(actual, s.expected);
     }

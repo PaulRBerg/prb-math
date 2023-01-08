@@ -4,10 +4,10 @@ pragma solidity >=0.8.13;
 import { stdError } from "forge-std/StdError.sol";
 
 import "src/UD60x18.sol";
-import { UD60x18__BaseTest } from "../../UD60x18BaseTest.t.sol";
+import { UD60x18_Test } from "../../UD60x18.t.sol";
 
-contract UD60x18__InvTest is UD60x18__BaseTest {
-    function testCannotInv__Zero() external {
+contract Inv_Test is UD60x18_Test {
+    function test_RevertWhen_Zero() external {
         UD60x18 x = ZERO;
         vm.expectRevert(stdError.divisionError);
         inv(x);
@@ -17,7 +17,7 @@ contract UD60x18__InvTest is UD60x18__BaseTest {
         _;
     }
 
-    function invSets() internal returns (Set[] memory) {
+    function inv_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.000000000000000001e18, expected: 1e36 }));
         sets.push(set({ x: 0.00001e18, expected: 100_000e18 }));
@@ -38,7 +38,7 @@ contract UD60x18__InvTest is UD60x18__BaseTest {
         return sets;
     }
 
-    function testInv() external parameterizedTest(invSets()) NotZero {
+    function test_Inv() external parameterizedTest(inv_Sets()) NotZero {
         UD60x18 actual = inv(s.x);
         assertEq(actual, s.expected);
     }

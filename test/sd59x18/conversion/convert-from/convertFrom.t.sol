@@ -2,9 +2,9 @@
 pragma solidity >=0.8.13;
 
 import "src/SD59x18.sol";
-import { SD59x18__BaseTest } from "../../SD59x18BaseTest.t.sol";
+import { SD59x18_Test } from "../../SD59x18.t.sol";
 
-contract ConvertFrom_Test is SD59x18__BaseTest {
+contract ConvertFrom_Test is SD59x18_Test {
     function lessThanAbsoluteOne_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: -1e18 + 1 }));

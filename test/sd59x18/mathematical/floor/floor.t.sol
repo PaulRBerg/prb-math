@@ -2,10 +2,10 @@
 pragma solidity >=0.8.13;
 
 import "src/SD59x18.sol";
-import { SD59x18__BaseTest } from "../../SD59x18BaseTest.t.sol";
+import { SD59x18_Test } from "../../SD59x18.t.sol";
 
-contract SD59x18__FloorTest is SD59x18__BaseTest {
-    function testFloor__Zero() external {
+contract Floor_Test is SD59x18_Test {
+    function test_Floor_Zero() external {
         SD59x18 x = ZERO;
         SD59x18 actual = floor(x);
         SD59x18 expected = ZERO;
@@ -16,13 +16,13 @@ contract SD59x18__FloorTest is SD59x18__BaseTest {
         _;
     }
 
-    function testCannotFloor__Negative__LessThanMinPermitted() external NotZero {
+    function test_RevertWhen_Negative_LessThanMinPermitted() external NotZero {
         SD59x18 x = MIN_WHOLE_SD59x18.sub(sd(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__FloorUnderflow.selector, x));
         floor(x);
     }
 
-    function negativeAndGreaterThanOrEqualToMinPermittedSets() internal returns (Set[] memory) {
+    function negativeAndGreaterThanOrEqualToMinPermitted_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_WHOLE_SD59x18, expected: MIN_WHOLE_SD59x18 }));
         sets.push(set({ x: -1e24, expected: -1e24 }));
@@ -35,16 +35,16 @@ contract SD59x18__FloorTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testFloor__Negative__GreaterThanOrEqualToMinPermitted()
+    function test_Floor_Negative_GreaterThanOrEqualToMinPermitted()
         external
-        parameterizedTest(negativeAndGreaterThanOrEqualToMinPermittedSets())
+        parameterizedTest(negativeAndGreaterThanOrEqualToMinPermitted_Sets())
         NotZero
     {
         SD59x18 actual = floor(s.x);
         assertEq(actual, s.expected);
     }
 
-    function positiveSets() internal returns (Set[] memory) {
+    function positive_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.1e18, expected: 0 }));
         sets.push(set({ x: 0.5e18, expected: 0 }));
@@ -59,7 +59,7 @@ contract SD59x18__FloorTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testFloor__Positive() external parameterizedTest(positiveSets()) NotZero {
+    function test_Floor_Positive() external parameterizedTest(positive_Sets()) NotZero {
         SD59x18 actual = floor(s.x);
         assertEq(actual, s.expected);
     }

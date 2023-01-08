@@ -2,9 +2,9 @@
 pragma solidity >=0.8.13;
 
 import "src/UD60x18.sol";
-import { UD60x18__BaseTest } from "../../UD60x18BaseTest.t.sol";
+import { UD60x18_Test } from "../../UD60x18.t.sol";
 
-contract ConvertTo_Test is UD60x18__BaseTest {
+contract ConvertTo_Test is UD60x18_Test {
     function test_RevertWhen__GreaterThanMaxPermitted() external {
         uint256 x = UD60x18.unwrap(MAX_SCALED_UD60x18) + 1;
         vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__ConvertOverflow.selector, x));

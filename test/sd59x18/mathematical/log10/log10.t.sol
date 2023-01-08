@@ -2,10 +2,10 @@
 pragma solidity >=0.8.13;
 
 import "src/SD59x18.sol";
-import { SD59x18__BaseTest } from "../../SD59x18BaseTest.t.sol";
+import { SD59x18_Test } from "../../SD59x18.t.sol";
 
-contract SD59x18__Log10Test is SD59x18__BaseTest {
-    function testCannotLog10__Zero() external {
+contract Log10_Test is SD59x18_Test {
+    function test_RevertWhen_Zero() external {
         SD59x18 x = ZERO;
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__LogInputTooSmall.selector, x));
         log10(x);
@@ -15,7 +15,7 @@ contract SD59x18__Log10Test is SD59x18__BaseTest {
         _;
     }
 
-    function testCannotLog10__Negative() external NotZero {
+    function test_RevertWhen_Negative() external NotZero {
         SD59x18 x = sd(-1);
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__LogInputTooSmall.selector, x));
         log10(x);
@@ -25,7 +25,7 @@ contract SD59x18__Log10Test is SD59x18__BaseTest {
         _;
     }
 
-    function powerOfTenSets() internal returns (Set[] memory) {
+    function powerOfTen_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.000000000000000001e18, expected: -18e18 }));
         sets.push(set({ x: 0.00000000000000001e18, expected: -17e18 }));
@@ -45,12 +45,12 @@ contract SD59x18__Log10Test is SD59x18__BaseTest {
         return sets;
     }
 
-    function testLog10__PowerOfTen() external parameterizedTest(powerOfTenSets()) NotZero Positive {
+    function test_Log10_PowerOfTen() external parameterizedTest(powerOfTen_Sets()) NotZero Positive {
         SD59x18 actual = log10(s.x);
         assertEq(actual, s.expected);
     }
 
-    function notPowerOfTenSets() internal returns (Set[] memory) {
+    function notPowerOfTen_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 7.892191e6, expected: -11_102802412872166458 }));
         sets.push(set({ x: 0.0091e18, expected: -2_040958607678906397 }));
@@ -73,7 +73,7 @@ contract SD59x18__Log10Test is SD59x18__BaseTest {
         return sets;
     }
 
-    function testLog10__NotPowerOfTen() external parameterizedTest(notPowerOfTenSets()) NotZero Positive {
+    function test_Log10_NotPowerOfTen() external parameterizedTest(notPowerOfTen_Sets()) NotZero Positive {
         SD59x18 actual = log10(s.x);
         assertEq(actual, s.expected);
     }

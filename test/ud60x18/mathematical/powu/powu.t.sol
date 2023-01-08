@@ -3,10 +3,10 @@ pragma solidity >=0.8.13;
 
 import "src/UD60x18.sol";
 import { PRBMath__MulDiv18Overflow } from "src/Core.sol";
-import { UD60x18__BaseTest } from "../../UD60x18BaseTest.t.sol";
+import { UD60x18_Test } from "../../UD60x18.t.sol";
 
-contract UD60x18__PowuTest is UD60x18__BaseTest {
-    function testPowu__BaseAndExponentZero() external {
+contract Powu_Test is UD60x18_Test {
+    function test_Powu_BaseAndExponentZero() external {
         UD60x18 x = ZERO;
         uint256 y = 0;
         UD60x18 actual = powu(x, y);
@@ -14,7 +14,7 @@ contract UD60x18__PowuTest is UD60x18__BaseTest {
         assertEq(actual, expected);
     }
 
-    function baseZeroExponentNotZeroSets() internal returns (Set[] memory) {
+    function baseZeroExponentNotZero_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0, y: 1, expected: 0 }));
         sets.push(set({ x: 0, y: 2, expected: 0 }));
@@ -22,7 +22,7 @@ contract UD60x18__PowuTest is UD60x18__BaseTest {
         return sets;
     }
 
-    function testPowu__BaseZeroExponentNotZero() external parameterizedTest(baseZeroExponentNotZeroSets()) {
+    function test_Powu_BaseZeroExponentNotZero() external parameterizedTest(baseZeroExponentNotZero_Sets()) {
         UD60x18 actual = powu(s.x, UD60x18.unwrap(s.y));
         assertEq(actual, s.expected);
     }
@@ -31,7 +31,7 @@ contract UD60x18__PowuTest is UD60x18__BaseTest {
         _;
     }
 
-    function exponentZeroSets() internal returns (Set[] memory) {
+    function exponentZero_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 1e18, expected: 1e18 }));
         sets.push(set({ x: PI, expected: 1e18 }));
@@ -39,7 +39,7 @@ contract UD60x18__PowuTest is UD60x18__BaseTest {
         return sets;
     }
 
-    function testPowu__ExponentZero() external parameterizedTest(exponentZeroSets()) BaseNotZero {
+    function test_Powu_ExponentZero() external parameterizedTest(exponentZero_Sets()) BaseNotZero {
         UD60x18 actual = powu(s.x, UD60x18.unwrap(s.y));
         assertEq(actual, s.expected);
     }
@@ -48,7 +48,7 @@ contract UD60x18__PowuTest is UD60x18__BaseTest {
         _;
     }
 
-    function testCannotPowu__ResultOverflowUD60x18() external BaseNotZero ExponentNotZero {
+    function test_RevertWhen_ResultOverflowsUD60x18() external BaseNotZero ExponentNotZero {
         UD60x18 x = MAX_WHOLE_UD60x18;
         uint256 y = 2;
         vm.expectRevert(abi.encodeWithSelector(PRBMath__MulDiv18Overflow.selector, UD60x18.unwrap(x), UD60x18.unwrap(x)));
@@ -59,7 +59,7 @@ contract UD60x18__PowuTest is UD60x18__BaseTest {
         _;
     }
 
-    function powuSets() internal returns (Set[] memory) {
+    function powu_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.001e18, y: 3, expected: 1e9 }));
         sets.push(set({ x: 0.1e18, y: 2, expected: 1e16 }));
@@ -94,7 +94,7 @@ contract UD60x18__PowuTest is UD60x18__BaseTest {
         return sets;
     }
 
-    function testPowu() external parameterizedTest(powuSets()) BaseNotZero ExponentNotZero ResultDoesNotOverflowUD60x18 {
+    function test_Powu() external parameterizedTest(powu_Sets()) BaseNotZero ExponentNotZero ResultDoesNotOverflowUD60x18 {
         UD60x18 actual = powu(s.x, UD60x18.unwrap(s.y));
         assertEq(actual, s.expected);
     }

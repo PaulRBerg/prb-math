@@ -2,12 +2,12 @@
 pragma solidity >=0.8.13;
 
 import "src/UD60x18.sol";
-import { UD60x18__BaseTest } from "../../UD60x18BaseTest.t.sol";
+import { UD60x18_Test } from "../../UD60x18.t.sol";
 
-contract UD60x18__Exp2Test is UD60x18__BaseTest {
+contract Exp2_Test is UD60x18_Test {
     UD60x18 internal constant MAX_PERMITTED = UD60x18.wrap(192e18 - 1);
 
-    function testExp2__Zero() external {
+    function test_Exp2_Zero() external {
         UD60x18 x = ZERO;
         UD60x18 actual = exp2(x);
         UD60x18 expected = ud(1e18);
@@ -18,7 +18,7 @@ contract UD60x18__Exp2Test is UD60x18__BaseTest {
         _;
     }
 
-    function testCannotExp2__GreaterThanMaxPermitted() external NotZero {
+    function test_RevertWhen_GreaterThanMaxPermitted() external NotZero {
         UD60x18 x = MAX_PERMITTED.add(ud(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__Exp2InputTooBig.selector, x));
         exp2(x);
@@ -28,7 +28,7 @@ contract UD60x18__Exp2Test is UD60x18__BaseTest {
         _;
     }
 
-    function exp2Sets() internal returns (Set[] memory) {
+    function exp2_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.000000000000000001e18, expected: 1e18 }));
         sets.push(set({ x: 1e3, expected: 1_000000000000000693 }));
@@ -53,7 +53,7 @@ contract UD60x18__Exp2Test is UD60x18__BaseTest {
         return sets;
     }
 
-    function testExp2() external parameterizedTest(exp2Sets()) NotZero LessThanOrEqualToMaxPermitted {
+    function test_Exp2() external parameterizedTest(exp2_Sets()) NotZero LessThanOrEqualToMaxPermitted {
         UD60x18 actual = exp2(s.x);
         assertEq(actual, s.expected);
     }

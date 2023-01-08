@@ -2,13 +2,14 @@
 pragma solidity >=0.8.13;
 
 import { console2 } from "forge-std/console2.sol";
+
 import { BaseTest } from "../BaseTest.t.sol";
 import { MAX_UD60x18, UD60x18, ZERO } from "src/UD60x18.sol";
 
-/// @title UD60x18__BaseTest
+/// @title UD60x18_Test
 /// @author Paul Razvan Berg
 /// @notice Common contract members needed across UD60x18 tests.
-abstract contract UD60x18__BaseTest is BaseTest {
+abstract contract UD60x18_Test is BaseTest {
     /*//////////////////////////////////////////////////////////////////////////
                                       CONSTANTS
     //////////////////////////////////////////////////////////////////////////*/

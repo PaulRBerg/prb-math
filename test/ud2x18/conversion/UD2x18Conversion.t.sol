@@ -6,7 +6,7 @@ import { BaseTest } from "../../BaseTest.t.sol";
 
 /// @dev Collection of tests for the conversion functions available in the UD2x18 type.
 contract UD2x18__ConversionTest is BaseTest {
-    function testUd2x18(uint64 x) external {
+    function testFuzz_Ud2x18(uint64 x) external {
         UD2x18 actual = ud2x18(x);
         UD2x18 expected = UD2x18.wrap(x);
         assertEq(actual, expected);

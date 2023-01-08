@@ -2,9 +2,9 @@
 pragma solidity >=0.8.13;
 
 import "src/SD59x18.sol";
-import { SD59x18__BaseTest } from "../../SD59x18BaseTest.t.sol";
+import { SD59x18_Test } from "../../SD59x18.t.sol";
 
-contract ConvertTo_Test is SD59x18__BaseTest {
+contract ConvertTo_Test is SD59x18_Test {
     function test_RevertWhen_LessThanMinPermitted() external {
         int256 x = SD59x18.unwrap(MIN_SCALED_SD59x18) - 1;
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__ConvertUnderflow.selector, x));

@@ -2,10 +2,10 @@
 pragma solidity >=0.8.13;
 
 import "src/SD59x18.sol";
-import { SD59x18__BaseTest } from "../../SD59x18BaseTest.t.sol";
+import { SD59x18_Test } from "../../SD59x18.t.sol";
 
-contract SD59x18__CeilTest is SD59x18__BaseTest {
-    function testCeil__Zero() external {
+contract Ceil_Test is SD59x18_Test {
+    function test_Ceil_Zero() external {
         SD59x18 x = ZERO;
         SD59x18 actual = ceil(x);
         SD59x18 expected = ZERO;
@@ -16,7 +16,7 @@ contract SD59x18__CeilTest is SD59x18__BaseTest {
         _;
     }
 
-    function negativeSets() internal returns (Set[] memory) {
+    function negative_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_SD59x18, expected: MIN_WHOLE_SD59x18 }));
         sets.push(set({ x: MIN_WHOLE_SD59x18, expected: MIN_WHOLE_SD59x18 }));
@@ -31,12 +31,12 @@ contract SD59x18__CeilTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testCeil__Negative() external parameterizedTest(negativeSets()) NotZero {
+    function test_Ceil_Negative() external parameterizedTest(negative_Sets()) NotZero {
         SD59x18 actual = ceil(s.x);
         assertEq(actual, s.expected);
     }
 
-    function testCannotCeil__GreaterThanMaxPermitted() external NotZero {
+    function test_RevertWhen_GreaterThanMaxPermitted() external NotZero {
         SD59x18 x = MAX_WHOLE_SD59x18.add(sd(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__CeilOverflow.selector, x));
         ceil(x);
@@ -46,7 +46,7 @@ contract SD59x18__CeilTest is SD59x18__BaseTest {
         _;
     }
 
-    function positiveSets() internal returns (Set[] memory) {
+    function positive_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.1e18, expected: 1e18 }));
         sets.push(set({ x: 0.5e18, expected: 1e18 }));
@@ -60,7 +60,7 @@ contract SD59x18__CeilTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testCeil__Positive() external parameterizedTest(positiveSets()) NotZero LessThanOrEqualToMaxPermitted {
+    function test_Ceil_Positive() external parameterizedTest(positive_Sets()) NotZero LessThanOrEqualToMaxPermitted {
         SD59x18 actual = ceil(s.x);
         assertEq(actual, s.expected);
     }

@@ -2,10 +2,10 @@
 pragma solidity >=0.8.13;
 
 import "src/UD60x18.sol";
-import { UD60x18__BaseTest } from "../../UD60x18BaseTest.t.sol";
+import { UD60x18_Test } from "../../UD60x18.t.sol";
 
-contract UD60x18__AvgTest is UD60x18__BaseTest {
-    function testAvg__BothOperandsZero() external {
+contract Avg_Test is UD60x18_Test {
+    function test_Avg_BothOperandsZero() external {
         UD60x18 x = ZERO;
         UD60x18 y = ZERO;
         UD60x18 actual = avg(x, y);
@@ -13,14 +13,14 @@ contract UD60x18__AvgTest is UD60x18__BaseTest {
         assertEq(actual, expected);
     }
 
-    function onlyOneOperandZeroSets() internal returns (Set[] memory) {
+    function onlyOneOperandZero_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0, y: 3e18, expected: 1.5e18 }));
         sets.push(set({ x: 3e18, y: 0, expected: 1.5e18 }));
         return sets;
     }
 
-    function testAvg__OnlyOneOperandZero() external parameterizedTest(onlyOneOperandZeroSets()) {
+    function test_Avg_OnlyOneOperandZero() external parameterizedTest(onlyOneOperandZero_Sets()) {
         UD60x18 actual = avg(s.x, s.y);
         assertEq(actual, s.expected);
     }
@@ -29,7 +29,7 @@ contract UD60x18__AvgTest is UD60x18__BaseTest {
         _;
     }
 
-    function bothOperandsEvenSets() internal returns (Set[] memory) {
+    function bothOperandsEven_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 2, y: 4, expected: 3 }));
         sets.push(set({ x: 2e18, y: 2e18, expected: 2e18 }));
@@ -39,12 +39,12 @@ contract UD60x18__AvgTest is UD60x18__BaseTest {
         return sets;
     }
 
-    function testAvg__NeitherOperandZero__BothOperandsEven() external parameterizedTest(bothOperandsEvenSets()) NeitherOperandZero {
+    function test_Avg_NeitherOperandZero_BothOperandsEven() external parameterizedTest(bothOperandsEven_Sets()) NeitherOperandZero {
         UD60x18 actual = avg(s.x, s.y);
         assertEq(actual, s.expected);
     }
 
-    function bothOperandsOddSets() internal returns (Set[] memory) {
+    function bothOperandsOdd_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 1, y: 3, expected: 2 }));
         sets.push(set({ x: 1e18 + 1, y: 1e18 + 1, expected: 1e18 + 1 }));
@@ -55,12 +55,12 @@ contract UD60x18__AvgTest is UD60x18__BaseTest {
         return sets;
     }
 
-    function testAvg__NeitherOperandZero__BothOperandsOdd() external parameterizedTest(bothOperandsOddSets()) NeitherOperandZero {
+    function test_Avg_NeitherOperandZero__BothOperandsOdd() external parameterizedTest(bothOperandsOdd_Sets()) NeitherOperandZero {
         UD60x18 actual = avg(s.x, s.y);
         assertEq(actual, s.expected);
     }
 
-    function oneOperandEvenTheOtherOddSets() internal returns (Set[] memory) {
+    function oneOperandEvenTheOtherOdd_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 1, y: 2, expected: 1 }));
         sets.push(set({ x: 1e18 + 1, y: 2e18, expected: 1.5e18 }));
@@ -77,9 +77,9 @@ contract UD60x18__AvgTest is UD60x18__BaseTest {
         return sets;
     }
 
-    function testAvg__NeitherOperandZero__OneOperandEvenTheOtherOdd()
+    function test_Avg_NeitherOperandZero_OneOperandEvenTheOtherOdd()
         external
-        parameterizedTest(oneOperandEvenTheOtherOddSets())
+        parameterizedTest(oneOperandEvenTheOtherOdd_Sets())
         NeitherOperandZero
     {
         UD60x18 actual = avg(s.x, s.y);

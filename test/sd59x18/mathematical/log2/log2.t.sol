@@ -2,10 +2,10 @@
 pragma solidity >=0.8.13;
 
 import "src/SD59x18.sol";
-import { SD59x18__BaseTest } from "../../SD59x18BaseTest.t.sol";
+import { SD59x18_Test } from "../../SD59x18.t.sol";
 
-contract SD59x18__Log2Test is SD59x18__BaseTest {
-    function testCannotLog2__Zero() external {
+contract Log2_Test is SD59x18_Test {
+    function test_RevertWhen_Zero() external {
         SD59x18 x = ZERO;
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__LogInputTooSmall.selector, x));
         log2(x);
@@ -15,7 +15,7 @@ contract SD59x18__Log2Test is SD59x18__BaseTest {
         _;
     }
 
-    function testCannotLog2__Negative() external NotZero {
+    function test_RevertWhen_Negative() external NotZero {
         SD59x18 x = sd(-1);
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__LogInputTooSmall.selector, x));
         log2(x);
@@ -25,7 +25,7 @@ contract SD59x18__Log2Test is SD59x18__BaseTest {
         _;
     }
 
-    function powerOfTwoSets() internal returns (Set[] memory) {
+    function powerOfTwo_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.0625e18, expected: -4e18 }));
         sets.push(set({ x: 0.125e18, expected: -3e18 }));
@@ -40,12 +40,12 @@ contract SD59x18__Log2Test is SD59x18__BaseTest {
         return sets;
     }
 
-    function testLog2__PowerOfTwo() external parameterizedTest(powerOfTwoSets()) NotZero Positive {
+    function test_Log2_PowerOfTwo() external parameterizedTest(powerOfTwo_Sets()) NotZero Positive {
         SD59x18 actual = log2(s.x);
         assertEq(actual, s.expected);
     }
 
-    function notPowerOfTwoSets() internal returns (Set[] memory) {
+    function notPowerOfTwo_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.0091e18, expected: -6_779917739350753112 }));
         sets.push(set({ x: 0.083e18, expected: -3_590744853315162277 }));
@@ -66,7 +66,7 @@ contract SD59x18__Log2Test is SD59x18__BaseTest {
         return sets;
     }
 
-    function testLog2__NotPowerOfTwo() external parameterizedTest(notPowerOfTwoSets()) NotZero Positive {
+    function test_Log2_NotPowerOfTwo() external parameterizedTest(notPowerOfTwo_Sets()) NotZero Positive {
         SD59x18 actual = log2(s.x);
         assertEq(actual, s.expected);
     }

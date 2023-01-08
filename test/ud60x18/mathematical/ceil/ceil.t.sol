@@ -2,10 +2,10 @@
 pragma solidity >=0.8.13;
 
 import "src/UD60x18.sol";
-import { UD60x18__BaseTest } from "../../UD60x18BaseTest.t.sol";
+import { UD60x18_Test } from "../../UD60x18.t.sol";
 
-contract UD60x18__CeilTest is UD60x18__BaseTest {
-    function testCeil__Zero() external {
+contract CeilTest is UD60x18_Test {
+    function test_Ceil_Zero() external {
         UD60x18 x = ZERO;
         UD60x18 actual = ceil(x);
         UD60x18 expected = ZERO;
@@ -16,7 +16,7 @@ contract UD60x18__CeilTest is UD60x18__BaseTest {
         _;
     }
 
-    function testCannotCeil__GreaterThanMaxPermitted() external NotZero {
+    function test_RevertWhen_GreaterThanMaxPermitted() external NotZero {
         UD60x18 x = MAX_WHOLE_UD60x18.add(ud(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__CeilOverflow.selector, x));
         ceil(x);
@@ -26,7 +26,7 @@ contract UD60x18__CeilTest is UD60x18__BaseTest {
         _;
     }
 
-    function ceilSets() internal returns (Set[] memory) {
+    function ceil_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.1e18, expected: 1e18 }));
         sets.push(set({ x: 0.5e18, expected: 1e18 }));
@@ -40,7 +40,7 @@ contract UD60x18__CeilTest is UD60x18__BaseTest {
         return sets;
     }
 
-    function testCeil() external parameterizedTest(ceilSets()) NotZero LessThanOrEqualToMaxWholeUD60x18 {
+    function test_Ceil() external parameterizedTest(ceil_Sets()) NotZero LessThanOrEqualToMaxWholeUD60x18 {
         UD60x18 actual = ceil(s.x);
         assertEq(actual, s.expected);
     }

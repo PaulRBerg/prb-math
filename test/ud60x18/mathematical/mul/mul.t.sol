@@ -5,17 +5,17 @@ import { stdError } from "forge-std/StdError.sol";
 
 import "src/UD60x18.sol";
 import { PRBMath__MulDiv18Overflow } from "src/Core.sol";
-import { UD60x18__BaseTest } from "../../UD60x18BaseTest.t.sol";
+import { UD60x18_Test } from "../../UD60x18.t.sol";
 
-contract UD60x18__MulTest is UD60x18__BaseTest {
-    function oneOperandZeroSets() internal returns (Set[] memory) {
+contract Mul_Test is UD60x18_Test {
+    function oneOperandZero_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0, y: MAX_UD60x18, expected: 0 }));
         sets.push(set({ x: MAX_UD60x18, y: 0, expected: 0 }));
         return sets;
     }
 
-    function testMul__OneOperandZero() external parameterizedTest(oneOperandZeroSets()) {
+    function test_Mul_OneOperandZero() external parameterizedTest(oneOperandZero_Sets()) {
         UD60x18 actual = mul(s.x, s.y);
         assertEq(actual, s.expected);
     }
@@ -24,14 +24,14 @@ contract UD60x18__MulTest is UD60x18__BaseTest {
         _;
     }
 
-    function testCannotMul__ResultOverflowUD60x18_1() external NeitherOperandZero {
+    function test_RevertWhen_ResultOverflowUD60x18_1() external NeitherOperandZero {
         UD60x18 x = SQRT_MAX_UD60x18.add(ud(1));
         UD60x18 y = SQRT_MAX_UD60x18.add(ud(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMath__MulDiv18Overflow.selector, UD60x18.unwrap(x), UD60x18.unwrap(y)));
         mul(x, y);
     }
 
-    function testCannotMul__ResultOverflowUD60x18_2() external NeitherOperandZero {
+    function test_RevertWhen_ResultOverflowUD60x18_2() external NeitherOperandZero {
         UD60x18 x = SQRT_MAX_UD60x18.add(ud(1));
         UD60x18 y = SQRT_MAX_UD60x18.add(ud(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMath__MulDiv18Overflow.selector, UD60x18.unwrap(x), UD60x18.unwrap(y)));
@@ -42,7 +42,7 @@ contract UD60x18__MulTest is UD60x18__BaseTest {
         _;
     }
 
-    function mulSets() internal returns (Set[] memory) {
+    function mul_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.000000000000000001e18, y: 0.000000000000000001e18, expected: 0 }));
         sets.push(set({ x: 0.000000000000000006e18, y: 0.1e18, expected: 0 }));
@@ -70,7 +70,7 @@ contract UD60x18__MulTest is UD60x18__BaseTest {
         return sets;
     }
 
-    function testMul() external parameterizedTest(mulSets()) NeitherOperandZero ResultDoesNotOverflowUD60x18 {
+    function test_Mul() external parameterizedTest(mul_Sets()) NeitherOperandZero ResultDoesNotOverflowUD60x18 {
         UD60x18 actual = mul(s.x, s.y);
         assertEq(actual, s.expected);
     }

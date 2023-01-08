@@ -4,10 +4,10 @@ pragma solidity >=0.8.13;
 import { stdError } from "forge-std/StdError.sol";
 
 import "src/UD60x18.sol";
-import { UD60x18__BaseTest } from "../../UD60x18BaseTest.t.sol";
+import { UD60x18_Test } from "../../UD60x18.t.sol";
 
-contract UD60x18__Log2Test is UD60x18__BaseTest {
-    function testCannotLog2__LessThanOne() external {
+contract Log2_Test is UD60x18_Test {
+    function test_RevertWhen_LessThanOne() external {
         UD60x18 x = ud(1e18 - 1);
         vm.expectRevert(abi.encodeWithSelector(PRBMathUD60x18__LogInputTooSmall.selector, x));
         log2(x);
@@ -17,7 +17,7 @@ contract UD60x18__Log2Test is UD60x18__BaseTest {
         _;
     }
 
-    function powerOfTwoSets() internal returns (Set[] memory) {
+    function powerOfTwo_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 1e18, expected: 0 }));
         sets.push(set({ x: 2e18, expected: 1e18 }));
@@ -28,12 +28,12 @@ contract UD60x18__Log2Test is UD60x18__BaseTest {
         return sets;
     }
 
-    function testLog2__PowerOfTwo() external parameterizedTest(powerOfTwoSets()) GreaterThanOrEqualToOne {
+    function test_Log2_PowerOfTwo() external parameterizedTest(powerOfTwo_Sets()) GreaterThanOrEqualToOne {
         UD60x18 actual = log2(s.x);
         assertEq(actual, s.expected);
     }
 
-    function notPowerOfTwoSets() internal returns (Set[] memory) {
+    function notPowerOfTwo_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 1.125e18, expected: 0.169925001442312346e18 }));
         sets.push(set({ x: E, expected: 1_442695040888963394 }));
@@ -44,7 +44,7 @@ contract UD60x18__Log2Test is UD60x18__BaseTest {
         return sets;
     }
 
-    function testLog2__NotPowerOfTwo() external parameterizedTest(notPowerOfTwoSets()) GreaterThanOrEqualToOne {
+    function test_Log2_NotPowerOfTwo() external parameterizedTest(notPowerOfTwo_Sets()) GreaterThanOrEqualToOne {
         UD60x18 actual = log2(s.x);
         assertEq(actual, s.expected);
     }

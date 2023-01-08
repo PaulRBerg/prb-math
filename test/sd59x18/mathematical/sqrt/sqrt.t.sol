@@ -2,10 +2,10 @@
 pragma solidity >=0.8.13;
 
 import "src/SD59x18.sol";
-import { SD59x18__BaseTest } from "../../SD59x18BaseTest.t.sol";
+import { SD59x18_Test } from "../../SD59x18.t.sol";
 
-contract SD59x18__SqrtTest is SD59x18__BaseTest {
-    function testSqrt__Zero() external {
+contract Sqrt_Test is SD59x18_Test {
+    function test_Sqrt_Zero() external {
         SD59x18 x = ZERO;
         SD59x18 actual = sqrt(x);
         SD59x18 expected = ZERO;
@@ -16,7 +16,7 @@ contract SD59x18__SqrtTest is SD59x18__BaseTest {
         _;
     }
 
-    function testCannotSqrt__Negative() external NotZero {
+    function test_RevertWhen_Negative() external NotZero {
         SD59x18 x = sd(-1);
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__SqrtNegativeInput.selector, x));
         sqrt(x);
@@ -26,7 +26,7 @@ contract SD59x18__SqrtTest is SD59x18__BaseTest {
         _;
     }
 
-    function testCannotSqrt__GreaterThanMaxPermitted() external NotZero Positive {
+    function test_RevertWhen_GreaterThanMaxPermitted() external NotZero Positive {
         SD59x18 x = MAX_SCALED_SD59x18.add(sd(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMathSD59x18__SqrtOverflow.selector, x));
         sqrt(x);
@@ -36,7 +36,7 @@ contract SD59x18__SqrtTest is SD59x18__BaseTest {
         _;
     }
 
-    function sqrtSets() internal returns (Set[] memory) {
+    function sqrt_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.000000000000000001e18, expected: 0.000000001e18 }));
         sets.push(set({ x: 0.000000000000001e18, expected: 0.000000031622776601e18 }));
@@ -58,7 +58,7 @@ contract SD59x18__SqrtTest is SD59x18__BaseTest {
         return sets;
     }
 
-    function testSqrt() external parameterizedTest(sqrtSets()) NotZero Positive LessThanOrEqualToMaxPermitted {
+    function test_Sqrt() external parameterizedTest(sqrt_Sets()) NotZero Positive LessThanOrEqualToMaxPermitted {
         SD59x18 actual = sqrt(s.x);
         assertEq(actual, s.expected);
     }
