@@ -11,17 +11,17 @@ contract Log10_Test is SD59x18_Test {
         log10(x);
     }
 
-    modifier NotZero() {
+    modifier notZero() {
         _;
     }
 
-    function test_RevertWhen_Negative() external NotZero {
+    function test_RevertWhen_Negative() external notZero {
         SD59x18 x = sd(-1);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_LogInputTooSmall.selector, x));
         log10(x);
     }
 
-    modifier Positive() {
+    modifier positive() {
         _;
     }
 
@@ -45,7 +45,7 @@ contract Log10_Test is SD59x18_Test {
         return sets;
     }
 
-    function test_Log10_PowerOfTen() external parameterizedTest(powerOfTen_Sets()) NotZero Positive {
+    function test_Log10_PowerOfTen() external parameterizedTest(powerOfTen_Sets()) notZero positive {
         SD59x18 actual = log10(s.x);
         assertEq(actual, s.expected);
     }
@@ -73,7 +73,7 @@ contract Log10_Test is SD59x18_Test {
         return sets;
     }
 
-    function test_Log10_NotPowerOfTen() external parameterizedTest(notPowerOfTen_Sets()) NotZero Positive {
+    function test_Log10_NotPowerOfTen() external parameterizedTest(notPowerOfTen_Sets()) notZero positive {
         SD59x18 actual = log10(s.x);
         assertEq(actual, s.expected);
     }

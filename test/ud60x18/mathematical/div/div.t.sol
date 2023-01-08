@@ -15,7 +15,7 @@ contract Div_Test is UD60x18_Test {
         div(x, y);
     }
 
-    modifier DenominatorNotZero() {
+    modifier denominatorNotZero() {
         _;
     }
 
@@ -28,19 +28,19 @@ contract Div_Test is UD60x18_Test {
         return sets;
     }
 
-    function test_Div_NumeratorZero() external parameterizedTest(numeratorZero_Sets()) DenominatorNotZero {
+    function test_Div_NumeratorZero() external parameterizedTest(numeratorZero_Sets()) denominatorNotZero {
         UD60x18 actual = div(s.x, s.y);
         assertEq(actual, s.expected);
     }
 
-    function test_RevertWhen_ResultOverflowUD60x18() external DenominatorNotZero {
+    function test_RevertWhen_ResultOverflowUD60x18() external denominatorNotZero {
         UD60x18 x = MAX_SCALED_UD60x18.add(ud(1));
         UD60x18 y = ud(0.000000000000000001e18);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_MulDivOverflow.selector, UD60x18.unwrap(x), uUNIT, UD60x18.unwrap(y)));
         div(x, y);
     }
 
-    modifier ResultNotOverflowUD60x18() {
+    modifier resultNotOverflowUD60x18() {
         _;
     }
 
@@ -65,7 +65,7 @@ contract Div_Test is UD60x18_Test {
         return sets;
     }
 
-    function test_Div() external parameterizedTest(div_Sets()) DenominatorNotZero ResultNotOverflowUD60x18 {
+    function test_Div() external parameterizedTest(div_Sets()) denominatorNotZero resultNotOverflowUD60x18 {
         UD60x18 actual = div(s.x, s.y);
         assertEq(actual, s.expected);
     }

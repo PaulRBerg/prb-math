@@ -12,7 +12,7 @@ contract Ceil_Test is SD59x18_Test {
         assertEq(actual, expected);
     }
 
-    modifier NotZero() {
+    modifier notZero() {
         _;
     }
 
@@ -31,18 +31,18 @@ contract Ceil_Test is SD59x18_Test {
         return sets;
     }
 
-    function test_Ceil_Negative() external parameterizedTest(negative_Sets()) NotZero {
+    function test_Ceil_Negative() external parameterizedTest(negative_Sets()) notZero {
         SD59x18 actual = ceil(s.x);
         assertEq(actual, s.expected);
     }
 
-    function test_RevertWhen_GreaterThanMaxPermitted() external NotZero {
+    function test_RevertWhen_GreaterThanMaxPermitted() external notZero {
         SD59x18 x = MAX_WHOLE_SD59x18.add(sd(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_CeilOverflow.selector, x));
         ceil(x);
     }
 
-    modifier LessThanOrEqualToMaxPermitted() {
+    modifier lessThanOrEqualToMaxPermitted() {
         _;
     }
 
@@ -60,7 +60,7 @@ contract Ceil_Test is SD59x18_Test {
         return sets;
     }
 
-    function test_Ceil_Positive() external parameterizedTest(positive_Sets()) NotZero LessThanOrEqualToMaxPermitted {
+    function test_Ceil_Positive() external parameterizedTest(positive_Sets()) notZero lessThanOrEqualToMaxPermitted {
         SD59x18 actual = ceil(s.x);
         assertEq(actual, s.expected);
     }

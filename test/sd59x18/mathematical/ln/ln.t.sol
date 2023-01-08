@@ -11,17 +11,17 @@ contract Ln_Test is SD59x18_Test {
         ln(x);
     }
 
-    modifier NotZero() {
+    modifier notZero() {
         _;
     }
 
-    function test_RevertWhen_Negative() external NotZero {
+    function test_RevertWhen_Negative() external notZero {
         SD59x18 x = sd(-1);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_LogInputTooSmall.selector, x));
         ln(x);
     }
 
-    modifier Positive() {
+    modifier positive() {
         _;
     }
 
@@ -49,7 +49,7 @@ contract Ln_Test is SD59x18_Test {
         return sets;
     }
 
-    function test_Ln() external parameterizedTest(ln_Sets()) NotZero Positive {
+    function test_Ln() external parameterizedTest(ln_Sets()) notZero positive {
         SD59x18 actual = ln(s.x);
         assertEq(actual, s.expected);
     }

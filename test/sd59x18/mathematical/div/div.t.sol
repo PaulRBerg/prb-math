@@ -14,18 +14,18 @@ contract Div_Test is SD59x18_Test {
         div(x, y);
     }
 
-    modifier DenominatorNotZero() {
+    modifier denominatorNotZero() {
         _;
     }
 
-    function test_RevertWhen_DenominatorMinSD59x18() external DenominatorNotZero {
+    function test_RevertWhen_DenominatorMinSD59x18() external denominatorNotZero {
         SD59x18 x = sd(1e18);
         SD59x18 y = MIN_SD59x18;
         vm.expectRevert(PRBMath_SD59x18_DivInputTooSmall.selector);
         div(x, y);
     }
 
-    modifier DenominatorNotMinSD59x18() {
+    modifier denominatorNotMinSD59x18() {
         _;
     }
 
@@ -42,32 +42,32 @@ contract Div_Test is SD59x18_Test {
         return sets;
     }
 
-    function test_Div_NumeratorZero() external parameterizedTest(numeratorZero_Sets()) DenominatorNotZero DenominatorNotMinSD59x18 {
+    function test_Div_NumeratorZero() external parameterizedTest(numeratorZero_Sets()) denominatorNotZero denominatorNotMinSD59x18 {
         SD59x18 actual = div(s.x, s.y);
         assertEq(actual, s.expected);
     }
 
-    modifier NumeratorNotZero() {
+    modifier numeratorNotZero() {
         _;
     }
 
-    function test_RevertWhen_NumeratorMinSD59x18() external DenominatorNotZero DenominatorNotMinSD59x18 NumeratorNotZero {
+    function test_RevertWhen_NumeratorMinSD59x18() external denominatorNotZero denominatorNotMinSD59x18 numeratorNotZero {
         SD59x18 x = MIN_SD59x18;
         SD59x18 y = sd(0.000000000000000001e18);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_DivInputTooSmall.selector));
         div(x, y);
     }
 
-    modifier NumeratorNotMinSD59x18() {
+    modifier numeratorNotMinSD59x18() {
         _;
     }
 
     function test_RevertWhen_ResultOverflowSD59x18()
         external
-        DenominatorNotZero
-        DenominatorNotMinSD59x18
-        NumeratorNotZero
-        NumeratorNotMinSD59x18
+        denominatorNotZero
+        denominatorNotMinSD59x18
+        numeratorNotZero
+        numeratorNotMinSD59x18
     {
         SD59x18 x = MIN_SCALED_SD59x18.sub(sd(1));
         SD59x18 y = sd(0.000000000000000001e18);
@@ -75,7 +75,7 @@ contract Div_Test is SD59x18_Test {
         div(x, y);
     }
 
-    modifier ResultNotOverflowSD59x18() {
+    modifier resultNotOverflowSD59x18() {
         _;
     }
 
@@ -119,11 +119,11 @@ contract Div_Test is SD59x18_Test {
     function test_Div_NumeratorDenominatorSameSign()
         external
         parameterizedTest(numeratorDenominatorSameSign_Sets())
-        DenominatorNotZero
-        DenominatorNotMinSD59x18
-        NumeratorNotZero
-        NumeratorNotMinSD59x18
-        ResultNotOverflowSD59x18
+        denominatorNotZero
+        denominatorNotMinSD59x18
+        numeratorNotZero
+        numeratorNotMinSD59x18
+        resultNotOverflowSD59x18
     {
         SD59x18 actual = div(s.x, s.y);
         assertEq(actual, s.expected);
@@ -169,11 +169,11 @@ contract Div_Test is SD59x18_Test {
     function test_Div_NumeratorDenominatorDifferentSign()
         external
         parameterizedTest(numeratorDenominatorDifferentSign_Sets())
-        DenominatorNotZero
-        DenominatorNotMinSD59x18
-        NumeratorNotZero
-        NumeratorNotMinSD59x18
-        ResultNotOverflowSD59x18
+        denominatorNotZero
+        denominatorNotMinSD59x18
+        numeratorNotZero
+        numeratorNotMinSD59x18
+        resultNotOverflowSD59x18
     {
         SD59x18 actual = div(s.x, s.y);
         assertEq(actual, s.expected);

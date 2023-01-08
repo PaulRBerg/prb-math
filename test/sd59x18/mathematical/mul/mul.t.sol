@@ -22,43 +22,43 @@ contract Mul_Test is SD59x18_Test {
         assertEq(actual, s.expected);
     }
 
-    modifier NeitherOperandZero() {
+    modifier neitherOperandZero() {
         _;
     }
 
-    function test_RevertWhen_OneOperandMinSD59x18_1() external NeitherOperandZero {
+    function test_RevertWhen_OneOperandMinSD59x18_1() external neitherOperandZero {
         SD59x18 x = MIN_SD59x18;
         SD59x18 y = sd(0.000000000000000001e18);
         vm.expectRevert(PRBMath_SD59x18_MulInputTooSmall.selector);
         mul(x, y);
     }
 
-    function test_RevertWhen_OneOperandMinSD59x18_2() external NeitherOperandZero {
+    function test_RevertWhen_OneOperandMinSD59x18_2() external neitherOperandZero {
         SD59x18 x = sd(0.000000000000000001e18);
         SD59x18 y = MIN_SD59x18;
         vm.expectRevert(PRBMath_SD59x18_MulInputTooSmall.selector);
         mul(x, y);
     }
 
-    modifier NeitherOperandMinSD59x18() {
+    modifier neitherOperandMinSD59x18() {
         _;
     }
 
-    function test_RevertWhen_ResultOverflowSD59x18_1() external NeitherOperandZero NeitherOperandMinSD59x18 {
+    function test_RevertWhen_ResultOverflowSD59x18_1() external neitherOperandZero neitherOperandMinSD59x18 {
         SD59x18 x = NEGATIVE_SQRT_MAX_SD59x18;
         SD59x18 y = NEGATIVE_SQRT_MAX_SD59x18.sub(sd(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_MulOverflow.selector, x, y));
         mul(x, y);
     }
 
-    function test_RevertWhen_ResultOverflowSD59x18_2() external NeitherOperandZero NeitherOperandMinSD59x18 {
+    function test_RevertWhen_ResultOverflowSD59x18_2() external neitherOperandZero neitherOperandMinSD59x18 {
         SD59x18 x = SQRT_MAX_SD59x18;
         SD59x18 y = SQRT_MAX_SD59x18.add(sd(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_MulOverflow.selector, x, y));
         mul(x, y);
     }
 
-    modifier ResultDoesNotOverflowSD59x18() {
+    modifier resultDoesNotOverflowSD59x18() {
         _;
     }
 
@@ -76,9 +76,9 @@ contract Mul_Test is SD59x18_Test {
     function test_RevertWhen_ResultOverflowUint256()
         external
         parameterizedTest(resultOverflowUint256_Sets())
-        NeitherOperandZero
-        NeitherOperandMinSD59x18
-        ResultDoesNotOverflowSD59x18
+        neitherOperandZero
+        neitherOperandMinSD59x18
+        resultDoesNotOverflowSD59x18
     {
         vm.expectRevert(
             abi.encodeWithSelector(
@@ -90,7 +90,7 @@ contract Mul_Test is SD59x18_Test {
         mul(s.x, s.y);
     }
 
-    modifier ResultDoesNotOverflowUint256() {
+    modifier resultDoesNotOverflowUint256() {
         _;
     }
 
@@ -138,10 +138,10 @@ contract Mul_Test is SD59x18_Test {
     function test_Mul_OperandsSameSign()
         external
         parameterizedTest(operandsSameSign_Sets())
-        NeitherOperandZero
-        NeitherOperandMinSD59x18
-        ResultDoesNotOverflowSD59x18
-        ResultDoesNotOverflowUint256
+        neitherOperandZero
+        neitherOperandMinSD59x18
+        resultDoesNotOverflowSD59x18
+        resultDoesNotOverflowUint256
     {
         SD59x18 actual = mul(s.x, s.y);
         assertEq(actual, s.expected);
@@ -191,10 +191,10 @@ contract Mul_Test is SD59x18_Test {
     function test_Mul_OperandsDifferentSign()
         external
         parameterizedTest(operandsDifferentSigns_Sets())
-        NeitherOperandZero
-        NeitherOperandMinSD59x18
-        ResultDoesNotOverflowSD59x18
-        ResultDoesNotOverflowUint256
+        neitherOperandZero
+        neitherOperandMinSD59x18
+        resultDoesNotOverflowSD59x18
+        resultDoesNotOverflowUint256
     {
         SD59x18 actual = mul(s.x, s.y);
         assertEq(actual, s.expected);

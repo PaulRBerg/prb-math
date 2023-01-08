@@ -20,18 +20,18 @@ contract Gm_Test is UD60x18_Test {
         assertEq(actual, s.expected);
     }
 
-    modifier NotZeroOperands() {
+    modifier notZeroOperands() {
         _;
     }
 
-    function test_RevertWhen_ProductOverflow() external NotZeroOperands {
+    function test_RevertWhen_ProductOverflow() external notZeroOperands {
         UD60x18 x = SQRT_MAX_UD60x18.add(ud(1));
         UD60x18 y = SQRT_MAX_UD60x18.add(ud(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMath_UD60x18_GmOverflow.selector, x, y));
         gm(x, y);
     }
 
-    modifier ProductNotOverflow() {
+    modifier productNotOverflow() {
         _;
     }
 
@@ -50,7 +50,7 @@ contract Gm_Test is UD60x18_Test {
         return sets;
     }
 
-    function test_Gm() external parameterizedTest(gm_Sets()) NotZeroOperands ProductNotOverflow {
+    function test_Gm() external parameterizedTest(gm_Sets()) notZeroOperands productNotOverflow {
         UD60x18 actual = gm(s.x, s.y);
         assertEq(actual, s.expected);
     }

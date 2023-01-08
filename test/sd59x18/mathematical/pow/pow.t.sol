@@ -28,18 +28,18 @@ contract Pow_Test is SD59x18_Test {
         assertEq(actual, s.expected);
     }
 
-    modifier BaseNotZero() {
+    modifier baseNotZero() {
         _;
     }
 
-    function test_RevertWhen_BaseNegative() external BaseNotZero {
+    function test_RevertWhen_BaseNegative() external baseNotZero {
         SD59x18 x = sd(-0.000000000000000001e18);
         SD59x18 y = sd(2e18);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_LogInputTooSmall.selector, x));
         pow(x, y);
     }
 
-    modifier BasePositive() {
+    modifier basePositive() {
         _;
     }
 
@@ -51,12 +51,12 @@ contract Pow_Test is SD59x18_Test {
         return sets;
     }
 
-    function test_Pow_ExponentZero() external parameterizedTest(exponentZero_Sets()) BaseNotZero BasePositive {
+    function test_Pow_ExponentZero() external parameterizedTest(exponentZero_Sets()) baseNotZero basePositive {
         SD59x18 actual = pow(s.x, s.y);
         assertEq(actual, s.expected);
     }
 
-    modifier ExponentNotZero() {
+    modifier exponentNotZero() {
         _;
     }
 
@@ -68,23 +68,23 @@ contract Pow_Test is SD59x18_Test {
         return sets;
     }
 
-    function test_Pow_ExponentOne() external parameterizedTest(exponentOne_Sets()) BaseNotZero BasePositive ExponentNotZero {
+    function test_Pow_ExponentOne() external parameterizedTest(exponentOne_Sets()) baseNotZero basePositive exponentNotZero {
         SD59x18 actual = pow(s.x, s.y);
         assertEq(actual, s.expected);
     }
 
-    modifier ExponentNotOne() {
+    modifier exponentNotOne() {
         _;
     }
 
-    function test_RevertWhen_ExponentGreaterThanMaxPermitted() external BaseNotZero BasePositive ExponentNotZero ExponentNotOne {
+    function test_RevertWhen_ExponentGreaterThanMaxPermitted() external baseNotZero basePositive exponentNotZero exponentNotOne {
         SD59x18 x = MAX_PERMITTED.add(sd(1));
         SD59x18 y = sd(1e18 + 1);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Exp2InputTooBig.selector, sd(192e18 + 192)));
         pow(x, y);
     }
 
-    modifier ExponentLessThanOrEqualToMaxPermitted() {
+    modifier exponentLessThanOrEqualToMaxPermitted() {
         _;
     }
 
@@ -115,11 +115,11 @@ contract Pow_Test is SD59x18_Test {
     function test_Pow_NegativeExponent()
         external
         parameterizedTest(negativeExponent_Sets())
-        BaseNotZero
-        BasePositive
-        ExponentNotZero
-        ExponentNotOne
-        ExponentLessThanOrEqualToMaxPermitted
+        baseNotZero
+        basePositive
+        exponentNotZero
+        exponentNotOne
+        exponentLessThanOrEqualToMaxPermitted
     {
         SD59x18 actual = pow(s.x, s.y);
         assertEq(actual, s.expected);
@@ -158,11 +158,11 @@ contract Pow_Test is SD59x18_Test {
     function test_Pow_PositiveExponent()
         external
         parameterizedTest(positiveExponent_Sets())
-        BaseNotZero
-        BasePositive
-        ExponentNotZero
-        ExponentNotOne
-        ExponentLessThanOrEqualToMaxPermitted
+        baseNotZero
+        basePositive
+        exponentNotZero
+        exponentNotOne
+        exponentLessThanOrEqualToMaxPermitted
     {
         SD59x18 actual = pow(s.x, s.y);
         assertEq(actual, s.expected);

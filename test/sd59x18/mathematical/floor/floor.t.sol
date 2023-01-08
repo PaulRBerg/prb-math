@@ -12,11 +12,11 @@ contract Floor_Test is SD59x18_Test {
         assertEq(actual, expected);
     }
 
-    modifier NotZero() {
+    modifier notZero() {
         _;
     }
 
-    function test_RevertWhen_Negative_LessThanMinPermitted() external NotZero {
+    function test_RevertWhen_Negative_LessThanMinPermitted() external notZero {
         SD59x18 x = MIN_WHOLE_SD59x18.sub(sd(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_FloorUnderflow.selector, x));
         floor(x);
@@ -38,7 +38,7 @@ contract Floor_Test is SD59x18_Test {
     function test_Floor_Negative_GreaterThanOrEqualToMinPermitted()
         external
         parameterizedTest(negativeAndGreaterThanOrEqualToMinPermitted_Sets())
-        NotZero
+        notZero
     {
         SD59x18 actual = floor(s.x);
         assertEq(actual, s.expected);
@@ -59,7 +59,7 @@ contract Floor_Test is SD59x18_Test {
         return sets;
     }
 
-    function test_Floor_Positive() external parameterizedTest(positive_Sets()) NotZero {
+    function test_Floor_Positive() external parameterizedTest(positive_Sets()) notZero {
         SD59x18 actual = floor(s.x);
         assertEq(actual, s.expected);
     }

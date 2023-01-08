@@ -15,7 +15,7 @@ contract Exp2_Test is SD59x18_Test {
         assertEq(actual, expected);
     }
 
-    modifier NotZero() {
+    modifier notZero() {
         _;
     }
 
@@ -27,7 +27,7 @@ contract Exp2_Test is SD59x18_Test {
         return sets;
     }
 
-    function test_Exp2_Negative_LessThanMinPermitted() external parameterizedTest(negativeAndLessThanMinPermitted_Sets()) NotZero {
+    function test_Exp2_Negative_LessThanMinPermitted() external parameterizedTest(negativeAndLessThanMinPermitted_Sets()) notZero {
         SD59x18 actual = exp2(s.x);
         assertEq(actual, s.expected);
     }
@@ -53,19 +53,19 @@ contract Exp2_Test is SD59x18_Test {
     function test_Exp2_Negative_GreaterThanOrEqualToMinPermitted()
         external
         parameterizedTest(negativeAndGreaterThanOrEqualToMinPermitted_Sets())
-        NotZero
+        notZero
     {
         SD59x18 actual = exp2(s.x);
         assertEq(actual, s.expected);
     }
 
-    function test_RevertWhen_Positive_GreaterThanMaxPermitted() external NotZero {
+    function test_RevertWhen_Positive_GreaterThanMaxPermitted() external notZero {
         SD59x18 x = MAX_PERMITTED.add(sd(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Exp2InputTooBig.selector, x));
         exp2(x);
     }
 
-    modifier LessThanMaxPermitted() {
+    modifier lessThanMaxPermitted() {
         _;
     }
 
@@ -97,7 +97,7 @@ contract Exp2_Test is SD59x18_Test {
     function test_Exp2_Positive_LessThanOrEqualToPermittedMax()
         external
         parameterizedTest(positiveAndLessThanOrEqualToPermitted_Sets())
-        NotZero
+        notZero
     {
         SD59x18 actual = exp2(s.x);
         assertEq(actual, s.expected);

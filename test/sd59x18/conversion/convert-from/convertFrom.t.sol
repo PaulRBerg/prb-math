@@ -21,7 +21,7 @@ contract ConvertFrom_Test is SD59x18_Test {
         assertEq(actual, expected);
     }
 
-    modifier GreaterThanOrEqualToAbsoluteOne() {
+    modifier greaterThanOrEqualToAbsoluteOne() {
         _;
     }
 
@@ -51,7 +51,7 @@ contract ConvertFrom_Test is SD59x18_Test {
         return sets;
     }
 
-    function test_ConvertFrom() external parameterizedTest(greaterThanAbsoluteOne_Sets()) GreaterThanOrEqualToAbsoluteOne {
+    function test_ConvertFrom() external parameterizedTest(greaterThanAbsoluteOne_Sets()) greaterThanOrEqualToAbsoluteOne {
         int256 actual = fromSD59x18(s.x);
         int256 expected = SD59x18.unwrap(s.expected);
         assertEq(actual, expected);

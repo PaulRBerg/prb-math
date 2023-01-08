@@ -12,17 +12,17 @@ contract CeilTest is UD60x18_Test {
         assertEq(actual, expected);
     }
 
-    modifier NotZero() {
+    modifier notZero() {
         _;
     }
 
-    function test_RevertWhen_GreaterThanMaxPermitted() external NotZero {
+    function test_RevertWhen_GreaterThanMaxPermitted() external notZero {
         UD60x18 x = MAX_WHOLE_UD60x18.add(ud(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMath_UD60x18_CeilOverflow.selector, x));
         ceil(x);
     }
 
-    modifier LessThanOrEqualToMaxWholeUD60x18() {
+    modifier lessThanOrEqualToMaxWholeUD60x18() {
         _;
     }
 
@@ -40,7 +40,7 @@ contract CeilTest is UD60x18_Test {
         return sets;
     }
 
-    function test_Ceil() external parameterizedTest(ceil_Sets()) NotZero LessThanOrEqualToMaxWholeUD60x18 {
+    function test_Ceil() external parameterizedTest(ceil_Sets()) notZero lessThanOrEqualToMaxWholeUD60x18 {
         UD60x18 actual = ceil(s.x);
         assertEq(actual, s.expected);
     }

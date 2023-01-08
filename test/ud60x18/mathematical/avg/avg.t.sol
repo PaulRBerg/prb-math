@@ -25,7 +25,7 @@ contract Avg_Test is UD60x18_Test {
         assertEq(actual, s.expected);
     }
 
-    modifier NeitherOperandZero() {
+    modifier neitherOperandZero() {
         _;
     }
 
@@ -39,7 +39,7 @@ contract Avg_Test is UD60x18_Test {
         return sets;
     }
 
-    function test_Avg_NeitherOperandZero_BothOperandsEven() external parameterizedTest(bothOperandsEven_Sets()) NeitherOperandZero {
+    function test_Avg_NeitherOperandZero_BothOperandsEven() external parameterizedTest(bothOperandsEven_Sets()) neitherOperandZero {
         UD60x18 actual = avg(s.x, s.y);
         assertEq(actual, s.expected);
     }
@@ -55,7 +55,7 @@ contract Avg_Test is UD60x18_Test {
         return sets;
     }
 
-    function test_Avg_NeitherOperandZero_BothOperandsOdd() external parameterizedTest(bothOperandsOdd_Sets()) NeitherOperandZero {
+    function test_Avg_NeitherOperandZero_BothOperandsOdd() external parameterizedTest(bothOperandsOdd_Sets()) neitherOperandZero {
         UD60x18 actual = avg(s.x, s.y);
         assertEq(actual, s.expected);
     }
@@ -80,7 +80,7 @@ contract Avg_Test is UD60x18_Test {
     function test_Avg_NeitherOperandZero_OneOperandEvenTheOtherOdd()
         external
         parameterizedTest(oneOperandEvenTheOtherOdd_Sets())
-        NeitherOperandZero
+        neitherOperandZero
     {
         UD60x18 actual = avg(s.x, s.y);
         assertEq(actual, s.expected);

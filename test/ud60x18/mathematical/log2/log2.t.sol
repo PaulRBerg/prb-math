@@ -13,7 +13,7 @@ contract Log2_Test is UD60x18_Test {
         log2(x);
     }
 
-    modifier GreaterThanOrEqualToOne() {
+    modifier greaterThanOrEqualToOne() {
         _;
     }
 
@@ -28,7 +28,7 @@ contract Log2_Test is UD60x18_Test {
         return sets;
     }
 
-    function test_Log2_PowerOfTwo() external parameterizedTest(powerOfTwo_Sets()) GreaterThanOrEqualToOne {
+    function test_Log2_PowerOfTwo() external parameterizedTest(powerOfTwo_Sets()) greaterThanOrEqualToOne {
         UD60x18 actual = log2(s.x);
         assertEq(actual, s.expected);
     }
@@ -44,7 +44,7 @@ contract Log2_Test is UD60x18_Test {
         return sets;
     }
 
-    function test_Log2_NotPowerOfTwo() external parameterizedTest(notPowerOfTwo_Sets()) GreaterThanOrEqualToOne {
+    function test_Log2_NotPowerOfTwo() external parameterizedTest(notPowerOfTwo_Sets()) greaterThanOrEqualToOne {
         UD60x18 actual = log2(s.x);
         assertEq(actual, s.expected);
     }

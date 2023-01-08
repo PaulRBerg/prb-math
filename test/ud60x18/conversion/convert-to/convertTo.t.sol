@@ -11,7 +11,7 @@ contract ConvertTo_Test is UD60x18_Test {
         convert(x);
     }
 
-    modifier LessThanOrEqualToMaxPermitted() {
+    modifier lessThanOrEqualToMaxPermitted() {
         _;
     }
 
@@ -28,7 +28,7 @@ contract ConvertTo_Test is UD60x18_Test {
         return sets;
     }
 
-    function test_ConvertTo() external parameterizedTest(convertTo_Sets()) LessThanOrEqualToMaxPermitted {
+    function test_ConvertTo() external parameterizedTest(convertTo_Sets()) lessThanOrEqualToMaxPermitted {
         UD60x18 x = convert(UD60x18.unwrap(s.x));
         assertEq(x, s.expected);
     }

@@ -13,7 +13,7 @@ contract Inv_Test is UD60x18_Test {
         inv(x);
     }
 
-    modifier NotZero() {
+    modifier notZero() {
         _;
     }
 
@@ -38,7 +38,7 @@ contract Inv_Test is UD60x18_Test {
         return sets;
     }
 
-    function test_Inv() external parameterizedTest(inv_Sets()) NotZero {
+    function test_Inv() external parameterizedTest(inv_Sets()) notZero {
         UD60x18 actual = inv(s.x);
         assertEq(actual, s.expected);
     }

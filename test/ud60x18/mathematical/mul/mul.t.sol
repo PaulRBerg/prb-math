@@ -20,25 +20,25 @@ contract Mul_Test is UD60x18_Test {
         assertEq(actual, s.expected);
     }
 
-    modifier NeitherOperandZero() {
+    modifier neitherOperandZero() {
         _;
     }
 
-    function test_RevertWhen_ResultOverflowUD60x18_1() external NeitherOperandZero {
+    function test_RevertWhen_ResultOverflowUD60x18_1() external neitherOperandZero {
         UD60x18 x = SQRT_MAX_UD60x18.add(ud(1));
         UD60x18 y = SQRT_MAX_UD60x18.add(ud(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMath_MulDiv18Overflow.selector, UD60x18.unwrap(x), UD60x18.unwrap(y)));
         mul(x, y);
     }
 
-    function test_RevertWhen_ResultOverflowUD60x18_2() external NeitherOperandZero {
+    function test_RevertWhen_ResultOverflowUD60x18_2() external neitherOperandZero {
         UD60x18 x = SQRT_MAX_UD60x18.add(ud(1));
         UD60x18 y = SQRT_MAX_UD60x18.add(ud(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMath_MulDiv18Overflow.selector, UD60x18.unwrap(x), UD60x18.unwrap(y)));
         mul(x, y);
     }
 
-    modifier ResultDoesNotOverflowUD60x18() {
+    modifier resultDoesNotOverflowUD60x18() {
         _;
     }
 
@@ -70,7 +70,7 @@ contract Mul_Test is UD60x18_Test {
         return sets;
     }
 
-    function test_Mul() external parameterizedTest(mul_Sets()) NeitherOperandZero ResultDoesNotOverflowUD60x18 {
+    function test_Mul() external parameterizedTest(mul_Sets()) neitherOperandZero resultDoesNotOverflowUD60x18 {
         UD60x18 actual = mul(s.x, s.y);
         assertEq(actual, s.expected);
     }
