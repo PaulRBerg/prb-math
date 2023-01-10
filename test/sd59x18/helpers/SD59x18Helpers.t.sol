@@ -111,25 +111,6 @@ contract SD59x18_HelpersTest is SD59x18_Test {
         assertEq(actual, expected);
     }
 
-    function testFuzz_UncheckedDiv(int256 x, int256 y) external {
-        vm.assume(y != 0);
-        int256 actual = unwrap(uncheckedDiv(sd(x), sd(y)));
-        int256 expected;
-        unchecked {
-            expected = x / y;
-        }
-        assertEq(actual, expected);
-    }
-
-    function testFuzz_UncheckedMul(int256 x, int256 y) external {
-        int256 actual = unwrap(uncheckedMul(sd(x), sd(y)));
-        int256 expected;
-        unchecked {
-            expected = x * y;
-        }
-        assertEq(actual, expected);
-    }
-
     function testFuzz_UncheckedSub(int256 x, int256 y) external {
         int256 actual = unwrap(uncheckedSub(sd(x), sd(y)));
         int256 expected;

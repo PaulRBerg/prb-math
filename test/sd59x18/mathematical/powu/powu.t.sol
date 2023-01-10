@@ -2,7 +2,7 @@
 pragma solidity >=0.8.13 <0.9.0;
 
 import "src/SD59x18.sol";
-import { PRBMath_MulDiv18Overflow } from "src/Core.sol";
+import { PRBMath_MulDiv18_Overflow } from "src/Common.sol";
 import { SD59x18_Test } from "../../SD59x18.t.sol";
 
 contract Powu_Test is SD59x18_Test {
@@ -54,7 +54,7 @@ contract Powu_Test is SD59x18_Test {
     function test_RevertWhen_ResultOverflowUint256() external baseNotZero exponentNotZero {
         SD59x18 x = MIN_SD59x18.add(sd(1));
         uint256 y = 2;
-        vm.expectRevert(abi.encodeWithSelector(PRBMath_MulDiv18Overflow.selector, uint256(uMAX_SD59x18), uint256(uMAX_SD59x18)));
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_MulDiv18_Overflow.selector, uint256(uMAX_SD59x18), uint256(uMAX_SD59x18)));
         powu(x, y);
     }
 
@@ -65,14 +65,14 @@ contract Powu_Test is SD59x18_Test {
     function test_RevertWhen_ResultUnderflowSD59x18() external baseNotZero exponentNotZero resultDoesNotOverflowUint256 {
         SD59x18 x = NEGATIVE_SQRT_MAX_SD59x18.sub(sd(1));
         uint256 y = 2;
-        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_PowuOverflow.selector, x, y));
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Powu_Overflow.selector, x, y));
         powu(x, y);
     }
 
     function test_RevertWhen_ResultOverflowSD59x18() external baseNotZero exponentNotZero resultDoesNotOverflowUint256 {
         SD59x18 x = SQRT_MAX_SD59x18.add(sd(1));
         uint256 y = 2;
-        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_PowuOverflow.selector, x, y));
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Powu_Overflow.selector, x, y));
         powu(x, y);
     }
 

@@ -4,7 +4,7 @@ pragma solidity >=0.8.13 <0.9.0;
 import { stdError } from "forge-std/StdError.sol";
 
 import "src/UD60x18.sol";
-import { PRBMath_MulDivOverflow } from "src/Core.sol";
+import { PRBMath_MulDiv_Overflow } from "src/Common.sol";
 import { UD60x18_Test } from "../../UD60x18.t.sol";
 
 contract Div_Test is UD60x18_Test {
@@ -36,7 +36,7 @@ contract Div_Test is UD60x18_Test {
     function test_RevertWhen_ResultOverflowUD60x18() external denominatorNotZero {
         UD60x18 x = MAX_SCALED_UD60x18.add(ud(1));
         UD60x18 y = ud(0.000000000000000001e18);
-        vm.expectRevert(abi.encodeWithSelector(PRBMath_MulDivOverflow.selector, UD60x18.unwrap(x), uUNIT, UD60x18.unwrap(y)));
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_MulDiv_Overflow.selector, UD60x18.unwrap(x), uUNIT, UD60x18.unwrap(y)));
         div(x, y);
     }
 

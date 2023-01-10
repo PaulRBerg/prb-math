@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.13;
 
-import { msb, mulDiv, mulDiv18, prbExp2, prbSqrt } from "./Core.sol";
+import { MAX_UINT128, MAX_UINT40, msb, mulDiv, mulDiv18, prbExp2, prbSqrt } from "./Common.sol";
+import { SD1x18, uMAX_SD1x18 } from "./SD1x18.sol";
+import { UD2x18, uMAX_UD2x18 } from "./UD2x18.sol";
+import { UD60x18 } from "./UD60x18.sol";
 
 /// @notice The signed 59.18-decimal fixed-point number representation, which can have up to 59 digits and up to 18 decimals.
 /// The values of this are bound by the minimum and the maximum values permitted by the underlying Solidity type int256.
@@ -12,55 +15,76 @@ type SD59x18 is int256;
 //////////////////////////////////////////////////////////////////////////*/
 
 /// @notice Emitted when taking the absolute value of `MIN_SD59x18`.
-error PRBMath_SD59x18_AbsMinSD59x18();
+error PRBMath_SD59x18_Abs_MinSD59x18();
 
 /// @notice Emitted when ceiling a number overflows SD59x18.
-error PRBMath_SD59x18_CeilOverflow(SD59x18 x);
-
-/// @notice Emitted when dividing two numbers and one of them is `MIN_SD59x18`.
-error PRBMath_SD59x18_DivInputTooSmall();
-
-/// @notice Emitted when dividing two numbers and one of the intermediary unsigned results overflows SD59x18.
-error PRBMath_SD59x18_DivOverflow(SD59x18 x, SD59x18 y);
-
-/// @notice Emitted when taking the natural exponent of a base greater than 133.084258667509499441.
-error PRBMath_SD59x18_ExpInputTooBig(SD59x18 x);
-
-/// @notice Emitted when taking the binary exponent of a base greater than 192.
-error PRBMath_SD59x18_Exp2InputTooBig(SD59x18 x);
-
-/// @notice Emitted when flooring a number underflows SD59x18.
-error PRBMath_SD59x18_FloorUnderflow(SD59x18 x);
-
-/// @notice Emitted when taking the geometric mean of two numbers and their product is negative.
-error PRBMath_SD59x18_GmNegativeProduct(SD59x18 x, SD59x18 y);
-
-/// @notice Emitted when taking the geometric mean of two numbers and multiplying them overflows SD59x18.
-error PRBMath_SD59x18_GmOverflow(SD59x18 x, SD59x18 y);
-
-/// @notice Emitted when taking the logarithm of a number less than or equal to zero.
-error PRBMath_SD59x18_LogInputTooSmall(SD59x18 x);
-
-/// @notice Emitted when multiplying two numbers and one of the inputs is `MIN_SD59x18`.
-error PRBMath_SD59x18_MulInputTooSmall();
-
-/// @notice Emitted when multiplying two numbers and the intermediary absolute result overflows SD59x18.
-error PRBMath_SD59x18_MulOverflow(SD59x18 x, SD59x18 y);
-
-/// @notice Emitted when raising a number to a power and hte intermediary absolute result overflows SD59x18.
-error PRBMath_SD59x18_PowuOverflow(SD59x18 x, uint256 y);
-
-/// @notice Emitted when taking the square root of a negative number.
-error PRBMath_SD59x18_SqrtNegativeInput(SD59x18 x);
-
-/// @notice Emitted when the calculating the square root overflows SD59x18.
-error PRBMath_SD59x18_SqrtOverflow(SD59x18 x);
+error PRBMath_SD59x18_Ceil_Overflow(SD59x18 x);
 
 /// @notice Emitted when converting a basic integer to the fixed-point format overflows SD59x18.
-error PRBMath_SD59x18_ConvertOverflow(int256 x);
+error PRBMath_SD59x18_Convert_Overflow(int256 x);
 
 /// @notice Emitted when converting a basic integer to the fixed-point format underflows SD59x18.
-error PRBMath_SD59x18_ConvertUnderflow(int256 x);
+error PRBMath_SD59x18_Convert_Underflow(int256 x);
+
+/// @notice Emitted when dividing two numbers and one of them is `MIN_SD59x18`.
+error PRBMath_SD59x18_Div_InputTooSmall();
+
+/// @notice Emitted when dividing two numbers and one of the intermediary unsigned results overflows SD59x18.
+error PRBMath_SD59x18_Div_Overflow(SD59x18 x, SD59x18 y);
+
+/// @notice Emitted when taking the natural exponent of a base greater than 133.084258667509499441.
+error PRBMath_SD59x18_Exp_InputTooBig(SD59x18 x);
+
+/// @notice Emitted when taking the binary exponent of a base greater than 192.
+error PRBMath_SD59x18_Exp2_InputTooBig(SD59x18 x);
+
+/// @notice Emitted when flooring a number underflows SD59x18.
+error PRBMath_SD59x18_Floor_Underflow(SD59x18 x);
+
+/// @notice Emitted when taking the geometric mean of two numbers and their product is negative.
+error PRBMath_SD59x18_Gm_NegativeProduct(SD59x18 x, SD59x18 y);
+
+/// @notice Emitted when taking the geometric mean of two numbers and multiplying them overflows SD59x18.
+error PRBMath_SD59x18_Gm_Overflow(SD59x18 x, SD59x18 y);
+
+/// @notice Emitted when trying to cast an UD60x18 number that doesn't fit in SD1x18.
+error PRBMath_SD59x18_IntoSD1x18_Overflow(SD59x18 x);
+
+/// @notice Emitted when trying to cast an UD60x18 number that doesn't fit in UD2x18.
+error PRBMath_SD59x18_IntoUD2x18_Underflow(SD59x18 x);
+
+/// @notice Emitted when trying to cast an UD60x18 number that doesn't fit in uint256.
+error PRBMath_SD59x18_IntoUint256_Underflow(SD59x18 x);
+
+/// @notice Emitted when trying to cast an UD60x18 number that doesn't fit in uint128.
+error PRBMath_SD59x18_IntoUint128_Overflow(SD59x18 x);
+
+/// @notice Emitted when trying to cast an UD60x18 number that doesn't fit in uint128.
+error PRBMath_SD59x18_IntoUint128_Underflow(SD59x18 x);
+
+/// @notice Emitted when trying to cast an UD60x18 number that doesn't fit in uint40.
+error PRBMath_SD59x18_IntoUint40_Overflow(SD59x18 x);
+
+/// @notice Emitted when trying to cast an UD60x18 number that doesn't fit in uint40.
+error PRBMath_SD59x18_IntoUint40_Underflow(SD59x18 x);
+
+/// @notice Emitted when taking the logarithm of a number less than or equal to zero.
+error PRBMath_SD59x18_Log_InputTooSmall(SD59x18 x);
+
+/// @notice Emitted when multiplying two numbers and one of the inputs is `MIN_SD59x18`.
+error PRBMath_SD59x18_Mul_InputTooSmall();
+
+/// @notice Emitted when multiplying two numbers and the intermediary absolute result overflows SD59x18.
+error PRBMath_SD59x18_Mul_Overflow(SD59x18 x, SD59x18 y);
+
+/// @notice Emitted when raising a number to a power and hte intermediary absolute result overflows SD59x18.
+error PRBMath_SD59x18_Powu_Overflow(SD59x18 x, uint256 y);
+
+/// @notice Emitted when taking the square root of a negative number.
+error PRBMath_SD59x18_Sqrt_NegativeInput(SD59x18 x);
+
+/// @notice Emitted when the calculating the square root overflows SD59x18.
+error PRBMath_SD59x18_Sqrt_Overflow(SD59x18 x);
 
 /*//////////////////////////////////////////////////////////////////////////
                                     CONSTANTS
@@ -125,7 +149,7 @@ using { abs, avg, ceil, div, exp, exp2, floor, frac, gm, inv, log10, log2, ln, m
 function abs(SD59x18 x) pure returns (SD59x18 result) {
     int256 xInt = unwrap(x);
     if (xInt == uMIN_SD59x18) {
-        revert PRBMath_SD59x18_AbsMinSD59x18();
+        revert PRBMath_SD59x18_Abs_MinSD59x18();
     }
     result = xInt < 0 ? wrap(-xInt) : x;
 }
@@ -169,7 +193,7 @@ function avg(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 function ceil(SD59x18 x) pure returns (SD59x18 result) {
     int256 xInt = unwrap(x);
     if (xInt > uMAX_WHOLE_SD59x18) {
-        revert PRBMath_SD59x18_CeilOverflow(x);
+        revert PRBMath_SD59x18_Ceil_Overflow(x);
     }
 
     int256 remainder = xInt % uUNIT;
@@ -208,7 +232,7 @@ function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     int256 xInt = unwrap(x);
     int256 yInt = unwrap(y);
     if (xInt == uMIN_SD59x18 || yInt == uMIN_SD59x18) {
-        revert PRBMath_SD59x18_DivInputTooSmall();
+        revert PRBMath_SD59x18_Div_InputTooSmall();
     }
 
     // Get hold of the absolute values of x and y.
@@ -222,7 +246,7 @@ function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     // Compute the absolute value (x*UNIT)÷y. The resulting value must fit within int256.
     uint256 resultAbs = mulDiv(xAbs, uint256(uUNIT), yAbs);
     if (resultAbs > uint256(uMAX_SD59x18)) {
-        revert PRBMath_SD59x18_DivOverflow(x, y);
+        revert PRBMath_SD59x18_Div_Overflow(x, y);
     }
 
     // Check if x and y have the same sign. This works thanks to two's complement; the left-most bit is the sign bit.
@@ -261,7 +285,7 @@ function exp(SD59x18 x) pure returns (SD59x18 result) {
 
     // Without this check, the value passed to `exp2` would be greater than 192.
     if (xInt >= 133_084258667509499441) {
-        revert PRBMath_SD59x18_ExpInputTooBig(x);
+        revert PRBMath_SD59x18_Exp_InputTooBig(x);
     }
 
     unchecked {
@@ -305,7 +329,7 @@ function exp2(SD59x18 x) pure returns (SD59x18 result) {
     } else {
         // 2^192 doesn't fit within the 192.64-bit format used internally in this function.
         if (xInt >= 192e18) {
-            revert PRBMath_SD59x18_Exp2InputTooBig(x);
+            revert PRBMath_SD59x18_Exp2_InputTooBig(x);
         }
 
         unchecked {
@@ -331,7 +355,7 @@ function exp2(SD59x18 x) pure returns (SD59x18 result) {
 function floor(SD59x18 x) pure returns (SD59x18 result) {
     int256 xInt = unwrap(x);
     if (xInt < uMIN_WHOLE_SD59x18) {
-        revert PRBMath_SD59x18_FloorUnderflow(x);
+        revert PRBMath_SD59x18_Floor_Underflow(x);
     }
 
     int256 remainder = xInt % uUNIT;
@@ -378,12 +402,12 @@ function gm(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
         // Equivalent to "xy / x != y". Checking for overflow this way is faster than letting Solidity do it.
         int256 xyInt = xInt * yInt;
         if (xyInt / xInt != yInt) {
-            revert PRBMath_SD59x18_GmOverflow(x, y);
+            revert PRBMath_SD59x18_Gm_Overflow(x, y);
         }
 
         // The product must not be negative, since this library does not handle complex numbers.
         if (xyInt < 0) {
-            revert PRBMath_SD59x18_GmNegativeProduct(x, y);
+            revert PRBMath_SD59x18_Gm_NegativeProduct(x, y);
         }
 
         // We don't need to multiply the result by `UNIT` here because the x*y product had picked up a factor of `UNIT`
@@ -448,7 +472,7 @@ function ln(SD59x18 x) pure returns (SD59x18 result) {
 function log10(SD59x18 x) pure returns (SD59x18 result) {
     int256 xInt = unwrap(x);
     if (xInt < 0) {
-        revert PRBMath_SD59x18_LogInputTooSmall(x);
+        revert PRBMath_SD59x18_Log_InputTooSmall(x);
     }
 
     // Note that the `mul` in this block is the assembly mul operation, not the SD59x18 `mul`.
@@ -561,7 +585,7 @@ function log10(SD59x18 x) pure returns (SD59x18 result) {
 function log2(SD59x18 x) pure returns (SD59x18 result) {
     int256 xInt = unwrap(x);
     if (xInt <= 0) {
-        revert PRBMath_SD59x18_LogInputTooSmall(x);
+        revert PRBMath_SD59x18_Log_InputTooSmall(x);
     }
 
     unchecked {
@@ -634,7 +658,7 @@ function mul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     int256 xInt = unwrap(x);
     int256 yInt = unwrap(y);
     if (xInt == uMIN_SD59x18 || yInt == uMIN_SD59x18) {
-        revert PRBMath_SD59x18_MulInputTooSmall();
+        revert PRBMath_SD59x18_Mul_InputTooSmall();
     }
 
     // Get hold of the absolute values of x and y.
@@ -647,7 +671,7 @@ function mul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 
     uint256 resultAbs = mulDiv18(xAbs, yAbs);
     if (resultAbs > uint256(uMAX_SD59x18)) {
-        revert PRBMath_SD59x18_MulOverflow(x, y);
+        revert PRBMath_SD59x18_Mul_Overflow(x, y);
     }
 
     // Check if x and y have the same sign. This works thanks to two's complement; the left-most bit is the sign bit.
@@ -728,7 +752,7 @@ function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
 
     // The result must fit within `MAX_SD59x18`.
     if (resultAbs > uint256(uMAX_SD59x18)) {
-        revert PRBMath_SD59x18_PowuOverflow(x, y);
+        revert PRBMath_SD59x18_Powu_Overflow(x, y);
     }
 
     unchecked {
@@ -754,10 +778,10 @@ function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
 function sqrt(SD59x18 x) pure returns (SD59x18 result) {
     int256 xInt = unwrap(x);
     if (xInt < 0) {
-        revert PRBMath_SD59x18_SqrtNegativeInput(x);
+        revert PRBMath_SD59x18_Sqrt_NegativeInput(x);
     }
     if (xInt > uMAX_SD59x18 / uUNIT) {
-        revert PRBMath_SD59x18_SqrtOverflow(x);
+        revert PRBMath_SD59x18_Sqrt_Overflow(x);
     }
 
     unchecked {
@@ -766,6 +790,79 @@ function sqrt(SD59x18 x) pure returns (SD59x18 result) {
         uint256 resultUint = prbSqrt(uint256(xInt * uUNIT));
         result = wrap(int256(resultUint));
     }
+}
+
+/*//////////////////////////////////////////////////////////////////////////
+                                    CASTING
+//////////////////////////////////////////////////////////////////////////*/
+
+/// @notice Casts an SD59x18 number to SD1x18.
+/// @dev Requirements:
+/// - x must be less than or equal to `uMAX_SD1x18`.
+function intoSD1x18(SD59x18 x) pure returns (SD1x18 result) {
+    int256 xInt = SD59x18.unwrap(x);
+    if (xInt > uMAX_SD1x18) {
+        revert PRBMath_SD59x18_IntoSD1x18_Overflow(x);
+    }
+    result = SD1x18.wrap(int64(xInt));
+}
+
+/// @notice Casts an SD59x18 number to UD2x18.
+/// @dev Requirements:
+/// - x must be positive.
+function intoUD2x18(SD59x18 x) pure returns (UD2x18 result) {
+    int256 xInt = SD59x18.unwrap(x);
+    if (xInt < 0) {
+        revert PRBMath_SD59x18_IntoUD2x18_Underflow(x);
+    }
+    result = UD2x18.wrap(uint64(uint256(xInt)));
+}
+
+/// @notice Casts an SD59x18 to UD60x18.
+/// @dev This function simply calls `fromSD59x18_IntoUint256` and wraps the result.
+function intoUD60x18(SD59x18 x) pure returns (UD60x18 result) {
+    result = UD60x18.wrap(intoUint256(x));
+}
+
+/// @notice Casts an SD59x18 number to uint256.
+/// @dev Requirements:
+/// - x must be positive.
+function intoUint256(SD59x18 x) pure returns (uint256 result) {
+    int256 xInt = SD59x18.unwrap(x);
+    if (xInt < 0) {
+        revert PRBMath_SD59x18_IntoUint256_Underflow(x);
+    }
+    result = uint256(xInt);
+}
+
+/// @notice Casts an SD59x18 number to uint128.
+/// @dev Requirements:
+/// - x must be positive.
+/// - x must be less than or equal to `uMAX_UINT128`.
+function intoUint128(SD59x18 x) pure returns (uint128 result) {
+    int256 xInt = SD59x18.unwrap(x);
+    if (xInt < 0) {
+        revert PRBMath_SD59x18_IntoUint128_Underflow(x);
+    }
+    if (xInt > int256(uint256(MAX_UINT128))) {
+        revert PRBMath_SD59x18_IntoUint128_Overflow(x);
+    }
+    result = uint128(uint256(xInt));
+}
+
+/// @notice Casts an SD59x18 number to uint40.
+/// @dev Requirements:
+/// - x must be positive.
+/// - x must be less than or equal to `MAX_UINT40`.
+function intoUint40(SD59x18 x) pure returns (uint40 result) {
+    int256 xInt = SD59x18.unwrap(x);
+    if (xInt < 0) {
+        revert PRBMath_SD59x18_IntoUint40_Underflow(x);
+    }
+    if (xInt > int256(uint256(MAX_UINT40))) {
+        revert PRBMath_SD59x18_IntoUint40_Overflow(x);
+    }
+    result = uint40(uint256(xInt));
 }
 
 /*//////////////////////////////////////////////////////////////////////////
@@ -782,10 +879,10 @@ function sqrt(SD59x18 x) pure returns (SD59x18 result) {
 /// @param result The same number converted to SD59x18.
 function convert(int256 x) pure returns (SD59x18 result) {
     if (x < uMIN_SD59x18 / uUNIT) {
-        revert PRBMath_SD59x18_ConvertUnderflow(x);
+        revert PRBMath_SD59x18_Convert_Underflow(x);
     }
     if (x > uMAX_SD59x18 / uUNIT) {
-        revert PRBMath_SD59x18_ConvertOverflow(x);
+        revert PRBMath_SD59x18_Convert_Overflow(x);
     }
     unchecked {
         result = wrap(x * uUNIT);
@@ -950,24 +1047,4 @@ function uncheckedUnary(SD59x18 x) pure returns (SD59x18 result) {
 /// @notice Implements the XOR (^) bitwise operation in the SD59x18 type.
 function xor(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     result = wrap(unwrap(x) ^ unwrap(y));
-}
-
-/*//////////////////////////////////////////////////////////////////////////
-                        FILE-SCOPED HELPER FUNCTIONS
-//////////////////////////////////////////////////////////////////////////*/
-
-using { uncheckedDiv, uncheckedMul } for SD59x18;
-
-/// @notice Implements the unchecked standard division operation in the SD59x18 type.
-function uncheckedDiv(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
-    unchecked {
-        result = wrap(unwrap(x) / unwrap(y));
-    }
-}
-
-/// @notice Implements the unchecked standard multiplication operation in the SD59x18 type.
-function uncheckedMul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
-    unchecked {
-        result = wrap(unwrap(x) * unwrap(y));
-    }
 }

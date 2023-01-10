@@ -35,7 +35,7 @@ contract Pow_Test is SD59x18_Test {
     function test_RevertWhen_BaseNegative() external baseNotZero {
         SD59x18 x = sd(-0.000000000000000001e18);
         SD59x18 y = sd(2e18);
-        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_LogInputTooSmall.selector, x));
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Log_InputTooSmall.selector, x));
         pow(x, y);
     }
 
@@ -80,7 +80,7 @@ contract Pow_Test is SD59x18_Test {
     function test_RevertWhen_ExponentGreaterThanMaxPermitted() external baseNotZero basePositive exponentNotZero exponentNotOne {
         SD59x18 x = MAX_PERMITTED.add(sd(1));
         SD59x18 y = sd(1e18 + 1);
-        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Exp2InputTooBig.selector, sd(192e18 + 192)));
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Exp2_InputTooBig.selector, sd(192e18 + 192)));
         pow(x, y);
     }
 

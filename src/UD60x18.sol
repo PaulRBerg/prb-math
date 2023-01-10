@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.13;
 
-import { msb, mulDiv, mulDiv18, prbExp2, prbSqrt } from "./Core.sol";
+import { MAX_UINT128, MAX_UINT40, msb, mulDiv, mulDiv18, prbExp2, prbSqrt } from "./Common.sol";
+import { SD1x18, uMAX_SD1x18 } from "./SD1x18.sol";
+import { SD59x18, uMAX_SD59x18 } from "./SD59x18.sol";
+import { UD2x18, uMAX_UD2x18 } from "./UD2x18.sol";
 
 /// @notice The unsigned 60.18-decimal fixed-point number representation, which can have up to 60 digits and up to 18 decimals.
 /// The values of this are bound by the minimum and the maximum values permitted by the Solidity type uint256.
@@ -11,32 +14,44 @@ type UD60x18 is uint256;
                                 CUSTOM ERRORS
 //////////////////////////////////////////////////////////////////////////*/
 
-/// @notice Emitted when adding two numbers overflows UD60x18.
-error PRBMath_UD60x18_AddOverflow(uint256 x, UD60x18 y);
-
 /// @notice Emitted when ceiling a number overflows UD60x18.
-error PRBMath_UD60x18_CeilOverflow(UD60x18 x);
+error PRBMath_UD60x18_Ceil_Overflow(UD60x18 x);
 
 /// @notice Emitted when taking the natural exponent of a base greater than 133.084258667509499441.
-error PRBMath_UD60x18_ExpInputTooBig(UD60x18 x);
+error PRBMath_UD60x18_Exp_InputTooBig(UD60x18 x);
 
 /// @notice Emitted when taking the binary exponent of a base greater than 192.
-error PRBMath_UD60x18_Exp2InputTooBig(UD60x18 x);
+error PRBMath_UD60x18_Exp2_InputTooBig(UD60x18 x);
 
 /// @notice Emitted when taking the geometric mean of two numbers and multiplying them overflows UD60x18.
-error PRBMath_UD60x18_GmOverflow(UD60x18 x, UD60x18 y);
+error PRBMath_UD60x18_Gm_Overflow(UD60x18 x, UD60x18 y);
+
+/// @notice Emitted when trying to cast an UD60x18 number that doesn't fit in SD1x18.
+error PRBMath_UD60x18_IntoSD1x18_Overflow(UD60x18 x);
+
+/// @notice Emitted when trying to cast an UD60x18 number that doesn't fit in SD59x18.
+error PRBMath_UD60x18_IntoSD59x18_Overflow(UD60x18 x);
+
+/// @notice Emitted when trying to cast an UD60x18 number that doesn't fit in UD2x18.
+error PRBMath_UD60x18_IntoUD2x18_Overflow(UD60x18 x);
+
+/// @notice Emitted when trying to cast an UD60x18 number that doesn't fit in uint128.
+error PRBMath_UD60x18_IntoUint128_Overflow(UD60x18 x);
+
+/// @notice Emitted when trying to cast an UD60x18 number that doesn't fit in uint40.
+error PRBMath_UD60x18_IntoUint40_Overflow(UD60x18 x);
 
 /// @notice Emitted when taking the logarithm of a number less than 1.
-error PRBMath_UD60x18_LogInputTooSmall(UD60x18 x);
+error PRBMath_UD60x18_Log_InputTooSmall(UD60x18 x);
 
 /// @notice Emitted when calculating the square root overflows UD60x18.
-error PRBMath_UD60x18_SqrtOverflow(UD60x18 x);
+error PRBMath_UD60x18_Sqrt_Overflow(UD60x18 x);
 
 /// @notice Emitted when subtracting one number from another underflows UD60x18.
-error PRBMath_UD60x18_SubUnderflow(UD60x18 x, UD60x18 y);
+error PRBMath_UD60x18_Sub_Underflow(UD60x18 x, UD60x18 y);
 
 /// @notice Emitted when converting a basic integer to the fixed-point format overflows UD60x18.
-error PRBMath_UD60x18_ConvertOverflow(uint256 x);
+error PRBMath_UD60x18_Convert_Overflow(uint256 x);
 
 /*//////////////////////////////////////////////////////////////////////////
                                     CONSTANTS
@@ -124,7 +139,7 @@ function avg(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 function ceil(UD60x18 x) pure returns (UD60x18 result) {
     uint256 xUint = unwrap(x);
     if (xUint > uMAX_WHOLE_UD60x18) {
-        revert PRBMath_UD60x18_CeilOverflow(x);
+        revert PRBMath_UD60x18_Ceil_Overflow(x);
     }
 
     assembly {
@@ -172,7 +187,7 @@ function exp(UD60x18 x) pure returns (UD60x18 result) {
 
     // Without this check, the value passed to `exp2` would be greater than 192.
     if (xUint >= 133_084258667509499441) {
-        revert PRBMath_UD60x18_ExpInputTooBig(x);
+        revert PRBMath_UD60x18_Exp_InputTooBig(x);
     }
 
     unchecked {
@@ -197,7 +212,7 @@ function exp2(UD60x18 x) pure returns (UD60x18 result) {
 
     // Numbers greater than or equal to 2^192 don't fit within the 192.64-bit format.
     if (xUint >= 192e18) {
-        revert PRBMath_UD60x18_Exp2InputTooBig(x);
+        revert PRBMath_UD60x18_Exp2_InputTooBig(x);
     }
 
     // Convert x to the 192.64-bit fixed-point format.
@@ -251,7 +266,7 @@ function gm(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
         // Checking for overflow this way is faster than letting Solidity do it.
         uint256 xyUint = xUint * yUint;
         if (xyUint / xUint != yUint) {
-            revert PRBMath_UD60x18_GmOverflow(x, y);
+            revert PRBMath_UD60x18_Gm_Overflow(x, y);
         }
 
         // We don't need to multiply the result by `UNIT` here because the x*y product had picked up a factor of `UNIT`
@@ -319,7 +334,7 @@ function ln(UD60x18 x) pure returns (UD60x18 result) {
 function log10(UD60x18 x) pure returns (UD60x18 result) {
     uint256 xUint = unwrap(x);
     if (xUint < uUNIT) {
-        revert PRBMath_UD60x18_LogInputTooSmall(x);
+        revert PRBMath_UD60x18_Log_InputTooSmall(x);
     }
 
     // Note that the `mul` in this assembly block is the assembly multiplication operation, not the UD60x18 `mul`.
@@ -434,7 +449,7 @@ function log2(UD60x18 x) pure returns (UD60x18 result) {
     uint256 xUint = unwrap(x);
 
     if (xUint < uUNIT) {
-        revert PRBMath_UD60x18_LogInputTooSmall(x);
+        revert PRBMath_UD60x18_Log_InputTooSmall(x);
     }
 
     unchecked {
@@ -559,12 +574,91 @@ function sqrt(UD60x18 x) pure returns (UD60x18 result) {
 
     unchecked {
         if (xUint > uMAX_UD60x18 / uUNIT) {
-            revert PRBMath_UD60x18_SqrtOverflow(x);
+            revert PRBMath_UD60x18_Sqrt_Overflow(x);
         }
         // Multiply x by `UNIT` to account for the factor of `UNIT` that is picked up when multiplying two UD60x18
         // numbers together (in this case, the two numbers are both the square root).
         result = wrap(prbSqrt(xUint * uUNIT));
     }
+}
+
+/*//////////////////////////////////////////////////////////////////////////
+                                    CASTING
+//////////////////////////////////////////////////////////////////////////*/
+
+/// @notice Casts an UD60x18 number to an SD1x18 number.
+/// @dev Requirements:
+/// - x must be less than or equal to `uMAX_SD1x18`.
+function intoSD1x18(UD60x18 x) pure returns (SD1x18 result) {
+    uint256 xUint = UD60x18.unwrap(x);
+    if (xUint > uint256(int256(uMAX_SD1x18))) {
+        revert PRBMath_UD60x18_IntoSD1x18_Overflow(x);
+    }
+    result = SD1x18.wrap(int64(int256(xUint)));
+}
+
+/// @notice Casts an UD60x18 number to UD2x18.
+/// @dev Requirements:
+/// - x must be less than or equal to `uMAX_UD2x18`.
+function intoUD2x18(UD60x18 x) pure returns (UD2x18 result) {
+    uint256 xUint = UD60x18.unwrap(x);
+    if (xUint > uMAX_UD2x18) {
+        revert PRBMath_UD60x18_IntoUD2x18_Overflow(x);
+    }
+    result = UD2x18.wrap(uint64(xUint));
+}
+
+/// @notice Casts an UD60x18 number to SD59x18.
+/// @dev Requirements:
+/// - x must be less than or equal to `uMAX_SD59x18`.
+function intoSD59x18(UD60x18 x) pure returns (SD59x18 result) {
+    uint256 xUint = UD60x18.unwrap(x);
+    if (xUint > uint256(uMAX_SD59x18)) {
+        revert PRBMath_UD60x18_IntoSD59x18_Overflow(x);
+    }
+    result = SD59x18.wrap(int256(xUint));
+}
+
+/// @notice Casts an UD60x18 number to uint128.
+/// @dev Requirements:
+/// - x must be less than or equal to `MAX_UINT128`.
+function intoUint128(UD60x18 x) pure returns (uint128 result) {
+    uint256 xUint = UD60x18.unwrap(x);
+    if (xUint > MAX_UINT128) {
+        revert PRBMath_UD60x18_IntoUint128_Overflow(x);
+    }
+    result = uint128(xUint);
+}
+
+/// @notice Casts an UD60x18 number to uint40.
+/// @dev Requirements:
+/// - x must be less than or equal to `MAX_UINT40`.
+function intoUint40(UD60x18 x) pure returns (uint40 result) {
+    uint256 xUint = UD60x18.unwrap(x);
+    if (xUint > MAX_UINT40) {
+        revert PRBMath_UD60x18_IntoUint40_Overflow(x);
+    }
+    result = uint40(xUint);
+}
+
+/// @notice Alias for the `wrap` function defined below.
+function ud(uint256 x) pure returns (UD60x18 result) {
+    result = wrap(x);
+}
+
+/// @notice Alias for the `wrap` function defined below.
+function ud60x18(uint256 x) pure returns (UD60x18 result) {
+    result = wrap(x);
+}
+
+/// @notice Unwraps an UD60x18 number into the underlying unsigned integer.
+function unwrap(UD60x18 x) pure returns (uint256 result) {
+    result = UD60x18.unwrap(x);
+}
+
+/// @notice Wraps an unsigned integer into the UD60x18 type.
+function wrap(uint256 x) pure returns (UD60x18 result) {
+    result = UD60x18.wrap(x);
 }
 
 /*//////////////////////////////////////////////////////////////////////////
@@ -588,7 +682,7 @@ function convert(UD60x18 x) pure returns (uint256 result) {
 /// @param result The same number converted to UD60x18.
 function convert(uint256 x) pure returns (UD60x18 result) {
     if (x > uMAX_UD60x18 / uUNIT) {
-        revert PRBMath_UD60x18_ConvertOverflow(x);
+        revert PRBMath_UD60x18_Convert_Overflow(x);
     }
     unchecked {
         result = wrap(x * uUNIT);
@@ -596,35 +690,15 @@ function convert(uint256 x) pure returns (UD60x18 result) {
 }
 
 /// @notice Alias for the `convert` function defined above.
-/// @dev Here for backward compatibility. Will be removed in V4.
+/// @dev Here for backward compatibility reasons. It will be removed in V4.
 function fromUD60x18(UD60x18 x) pure returns (uint256 result) {
     result = convert(x);
 }
 
 /// @notice Alias for the `convert` function defined above.
-/// @dev Here for backward compatibility. Will be removed in V4.
+/// @dev Here for backward compatibility reasons. It will be removed in V4.
 function toUD60x18(uint256 x) pure returns (UD60x18 result) {
     result = convert(x);
-}
-
-/// @notice Alias for the `wrap` function defined below.
-function ud(uint256 x) pure returns (UD60x18 result) {
-    result = wrap(x);
-}
-
-/// @notice Alias for the `wrap` function defined below.
-function ud60x18(uint256 x) pure returns (UD60x18 result) {
-    result = wrap(x);
-}
-
-/// @notice Unwraps an UD60x18 number into the underlying unsigned integer.
-function unwrap(UD60x18 x) pure returns (uint256 result) {
-    result = UD60x18.unwrap(x);
-}
-
-/// @notice Wraps an unsigned integer into the UD60x18 type.
-function wrap(uint256 x) pure returns (UD60x18 result) {
-    result = UD60x18.wrap(x);
 }
 
 /*//////////////////////////////////////////////////////////////////////////
@@ -739,24 +813,4 @@ function uncheckedSub(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// @notice Implements the XOR (^) bitwise operation in the UD60x18 type.
 function xor(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     result = wrap(unwrap(x) ^ unwrap(y));
-}
-
-/*//////////////////////////////////////////////////////////////////////////
-                        FILE-SCOPED HELPER FUNCTIONS
-//////////////////////////////////////////////////////////////////////////*/
-
-using { uncheckedDiv, uncheckedMul } for UD60x18;
-
-/// @notice Implements the unchecked standard division operation in the UD60x18 type.
-function uncheckedDiv(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
-    unchecked {
-        result = wrap(unwrap(x) / unwrap(y));
-    }
-}
-
-/// @notice Implements the unchecked standard multiplication operation in the UD60x18 type.
-function uncheckedMul(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
-    unchecked {
-        result = wrap(unwrap(x) * unwrap(y));
-    }
 }

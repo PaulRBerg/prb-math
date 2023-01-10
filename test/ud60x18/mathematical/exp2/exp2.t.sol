@@ -20,7 +20,7 @@ contract Exp2_Test is UD60x18_Test {
 
     function test_RevertWhen_GreaterThanMaxPermitted() external notZero {
         UD60x18 x = MAX_PERMITTED.add(ud(1));
-        vm.expectRevert(abi.encodeWithSelector(PRBMath_UD60x18_Exp2InputTooBig.selector, x));
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_UD60x18_Exp2_InputTooBig.selector, x));
         exp2(x);
     }
 

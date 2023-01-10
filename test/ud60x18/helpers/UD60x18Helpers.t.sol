@@ -107,25 +107,6 @@ contract UD60x18_HelpersTest is UD60x18_Test {
         assertEq(actual, expected);
     }
 
-    function testFuzz_UncheckedDiv(uint256 x, uint256 y) external {
-        vm.assume(y > 0);
-        uint256 actual = unwrap(uncheckedDiv(ud(x), ud(y)));
-        uint256 expected;
-        unchecked {
-            expected = x / y;
-        }
-        assertEq(actual, expected);
-    }
-
-    function testFuzz_UncheckedMul(uint256 x, uint256 y) external {
-        uint256 actual = unwrap(uncheckedMul(ud(x), ud(y)));
-        uint256 expected;
-        unchecked {
-            expected = x * y;
-        }
-        assertEq(actual, expected);
-    }
-
     function testFuzz_UncheckedSub(uint256 x, uint256 y) external {
         uint256 actual = unwrap(uncheckedSub(ud(x), ud(y)));
         uint256 expected;

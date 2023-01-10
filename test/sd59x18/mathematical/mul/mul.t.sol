@@ -4,7 +4,7 @@ pragma solidity >=0.8.13 <0.9.0;
 import { stdError } from "forge-std/StdError.sol";
 
 import "src/SD59x18.sol";
-import { PRBMath_MulDiv18Overflow } from "src/Core.sol";
+import { PRBMath_MulDiv18_Overflow } from "src/Common.sol";
 import { SD59x18_Test } from "../../SD59x18.t.sol";
 
 contract Mul_Test is SD59x18_Test {
@@ -29,14 +29,14 @@ contract Mul_Test is SD59x18_Test {
     function test_RevertWhen_OneOperandMinSD59x18_1() external neitherOperandZero {
         SD59x18 x = MIN_SD59x18;
         SD59x18 y = sd(0.000000000000000001e18);
-        vm.expectRevert(PRBMath_SD59x18_MulInputTooSmall.selector);
+        vm.expectRevert(PRBMath_SD59x18_Mul_InputTooSmall.selector);
         mul(x, y);
     }
 
     function test_RevertWhen_OneOperandMinSD59x18_2() external neitherOperandZero {
         SD59x18 x = sd(0.000000000000000001e18);
         SD59x18 y = MIN_SD59x18;
-        vm.expectRevert(PRBMath_SD59x18_MulInputTooSmall.selector);
+        vm.expectRevert(PRBMath_SD59x18_Mul_InputTooSmall.selector);
         mul(x, y);
     }
 
@@ -47,14 +47,14 @@ contract Mul_Test is SD59x18_Test {
     function test_RevertWhen_ResultOverflowSD59x18_1() external neitherOperandZero neitherOperandMinSD59x18 {
         SD59x18 x = NEGATIVE_SQRT_MAX_SD59x18;
         SD59x18 y = NEGATIVE_SQRT_MAX_SD59x18.sub(sd(1));
-        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_MulOverflow.selector, x, y));
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Mul_Overflow.selector, x, y));
         mul(x, y);
     }
 
     function test_RevertWhen_ResultOverflowSD59x18_2() external neitherOperandZero neitherOperandMinSD59x18 {
         SD59x18 x = SQRT_MAX_SD59x18;
         SD59x18 y = SQRT_MAX_SD59x18.add(sd(1));
-        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_MulOverflow.selector, x, y));
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Mul_Overflow.selector, x, y));
         mul(x, y);
     }
 
@@ -82,7 +82,7 @@ contract Mul_Test is SD59x18_Test {
     {
         vm.expectRevert(
             abi.encodeWithSelector(
-                PRBMath_MulDiv18Overflow.selector,
+                PRBMath_MulDiv18_Overflow.selector,
                 s.x.lt(ZERO) ? s.x.uncheckedUnary() : s.x,
                 s.y.lt(ZERO) ? s.y.uncheckedUnary() : s.y
             )

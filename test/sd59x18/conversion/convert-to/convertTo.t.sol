@@ -7,7 +7,7 @@ import { SD59x18_Test } from "../../SD59x18.t.sol";
 contract ConvertTo_Test is SD59x18_Test {
     function test_RevertWhen_LessThanMinPermitted() external {
         int256 x = SD59x18.unwrap(MIN_SCALED_SD59x18) - 1;
-        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_ConvertUnderflow.selector, x));
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Convert_Underflow.selector, x));
         toSD59x18(x);
     }
 
@@ -17,7 +17,7 @@ contract ConvertTo_Test is SD59x18_Test {
 
     function test_RevertWhen_GreaterThanMaxPermitted() external greaterThanMinPermitted {
         int256 x = SD59x18.unwrap(MAX_SCALED_SD59x18) + 1;
-        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_ConvertOverflow.selector, x));
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Convert_Overflow.selector, x));
         toSD59x18(x);
     }
 

@@ -18,7 +18,7 @@ contract Floor_Test is SD59x18_Test {
 
     function test_RevertWhen_Negative_LessThanMinPermitted() external notZero {
         SD59x18 x = MIN_WHOLE_SD59x18.sub(sd(1));
-        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_FloorUnderflow.selector, x));
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Floor_Underflow.selector, x));
         floor(x);
     }
 
