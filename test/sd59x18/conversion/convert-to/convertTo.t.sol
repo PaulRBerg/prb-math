@@ -1,14 +1,18 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.13 <0.9.0;
 
-import "src/SD59x18.sol";
+import { MAX_WHOLE_SD59x18, MIN_WHOLE_SD59x18 } from "src/sd59x18/Constants.sol";
+import { convert } from "src/sd59x18/Conversions.sol";
+import { PRBMath_SD59x18_Convert_Overflow, PRBMath_SD59x18_Convert_Underflow } from "src/sd59x18/Errors.sol";
+import { SD59x18 } from "src/sd59x18/ValueType.sol";
+
 import { SD59x18_Test } from "../../SD59x18.t.sol";
 
 contract ConvertTo_Test is SD59x18_Test {
     function test_RevertWhen_LessThanMinPermitted() external {
         int256 x = SD59x18.unwrap(MIN_SCALED_SD59x18) - 1;
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Convert_Underflow.selector, x));
-        toSD59x18(x);
+        convert(x);
     }
 
     modifier greaterThanMinPermitted() {
@@ -18,7 +22,7 @@ contract ConvertTo_Test is SD59x18_Test {
     function test_RevertWhen_GreaterThanMaxPermitted() external greaterThanMinPermitted {
         int256 x = SD59x18.unwrap(MAX_SCALED_SD59x18) + 1;
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Convert_Overflow.selector, x));
-        toSD59x18(x);
+        convert(x);
     }
 
     modifier lessThanOrEqualToMaxPermitted() {
@@ -48,7 +52,7 @@ contract ConvertTo_Test is SD59x18_Test {
     }
 
     function test_ConvertTo() external parameterizedTest(convertTo_Sets()) greaterThanMinPermitted lessThanOrEqualToMaxPermitted {
-        SD59x18 x = toSD59x18(SD59x18.unwrap(s.x));
+        SD59x18 x = convert(SD59x18.unwrap(s.x));
         assertEq(x, s.expected);
     }
 }

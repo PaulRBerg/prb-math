@@ -175,9 +175,9 @@ refer to the source code, which is well-documented with NatSpec comments.
 
 ### Helper Functions
 
-In addition to the mathematical and the conversion functions, PRBMath provides many other helpers for the user-defined value types, such as
-`add`,`eq`, and `rshift`. These functions are not part of the core API and are frequently updated, so I invite you to take a look at the source code
-to see the full list.
+In addition to the mathematical and the casting functions, PRBMath provides many other helpers for the user-defined value types, such as `add`,`eq`,
+and `rshift`. These functions are not part of the core API and are frequently updated, so I invite you to take a look at the source code to see the
+full list.
 
 The goal with these helpers is not have to always unwrap and re-wrap variables to perform such basic operations as addition and equality checks.
 However, you should note that using these functions instead of the vanilla operators (e.g. `+`, `==`, and `>>`) will result in a higher gas cost.

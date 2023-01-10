@@ -1,7 +1,12 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.13 <0.9.0;
 
-import "src/UD60x18.sol";
+import { ud } from "src/ud60x18/Casting.sol";
+import { E, PI, ZERO } from "src/ud60x18/Constants.sol";
+import { PRBMath_UD60x18_Exp_InputTooBig } from "src/ud60x18/Errors.sol";
+import { exp } from "src/ud60x18/Math.sol";
+import { UD60x18 } from "src/ud60x18/ValueType.sol";
+
 import { UD60x18_Test } from "../../UD60x18.t.sol";
 
 contract Exp_Test is UD60x18_Test {

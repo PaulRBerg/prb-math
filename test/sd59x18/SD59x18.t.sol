@@ -3,7 +3,9 @@ pragma solidity >=0.8.13 <0.9.0;
 
 import { console2 } from "forge-std/console2.sol";
 
-import "src/SD59x18.sol";
+import { sd, unwrap } from "src/sd59x18/Casting.sol";
+import { ZERO } from "src/sd59x18/Constants.sol";
+import { SD59x18 } from "src/sd59x18/ValueType.sol";
 import { BaseTest } from "../BaseTest.t.sol";
 
 /// @title SD59x18_Test

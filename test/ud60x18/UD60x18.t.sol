@@ -4,7 +4,8 @@ pragma solidity >=0.8.13 <0.9.0;
 import { console2 } from "forge-std/console2.sol";
 
 import { BaseTest } from "../BaseTest.t.sol";
-import { MAX_UD60x18, UD60x18, ZERO } from "src/UD60x18.sol";
+import { MAX_UD60x18, ZERO } from "src/ud60x18/Constants.sol";
+import { UD60x18 } from "src/ud60x18/ValueType.sol";
 
 /// @title UD60x18_Test
 /// @author Paul Razvan Berg

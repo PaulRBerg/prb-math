@@ -3,7 +3,29 @@ pragma solidity >=0.8.13 <0.9.0;
 
 import { stdMath } from "forge-std/StdMath.sol";
 
-import "src/SD59x18.sol";
+import { sd, unwrap } from "src/sd59x18/Casting.sol";
+import {
+    add,
+    and,
+    eq,
+    gt,
+    gte,
+    isZero,
+    lshift,
+    lt,
+    lte,
+    mod,
+    neq,
+    or,
+    rshift,
+    sub,
+    uncheckedAdd,
+    uncheckedSub,
+    uncheckedUnary,
+    xor
+} from "src/sd59x18/Helpers.sol";
+import { SD59x18 } from "src/sd59x18/ValueType.sol";
+
 import { SD59x18_Test } from "../SD59x18.t.sol";
 
 /// @dev Collection of tests for the helpers functions available in the SD59x18 type.

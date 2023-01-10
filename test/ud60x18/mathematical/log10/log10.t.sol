@@ -3,7 +3,11 @@ pragma solidity >=0.8.13 <0.9.0;
 
 import { stdError } from "forge-std/StdError.sol";
 
-import "src/UD60x18.sol";
+import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI } from "src/ud60x18/Constants.sol";
+import { PRBMath_UD60x18_Log_InputTooSmall } from "src/ud60x18/Errors.sol";
+import { log10 } from "src/ud60x18/Math.sol";
+import { UD60x18 } from "src/ud60x18/ValueType.sol";
+
 import { UD60x18_Test } from "../../UD60x18.t.sol";
 
 contract Log10_Test is UD60x18_Test {

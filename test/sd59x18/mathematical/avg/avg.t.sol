@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.13 <0.9.0;
 
-import "src/SD59x18.sol";
+import { MAX_SD59x18, MAX_WHOLE_SD59x18, MIN_SD59x18, MIN_WHOLE_SD59x18, ZERO } from "src/sd59x18/Constants.sol";
+import { avg } from "src/sd59x18/Math.sol";
+import { SD59x18 } from "src/sd59x18/ValueType.sol";
+
 import { SD59x18_Test } from "../../SD59x18.t.sol";
 
 contract Avg_Test is SD59x18_Test {

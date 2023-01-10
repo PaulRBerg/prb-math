@@ -1,7 +1,11 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.13 <0.9.0;
 
-import "src/UD60x18.sol";
+import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, ZERO } from "src/ud60x18/Constants.sol";
+import { PRBMath_UD60x18_Gm_Overflow } from "src/ud60x18/Errors.sol";
+import { gm } from "src/ud60x18/Math.sol";
+import { UD60x18 } from "src/ud60x18/ValueType.sol";
+
 import { UD60x18_Test } from "../../UD60x18.t.sol";
 
 contract Gm_Test is UD60x18_Test {

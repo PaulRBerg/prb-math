@@ -5,9 +5,9 @@ import { PRBTest } from "@prb/test/PRBTest.sol";
 import { StdCheats } from "forge-std/StdCheats.sol";
 import { StdUtils } from "forge-std/StdUtils.sol";
 
-import { Assertions as PRBMathAssertions } from "src/test/Assertions.sol";
-import { SD59x18 } from "src/SD59x18.sol";
-import { UD60x18 } from "src/UD60x18.sol";
+import { SD59x18 } from "src/sd59x18/ValueType.sol";
+import { PRBMathAssertions } from "src/test/Assertions.sol";
+import { UD60x18 } from "src/ud60x18/ValueType.sol";
 
 /// @title BaseTest
 /// @author Paul Razvan Berg
@@ -30,7 +30,7 @@ abstract contract BaseTest is PRBTest, PRBMathAssertions, StdCheats, StdUtils {
     Users internal users;
 
     /*//////////////////////////////////////////////////////////////////////////
-                                   SETUP FUNCTION
+                                   SET-UP FUNCTION
     //////////////////////////////////////////////////////////////////////////*/
 
     function setUp() public virtual {
@@ -38,7 +38,7 @@ abstract contract BaseTest is PRBTest, PRBMathAssertions, StdCheats, StdUtils {
         users = Users({ alice: mkaddr("Alice"), bob: mkaddr("Bob"), eve: mkaddr("Eve") });
 
         // Make Alice the `msg.sender` and `tx.origin` for all subsequent calls.
-        vm.startPrank(users.alice, users.alice);
+        vm.startPrank({ msgSender: users.alice, txOrigin: users.alice });
     }
 
     /*//////////////////////////////////////////////////////////////////////////
@@ -56,6 +56,6 @@ abstract contract BaseTest is PRBTest, PRBMathAssertions, StdCheats, StdUtils {
     /// @dev Generates an address by hashing the name and labels the address.
     function mkaddr(string memory name) internal returns (address payable addr) {
         addr = payable(address(uint160(uint256(keccak256(abi.encodePacked(name))))));
-        vm.label(addr, name);
+        vm.label({ account: addr, newLabel: name });
     }
 }

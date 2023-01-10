@@ -1,11 +1,13 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.13 <0.9.0;
 
-import "src/SD59x18.sol";
+import { sd, sd59x18, wrap, unwrap } from "src/sd59x18/Casting.sol";
+import { SD59x18 } from "src/sd59x18/ValueType.sol";
+
 import { SD59x18_Test } from "../SD59x18.t.sol";
 
-/// @dev Collection of tests for the conversion functions available in the SD59x18 type.
-contract SD59x18_ConversionsTest is SD59x18_Test {
+/// @dev Collection of tests for the casting functions available in the SD59x18 type.
+contract SD59x18_CastingTest is SD59x18_Test {
     function test_Sd(int256 x) external {
         SD59x18 actual = sd(x);
         SD59x18 expected = SD59x18.wrap(x);

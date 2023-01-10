@@ -1,7 +1,12 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.13 <0.9.0;
 
-import "src/SD59x18.sol";
+import { sd } from "src/sd59x18/Casting.sol";
+import { E, MAX_SD59x18, MAX_WHOLE_SD59x18, MIN_SD59x18, MIN_WHOLE_SD59x18, PI } from "src/sd59x18/Constants.sol";
+import { PRBMath_SD59x18_Gm_Overflow, PRBMath_SD59x18_Gm_NegativeProduct } from "src/sd59x18/Errors.sol";
+import { gm } from "src/sd59x18/Math.sol";
+import { SD59x18 } from "src/sd59x18/ValueType.sol";
+
 import { SD59x18_Test } from "../../SD59x18.t.sol";
 
 contract Gm_Test is SD59x18_Test {
@@ -46,7 +51,7 @@ contract Gm_Test is SD59x18_Test {
 
     function test_RevertWhen_ProductOverflow_1() external notZeroOperands positiveProduct {
         SD59x18 x = MIN_SD59x18;
-        SD59x18 y = wrap(0.000000000000000002e18);
+        SD59x18 y = sd(0.000000000000000002e18);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Gm_Overflow.selector, x, y));
         gm(x, y);
     }
@@ -67,7 +72,7 @@ contract Gm_Test is SD59x18_Test {
 
     function test_RevertWhen_ProductOverflow_4() external notZeroOperands positiveProduct {
         SD59x18 x = MAX_SD59x18;
-        SD59x18 y = wrap(0.000000000000000002e18);
+        SD59x18 y = sd(0.000000000000000002e18);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Gm_Overflow.selector, x, y));
         gm(x, y);
     }
