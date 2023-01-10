@@ -60,15 +60,6 @@ error FromUD60x18_ToUint128_Overflow(UD60x18 x);
 /// @notice Emitted when trying to cast an UD60x18 number that doesn't fit in uint40.
 error FromUD60x18_ToUint40_Overflow(UD60x18 x);
 
-/// @notice Emitted when trying to cast an uint256 that doesn't fit in SD1x18.
-error FromUint256_ToSD1x18_Overflow(uint256 x);
-
-/// @notice Emitted when trying to cast an uint256 that doesn't fit in SD59x18.
-error FromUint256_ToSD59x18_Overflow(uint256 x);
-
-/// @notice Emitted when trying to cast an uint128 that doesn't fit in SD1x18.
-error FromUint128_ToSD1x18_Overflow(uint128 x);
-
 /*//////////////////////////////////////////////////////////////////////////
                                   CONSTANTS
 //////////////////////////////////////////////////////////////////////////*/
@@ -237,76 +228,4 @@ function fromUD60x18_ToUint40(UD60x18 x) pure returns (uint40 result) {
         revert FromUD60x18_ToUint40_Overflow(x);
     }
     result = uint40(xUint);
-}
-
-/*//////////////////////////////////////////////////////////////////////////
-                                  FROM UINT256
-//////////////////////////////////////////////////////////////////////////*/
-
-/// @notice Casts an uint256 number to SD1x18.
-/// @dev Requirements:
-/// - x must be less than or equal to `MAX_SD1x18`.
-function fromUint256_ToSD1x18(uint256 x) pure returns (SD1x18 result) {
-    if (x > uint256(int256(uMAX_SD1x18))) {
-        revert FromUint256_ToSD1x18_Overflow(x);
-    }
-    result = SD1x18.wrap(int64(int256(x)));
-}
-
-/// @notice Casts an uint256 number to SD59x18.
-/// @dev Requirements:
-/// - x must be less than or equal to `MAX_SD59x18`.
-function fromUint256_ToSD59x18(uint256 x) pure returns (SD59x18 result) {
-    if (x > uint256(uMAX_SD59x18)) {
-        revert FromUint256_ToSD59x18_Overflow(x);
-    }
-    result = SD59x18.wrap(int256(x));
-}
-
-/*//////////////////////////////////////////////////////////////////////////
-                                  FROM UINT128
-//////////////////////////////////////////////////////////////////////////*/
-
-/// @notice Casts an uint128 number to SD1x18.
-/// @dev Requirements:
-/// - x must be less than or equal to `MAX_SD1x18`.
-function fromUint128_ToSD1x18(uint128 x) pure returns (SD1x18 result) {
-    if (x > uint256(int256(uMAX_SD1x18))) {
-        revert FromUint128_ToSD1x18_Overflow(x);
-    }
-    result = SD1x18.wrap(int64(int256(uint256(x))));
-}
-
-/// @notice Casts an uint128 number to SD59x18.
-/// @dev There is no overflow check because the domain of uint128 is a subset of SD59x18.
-function fromUint128_ToSD59x18(uint128 x) pure returns (SD59x18 result) {
-    result = SD59x18.wrap(int256(uint256(x)));
-}
-
-/// @notice Casts an uint128 number to UD60x18.
-/// @dev There is no overflow check because the domain of uint128 is a subset of UD60x18.
-function fromUint128_ToUD60x18(uint128 x) pure returns (UD60x18 result) {
-    result = UD60x18.wrap(uint256(x));
-}
-
-/*//////////////////////////////////////////////////////////////////////////
-                                  FROM UINT40
-//////////////////////////////////////////////////////////////////////////*/
-
-/// @notice Casts an uint40 number to SD1x18.
-/// @dev There is no overflow check because the domain of uint40 is a subset of SD1x18.
-function fromUint40_ToSD1x18(uint40 x) pure returns (SD1x18 result) {
-    result = SD1x18.wrap(int64(int256(uint256(x))));
-}
-
-/// @notice Casts an uint40 number to SD59x18.
-/// @dev There is no overflow check because the domain of uint40 is a subset of SD59x18.
-function fromUint40_ToSD59x18(uint40 x) pure returns (SD59x18 result) {
-    result = SD59x18.wrap(int256(uint256(x)));
-}
-
-/// @notice Casts an uint40 number to UD60x18.
-/// @dev There is no overflow check because the domain of uint40 is a subset of UD60x18.
-function fromUint40_ToUD60x18(uint40 x) pure returns (UD60x18 result) {
-    result = UD60x18.wrap(uint256(x));
 }
