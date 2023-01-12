@@ -45,8 +45,9 @@ abstract contract BaseTest is PRBTest, PRBMathAssertions, StdCheats, StdUtils {
                               CONSTANT HELPER FUNCTIONS
     //////////////////////////////////////////////////////////////////////////*/
 
-    function bn(uint256 amount, uint256 decimals) internal pure returns (uint256 result) {
-        result = amount * 10 ** decimals;
+    /// @dev Bounds a `uint128` number.
+    function boundUint128(uint128 x, uint128 min, uint128 max) internal view returns (uint128 result) {
+        result = uint128(bound(uint256(x), uint256(min), uint256(max)));
     }
 
     /*//////////////////////////////////////////////////////////////////////////

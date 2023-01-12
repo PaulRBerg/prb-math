@@ -9,12 +9,14 @@ import { UD60x18 } from "../UD60x18.sol";
 /// @notice Emitted when trying to cast an uint256 that doesn't fit in SD1x18.
 error PRBMath_IntoSD1x18_Overflow(uint256 x);
 
-/// @notice Emitted when trying to cast an uint256 that doesn't fit in UD2x18.
-error PRBMath_IntoUD2x18_Overflow(uint256 x);
-
 /// @notice Emitted when trying to cast an uint256 that doesn't fit in SD59x18.
 error PRBMath_IntoSD59x18_Overflow(uint256 x);
 
+/// @notice Emitted when trying to cast an uint256 that doesn't fit in UD2x18.
+error PRBMath_IntoUD2x18_Overflow(uint256 x);
+
+/// @title PRBMathCastingUint256
+/// @notice Casting utilities for uint256.
 library PRBMathCastingUint256 {
     /// @notice Casts an uint256 number to SD1x18.
     /// @dev Requirements:

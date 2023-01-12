@@ -6,11 +6,13 @@ import { SD59x18 } from "../SD59x18.sol";
 import { UD2x18 } from "../UD2x18.sol";
 import { UD60x18 } from "../UD60x18.sol";
 
+/// @title PRBMathCastingUint40
+/// @notice Casting utilities for uint40.
 library PRBMathCastingUint40 {
     /// @notice Casts an uint40 number into SD1x18.
     /// @dev There is no overflow check because the domain of uint40 is a subset of SD1x18.
     function intoSD1x18(uint40 x) internal pure returns (SD1x18 result) {
-        result = SD1x18.wrap(int64(int256(uint256(x))));
+        result = SD1x18.wrap(int64(uint64(x)));
     }
 
     /// @notice Casts an uint40 number into SD59x18.
