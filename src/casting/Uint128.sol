@@ -38,7 +38,7 @@ library PRBMathCastingUint128 {
         if (x > uint64(uMAX_UD2x18)) {
             revert PRBMath_IntoUD2x18_Overflow(x);
         }
-        result = UD2x18.wrap(uint64(uint256(x)));
+        result = UD2x18.wrap(uint64(x));
     }
 
     /// @notice Casts an uint128 number to UD60x18.

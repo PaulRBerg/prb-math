@@ -25,10 +25,10 @@ error PRBMath_MulDivSigned_Overflow(int256 x, int256 y);
 //////////////////////////////////////////////////////////////////////////*/
 
 /// @dev The maximum value an uint128 number can have.
-uint256 constant MAX_UINT128 = type(uint128).max;
+uint128 constant MAX_UINT128 = type(uint128).max;
 
 /// @dev The maximum value an uint40 number can have.
-uint256 constant MAX_UINT40 = type(uint40).max;
+uint40 constant MAX_UINT40 = type(uint40).max;
 
 /// @dev How many trailing decimals can be represented.
 uint256 constant UNIT = 1e18;

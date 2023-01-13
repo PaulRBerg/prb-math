@@ -30,14 +30,14 @@ contract Mul_Test is UD60x18_Test {
     function test_RevertWhen_ResultOverflowUD60x18_1() external neitherOperandZero {
         UD60x18 x = SQRT_MAX_UD60x18.add(ud(1));
         UD60x18 y = SQRT_MAX_UD60x18.add(ud(1));
-        vm.expectRevert(abi.encodeWithSelector(PRBMath_MulDiv18_Overflow.selector, UD60x18.unwrap(x), UD60x18.unwrap(y)));
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_MulDiv18_Overflow.selector, x.unwrap(), y.unwrap()));
         mul(x, y);
     }
 
     function test_RevertWhen_ResultOverflowUD60x18_2() external neitherOperandZero {
         UD60x18 x = SQRT_MAX_UD60x18.add(ud(1));
         UD60x18 y = SQRT_MAX_UD60x18.add(ud(1));
-        vm.expectRevert(abi.encodeWithSelector(PRBMath_MulDiv18_Overflow.selector, UD60x18.unwrap(x), UD60x18.unwrap(y)));
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_MulDiv18_Overflow.selector, x.unwrap(), y.unwrap()));
         mul(x, y);
     }
 

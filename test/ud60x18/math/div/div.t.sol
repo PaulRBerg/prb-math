@@ -39,7 +39,7 @@ contract Div_Test is UD60x18_Test {
     function test_RevertWhen_ResultOverflowUD60x18() external denominatorNotZero {
         UD60x18 x = MAX_SCALED_UD60x18.add(ud(1));
         UD60x18 y = ud(0.000000000000000001e18);
-        vm.expectRevert(abi.encodeWithSelector(PRBMath_MulDiv_Overflow.selector, UD60x18.unwrap(x), uUNIT, UD60x18.unwrap(y)));
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_MulDiv_Overflow.selector, x.unwrap(), uUNIT, y.unwrap()));
         div(x, y);
     }
 

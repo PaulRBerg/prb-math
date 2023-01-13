@@ -39,8 +39,17 @@ error PRBMath_SD59x18_Gm_Overflow(SD59x18 x, SD59x18 y);
 /// @notice Emitted when trying to cast an UD60x18 number that doesn't fit in SD1x18.
 error PRBMath_SD59x18_IntoSD1x18_Overflow(SD59x18 x);
 
+/// @notice Emitted when trying to cast an UD60x18 number that doesn't fit in SD1x18.
+error PRBMath_SD59x18_IntoSD1x18_Underflow(SD59x18 x);
+
+/// @notice Emitted when trying to cast an UD60x18 number that doesn't fit in UD2x18.
+error PRBMath_SD59x18_IntoUD2x18_Overflow(SD59x18 x);
+
 /// @notice Emitted when trying to cast an UD60x18 number that doesn't fit in UD2x18.
 error PRBMath_SD59x18_IntoUD2x18_Underflow(SD59x18 x);
+
+/// @notice Emitted when trying to cast an UD60x18 number that doesn't fit in UD60x18.
+error PRBMath_SD59x18_IntoUD60x18_Underflow(SD59x18 x);
 
 /// @notice Emitted when trying to cast an UD60x18 number that doesn't fit in uint256.
 error PRBMath_SD59x18_IntoUint256_Underflow(SD59x18 x);

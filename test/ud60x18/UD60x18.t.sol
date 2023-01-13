@@ -59,11 +59,11 @@ abstract contract UD60x18_Test is BaseTest {
     //////////////////////////////////////////////////////////////////////////*/
 
     function log(string memory p0, UD60x18 p1) internal view {
-        console2.log(p0, UD60x18.unwrap(p1));
+        console2.log(p0, p1.unwrap());
     }
 
     function logUd(UD60x18 p0) internal view {
-        console2.logUint(UD60x18.unwrap(p0));
+        console2.logUint(p0.unwrap());
     }
 
     function set(uint256 x) internal pure returns (Set memory) {

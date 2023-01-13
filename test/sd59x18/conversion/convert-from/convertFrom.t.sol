@@ -56,7 +56,7 @@ contract ConvertFrom_Test is SD59x18_Test {
 
     function test_ConvertFrom() external parameterizedTest(greaterThanAbsoluteOne_Sets()) greaterThanOrEqualToAbsoluteOne {
         int256 actual = convert(s.x);
-        int256 expected = SD59x18.unwrap(s.expected);
+        int256 expected = s.expected.unwrap();
         assertEq(actual, expected);
     }
 }

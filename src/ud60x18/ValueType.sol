@@ -14,7 +14,7 @@ type UD60x18 is uint256;
                                     CASTING
 //////////////////////////////////////////////////////////////////////////*/
 
-using { C.intoSD1x18, C.intoUD2x18, C.intoSD59x18, C.intoUint128, C.intoUint40 } for UD60x18 global;
+using { C.intoSD1x18, C.intoUD2x18, C.intoSD59x18, C.intoUint128, C.intoUint256, C.intoUint40, C.unwrap } for UD60x18 global;
 
 /*//////////////////////////////////////////////////////////////////////////
                             MATHEMATICAL FUNCTIONS

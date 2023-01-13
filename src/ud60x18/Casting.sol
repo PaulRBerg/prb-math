@@ -25,7 +25,7 @@ function intoSD1x18(UD60x18 x) pure returns (SD1x18 result) {
     if (xUint > uint256(int256(uMAX_SD1x18))) {
         revert PRBMath_UD60x18_IntoSD1x18_Overflow(x);
     }
-    result = SD1x18.wrap(int64(int256(xUint)));
+    result = SD1x18.wrap(int64(uint64(xUint)));
 }
 
 /// @notice Casts an UD60x18 number into UD2x18.
@@ -51,6 +51,7 @@ function intoSD59x18(UD60x18 x) pure returns (SD59x18 result) {
 }
 
 /// @notice Casts an UD60x18 number into uint128.
+/// @dev This is basically a functional alias for the `unwrap` function.
 function intoUint256(UD60x18 x) pure returns (uint256 result) {
     result = UD60x18.unwrap(x);
 }
@@ -77,22 +78,22 @@ function intoUint40(UD60x18 x) pure returns (uint40 result) {
     result = uint40(xUint);
 }
 
-/// @notice Alias for the `wrap` function defined below.
+/// @notice Alias for the `wrap` function.
 function ud(uint256 x) pure returns (UD60x18 result) {
     result = wrap(x);
 }
 
-/// @notice Alias for the `wrap` function defined below.
+/// @notice Alias for the `wrap` function.
 function ud60x18(uint256 x) pure returns (UD60x18 result) {
     result = wrap(x);
 }
 
-/// @notice Unwraps an UD60x18 number into the underlying unsigned integer.
+/// @notice Unwraps an UD60x18 number into uint256.
 function unwrap(UD60x18 x) pure returns (uint256 result) {
     result = UD60x18.unwrap(x);
 }
 
-/// @notice Wraps an unsigned integer into the UD60x18 type.
+/// @notice Wraps an uint256 number into the UD60x18 value type.
 function wrap(uint256 x) pure returns (UD60x18 result) {
     result = UD60x18.wrap(x);
 }

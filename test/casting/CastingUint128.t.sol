@@ -19,8 +19,8 @@ import { BaseTest } from "../BaseTest.t.sol";
 contract CastingUint128_Test is BaseTest {
     using CastingUint128 for uint128;
 
-    function test_RevertWhen_OverflowSD1x18(uint128 x) external {
-        x = boundUint128(x, uint128(uint64(uMAX_SD1x18)) + 1, type(uint128).max);
+    function testFuzz_RevertWhen_OverflowSD1x18(uint128 x) external {
+        x = boundUint128(x, uint128(uint64(uMAX_SD1x18)) + 1, MAX_UINT128);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_IntoSD1x18_Overflow.selector, x));
         x.intoSD1x18();
     }
@@ -38,8 +38,8 @@ contract CastingUint128_Test is BaseTest {
         assertEq(actual, expected);
     }
 
-    function test_RevertWhen_OverflowUD2x18(uint128 x) external {
-        x = boundUint128(x, uint128(uMAX_UD2x18) + 1, type(uint128).max);
+    function testFuzz_RevertWhen_OverflowUD2x18(uint128 x) external {
+        x = boundUint128(x, uint128(uMAX_UD2x18) + 1, MAX_UINT128);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_IntoUD2x18_Overflow.selector, x));
         x.intoUD2x18();
     }

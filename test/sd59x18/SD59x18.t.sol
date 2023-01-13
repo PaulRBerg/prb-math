@@ -66,11 +66,11 @@ abstract contract SD59x18_Test is BaseTest {
     //////////////////////////////////////////////////////////////////////////*/
 
     function logSd(SD59x18 p0) internal view {
-        console2.logInt(unwrap(p0));
+        console2.logInt(p0.unwrap());
     }
 
     function sdToUint(SD59x18 x) internal pure returns (uint256 result) {
-        result = uint256(unwrap(x));
+        result = uint256(x.unwrap());
     }
 
     function set(int256 x) internal pure returns (Set memory) {

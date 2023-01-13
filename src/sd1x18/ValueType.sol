@@ -12,4 +12,4 @@ type SD1x18 is int64;
                                     CASTING
 //////////////////////////////////////////////////////////////////////////*/
 
-using { C.intoSD59x18, C.intoUD2x18, C.intoUD60x18, C.intoUint256, C.intoUint128, C.intoUint40 } for SD1x18 global;
+using { C.intoSD59x18, C.intoUD2x18, C.intoUD60x18, C.intoUint256, C.intoUint128, C.intoUint40, C.unwrap } for SD1x18 global;

@@ -3,7 +3,7 @@ pragma solidity >=0.8.13 <0.9.0;
 
 import { stdMath } from "forge-std/StdMath.sol";
 
-import { sd, unwrap } from "src/sd59x18/Casting.sol";
+import { sd } from "src/sd59x18/Casting.sol";
 import {
     add,
     and,
@@ -29,7 +29,7 @@ import { SD59x18 } from "src/sd59x18/ValueType.sol";
 import { SD59x18_Test } from "../SD59x18.t.sol";
 
 /// @dev Collection of tests for the helpers functions available in the SD59x18 type.
-contract SD59x18_HelpersTest is SD59x18_Test {
+contract Helpers_Test is SD59x18_Test {
     int256 internal constant HALF_MAX_INT256 = type(int256).max / 2;
     int256 internal constant HALF_MIN_INT256 = type(int256).min / 2;
 
@@ -42,7 +42,7 @@ contract SD59x18_HelpersTest is SD59x18_Test {
     }
 
     function testFuzz_And(int256 x, int256 y) external {
-        int256 actual = unwrap(and(sd(x), y));
+        int256 actual = and(sd(x), y).unwrap();
         int256 expected = x & y;
         assertEq(actual, expected);
     }
@@ -73,7 +73,7 @@ contract SD59x18_HelpersTest is SD59x18_Test {
 
     function testFuzz_Lshift(int256 x, uint256 y) external {
         bound(y, 0, 512);
-        int256 actual = unwrap(lshift(sd(x), y));
+        int256 actual = lshift(sd(x), y).unwrap();
         int256 expected = x << y;
         assertEq(actual, expected);
     }
@@ -92,7 +92,7 @@ contract SD59x18_HelpersTest is SD59x18_Test {
 
     function testFuzz_Mod(int256 x, int256 y) external {
         vm.assume(y != 0);
-        int256 actual = unwrap(mod(sd(x), sd(y)));
+        int256 actual = mod(sd(x), sd(y)).unwrap();
         int256 expected = x % y;
         assertEq(actual, expected);
     }
@@ -104,14 +104,14 @@ contract SD59x18_HelpersTest is SD59x18_Test {
     }
 
     function testFuzz_Or(int256 x, int256 y) external {
-        int256 actual = unwrap(or(sd(x), sd(y)));
+        int256 actual = or(sd(x), sd(y)).unwrap();
         int256 expected = x | y;
         assertEq(actual, expected);
     }
 
     function testFuzz_Rshift(int256 x, uint256 y) external {
         bound(y, 0, 512);
-        int256 actual = unwrap(rshift(sd(x), y));
+        int256 actual = rshift(sd(x), y).unwrap();
         int256 expected = x >> y;
         assertEq(actual, expected);
     }
@@ -125,7 +125,7 @@ contract SD59x18_HelpersTest is SD59x18_Test {
     }
 
     function testFuzz_UncheckedAdd(int256 x, int256 y) external {
-        int256 actual = unwrap(uncheckedAdd(sd(x), sd(y)));
+        int256 actual = uncheckedAdd(sd(x), sd(y)).unwrap();
         int256 expected;
         unchecked {
             expected = x + y;
@@ -134,7 +134,7 @@ contract SD59x18_HelpersTest is SD59x18_Test {
     }
 
     function testFuzz_UncheckedSub(int256 x, int256 y) external {
-        int256 actual = unwrap(uncheckedSub(sd(x), sd(y)));
+        int256 actual = uncheckedSub(sd(x), sd(y)).unwrap();
         int256 expected;
         unchecked {
             expected = x - y;
@@ -143,7 +143,7 @@ contract SD59x18_HelpersTest is SD59x18_Test {
     }
 
     function testFuzz_Xor(int256 x, int256 y) external {
-        int256 actual = unwrap(xor(sd(x), sd(y)));
+        int256 actual = xor(sd(x), sd(y)).unwrap();
         int256 expected = x ^ y;
         assertEq(actual, expected);
     }

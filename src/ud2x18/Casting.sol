@@ -55,7 +55,17 @@ function intoUint40(UD2x18 x) pure returns (uint40 result) {
     result = uint40(xUint);
 }
 
-/// @notice Wraps a signed integer into the UD2x18 type.
+/// @notice Alias for the `wrap` function.
 function ud2x18(uint64 x) pure returns (UD2x18 result) {
+    result = wrap(x);
+}
+
+/// @notice Unwrap an UD2x18 number into uint64.
+function unwrap(UD2x18 x) pure returns (uint64 result) {
+    result = UD2x18.unwrap(x);
+}
+
+/// @notice Wraps an uint64 number into the UD2x18 value type.
+function wrap(uint64 x) pure returns (UD2x18 result) {
     result = UD2x18.wrap(x);
 }

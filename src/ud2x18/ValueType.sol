@@ -12,4 +12,4 @@ type UD2x18 is uint64;
                                     CASTING
 //////////////////////////////////////////////////////////////////////////*/
 
-using { C.intoSD1x18, C.intoSD59x18, C.intoUD60x18, C.intoUint256, C.intoUint128, C.intoUint40 } for UD2x18 global;
+using { C.intoSD1x18, C.intoSD59x18, C.intoUD60x18, C.intoUint256, C.intoUint128, C.intoUint40, C.unwrap } for UD2x18 global;

@@ -44,7 +44,7 @@ contract ConvertFrom_Test is UD60x18_Test {
 
     function test_ConvertFrom() external parameterizedTest(greaterThanOne_Sets()) greaterThanOrEqualToOne {
         uint256 actual = convert(s.x);
-        uint256 expected = UD60x18.unwrap(s.expected);
+        uint256 expected = s.expected.unwrap();
         assertEq(actual, expected);
     }
 }

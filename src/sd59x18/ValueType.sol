@@ -13,7 +13,16 @@ type SD59x18 is int256;
                                     CASTING
 //////////////////////////////////////////////////////////////////////////*/
 
-using { C.intoSD1x18, C.intoUD2x18, C.intoUD60x18, C.intoUint256, C.intoUint128, C.intoUint40 } for SD59x18 global;
+using {
+    C.intoInt256,
+    C.intoSD1x18,
+    C.intoUD2x18,
+    C.intoUD60x18,
+    C.intoUint256,
+    C.intoUint128,
+    C.intoUint40,
+    C.unwrap
+} for SD59x18 global;
 
 /*//////////////////////////////////////////////////////////////////////////
                             MATHEMATICAL FUNCTIONS

@@ -73,7 +73,17 @@ function intoUint40(SD1x18 x) pure returns (uint40 result) {
     result = uint40(uint64(xInt));
 }
 
-/// @notice Wraps a signed integer into the SD1x18 type.
+/// @notice Alias for the `wrap` function.
 function sd1x18(int64 x) pure returns (SD1x18 result) {
+    result = wrap(x);
+}
+
+/// @notice Unwraps an SD1x18 number into int64.
+function unwrap(SD1x18 x) pure returns (int64 result) {
+    result = SD1x18.unwrap(x);
+}
+
+/// @notice Wraps an int64 number into the SD1x18 value type.
+function wrap(int64 x) pure returns (SD1x18 result) {
     result = SD1x18.wrap(x);
 }

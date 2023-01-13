@@ -3,16 +3,16 @@ pragma solidity >=0.8.13 <0.9.0;
 
 import { PRBTest } from "@prb/test/PRBTest.sol";
 import { StdCheats } from "forge-std/StdCheats.sol";
-import { StdUtils } from "forge-std/StdUtils.sol";
 
 import { SD59x18 } from "src/sd59x18/ValueType.sol";
 import { PRBMathAssertions } from "src/test/Assertions.sol";
+import { PRBMathUtils } from "src/test/Utils.sol";
 import { UD60x18 } from "src/ud60x18/ValueType.sol";
 
 /// @title BaseTest
 /// @author Paul Razvan Berg
 /// @notice Common contract members needed across tests.
-abstract contract BaseTest is PRBTest, PRBMathAssertions, StdCheats, StdUtils {
+abstract contract BaseTest is PRBTest, StdCheats, PRBMathAssertions, PRBMathUtils {
     /*//////////////////////////////////////////////////////////////////////////
                                        STRUCTS
     //////////////////////////////////////////////////////////////////////////*/
@@ -22,6 +22,16 @@ abstract contract BaseTest is PRBTest, PRBMathAssertions, StdCheats, StdUtils {
         address payable bob;
         address payable eve;
     }
+
+    /*//////////////////////////////////////////////////////////////////////////
+                                     CONSTANTS
+    //////////////////////////////////////////////////////////////////////////*/
+
+    /// @dev The maximum value an uint128 number can have.
+    uint128 constant MAX_UINT128 = type(uint128).max;
+
+    /// @dev The maximum value an uint40 number can have.
+    uint128 constant MAX_UINT40 = type(uint40).max;
 
     /*//////////////////////////////////////////////////////////////////////////
                                   TESTING VARIABLES
