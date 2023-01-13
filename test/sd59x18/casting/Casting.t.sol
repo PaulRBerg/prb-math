@@ -5,8 +5,6 @@ import { uMAX_SD1x18, uMIN_SD1x18 } from "src/sd1x18/Constants.sol";
 import { SD1x18 } from "src/sd1x18/ValueType.sol";
 import { uMAX_SD59x18, uMIN_SD59x18 } from "src/sd59x18/Constants.sol";
 import { SD59x18 } from "src/sd59x18/ValueType.sol";
-import { uMAX_UD2x18 } from "src/ud2x18/Constants.sol";
-import { UD2x18 } from "src/ud2x18/ValueType.sol";
 import { sd, sd59x18, wrap } from "src/sd59x18/Casting.sol";
 import { MAX_SD59x18, MIN_SD59x18 } from "src/sd59x18/Constants.sol";
 import {
@@ -22,6 +20,8 @@ import {
     PRBMath_SD59x18_IntoUint40_Underflow
 } from "src/sd59x18/Errors.sol";
 import { SD59x18 } from "src/sd59x18/ValueType.sol";
+import { uMAX_UD2x18 } from "src/ud2x18/Constants.sol";
+import { UD2x18 } from "src/ud2x18/ValueType.sol";
 import { UD60x18 } from "src/ud60x18/ValueType.sol";
 
 import { SD59x18_Test } from "../SD59x18.t.sol";
@@ -142,7 +142,7 @@ contract Casting_Test is SD59x18_Test {
         assertEq(actual, expected);
     }
 
-    function testFuzz_Sd59x18(int256 x) external {
+    function testFuzz_SD59x18(int256 x) external {
         SD59x18 actual = sd59x18(x);
         SD59x18 expected = SD59x18.wrap(x);
         assertEq(actual, expected);

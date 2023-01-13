@@ -22,13 +22,13 @@ contract CastingUint256_Test is BaseTest {
     using CastingUint256 for uint256;
 
     function testFuzz_RevertWhen_OverflowSD1x18(uint256 x) external {
-        x = bound(x, uint256(uint64(uMAX_SD1x18)) + 1, type(uint256).max);
+        x = bound(x, uint64(uMAX_SD1x18) + 1, type(uint256).max);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_IntoSD1x18_Overflow.selector, x));
         x.intoSD1x18();
     }
 
     function testFuzz_intoSD1x18(uint256 x) external {
-        x = bound(x, 0, uint256(uint64(uMAX_SD1x18)));
+        x = bound(x, 0, uint64(uMAX_SD1x18));
         SD1x18 actual = x.intoSD1x18();
         SD1x18 expected = SD1x18.wrap(int64(uint64(x)));
         assertEq(actual, expected);

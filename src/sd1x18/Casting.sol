@@ -7,6 +7,7 @@ import { UD2x18 } from "../ud2x18/ValueType.sol";
 import { UD60x18 } from "../ud60x18/ValueType.sol";
 import {
     PRBMath_SD1x18_ToUD2x18_Underflow,
+    PRBMath_SD1x18_ToUD60x18_Underflow,
     PRBMath_SD1x18_ToUint128_Underflow,
     PRBMath_SD1x18_ToUint256_Underflow,
     PRBMath_SD1x18_ToUint40_Overflow,
@@ -31,9 +32,14 @@ function intoUD2x18(SD1x18 x) pure returns (UD2x18 result) {
 }
 
 /// @notice Casts an SD1x18 number into UD60x18.
-/// @dev This function simply calls `intoUint256` and wraps the result.
+/// @dev Requirements:
+/// - x must be positive.
 function intoUD60x18(SD1x18 x) pure returns (UD60x18 result) {
-    result = UD60x18.wrap(intoUint256(x));
+    int64 xInt = SD1x18.unwrap(x);
+    if (xInt < 0) {
+        revert PRBMath_SD1x18_ToUD60x18_Underflow(x);
+    }
+    result = UD60x18.wrap(uint64(xInt));
 }
 
 /// @notice Casts an SD1x18 number into uint256.

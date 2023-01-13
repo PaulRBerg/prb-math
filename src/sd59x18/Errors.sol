@@ -51,14 +51,14 @@ error PRBMath_SD59x18_IntoUD2x18_Underflow(SD59x18 x);
 /// @notice Emitted when trying to cast an UD60x18 number that doesn't fit in UD60x18.
 error PRBMath_SD59x18_IntoUD60x18_Underflow(SD59x18 x);
 
-/// @notice Emitted when trying to cast an UD60x18 number that doesn't fit in uint256.
-error PRBMath_SD59x18_IntoUint256_Underflow(SD59x18 x);
-
 /// @notice Emitted when trying to cast an UD60x18 number that doesn't fit in uint128.
 error PRBMath_SD59x18_IntoUint128_Overflow(SD59x18 x);
 
 /// @notice Emitted when trying to cast an UD60x18 number that doesn't fit in uint128.
 error PRBMath_SD59x18_IntoUint128_Underflow(SD59x18 x);
+
+/// @notice Emitted when trying to cast an UD60x18 number that doesn't fit in uint256.
+error PRBMath_SD59x18_IntoUint256_Underflow(SD59x18 x);
 
 /// @notice Emitted when trying to cast an UD60x18 number that doesn't fit in uint40.
 error PRBMath_SD59x18_IntoUint40_Overflow(SD59x18 x);
