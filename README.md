@@ -1,7 +1,7 @@
 # PRBMath [![GitHub Actions][gha-badge]][gha] [![Foundry][foundry-badge]][foundry] [![Styled with Prettier][prettier-badge]][prettier] [![License: MIT][license-badge]][license]
 
-[gha]: https://github.com/paulrberg/prb-math/actions
-[gha-badge]: https://github.com/paulrberg/prb-math/actions/workflows/ci.yml/badge.svg
+[gha]: https://github.com/PaulRBerg/prb-math/actions
+[gha-badge]: https://github.com/PaulRBerg/prb-math/actions/workflows/ci.yml/badge.svg
 [foundry]: https://getfoundry.sh/
 [foundry-badge]: https://img.shields.io/badge/Built%20with-Foundry-FFDB1C.svg
 [prettier]: https://prettier.io
@@ -36,7 +36,7 @@ all the boxes mentioned thus far, but it doesn't offer type safety.
 First, run the install step:
 
 ```sh
-forge install --no-commit paulrberg/prb-math@v3
+forge install --no-commit PaulRBerg/prb-math@v3
 ```
 
 Then, add this to your `remappings.txt` file:
@@ -225,7 +225,7 @@ types `SD59x18` and `UD60x18`.
 
 ### Assertions
 
-PRBMath is shipped with typed assertions that you can use for writing tests with [PRBTest](https://github.com/paulrberg/prb-test), which is based on
+PRBMath is shipped with typed assertions that you can use for writing tests with [PRBTest](https://github.com/PaulRBerg/prb-test), which is based on
 Foundry. This is useful if, for example, you would like to assert that two SD59x18 or UD60x18 numbers are equal.
 
 ```solidity
@@ -255,12 +255,12 @@ The main reason why PRBMath lags behind ABDKMath's `mul` and `div` functions is 
 possible intermediary overflow. ABDKMath, on the other hand, operates with 128-bit word sizes.
 
 **Note**: I did not find a good way to automatically generate gas reports for PRBMath. See the
-[#134](https://github.com/paulrberg/prb-math/discussions/134) discussion for more details about this issue.
+[#134](https://github.com/PaulRBerg/prb-math/discussions/134) discussion for more details about this issue.
 
 ### PRBMath
 
-Gas estimations based on the [v2.0.1](https://github.com/paulrberg/prb-math/releases/tag/v2.0.1) and the
-[v3.0.0](https://github.com/paulrberg/prb-math/releases/tag/v3.0.0) releases.
+Gas estimations based on the [v2.0.1](https://github.com/PaulRBerg/prb-math/releases/tag/v2.0.1) and the
+[v3.0.0](https://github.com/PaulRBerg/prb-math/releases/tag/v3.0.0) releases.
 
 | SD59x18 | Min | Max   | Avg  |     | UD60x18 | Min  | Max   | Avg  |
 | ------- | --- | ----- | ---- | --- | ------- | ---- | ----- | ---- |
@@ -284,7 +284,7 @@ Gas estimations based on the [v2.0.1](https://github.com/paulrberg/prb-math/rele
 
 ### ABDKMath64x64
 
-Gas estimations based on the v3.0 release of ABDKMath. See my [abdk-gas-estimations](https://github.com/paulrberg/abdk-gas-estimations) repo.
+Gas estimations based on the v3.0 release of ABDKMath. See my [abdk-gas-estimations](https://github.com/PaulRBerg/abdk-gas-estimations) repo.
 
 | Method | Min  | Max  | Avg  |
 | ------ | ---- | ---- | ---- |
@@ -303,8 +303,8 @@ Gas estimations based on the v3.0 release of ABDKMath. See my [abdk-gas-estimati
 
 ## Contributing
 
-Feel free to dive in! [Open](https://github.com/paulrberg/prb-math/issues/new) an issue,
-[start](https://github.com/paulrberg/prb-math/discussions/new) a discussion or submit a PR.
+Feel free to dive in! [Open](https://github.com/PaulRBerg/prb-math/issues/new) an issue,
+[start](https://github.com/PaulRBerg/prb-math/discussions/new) a discussion or submit a PR.
 
 ### Pre Requisites
 
@@ -322,7 +322,7 @@ In addition, familiarity with [Solidity](https://soliditylang.org/) is requisite
 Clone this repository including submodules:
 
 ```sh
-$ git clone --recurse-submodules -j8 git@github.com:paulrberg/prb-math.git
+$ git clone --recurse-submodules -j8 git@github.com:PaulRBerg/prb-math.git
 ```
 
 Then, inside the project's directory, run this to install the Node.js dependencies:

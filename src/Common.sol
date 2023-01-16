@@ -56,7 +56,7 @@ uint256 constant UNIT_INVERSE = 781566461551748419797279945988162623061752125920
 /// ```
 ///
 /// Where 128 is swapped with each respective power of two factor. See the full high-level implementation here:
-/// https://gist.github.com/paulrberg/f932f8693f2733e30c4d479e8e980948
+/// https://gist.github.com/PaulRBerg/f932f8693f2733e30c4d479e8e980948
 ///
 /// A list of the Yul instructions used below:
 /// - "gt" is "greater than"

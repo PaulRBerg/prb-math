@@ -5,4 +5,4 @@
 [submodule "lib/prb-test"]
   branch = "0.3.1"
   path = "lib/prb-test"
-  url = "https://github.com/paulrberg/prb-test"
+  url = "https://github.com/PaulRBerg/prb-test"

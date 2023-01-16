@@ -7,7 +7,7 @@
     "url": "https://github.com/paulrberg"
   },
   "bugs": {
-    "url": "https://github.com/paulrberg/prb-math/issues"
+    "url": "https://github.com/PaulRBerg/prb-math/issues"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.3.0",
@@ -27,7 +27,7 @@
     "/src",
     "CHANGELOG.md"
   ],
-  "homepage": "https://github.com/paulrberg/prb-math#readme",
+  "homepage": "https://github.com/PaulRBerg/prb-math#readme",
   "keywords": [
     "blockchain",
     "ethereum",
@@ -44,7 +44,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/paulrberg/prb-math"
+    "url": "https://github.com/PaulRBerg/prb-math"
   },
   "resolutions": {
     "solhint/@solidity-parser/parser": "^0.14.5"
