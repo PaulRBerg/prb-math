@@ -16,12 +16,24 @@ contract PRBMathAssertions is PRBTest {
         assertEq(SD1x18.unwrap(a), SD1x18.unwrap(b));
     }
 
+    function assertEq(SD1x18 a, SD1x18 b, string memory err) internal {
+        assertEq(SD1x18.unwrap(a), SD1x18.unwrap(b), err);
+    }
+
     function assertEq(SD1x18 a, int64 b) internal {
         assertEq(SD1x18.unwrap(a), b);
     }
 
+    function assertEq(SD1x18 a, int64 b, string memory err) internal {
+        assertEq(SD1x18.unwrap(a), b, err);
+    }
+
     function assertEq(int64 a, SD1x18 b) internal {
         assertEq(a, SD1x18.unwrap(b));
+    }
+
+    function assertEq(int64 a, SD1x18 b, string memory err) internal {
+        assertEq(a, SD1x18.unwrap(b), err);
     }
 
     function assertEq(SD1x18[] memory a, SD1x18[] memory b) internal {
@@ -34,6 +46,16 @@ contract PRBMathAssertions is PRBTest {
         assertEq(castedA, castedB);
     }
 
+    function assertEq(SD1x18[] memory a, SD1x18[] memory b, string memory err) internal {
+        int256[] memory castedA;
+        int256[] memory castedB;
+        assembly {
+            castedA := a
+            castedB := b
+        }
+        assertEq(castedA, castedB, err);
+    }
+
     function assertEq(SD1x18[] memory a, int64[] memory b) internal {
         int256[] memory castedA;
         int256[] memory castedB;
@@ -42,6 +64,16 @@ contract PRBMathAssertions is PRBTest {
             castedB := b
         }
         assertEq(castedA, castedB);
+    }
+
+    function assertEq(SD1x18[] memory a, int64[] memory b, string memory err) internal {
+        int256[] memory castedA;
+        int256[] memory castedB;
+        assembly {
+            castedA := a
+            castedB := b
+        }
+        assertEq(castedA, castedB, err);
     }
 
     function assertEq(int64[] memory a, SD1x18[] memory b) internal {
@@ -54,6 +86,16 @@ contract PRBMathAssertions is PRBTest {
         assertEq(castedA, castedB);
     }
 
+    function assertEq(int64[] memory a, SD1x18[] memory b, string memory err) internal {
+        int256[] memory castedA;
+        int256[] memory castedB;
+        assembly {
+            castedA := a
+            castedB := b
+        }
+        assertEq(castedA, castedB, err);
+    }
+
     /*//////////////////////////////////////////////////////////////////////////
                                        SD59X18
     //////////////////////////////////////////////////////////////////////////*/
@@ -62,12 +104,24 @@ contract PRBMathAssertions is PRBTest {
         assertEq(SD59x18.unwrap(a), SD59x18.unwrap(b));
     }
 
+    function assertEq(SD59x18 a, SD59x18 b, string memory err) internal {
+        assertEq(SD59x18.unwrap(a), SD59x18.unwrap(b), err);
+    }
+
     function assertEq(SD59x18 a, int256 b) internal {
         assertEq(SD59x18.unwrap(a), b);
     }
 
+    function assertEq(SD59x18 a, int256 b, string memory err) internal {
+        assertEq(SD59x18.unwrap(a), b, err);
+    }
+
     function assertEq(int256 a, SD59x18 b) internal {
         assertEq(a, SD59x18.unwrap(b));
+    }
+
+    function assertEq(int256 a, SD59x18 b, string memory err) internal {
+        assertEq(a, SD59x18.unwrap(b), err);
     }
 
     function assertEq(SD59x18[] memory a, SD59x18[] memory b) internal {
@@ -80,12 +134,30 @@ contract PRBMathAssertions is PRBTest {
         assertEq(castedA, castedB);
     }
 
+    function assertEq(SD59x18[] memory a, SD59x18[] memory b, string memory err) internal {
+        int256[] memory castedA;
+        int256[] memory castedB;
+        assembly {
+            castedA := a
+            castedB := b
+        }
+        assertEq(castedA, castedB, err);
+    }
+
     function assertEq(SD59x18[] memory a, int256[] memory b) internal {
         int256[] memory castedA;
         assembly {
             castedA := a
         }
         assertEq(castedA, b);
+    }
+
+    function assertEq(SD59x18[] memory a, int256[] memory b, string memory err) internal {
+        int256[] memory castedA;
+        assembly {
+            castedA := a
+        }
+        assertEq(castedA, b, err);
     }
 
     function assertEq(int256[] memory a, SD59x18[] memory b) internal {
@@ -96,6 +168,14 @@ contract PRBMathAssertions is PRBTest {
         assertEq(a, b);
     }
 
+    function assertEq(int256[] memory a, SD59x18[] memory b, string memory err) internal {
+        int256[] memory castedB;
+        assembly {
+            castedB := b
+        }
+        assertEq(a, b, err);
+    }
+
     /*//////////////////////////////////////////////////////////////////////////
                                        UD2X18
     //////////////////////////////////////////////////////////////////////////*/
@@ -104,12 +184,24 @@ contract PRBMathAssertions is PRBTest {
         assertEq(UD2x18.unwrap(a), UD2x18.unwrap(b));
     }
 
+    function assertEq(UD2x18 a, UD2x18 b, string memory err) internal {
+        assertEq(UD2x18.unwrap(a), UD2x18.unwrap(b), err);
+    }
+
     function assertEq(UD2x18 a, uint64 b) internal {
         assertEq(UD2x18.unwrap(a), uint256(b));
     }
 
+    function assertEq(UD2x18 a, uint64 b, string memory err) internal {
+        assertEq(UD2x18.unwrap(a), uint256(b), err);
+    }
+
     function assertEq(uint64 a, UD2x18 b) internal {
         assertEq(uint256(a), UD2x18.unwrap(b));
+    }
+
+    function assertEq(uint64 a, UD2x18 b, string memory err) internal {
+        assertEq(uint256(a), UD2x18.unwrap(b), err);
     }
 
     function assertEq(UD2x18[] memory a, UD2x18[] memory b) internal {
@@ -122,6 +214,16 @@ contract PRBMathAssertions is PRBTest {
         assertEq(castedA, castedB);
     }
 
+    function assertEq(UD2x18[] memory a, UD2x18[] memory b, string memory err) internal {
+        uint256[] memory castedA;
+        uint256[] memory castedB;
+        assembly {
+            castedA := a
+            castedB := b
+        }
+        assertEq(castedA, castedB, err);
+    }
+
     function assertEq(UD2x18[] memory a, uint64[] memory b) internal {
         uint256[] memory castedA;
         uint256[] memory castedB;
@@ -130,6 +232,16 @@ contract PRBMathAssertions is PRBTest {
             castedB := b
         }
         assertEq(castedA, castedB);
+    }
+
+    function assertEq(UD2x18[] memory a, uint64[] memory b, string memory err) internal {
+        uint256[] memory castedA;
+        uint256[] memory castedB;
+        assembly {
+            castedA := a
+            castedB := b
+        }
+        assertEq(castedA, castedB, err);
     }
 
     function assertEq(uint64[] memory a, UD2x18[] memory b) internal {
@@ -142,6 +254,16 @@ contract PRBMathAssertions is PRBTest {
         assertEq(castedA, castedB);
     }
 
+    function assertEq(uint64[] memory a, UD2x18[] memory b, string memory err) internal {
+        uint256[] memory castedA;
+        uint256[] memory castedB;
+        assembly {
+            castedA := a
+            castedB := b
+        }
+        assertEq(castedA, castedB, err);
+    }
+
     /*//////////////////////////////////////////////////////////////////////////
                                        UD60X18
     //////////////////////////////////////////////////////////////////////////*/
@@ -150,12 +272,24 @@ contract PRBMathAssertions is PRBTest {
         assertEq(UD60x18.unwrap(a), UD60x18.unwrap(b));
     }
 
+    function assertEq(UD60x18 a, UD60x18 b, string memory err) internal {
+        assertEq(UD60x18.unwrap(a), UD60x18.unwrap(b), err);
+    }
+
     function assertEq(UD60x18 a, uint256 b) internal {
         assertEq(UD60x18.unwrap(a), b);
     }
 
+    function assertEq(UD60x18 a, uint256 b, string memory err) internal {
+        assertEq(UD60x18.unwrap(a), b, err);
+    }
+
     function assertEq(uint256 a, UD60x18 b) internal {
         assertEq(a, UD60x18.unwrap(b));
+    }
+
+    function assertEq(uint256 a, UD60x18 b, string memory err) internal {
+        assertEq(a, UD60x18.unwrap(b), err);
     }
 
     function assertEq(UD60x18[] memory a, UD60x18[] memory b) internal {
@@ -168,12 +302,30 @@ contract PRBMathAssertions is PRBTest {
         assertEq(castedA, castedB);
     }
 
+    function assertEq(UD60x18[] memory a, UD60x18[] memory b, string memory err) internal {
+        uint256[] memory castedA;
+        uint256[] memory castedB;
+        assembly {
+            castedA := a
+            castedB := b
+        }
+        assertEq(castedA, castedB, err);
+    }
+
     function assertEq(UD60x18[] memory a, uint256[] memory b) internal {
         uint256[] memory castedA;
         assembly {
             castedA := a
         }
         assertEq(castedA, b);
+    }
+
+    function assertEq(UD60x18[] memory a, uint256[] memory b, string memory err) internal {
+        uint256[] memory castedA;
+        assembly {
+            castedA := a
+        }
+        assertEq(castedA, b, err);
     }
 
     function assertEq(uint256[] memory a, SD59x18[] memory b) internal {
@@ -183,8 +335,17 @@ contract PRBMathAssertions is PRBTest {
         }
         assertEq(a, b);
     }
+
+    function assertEq(uint256[] memory a, SD59x18[] memory b, string memory err) internal {
+        uint256[] memory castedB;
+        assembly {
+            castedB := b
+        }
+        assertEq(a, b, err);
+    }
 }
 
+/// @dev Here for backward compatibility. Will be removed in V4.
 contract Assertions is PRBMathAssertions {
     // solhint-disable-previous-line no-empty-blocks
 }
