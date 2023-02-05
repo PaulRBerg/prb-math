@@ -38,7 +38,7 @@
     "typescript"
   ],
   "license": "MIT",
-  "packageManager": "yarn@3.3.0",
+  "packageManager": "yarn@3.4.1",
   "publishConfig": {
     "access": "public"
   },
