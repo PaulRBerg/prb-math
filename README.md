@@ -144,7 +144,7 @@ contract UnsignedConsumer {
 
 ## Features
 
-There's significant overlap between the functions available in SD59x18 and UD60x18, so I did not duplicate the functions tables below. If in doubt,
+There's a significant overlap between the functions available in SD59x18 and UD60x18, so I did not duplicate the functions tables below. If in doubt,
 refer to the source code, which is well-documented with NatSpec comments.
 
 ### Mathematical Functions
@@ -186,11 +186,11 @@ refer to the source code, which is well-documented with NatSpec comments.
 
 ### Helper Functions
 
-In addition to the mathematical and the casting functions, PRBMath provides many other helpers for the user-defined value types, such as `add`,`eq`,
-and `rshift`. These functions are not part of the core API and are frequently updated, so I invite you to take a look at the source code to see the
-full list.
+In addition to the mathematical and casting functions, PRBMath provides many other helpers for the user-defined value types, such as `add`, `eq`, and
+`rshift`. These functions are not part of the core API and are frequently updated, so I invite you to take a look at the source code to see the full
+list.
 
-The goal with these helpers is not have to always unwrap and re-wrap variables to perform such basic operations as addition and equality checks.
+The goal with these helpers is to not have to always unwrap and re-wrap variables to perform such basic operations as addition and equality checks.
 However, you should note that using these functions instead of the vanilla operators (e.g. `+`, `==`, and `>>`) will result in a higher gas cost.
 
 ```solidity
@@ -352,9 +352,9 @@ loss, direct or indirect through continued use of this codebase.
 
 ### Contact
 
-If you discover any bugs or security issues, please report them via [Telegram](https://t.me/paulrberg).
+If you discover any bugs or security issues, please report them via [Telegram](https://t.me/PaulRBerg).
 
-## Acknowledgements
+## Acknowledgments
 
 - Mikhail Vladimirov for the insights he shared in his [Math in Solidity](https://medium.com/coinmonks/math-in-solidity-part-1-numbers-384c8377f26d)
   series.
