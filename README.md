@@ -144,7 +144,7 @@ contract UnsignedConsumer {
 
 ## Features
 
-There's a significant overlap between the functions available in SD59x18 and UD60x18, so I did not duplicate the functions tables below. If in doubt,
+There's significant overlap between the functions available in SD59x18 and UD60x18, so I did not duplicate the functions tables below. If in doubt,
 refer to the source code, which is well-documented with NatSpec comments.
 
 ### Mathematical Functions
@@ -169,26 +169,55 @@ refer to the source code, which is well-documented with NatSpec comments.
 | `powu`  | Power function x^y with y simple integer         |
 | `sqrt`  | Square root                                      |
 
+### Adjacent Value Types
+
+PRBMath provides adjacent value types that serve as abstractions over other vanilla types such as `int64`. The types currently available are:
+
+| Value Type | Underlying Type |
+| ---------- | --------------- |
+| `SD1x18`   | int64           |
+| `UD2x18`   | uint64          |
+
+These are useful if you want to save gas by using a lower bit width integer, e.g. in a struct.
+
+Note that these types don't have any mathematical functionality. To do math with them, you will have to unwrap them into a simple integer and then to
+the core types `SD59x18` and `UD60x18`.
+
+### Casting Functions
+
+All PRBMath types have casting functions to and from all other types, including a few basic types like `uint128` and `uint40`.
+
+| Name          | Description               |
+| ------------- | ------------------------- |
+| `intoSD1x18`  | Casts a number to SD1x18  |
+| `intoSD59x18` | Casts a number to SD59x18 |
+| `intoUD2x18`  | Casts a number to UD2x18  |
+| `intoUD60x18` | Casts a number to UD60x18 |
+| `intoUint256` | Casts a number to uint256 |
+| `intoUint128` | Casts a number to uint128 |
+| `intoUint40`  | Casts a number to uint40  |
+| `sd1x18`      | Alias for `SD1x18.wrap`   |
+| `sd59x18`     | Alias for `SD59x18.wrap`  |
+| `ud2x18`      | Alias for `UD2x18.wrap`   |
+| `ud60x18`     | Alias for `UD60x18.wrap`  |
+
 ### Conversion Functions
 
-| Name          | Description                                                           |
-| ------------- | --------------------------------------------------------------------- |
-| `fromSD59x18` | Converts an SD59x18 number to a simple integer by dividing it by 1e18 |
-| `fromUD60x18` | Converts an UD60x18 number to a simple integer by dividing it by 1e18 |
-| `sd`          | Alias for `wrap`, wraps a simple integer into SD59x18                 |
-| `sd59x18`     | Alias for `wrap`, wraps a simple integer into SD59x18                 |
-| `toSD59x18`   | Converts a simple integer to SD59x18 by multiplying it by 1e18        |
-| `toUD60x18`   | Converts a simple integer to UD60x18 by multiplying it by 1e18        |
-| `ud`          | Alias for `wrap`, wraps a simple integer into UD60x18                 |
-| `ud60x18`     | Alias for `wrap`, wraps a simple integer into UD60x18                 |
-| `unwrap`      | Unwrap an SD59x18 or UD60x18 number into a simple integer             |
-| `wrap`        | Wraps a simple integer into either SD59x18 or UD60x18                 |
+The difference between "conversion" and "casting" is that conversion functions multiply or divide the inputs, whereas casting functions simply cast
+them.
+
+| Name               | Description                                                           |
+| ------------------ | --------------------------------------------------------------------- |
+| `convert(SD59x18)` | Converts an SD59x18 number to a simple integer by dividing it by 1e18 |
+| `convert(UD60x18)` | Converts an UD60x18 number to a simple integer by dividing it by 1e18 |
+| `convert(int256)`  | Converts a simple integer to SD59x18 by multiplying it by 1e18        |
+| `convert(uint256)` | Converts a simple integer to UD60x18 type by multiplying it by 1e18   |
 
 ### Helper Functions
 
-In addition to the mathematical and casting functions, PRBMath provides many other helpers for the user-defined value types, such as `add`, `eq`, and
-`rshift`. These functions are not part of the core API and are frequently updated, so I invite you to take a look at the source code to see the full
-list.
+In addition to the mathematical, casting, and conversion functions, PRBMath provides many other helpers for the user-defined value types, such as
+`add`, `eq`, and `rshift`. These functions are not part of the core API and are frequently updated, so I invite you to take a look at the source code
+to see the full list.
 
 The goal with these helpers is to not have to always unwrap and re-wrap variables to perform such basic operations as addition and equality checks.
 However, you should note that using these functions instead of the vanilla operators (e.g. `+`, `==`, and `>>`) will result in a higher gas cost.
@@ -208,20 +237,6 @@ function addRshiftEq() pure returns (bool result) {
 }
 
 ```
-
-### Adjacent Value Types
-
-PRBMath provides adjacent value types that serve as abstractions over other vanilla types such as `int64`. The types currently available are:
-
-| Value Type | Underlying Type |
-| ---------- | --------------- |
-| `SD1x18`   | int64           |
-| `UD2x18`   | uint64          |
-
-These are useful if you want to save gas by using a lower bit width integer, e.g. in a struct.
-
-Note that these types don't have any mathematical functionality. For that, you will have to unwrap them into a simple integer and then to the core
-types `SD59x18` and `UD60x18`.
 
 ### Assertions
 
