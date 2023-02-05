@@ -6,12 +6,12 @@ import { console2 } from "forge-std/console2.sol";
 import { sd, unwrap } from "src/sd59x18/Casting.sol";
 import { ZERO } from "src/sd59x18/Constants.sol";
 import { SD59x18 } from "src/sd59x18/ValueType.sol";
-import { BaseTest } from "../BaseTest.t.sol";
+import { Base_Test } from "../Base.t.sol";
 
 /// @title SD59x18_Test
 /// @author Paul Razvan Berg
 /// @notice Common contract members needed across SD59x18 tests.
-abstract contract SD59x18_Test is BaseTest {
+abstract contract SD59x18_Test is Base_Test {
     /*//////////////////////////////////////////////////////////////////////////
                                       CONSTANTS
     //////////////////////////////////////////////////////////////////////////*/

@@ -15,10 +15,10 @@ import { uMAX_UD2x18 } from "src/ud2x18/Constants.sol";
 import { UD2x18 } from "src/ud2x18/ValueType.sol";
 import { UD60x18 } from "src/ud60x18/ValueType.sol";
 
-import { BaseTest } from "../BaseTest.t.sol";
+import { Base_Test } from "../Base.t.sol";
 
 /// @dev Collection of tests for the casting library available for uint256.
-contract CastingUint256_Test is BaseTest {
+contract CastingUint256_Test is Base_Test {
     using CastingUint256 for uint256;
 
     function testFuzz_RevertWhen_OverflowSD1x18(uint256 x) external {

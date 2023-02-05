@@ -17,10 +17,10 @@ import {
 import { UD2x18 } from "src/ud2x18/ValueType.sol";
 import { UD60x18 } from "src/ud60x18/ValueType.sol";
 
-import { BaseTest } from "../../BaseTest.t.sol";
+import { Base_Test } from "../../Base.t.sol";
 
 /// @dev Collection of tests for the casting functions available in the SD1x18 type.
-contract Casting_Test is BaseTest {
+contract Casting_Test is Base_Test {
     function testFuzz_IntoSD59x18(SD1x18 x) external {
         SD59x18 actual = x.intoSD59x18();
         SD59x18 expected = SD59x18.wrap(int256(x.unwrap()));

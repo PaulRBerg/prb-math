@@ -13,10 +13,10 @@ import { uMAX_UD2x18 } from "src/ud2x18/Constants.sol";
 import { UD2x18 } from "src/ud2x18/ValueType.sol";
 import { UD60x18 } from "src/ud60x18/ValueType.sol";
 
-import { BaseTest } from "../BaseTest.t.sol";
+import { Base_Test } from "../Base.t.sol";
 
 /// @dev Collection of tests for the casting library available for uint128.
-contract CastingUint128_Test is BaseTest {
+contract CastingUint128_Test is Base_Test {
     using CastingUint128 for uint128;
 
     function testFuzz_RevertWhen_OverflowSD1x18(uint128 x) external {

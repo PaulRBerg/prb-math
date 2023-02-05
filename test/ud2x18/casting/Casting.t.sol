@@ -10,10 +10,10 @@ import { PRBMath_UD2x18_IntoSD1x18_Overflow, PRBMath_UD2x18_IntoUint40_Overflow 
 import { UD2x18 } from "src/ud2x18/ValueType.sol";
 import { UD60x18 } from "src/ud60x18/ValueType.sol";
 
-import { BaseTest } from "../../BaseTest.t.sol";
+import { Base_Test } from "../../Base.t.sol";
 
 /// @dev Collection of tests for the casting functions available in the UD2x18 type.
-contract Casting_Test is BaseTest {
+contract Casting_Test is Base_Test {
     function testFuzz_RevertWhen_OverflowSD1x18(UD2x18 x) external {
         x = bound(x, uint64(uMAX_SD1x18) + 1, uMAX_UD2x18);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_UD2x18_IntoSD1x18_Overflow.selector, x));

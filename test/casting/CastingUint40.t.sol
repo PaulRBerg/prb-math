@@ -7,10 +7,10 @@ import { SD59x18 } from "src/sd59x18/ValueType.sol";
 import { UD2x18 } from "src/ud2x18/ValueType.sol";
 import { UD60x18 } from "src/ud60x18/ValueType.sol";
 
-import { BaseTest } from "../BaseTest.t.sol";
+import { Base_Test } from "../Base.t.sol";
 
 /// @dev Collection of tests for the casting library available for uint40.
-contract CastingUint40_Test is BaseTest {
+contract CastingUint40_Test is Base_Test {
     using CastingUint40 for uint40;
 
     function testFuzz_intoSD1x18(uint40 x) external {
