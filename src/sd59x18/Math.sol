@@ -65,7 +65,7 @@ function avg(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
         if (sum < 0) {
             // If at least one of x and y is odd, we add 1 to the result, since shifting negative numbers to the right rounds
             // down to infinity. The right part is equivalent to "sum + (x % 2 == 1 || y % 2 == 1)" but faster.
-            assembly {
+            assembly ("memory-safe") {
                 result := add(sum, and(or(xInt, yInt), 1))
             }
         } else {
@@ -372,7 +372,7 @@ function log10(SD59x18 x) pure returns (SD59x18 result) {
 
     // Note that the `mul` in this block is the assembly mul operation, not the SD59x18 `mul`.
     // prettier-ignore
-    assembly {
+    assembly ("memory-safe") {
         switch x
         case 1 { result := mul(uUNIT, sub(0, 18)) }
         case 10 { result := mul(uUNIT, sub(1, 18)) }

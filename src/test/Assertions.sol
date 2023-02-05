@@ -39,7 +39,7 @@ contract PRBMathAssertions is PRBTest {
     function assertEq(SD1x18[] memory a, SD1x18[] memory b) internal {
         int256[] memory castedA;
         int256[] memory castedB;
-        assembly {
+        assembly ("memory-safe") {
             castedA := a
             castedB := b
         }
@@ -49,7 +49,7 @@ contract PRBMathAssertions is PRBTest {
     function assertEq(SD1x18[] memory a, SD1x18[] memory b, string memory err) internal {
         int256[] memory castedA;
         int256[] memory castedB;
-        assembly {
+        assembly ("memory-safe") {
             castedA := a
             castedB := b
         }
@@ -59,7 +59,7 @@ contract PRBMathAssertions is PRBTest {
     function assertEq(SD1x18[] memory a, int64[] memory b) internal {
         int256[] memory castedA;
         int256[] memory castedB;
-        assembly {
+        assembly ("memory-safe") {
             castedA := a
             castedB := b
         }
@@ -69,7 +69,7 @@ contract PRBMathAssertions is PRBTest {
     function assertEq(SD1x18[] memory a, int64[] memory b, string memory err) internal {
         int256[] memory castedA;
         int256[] memory castedB;
-        assembly {
+        assembly ("memory-safe") {
             castedA := a
             castedB := b
         }
@@ -79,7 +79,7 @@ contract PRBMathAssertions is PRBTest {
     function assertEq(int64[] memory a, SD1x18[] memory b) internal {
         int256[] memory castedA;
         int256[] memory castedB;
-        assembly {
+        assembly ("memory-safe") {
             castedA := a
             castedB := b
         }
@@ -89,7 +89,7 @@ contract PRBMathAssertions is PRBTest {
     function assertEq(int64[] memory a, SD1x18[] memory b, string memory err) internal {
         int256[] memory castedA;
         int256[] memory castedB;
-        assembly {
+        assembly ("memory-safe") {
             castedA := a
             castedB := b
         }
@@ -127,7 +127,7 @@ contract PRBMathAssertions is PRBTest {
     function assertEq(SD59x18[] memory a, SD59x18[] memory b) internal {
         int256[] memory castedA;
         int256[] memory castedB;
-        assembly {
+        assembly ("memory-safe") {
             castedA := a
             castedB := b
         }
@@ -137,7 +137,7 @@ contract PRBMathAssertions is PRBTest {
     function assertEq(SD59x18[] memory a, SD59x18[] memory b, string memory err) internal {
         int256[] memory castedA;
         int256[] memory castedB;
-        assembly {
+        assembly ("memory-safe") {
             castedA := a
             castedB := b
         }
@@ -146,7 +146,7 @@ contract PRBMathAssertions is PRBTest {
 
     function assertEq(SD59x18[] memory a, int256[] memory b) internal {
         int256[] memory castedA;
-        assembly {
+        assembly ("memory-safe") {
             castedA := a
         }
         assertEq(castedA, b);
@@ -154,7 +154,7 @@ contract PRBMathAssertions is PRBTest {
 
     function assertEq(SD59x18[] memory a, int256[] memory b, string memory err) internal {
         int256[] memory castedA;
-        assembly {
+        assembly ("memory-safe") {
             castedA := a
         }
         assertEq(castedA, b, err);
@@ -162,7 +162,7 @@ contract PRBMathAssertions is PRBTest {
 
     function assertEq(int256[] memory a, SD59x18[] memory b) internal {
         int256[] memory castedB;
-        assembly {
+        assembly ("memory-safe") {
             castedB := b
         }
         assertEq(a, b);
@@ -170,7 +170,7 @@ contract PRBMathAssertions is PRBTest {
 
     function assertEq(int256[] memory a, SD59x18[] memory b, string memory err) internal {
         int256[] memory castedB;
-        assembly {
+        assembly ("memory-safe") {
             castedB := b
         }
         assertEq(a, b, err);
@@ -207,7 +207,7 @@ contract PRBMathAssertions is PRBTest {
     function assertEq(UD2x18[] memory a, UD2x18[] memory b) internal {
         uint256[] memory castedA;
         uint256[] memory castedB;
-        assembly {
+        assembly ("memory-safe") {
             castedA := a
             castedB := b
         }
@@ -217,7 +217,7 @@ contract PRBMathAssertions is PRBTest {
     function assertEq(UD2x18[] memory a, UD2x18[] memory b, string memory err) internal {
         uint256[] memory castedA;
         uint256[] memory castedB;
-        assembly {
+        assembly ("memory-safe") {
             castedA := a
             castedB := b
         }
@@ -227,7 +227,7 @@ contract PRBMathAssertions is PRBTest {
     function assertEq(UD2x18[] memory a, uint64[] memory b) internal {
         uint256[] memory castedA;
         uint256[] memory castedB;
-        assembly {
+        assembly ("memory-safe") {
             castedA := a
             castedB := b
         }
@@ -237,7 +237,7 @@ contract PRBMathAssertions is PRBTest {
     function assertEq(UD2x18[] memory a, uint64[] memory b, string memory err) internal {
         uint256[] memory castedA;
         uint256[] memory castedB;
-        assembly {
+        assembly ("memory-safe") {
             castedA := a
             castedB := b
         }
@@ -247,7 +247,7 @@ contract PRBMathAssertions is PRBTest {
     function assertEq(uint64[] memory a, UD2x18[] memory b) internal {
         uint256[] memory castedA;
         uint256[] memory castedB;
-        assembly {
+        assembly ("memory-safe") {
             castedA := a
             castedB := b
         }
@@ -257,7 +257,7 @@ contract PRBMathAssertions is PRBTest {
     function assertEq(uint64[] memory a, UD2x18[] memory b, string memory err) internal {
         uint256[] memory castedA;
         uint256[] memory castedB;
-        assembly {
+        assembly ("memory-safe") {
             castedA := a
             castedB := b
         }
@@ -295,7 +295,7 @@ contract PRBMathAssertions is PRBTest {
     function assertEq(UD60x18[] memory a, UD60x18[] memory b) internal {
         uint256[] memory castedA;
         uint256[] memory castedB;
-        assembly {
+        assembly ("memory-safe") {
             castedA := a
             castedB := b
         }
@@ -305,7 +305,7 @@ contract PRBMathAssertions is PRBTest {
     function assertEq(UD60x18[] memory a, UD60x18[] memory b, string memory err) internal {
         uint256[] memory castedA;
         uint256[] memory castedB;
-        assembly {
+        assembly ("memory-safe") {
             castedA := a
             castedB := b
         }
@@ -314,7 +314,7 @@ contract PRBMathAssertions is PRBTest {
 
     function assertEq(UD60x18[] memory a, uint256[] memory b) internal {
         uint256[] memory castedA;
-        assembly {
+        assembly ("memory-safe") {
             castedA := a
         }
         assertEq(castedA, b);
@@ -322,7 +322,7 @@ contract PRBMathAssertions is PRBTest {
 
     function assertEq(UD60x18[] memory a, uint256[] memory b, string memory err) internal {
         uint256[] memory castedA;
-        assembly {
+        assembly ("memory-safe") {
             castedA := a
         }
         assertEq(castedA, b, err);
@@ -330,7 +330,7 @@ contract PRBMathAssertions is PRBTest {
 
     function assertEq(uint256[] memory a, SD59x18[] memory b) internal {
         uint256[] memory castedB;
-        assembly {
+        assembly ("memory-safe") {
             castedB := b
         }
         assertEq(a, b);
@@ -338,7 +338,7 @@ contract PRBMathAssertions is PRBTest {
 
     function assertEq(uint256[] memory a, SD59x18[] memory b, string memory err) internal {
         uint256[] memory castedB;
-        assembly {
+        assembly ("memory-safe") {
             castedB := b
         }
         assertEq(a, b, err);

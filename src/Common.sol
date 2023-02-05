@@ -68,50 +68,50 @@ uint256 constant UNIT_INVERSE = 781566461551748419797279945988162623061752125920
 /// @return result The index of the most significant bit as an uint256.
 function msb(uint256 x) pure returns (uint256 result) {
     // 2^128
-    assembly {
+    assembly ("memory-safe") {
         let factor := shl(7, gt(x, 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF))
         x := shr(factor, x)
         result := or(result, factor)
     }
     // 2^64
-    assembly {
+    assembly ("memory-safe") {
         let factor := shl(6, gt(x, 0xFFFFFFFFFFFFFFFF))
         x := shr(factor, x)
         result := or(result, factor)
     }
     // 2^32
-    assembly {
+    assembly ("memory-safe") {
         let factor := shl(5, gt(x, 0xFFFFFFFF))
         x := shr(factor, x)
         result := or(result, factor)
     }
     // 2^16
-    assembly {
+    assembly ("memory-safe") {
         let factor := shl(4, gt(x, 0xFFFF))
         x := shr(factor, x)
         result := or(result, factor)
     }
     // 2^8
-    assembly {
+    assembly ("memory-safe") {
         let factor := shl(3, gt(x, 0xFF))
         x := shr(factor, x)
         result := or(result, factor)
     }
     // 2^4
-    assembly {
+    assembly ("memory-safe") {
         let factor := shl(2, gt(x, 0xF))
         x := shr(factor, x)
         result := or(result, factor)
     }
     // 2^2
-    assembly {
+    assembly ("memory-safe") {
         let factor := shl(1, gt(x, 0x3))
         x := shr(factor, x)
         result := or(result, factor)
     }
     // 2^1
     // No need to shift x any more.
-    assembly {
+    assembly ("memory-safe") {
         let factor := gt(x, 0x1)
         result := or(result, factor)
     }
@@ -138,7 +138,7 @@ function mulDiv(uint256 x, uint256 y, uint256 denominator) pure returns (uint256
     // variables such that product = prod1 * 2^256 + prod0.
     uint256 prod0; // Least significant 256 bits of the product
     uint256 prod1; // Most significant 256 bits of the product
-    assembly {
+    assembly ("memory-safe") {
         let mm := mulmod(x, y, not(0))
         prod0 := mul(x, y)
         prod1 := sub(sub(mm, prod0), lt(mm, prod0))
@@ -162,7 +162,7 @@ function mulDiv(uint256 x, uint256 y, uint256 denominator) pure returns (uint256
 
     // Make division exact by subtracting the remainder from [prod1 prod0].
     uint256 remainder;
-    assembly {
+    assembly ("memory-safe") {
         // Compute remainder using the mulmod Yul instruction.
         remainder := mulmod(x, y, denominator)
 
@@ -176,7 +176,7 @@ function mulDiv(uint256 x, uint256 y, uint256 denominator) pure returns (uint256
     unchecked {
         // Does not overflow because the denominator cannot be zero at this stage in the function.
         uint256 lpotdod = denominator & (~denominator + 1);
-        assembly {
+        assembly ("memory-safe") {
             // Divide denominator by lpotdod.
             denominator := div(denominator, lpotdod)
 
@@ -233,7 +233,7 @@ function mulDiv(uint256 x, uint256 y, uint256 denominator) pure returns (uint256
 function mulDiv18(uint256 x, uint256 y) pure returns (uint256 result) {
     uint256 prod0;
     uint256 prod1;
-    assembly {
+    assembly ("memory-safe") {
         let mm := mulmod(x, y, not(0))
         prod0 := mul(x, y)
         prod1 := sub(sub(mm, prod0), lt(mm, prod0))
@@ -244,7 +244,7 @@ function mulDiv18(uint256 x, uint256 y) pure returns (uint256 result) {
     }
 
     uint256 remainder;
-    assembly {
+    assembly ("memory-safe") {
         remainder := mulmod(x, y, UNIT)
     }
 
@@ -254,7 +254,7 @@ function mulDiv18(uint256 x, uint256 y) pure returns (uint256 result) {
         }
     }
 
-    assembly {
+    assembly ("memory-safe") {
         result := mul(
             or(
                 div(sub(prod0, remainder), UNIT_LPOTD),
@@ -302,7 +302,7 @@ function mulDivSigned(int256 x, int256 y, int256 denominator) pure returns (int2
     uint256 sx;
     uint256 sy;
     uint256 sd;
-    assembly {
+    assembly ("memory-safe") {
         // This works thanks to two's complement.
         // "sgt" stands for "signed greater than" and "sub(0,1)" is max uint256.
         sx := sgt(x, sub(0, 1))

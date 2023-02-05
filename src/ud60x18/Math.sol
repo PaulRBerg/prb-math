@@ -62,7 +62,7 @@ function ceil(UD60x18 x) pure returns (UD60x18 result) {
         revert PRBMath_UD60x18_Ceil_Overflow(x);
     }
 
-    assembly {
+    assembly ("memory-safe") {
         // Equivalent to "x % UNIT" but faster.
         let remainder := mod(x, uUNIT)
 
@@ -148,7 +148,7 @@ function exp2(UD60x18 x) pure returns (UD60x18 result) {
 /// @param x The UD60x18 number to floor.
 /// @param result The greatest integer less than or equal to x, as an UD60x18 number.
 function floor(UD60x18 x) pure returns (UD60x18 result) {
-    assembly {
+    assembly ("memory-safe") {
         // Equivalent to "x % UNIT" but faster.
         let remainder := mod(x, uUNIT)
 
@@ -162,7 +162,7 @@ function floor(UD60x18 x) pure returns (UD60x18 result) {
 /// @param x The UD60x18 number to get the fractional part of.
 /// @param result The fractional part of x as an UD60x18 number.
 function frac(UD60x18 x) pure returns (UD60x18 result) {
-    assembly {
+    assembly ("memory-safe") {
         result := mod(x, uUNIT)
     }
 }
@@ -259,7 +259,7 @@ function log10(UD60x18 x) pure returns (UD60x18 result) {
 
     // Note that the `mul` in this assembly block is the assembly multiplication operation, not the UD60x18 `mul`.
     // prettier-ignore
-    assembly {
+    assembly ("memory-safe") {
         switch x
         case 1 { result := mul(uUNIT, sub(0, 18)) }
         case 10 { result := mul(uUNIT, sub(1, 18)) }
