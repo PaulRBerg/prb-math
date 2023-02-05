@@ -10,17 +10,17 @@
     "url": "https://github.com/PaulRBerg/prb-math/issues"
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.3.0",
-    "@commitlint/config-conventional": "^17.3.0",
-    "commitizen": "^4.2.5",
+    "@commitlint/cli": "^17.4.2",
+    "@commitlint/config-conventional": "^17.4.2",
+    "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
-    "husky": "^8.0.2",
-    "lint-staged": "^13.0.4",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.1.0",
     "pinst": "^3.0.0",
-    "prettier": "^2.8.0",
-    "prettier-plugin-solidity": "^1.0.0",
-    "rimraf": "^3.0.2",
-    "solhint": "^3.3.7",
+    "prettier": "^2.8.3",
+    "prettier-plugin-solidity": "^1.1.1",
+    "rimraf": "^4.1.2",
+    "solhint": "^3.3.8",
     "solhint-plugin-prettier": "^0.0.5"
   },
   "files": [
@@ -47,7 +47,7 @@
     "url": "https://github.com/PaulRBerg/prb-math"
   },
   "resolutions": {
-    "solhint/@solidity-parser/parser": "^0.14.5"
+    "solhint/@solidity-parser/parser": "^0.15.0"
   },
   "scripts": {
     "clean": "rimraf cache out",

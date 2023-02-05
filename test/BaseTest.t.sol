@@ -28,10 +28,10 @@ abstract contract BaseTest is PRBTest, StdCheats, PRBMathAssertions, PRBMathUtil
     //////////////////////////////////////////////////////////////////////////*/
 
     /// @dev The maximum value an uint128 number can have.
-    uint128 constant MAX_UINT128 = type(uint128).max;
+    uint128 internal constant MAX_UINT128 = type(uint128).max;
 
     /// @dev The maximum value an uint40 number can have.
-    uint128 constant MAX_UINT40 = type(uint40).max;
+    uint128 internal constant MAX_UINT40 = type(uint40).max;
 
     /*//////////////////////////////////////////////////////////////////////////
                                   TESTING VARIABLES
