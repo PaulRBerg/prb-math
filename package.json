@@ -18,7 +18,7 @@
     "lint-staged": "^13.1.0",
     "pinst": "^3.0.0",
     "prettier": "^2.8.3",
-    "prettier-plugin-solidity": "^1.1.1",
+    "prettier-plugin-solidity": "^1.1.2",
     "rimraf": "^4.1.2",
     "solhint": "^3.3.8",
     "solhint-plugin-prettier": "^0.0.5"
@@ -29,13 +29,14 @@
   ],
   "homepage": "https://github.com/PaulRBerg/prb-math#readme",
   "keywords": [
+    "arithmetic",
     "blockchain",
     "ethereum",
+    "fixed-point-math",
     "library",
     "math",
     "smart-contracts",
-    "solidity",
-    "typescript"
+    "solidity"
   ],
   "license": "MIT",
   "packageManager": "yarn@3.4.1",
@@ -45,9 +46,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/PaulRBerg/prb-math"
-  },
-  "resolutions": {
-    "solhint/@solidity-parser/parser": "^0.15.0"
   },
   "scripts": {
     "build": "forge build",

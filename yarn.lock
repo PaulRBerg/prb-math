@@ -333,7 +333,7 @@ __metadata:
     lint-staged: ^13.1.0
     pinst: ^3.0.0
     prettier: ^2.8.3
-    prettier-plugin-solidity: ^1.1.1
+    prettier-plugin-solidity: ^1.1.2
     rimraf: ^4.1.2
     solhint: ^3.3.8
     solhint-plugin-prettier: ^0.0.5
@@ -3026,16 +3026,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier-plugin-solidity@npm:^1.1.1":
-  version: 1.1.1
-  resolution: "prettier-plugin-solidity@npm:1.1.1"
+"prettier-plugin-solidity@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "prettier-plugin-solidity@npm:1.1.2"
   dependencies:
-    "@solidity-parser/parser": ^0.14.5
+    "@solidity-parser/parser": ^0.15.0
     semver: ^7.3.8
     solidity-comments-extractor: ^0.0.7
   peerDependencies:
     prettier: ">=2.3.0 || >=3.0.0-alpha.0"
-  checksum: a7c7305f128927ec62477a46a49caa0c5c73846bca91d2b2513caefc66f27946d886cd01c084b6933d3da89c517854786293d1cc0814c3622a38665fe12dbee5
+  checksum: 1aabeb4876f64eb083f2dcb3f7c0c13702cddd960fcc64395a8f5fa00f32d7432b265a68ca1f8207a1a023d26c3e2b7402179d68f85802694442a06fdc744b5b
   languageName: node
   linkType: hard
 
