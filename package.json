@@ -50,9 +50,9 @@
     "solhint/@solidity-parser/parser": "^0.15.0"
   },
   "scripts": {
+    "build": "forge build",
     "clean": "rimraf cache out",
-    "lint": "yarn lint:sol && yarn prettier:check",
-    "lint:sol": "solhint \"{src,test}/**/*.sol\"",
+    "lint": "yarn prettier:check && yarn solhint \"{src,test}/**/*.sol\"",
     "postinstall": "husky install",
     "postpublish": "pinst --enable",
     "prepublishOnly": "pinst --disable",

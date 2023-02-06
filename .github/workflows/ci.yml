@@ -4,28 +4,19 @@ env:
   FOUNDRY_PROFILE: "ci"
 
 on:
+  workflow_dispatch:
   pull_request:
-    branches:
-      - "main"
-      - "staging"
   push:
     branches:
       - "main"
       - "staging"
 
 jobs:
-  ci:
+  lint:
     runs-on: "ubuntu-latest"
     steps:
       - name: "Check out the repo"
         uses: "actions/checkout@v3"
-        with:
-          submodules: "recursive"
-
-      - name: "Install Foundry"
-        uses: "onbjerg/foundry-toolchain@v1"
-        with:
-          version: "nightly"
 
       - name: "Install Node.js"
         uses: "actions/setup-node@v3"
@@ -41,21 +32,25 @@ jobs:
 
       - name: "Add lint summary"
         run: |
-          echo "## Lint" >> $GITHUB_STEP_SUMMARY
+          echo "## Lint result" >> $GITHUB_STEP_SUMMARY
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
 
-      - name: "Show the Foundry config"
-        run: "forge config"
+  test:
+    needs: "lint"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Check out the repo"
+        uses: "actions/checkout@v3"
+        with:
+          submodules: "recursive"
+
+      - name: "Install Foundry"
+        uses: "foundry-rs/foundry-toolchain@v1"
 
       - name: "Run the tests"
         run: "forge test"
 
-      - name: "Build the contracts"
-        run: |
-          forge --version
-          forge build --sizes
-
       - name: "Add test summary"
         run: |
-          echo "## Tests" >> $GITHUB_STEP_SUMMARY
+          echo "## Tests result" >> $GITHUB_STEP_SUMMARY
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
