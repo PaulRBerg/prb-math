@@ -77,7 +77,6 @@ pragma solidity >=0.8.13;
 
 import { SD59x18 } from "@prb/math/SD59x18.sol";
 import { UD60x18 } from "@prb/math/UD60x18.sol";
-
 ```
 
 Any function that is not available in the types directly has to be imported explicitly. Here's an example for the `sd` and the `ud` functions:
@@ -87,7 +86,6 @@ pragma solidity >=0.8.13;
 
 import { SD59x18, sd } from "@prb/math/SD59x18.sol";
 import { UD60x18, ud } from "@prb/math/UD60x18.sol";
-
 ```
 
 Note that PRBMath can only be used in [Solidity v0.8.13](https://blog.soliditylang.org/2022/03/16/solidity-0.8.13-release-announcement/) or above.
@@ -114,7 +112,6 @@ contract SignedConsumer {
     result = x.log2();
   }
 }
-
 ```
 
 ### UD60x18
@@ -139,7 +136,6 @@ contract UnsignedConsumer {
     result = x.log2();
   }
 }
-
 ```
 
 ## Features
@@ -258,7 +254,6 @@ contract MyTest is PRBTest, PRBMathAssertions {
     assertEq(x.add(y), z);
   }
 }
-
 ```
 
 ## Gas Efficiency
