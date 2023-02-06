@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Common Changelog](https://common-changelog.org/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+[3.3.0]: https://github.com/PaulRBerg/prb-math/compare/v3.2.0...v3.3.0
 [3.2.0]: https://github.com/PaulRBerg/prb-math/compare/v3.1.0...v3.2.0
 [3.1.0]: https://github.com/PaulRBerg/prb-math/compare/v3.0.0...v3.1.0
 [3.0.0]: https://github.com/PaulRBerg/prb-math/compare/v2.5.0...v3.0.0
@@ -25,6 +26,27 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 [1.0.2]: https://github.com/PaulRBerg/prb-math/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/PaulRBerg/prb-math/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/PaulRBerg/prb-math/releases/tag/v1.0.0
+
+## [3.3.0] - 2023-02-06
+
+### Changed
+
+- Improve documentation (@PaulRBerg)
+- Improve names of custom errors and functions (@PaulRBerg)
+- Optimize assembly usage by annotating assembly blocks with the "memory-safe" dialect (@PaulRBerg)
+- Modularize code by splitting it into multiple categories: casting, constants, conversions, errors, helpers, math, and value types (@PaulRBerg)
+- Rename `Assertions` to `PRBMathAssertions` in a backward-compatible way (@PaulRBerg)
+- Upgrade Node.js package dependencies (@PaulRBerg)
+
+### Added
+
+- Add casting utilities for PRBMath types and `uint128` and `uint40` (@PaulRBerg)
+- Add more constants in `SD1x18` and `UD2x18` (@PaulRBerg)
+- Add `PRBMathUtils` contract with test utils (@PaulRBerg)
+- Add test assertions overloads with `err` param (@PaulRBerg)
+- Add typed versions of `bound` test util (@PaulRBerg)
+- Add `wrap` and `unwrap` in `SD1x18` and `UD2x18` (@PaulRBerg)
+- Expose `unwrap` via `using for ... global` (@PaulRBerg)
 
 ## [3.2.0] - 2022-12-13
 
