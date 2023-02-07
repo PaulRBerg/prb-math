@@ -31,6 +31,7 @@ import { UD60x18 } from "./ValueType.sol";
 /// @param x The first operand as an UD60x18 number.
 /// @param y The second operand as an UD60x18 number.
 /// @return result The arithmetic average as an UD60x18 number.
+/// @custom:smtchecker abstract-function-nondet
 function avg(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     uint256 xUint = x.unwrap();
     uint256 yUint = y.unwrap();
@@ -49,6 +50,7 @@ function avg(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 ///
 /// @param x The UD60x18 number to ceil.
 /// @param result The least number greater than or equal to x, as an UD60x18 number.
+/// @custom:smtchecker abstract-function-nondet
 function ceil(UD60x18 x) pure returns (UD60x18 result) {
     uint256 xUint = x.unwrap();
     if (xUint > uMAX_WHOLE_UD60x18) {
@@ -78,6 +80,7 @@ function ceil(UD60x18 x) pure returns (UD60x18 result) {
 /// @param x The numerator as an UD60x18 number.
 /// @param y The denominator as an UD60x18 number.
 /// @param result The quotient as an UD60x18 number.
+/// @custom:smtchecker abstract-function-nondet
 function div(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     result = wrap(Common.mulDiv(x.unwrap(), uUNIT, y.unwrap()));
 }
@@ -96,6 +99,7 @@ function div(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 ///
 /// @param x The exponent as an UD60x18 number.
 /// @return result The result as an UD60x18 number.
+/// @custom:smtchecker abstract-function-nondet
 function exp(UD60x18 x) pure returns (UD60x18 result) {
     uint256 xUint = x.unwrap();
 
@@ -121,6 +125,7 @@ function exp(UD60x18 x) pure returns (UD60x18 result) {
 ///
 /// @param x The exponent as an UD60x18 number.
 /// @return result The result as an UD60x18 number.
+/// @custom:smtchecker abstract-function-nondet
 function exp2(UD60x18 x) pure returns (UD60x18 result) {
     uint256 xUint = x.unwrap();
 
@@ -141,6 +146,7 @@ function exp2(UD60x18 x) pure returns (UD60x18 result) {
 /// counterparts. See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions.
 /// @param x The UD60x18 number to floor.
 /// @param result The greatest integer less than or equal to x, as an UD60x18 number.
+/// @custom:smtchecker abstract-function-nondet
 function floor(UD60x18 x) pure returns (UD60x18 result) {
     assembly ("memory-safe") {
         // Equivalent to "x % UNIT" but faster.
@@ -155,6 +161,7 @@ function floor(UD60x18 x) pure returns (UD60x18 result) {
 /// @dev Based on the odd function definition https://en.wikipedia.org/wiki/Fractional_part.
 /// @param x The UD60x18 number to get the fractional part of.
 /// @param result The fractional part of x as an UD60x18 number.
+/// @custom:smtchecker abstract-function-nondet
 function frac(UD60x18 x) pure returns (UD60x18 result) {
     assembly ("memory-safe") {
         result := mod(x, uUNIT)
@@ -169,6 +176,7 @@ function frac(UD60x18 x) pure returns (UD60x18 result) {
 /// @param x The first operand as an UD60x18 number.
 /// @param y The second operand as an UD60x18 number.
 /// @return result The result as an UD60x18 number.
+/// @custom:smtchecker abstract-function-nondet
 function gm(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     uint256 xUint = x.unwrap();
     uint256 yUint = y.unwrap();
@@ -196,6 +204,7 @@ function gm(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 ///
 /// @param x The UD60x18 number for which to calculate the inverse.
 /// @return result The inverse as an UD60x18 number.
+/// @custom:smtchecker abstract-function-nondet
 function inv(UD60x18 x) pure returns (UD60x18 result) {
     unchecked {
         // 1e36 is `UNIT * UNIT`.
@@ -220,6 +229,7 @@ function inv(UD60x18 x) pure returns (UD60x18 result) {
 ///
 /// @param x The UD60x18 number for which to calculate the natural logarithm.
 /// @return result The natural logarithm as an UD60x18 number.
+/// @custom:smtchecker abstract-function-nondet
 function ln(UD60x18 x) pure returns (UD60x18 result) {
     unchecked {
         // We do the fixed-point multiplication inline to save gas. This is overflow-safe because the maximum value
@@ -245,6 +255,7 @@ function ln(UD60x18 x) pure returns (UD60x18 result) {
 ///
 /// @param x The UD60x18 number for which to calculate the common logarithm.
 /// @return result The common logarithm as an UD60x18 number.
+/// @custom:smtchecker abstract-function-nondet
 function log10(UD60x18 x) pure returns (UD60x18 result) {
     uint256 xUint = x.unwrap();
     if (xUint < uUNIT) {
@@ -358,6 +369,7 @@ function log10(UD60x18 x) pure returns (UD60x18 result) {
 ///
 /// @param x The UD60x18 number for which to calculate the binary logarithm.
 /// @return result The binary logarithm as an UD60x18 number.
+/// @custom:smtchecker abstract-function-nondet
 function log2(UD60x18 x) pure returns (UD60x18 result) {
     uint256 xUint = x.unwrap();
 
@@ -405,6 +417,7 @@ function log2(UD60x18 x) pure returns (UD60x18 result) {
 /// @param x The multiplicand as an UD60x18 number.
 /// @param y The multiplier as an UD60x18 number.
 /// @return result The product as an UD60x18 number.
+/// @custom:smtchecker abstract-function-nondet
 function mul(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     result = wrap(Common.mulDiv18(x.unwrap(), y.unwrap()));
 }
@@ -427,6 +440,7 @@ function mul(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// @param x Number to raise to given power y, as an UD60x18 number.
 /// @param y Exponent to raise x to, as an UD60x18 number.
 /// @return result x raised to power y, as an UD60x18 number.
+/// @custom:smtchecker abstract-function-nondet
 function pow(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     uint256 xUint = x.unwrap();
     uint256 yUint = y.unwrap();
@@ -457,6 +471,7 @@ function pow(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// @param x The base as an UD60x18 number.
 /// @param y The exponent as an uint256.
 /// @return result The result as an UD60x18 number.
+/// @custom:smtchecker abstract-function-nondet
 function powu(UD60x18 x, uint256 y) pure returns (UD60x18 result) {
     // Calculate the first iteration of the loop in advance.
     uint256 xUint = x.unwrap();
@@ -482,6 +497,7 @@ function powu(UD60x18 x, uint256 y) pure returns (UD60x18 result) {
 ///
 /// @param x The UD60x18 number for which to calculate the square root.
 /// @return result The result as an UD60x18 number.
+/// @custom:smtchecker abstract-function-nondet
 function sqrt(UD60x18 x) pure returns (UD60x18 result) {
     uint256 xUint = x.unwrap();
 
