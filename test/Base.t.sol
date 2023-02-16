@@ -52,7 +52,7 @@ abstract contract Base_Test is PRBTest, StdCheats, PRBMathAssertions, PRBMathUti
     }
 
     /*//////////////////////////////////////////////////////////////////////////
-                              CONSTANT HELPER FUNCTIONS
+                            INTERNAL CONSTANT FUNCTIONS
     //////////////////////////////////////////////////////////////////////////*/
 
     /// @dev Bounds a `uint128` number.
@@ -61,7 +61,7 @@ abstract contract Base_Test is PRBTest, StdCheats, PRBMathAssertions, PRBMathUti
     }
 
     /*//////////////////////////////////////////////////////////////////////////
-                            NON-CONSTANT HELPER FUNCTIONS
+                          INTERNAL NON-CONSTANT FUNCTIONS
     //////////////////////////////////////////////////////////////////////////*/
 
     /// @dev Generates an address by hashing the name and labels the address.
