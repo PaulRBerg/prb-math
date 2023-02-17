@@ -17,7 +17,6 @@
         "endOfLine": "auto"
       }
     ],
-    "reason-string": "off",
     "var-name-mixedcase": "off"
   }
 }
