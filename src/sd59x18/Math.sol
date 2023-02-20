@@ -544,7 +544,7 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
 /// - The result must fit within `MAX_SD59x18`.
 ///
 /// Caveats:
-/// - To understand how this works in detail, see the NatSpec comments in `Common.mulDivSigned`.
+/// - To understand how this works in detail, see the NatSpec comments in `Common.mulDiv18`.
 ///
 /// @param x The multiplicand as an SD59x18 number.
 /// @param y The multiplier as an SD59x18 number.
