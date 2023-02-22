@@ -1,0 +1,13 @@
+{
+  "[solidity]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[toml]": {
+    "editor.defaultFormatter": "tamasfe.even-better-toml"
+  },
+  "solidity.compileUsingRemoteVersion": "v0.8.18+commit.87f61d96",
+  "solidity.formatter": "prettier",
+  "solidity.linter": "solhint",
+  "solidity.packageDefaultDependenciesContractsDirectory": "src",
+  "solidity.packageDefaultDependenciesDirectory": "lib"
+}
