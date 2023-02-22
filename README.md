@@ -352,8 +352,8 @@ You will need the following VSCode extensions:
 
 ## Security
 
-While I set a high bar for code quality and test coverage, you should not assume that this project is completely safe to use. PRBMath has not been
-audited by a security researcher.
+While I set a high bar for code quality and test coverage, you should not assume that this project is completely safe to use. PRBMath has not yet been
+audited by a third-party security researcher.
 
 ### Caveat Emptor
 
