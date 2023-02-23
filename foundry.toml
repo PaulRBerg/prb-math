@@ -5,7 +5,6 @@
   bytecode_hash = "none"
   cbor_metadata = false
   fuzz = { runs = 256 }
-  gas_reports = ["*"]
   libs = ["lib"]
   optimizer = true
   optimizer_runs = 10_000
