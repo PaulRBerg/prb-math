@@ -14,6 +14,11 @@ function and(SD59x18 x, int256 bits) pure returns (SD59x18 result) {
     return wrap(unwrap(x) & bits);
 }
 
+/// @notice Implements the AND (&) bitwise operation in the SD59x18 type.
+function and2(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
+    return wrap(unwrap(x) & unwrap(y));
+}
+
 /// @notice Implements the equal (=) operation in the SD59x18 type.
 function eq(SD59x18 x, SD59x18 y) pure returns (bool result) {
     result = unwrap(x) == unwrap(y);
@@ -98,4 +103,9 @@ function uncheckedUnary(SD59x18 x) pure returns (SD59x18 result) {
 /// @notice Implements the XOR (^) bitwise operation in the SD59x18 type.
 function xor(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     result = wrap(unwrap(x) ^ unwrap(y));
+}
+
+/// @notice Implements the NOT (~) bitwise operation in the SD59x18 type.
+function not(SD59x18 x) pure returns (SD59x18 result) {
+    result = wrap(~unwrap(x));
 }
