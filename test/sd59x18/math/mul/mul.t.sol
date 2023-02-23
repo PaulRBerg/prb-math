@@ -23,8 +23,8 @@ contract Mul_Test is SD59x18_Test {
     }
 
     function test_Mul_OneOperandZero() external parameterizedTest(oneOperandZero_Sets()) {
-        SD59x18 actual = mul(s.x, s.y);
-        assertEq(actual, s.expected);
+        assertEq(mul(s.x, s.y), s.expected);
+        assertEq(s.x * s.y, s.expected);
     }
 
     modifier neitherOperandZero() {
@@ -148,8 +148,8 @@ contract Mul_Test is SD59x18_Test {
         resultDoesNotOverflowSD59x18
         resultDoesNotOverflowUint256
     {
-        SD59x18 actual = mul(s.x, s.y);
-        assertEq(actual, s.expected);
+        assertEq(mul(s.x, s.y), s.expected);
+        assertEq(s.x * s.y, s.expected);
     }
 
     function operandsDifferentSigns_Sets() internal returns (Set[] memory) {
@@ -201,7 +201,7 @@ contract Mul_Test is SD59x18_Test {
         resultDoesNotOverflowSD59x18
         resultDoesNotOverflowUint256
     {
-        SD59x18 actual = mul(s.x, s.y);
-        assertEq(actual, s.expected);
+        assertEq(mul(s.x, s.y), s.expected);
+        assertEq(s.x * s.y, s.expected);
     }
 }

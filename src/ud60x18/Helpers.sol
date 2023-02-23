@@ -14,6 +14,11 @@ function and(UD60x18 x, uint256 bits) pure returns (UD60x18 result) {
     result = wrap(unwrap(x) & bits);
 }
 
+/// @notice Implements the AND (&) bitwise operation in the UD60x18 type.
+function and2(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
+    result = wrap(unwrap(x) & unwrap(y));
+}
+
 /// @notice Implements the equal operation (==) in the UD60x18 type.
 function eq(UD60x18 x, UD60x18 y) pure returns (bool result) {
     result = unwrap(x) == unwrap(y);
@@ -92,4 +97,9 @@ function uncheckedSub(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// @notice Implements the XOR (^) bitwise operation in the UD60x18 type.
 function xor(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     result = wrap(unwrap(x) ^ unwrap(y));
+}
+
+/// @notice Implements the NOT (~) bitwise operation in the UD60x18 type.
+function not(UD60x18 x) pure returns (UD60x18 result) {
+    result = wrap(~unwrap(x));
 }
