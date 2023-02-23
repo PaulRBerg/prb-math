@@ -18,9 +18,9 @@ abstract contract Base_Test is PRBTest, StdCheats, PRBMathAssertions, PRBMathUti
     //////////////////////////////////////////////////////////////////////////*/
 
     struct Users {
-        address payable alice;
-        address payable bob;
-        address payable eve;
+        address alice;
+        address bob;
+        address eve;
     }
 
     /*//////////////////////////////////////////////////////////////////////////
@@ -45,7 +45,7 @@ abstract contract Base_Test is PRBTest, StdCheats, PRBMathAssertions, PRBMathUti
 
     function setUp() public virtual {
         // Create users for testing.
-        users = Users({ alice: mkaddr("Alice"), bob: mkaddr("Bob"), eve: mkaddr("Eve") });
+        users = Users({ alice: makeAddr("Alice"), bob: makeAddr("Bob"), eve: makeAddr("Eve") });
 
         // Make Alice the `msg.sender` and `tx.origin` for all subsequent calls.
         vm.startPrank({ msgSender: users.alice, txOrigin: users.alice });
@@ -58,15 +58,5 @@ abstract contract Base_Test is PRBTest, StdCheats, PRBMathAssertions, PRBMathUti
     /// @dev Bounds a `uint128` number.
     function boundUint128(uint128 x, uint128 min, uint128 max) internal view returns (uint128 result) {
         result = uint128(bound(uint256(x), uint256(min), uint256(max)));
-    }
-
-    /*//////////////////////////////////////////////////////////////////////////
-                          INTERNAL NON-CONSTANT FUNCTIONS
-    //////////////////////////////////////////////////////////////////////////*/
-
-    /// @dev Generates an address by hashing the name and labels the address.
-    function mkaddr(string memory name) internal returns (address payable addr) {
-        addr = payable(address(uint160(uint256(keccak256(abi.encodePacked(name))))));
-        vm.label({ account: addr, newLabel: name });
     }
 }
