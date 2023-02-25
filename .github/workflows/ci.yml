@@ -18,6 +18,9 @@ jobs:
       - name: "Check out the repo"
         uses: "actions/checkout@v3"
 
+      - name: "Install Foundry"
+        uses: "foundry-rs/foundry-toolchain@v1"
+
       - name: "Install Node.js"
         uses: "actions/setup-node@v3"
         with:

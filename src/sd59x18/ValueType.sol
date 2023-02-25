@@ -5,8 +5,9 @@ import "./Casting.sol" as C;
 import "./Helpers.sol" as H;
 import "./Math.sol" as M;
 
-/// @notice The signed 59.18-decimal fixed-point number representation, which can have up to 59 digits and up to 18 decimals.
-/// The values of this are bound by the minimum and the maximum values permitted by the underlying Solidity type int256.
+/// @notice The signed 59.18-decimal fixed-point number representation, which can have up to 59 digits and up to 18
+/// decimals. The values of this are bound by the minimum and the maximum values permitted by the underlying Solidity
+/// type int256.
 type SD59x18 is int256;
 
 /*//////////////////////////////////////////////////////////////////////////

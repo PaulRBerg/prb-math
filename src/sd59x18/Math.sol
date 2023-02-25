@@ -63,13 +63,14 @@ function avg(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
         int256 sum = (xInt >> 1) + (yInt >> 1);
 
         if (sum < 0) {
-            // If at least one of x and y is odd, we add 1 to the result, since shifting negative numbers to the right rounds
-            // down to infinity. The right part is equivalent to "sum + (x % 2 == 1 || y % 2 == 1)" but faster.
+            // If at least one of x and y is odd, we add 1 to the result, since shifting negative numbers to the right
+            // rounds down to infinity. The right part is equivalent to "sum + (x % 2 == 1 || y % 2 == 1)" but faster.
             assembly ("memory-safe") {
                 result := add(sum, and(or(xInt, yInt), 1))
             }
         } else {
-            // We need to add 1 if both x and y are odd to account for the double 0.5 remainder that is truncated after shifting.
+            // We need to add 1 if both x and y are odd to account for the double 0.5 remainder that is truncated after
+            // shifting.
             result = wrap(sum + (xInt & yInt & 1));
         }
     }
@@ -77,8 +78,8 @@ function avg(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 
 /// @notice Yields the smallest whole SD59x18 number greater than or equal to x.
 ///
-/// @dev Optimized for fractional value inputs, because for every whole value there are (1e18 - 1) fractional counterparts.
-/// See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions.
+/// @dev Optimized for fractional value inputs, because for every whole value there are (1e18 - 1) fractional
+/// counterparts. See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions.
 ///
 /// Requirements:
 /// - x must be less than or equal to `MAX_WHOLE_SD59x18`.
@@ -108,8 +109,8 @@ function ceil(SD59x18 x) pure returns (SD59x18 result) {
 
 /// @notice Divides two SD59x18 numbers, returning a new SD59x18 number. Rounds towards zero.
 ///
-/// @dev This is a variant of `mulDiv` that works with signed numbers. Works by computing the signs and the absolute values
-/// separately.
+/// @dev This is a variant of `mulDiv` that works with signed numbers. Works by computing the signs and the absolute
+/// values separately.
 ///
 /// Requirements:
 /// - All from `Common.mulDiv`.
@@ -231,7 +232,8 @@ function exp2(SD59x18 x) pure returns (SD59x18 result) {
             // Convert x to the 192.64-bit fixed-point format.
             uint256 x_192x64 = uint256((xInt << 64) / uUNIT);
 
-            // It is safe to convert the result to int256 with no checks because the maximum input allowed in this function is 192.
+            // It is safe to convert the result to int256 with no checks because the maximum input allowed in this
+            // function is 192.
             result = wrap(int256(prbExp2(x_192x64)));
         }
     }
@@ -239,8 +241,8 @@ function exp2(SD59x18 x) pure returns (SD59x18 result) {
 
 /// @notice Yields the greatest whole SD59x18 number less than or equal to x.
 ///
-/// @dev Optimized for fractional value inputs, because for every whole value there are (1e18 - 1) fractional counterparts.
-/// See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions.
+/// @dev Optimized for fractional value inputs, because for every whole value there are (1e18 - 1) fractional
+/// counterparts. See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions.
 ///
 /// Requirements:
 /// - x must be greater than or equal to `MIN_WHOLE_SD59x18`.
@@ -342,8 +344,8 @@ function inv(SD59x18 x) pure returns (SD59x18 result) {
 /// @param x The SD59x18 number for which to calculate the natural logarithm.
 /// @return result The natural logarithm as an SD59x18 number.
 function ln(SD59x18 x) pure returns (SD59x18 result) {
-    // Do the fixed-point multiplication inline to save gas. This is overflow-safe because the maximum value that log2(x)
-    // can return is 195.205294292027477728.
+    // Do the fixed-point multiplication inline to save gas. This is overflow-safe because the maximum value that
+    // log2(x) can return is 195.205294292027477728.
     result = wrap((unwrap(log2(x)) * uUNIT) / uLOG2_E);
 }
 
@@ -451,9 +453,7 @@ function log10(SD59x18 x) pure returns (SD59x18 result) {
         case 100000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 56) }
         case 1000000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 57) }
         case 10000000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 58) }
-        default {
-            result := uMAX_SD59x18
-        }
+        default { result := uMAX_SD59x18 }
     }
 
     if (unwrap(result) == uMAX_SD59x18) {
@@ -473,7 +473,8 @@ function log10(SD59x18 x) pure returns (SD59x18 result) {
 /// - x must be greater than zero.
 ///
 /// Caveats:
-/// - The results are not perfectly accurate to the last decimal, due to the lossy precision of the iterative approximation.
+/// - The results are not perfectly accurate to the last decimal, due to the lossy precision of the iterative
+/// approximation.
 ///
 /// @param x The SD59x18 number for which to calculate the binary logarithm.
 /// @return result The binary logarithm as an SD59x18 number.

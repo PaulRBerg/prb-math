@@ -143,8 +143,8 @@ function exp2(UD60x18 x) pure returns (UD60x18 result) {
 }
 
 /// @notice Yields the greatest whole UD60x18 number less than or equal to x.
-/// @dev Optimized for fractional value inputs, because for every whole value there are (1e18 - 1) fractional counterparts.
-/// See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions.
+/// @dev Optimized for fractional value inputs, because for every whole value there are (1e18 - 1) fractional
+/// counterparts. See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions.
 /// @param x The UD60x18 number to floor.
 /// @param result The greatest integer less than or equal to x, as an UD60x18 number.
 function floor(UD60x18 x) pure returns (UD60x18 result) {
@@ -339,9 +339,7 @@ function log10(UD60x18 x) pure returns (UD60x18 result) {
         case 1000000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 57) }
         case 10000000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 58) }
         case 100000000000000000000000000000000000000000000000000000000000000000000000000000 { result := mul(uUNIT, 59) }
-        default {
-            result := uMAX_UD60x18
-        }
+        default { result := uMAX_UD60x18 }
     }
 
     if (unwrap(result) == uMAX_UD60x18) {
@@ -361,7 +359,8 @@ function log10(UD60x18 x) pure returns (UD60x18 result) {
 /// - x must be greater than or equal to UNIT, otherwise the result would be negative.
 ///
 /// Caveats:
-/// - The results are nor perfectly accurate to the last decimal, due to the lossy precision of the iterative approximation.
+/// - The results are nor perfectly accurate to the last decimal, due to the lossy precision of the iterative
+/// approximation.
 ///
 /// @param x The UD60x18 number for which to calculate the binary logarithm.
 /// @return result The binary logarithm as an UD60x18 number.

@@ -42,7 +42,11 @@ contract Avg_Test is UD60x18_Test {
         return sets;
     }
 
-    function test_Avg_NeitherOperandZero_BothOperandsEven() external parameterizedTest(bothOperandsEven_Sets()) neitherOperandZero {
+    function test_Avg_NeitherOperandZero_BothOperandsEven()
+        external
+        parameterizedTest(bothOperandsEven_Sets())
+        neitherOperandZero
+    {
         UD60x18 actual = avg(s.x, s.y);
         assertEq(actual, s.expected);
     }
