@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity >=0.8.13 <0.9.0;
+pragma solidity >=0.8.19 <0.9.0;
 
 import { sd1x18, wrap } from "src/sd1x18/Casting.sol";
 import { SD1x18 } from "src/sd1x18/ValueType.sol";
