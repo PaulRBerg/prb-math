@@ -66,56 +66,21 @@ uint256 constant UNIT_INVERSE = 781566461551748419797279945988162623061752125920
 ///
 /// @param x The uint256 number for which to find the index of the most significant bit.
 /// @return result The index of the most significant bit as an uint256.
-function msb(uint256 x) pure returns (uint256 result) {
-    // 2^128
-    assembly ("memory-safe") {
-        let factor := shl(7, gt(x, 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF))
-        x := shr(factor, x)
-        result := or(result, factor)
+  function msb(uint256 x) public pure returns (uint256) {
+        uint256 msbs;
+        assembly {
+            msbs := 0x80000000000000000000000000000000 // declare the mask
+            msbs := and(x, msbs) // perform bitwise AND between x and the mask
+            if iszero(msbs) {
+                // check if the result is zero
+                msbs := 0 // assign zero to msb
+                mstore(0x80, msbs) // store msb at memory location 0x80
+                return(0x80, 0x20) // return msb from memory location 0x80 with size 0x20 bytes
+            }
+            msbs := 1 // assign one to msb mstore(0x80,msb) // store msb at memory location 0x80 basically the free memory
+            return(0x80, 0x20) // return msb from memory location 0x80 with size 0x20 bytes
+        }
     }
-    // 2^64
-    assembly ("memory-safe") {
-        let factor := shl(6, gt(x, 0xFFFFFFFFFFFFFFFF))
-        x := shr(factor, x)
-        result := or(result, factor)
-    }
-    // 2^32
-    assembly ("memory-safe") {
-        let factor := shl(5, gt(x, 0xFFFFFFFF))
-        x := shr(factor, x)
-        result := or(result, factor)
-    }
-    // 2^16
-    assembly ("memory-safe") {
-        let factor := shl(4, gt(x, 0xFFFF))
-        x := shr(factor, x)
-        result := or(result, factor)
-    }
-    // 2^8
-    assembly ("memory-safe") {
-        let factor := shl(3, gt(x, 0xFF))
-        x := shr(factor, x)
-        result := or(result, factor)
-    }
-    // 2^4
-    assembly ("memory-safe") {
-        let factor := shl(2, gt(x, 0xF))
-        x := shr(factor, x)
-        result := or(result, factor)
-    }
-    // 2^2
-    assembly ("memory-safe") {
-        let factor := shl(1, gt(x, 0x3))
-        x := shr(factor, x)
-        result := or(result, factor)
-    }
-    // 2^1
-    // No need to shift x any more.
-    assembly ("memory-safe") {
-        let factor := gt(x, 0x1)
-        result := or(result, factor)
-    }
-}
 
 /// @notice Calculates floor(x*y÷denominator) with full precision.
 ///
