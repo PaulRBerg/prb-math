@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity >=0.8.13 <0.9.0;
+pragma solidity >=0.8.19 <0.9.0;
 
 import { E, MAX_SD59x18, MAX_WHOLE_SD59x18, MIN_SD59x18, MIN_WHOLE_SD59x18, PI, ZERO } from "src/sd59x18/Constants.sol";
 import { convert } from "src/sd59x18/Conversions.sol";

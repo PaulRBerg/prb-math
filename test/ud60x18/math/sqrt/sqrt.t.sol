@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity >=0.8.13 <0.9.0;
+pragma solidity >=0.8.19 <0.9.0;
 
 import { E, PI, ZERO } from "src/ud60x18/Constants.sol";
 import { PRBMath_UD60x18_Sqrt_Overflow } from "src/ud60x18/Errors.sol";
