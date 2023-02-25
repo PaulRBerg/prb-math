@@ -9,7 +9,7 @@
   optimizer = true
   optimizer_runs = 10_000
   out = "out"
-  solc = "0.8.18"
+  solc = "0.8.19"
   src = "src"
   test = "test"
 
