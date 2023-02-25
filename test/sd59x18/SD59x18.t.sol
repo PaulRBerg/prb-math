@@ -52,7 +52,7 @@ abstract contract SD59x18_Test is Base_Test {
 
     modifier parameterizedTest(Set[] memory testSets) {
         uint256 length = testSets.length;
-        for (uint256 i = 0; i < length; ) {
+        for (uint256 i = 0; i < length;) {
             s = testSets[i];
             _;
             unchecked {

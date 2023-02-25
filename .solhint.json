@@ -1,6 +1,5 @@
 {
   "extends": "solhint:recommended",
-  "plugins": ["prettier"],
   "rules": {
     "code-complexity": "off",
     "compiler-version": ["error", ">=0.8.13"],
@@ -13,12 +12,6 @@
     "no-global-import": "off",
     "no-inline-assembly": "off",
     "not-rely-on-time": "off",
-    "prettier/prettier": [
-      "error",
-      {
-        "endOfLine": "auto"
-      }
-    ],
     "var-name-mixedcase": "off"
   }
 }

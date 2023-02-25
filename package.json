@@ -11,10 +11,8 @@
   },
   "devDependencies": {
     "prettier": "^2.8.4",
-    "prettier-plugin-solidity": "^1.1.2",
     "rimraf": "^4.1.2",
-    "solhint": "^3.4.0",
-    "solhint-plugin-prettier": "^0.0.5"
+    "solhint": "^3.4.0"
   },
   "files": [
     "/src",
@@ -46,7 +44,7 @@
     "clean": "rimraf cache out",
     "lint": "yarn lint:sol && yarn prettier:check",
     "lint:sol": "solhint \"{src,test}/**/*.sol\"",
-    "prettier:check": "prettier --check \"**/*.{json,md,sol,yml}\"",
-    "prettier:write": "prettier --write \"**/*.{json,md,sol,yml}\""
+    "prettier:check": "prettier --check \"**/*.{json,md,yml}\"",
+    "prettier:write": "prettier --write \"**/*.{json,md,yml}\""
   }
 }

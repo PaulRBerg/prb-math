@@ -255,13 +255,14 @@ function mulDiv18(uint256 x, uint256 y) pure returns (uint256 result) {
     }
 
     assembly ("memory-safe") {
-        result := mul(
-            or(
-                div(sub(prod0, remainder), UNIT_LPOTD),
-                mul(sub(prod1, gt(remainder, prod0)), add(div(sub(0, UNIT_LPOTD), UNIT_LPOTD), 1))
-            ),
-            UNIT_INVERSE
-        )
+        result :=
+            mul(
+                or(
+                    div(sub(prod0, remainder), UNIT_LPOTD),
+                    mul(sub(prod1, gt(remainder, prod0)), add(div(sub(0, UNIT_LPOTD), UNIT_LPOTD), 1))
+                ),
+                UNIT_INVERSE
+            )
     }
 }
 
@@ -327,8 +328,8 @@ function prbExp2(uint256 x) pure returns (uint256 result) {
         // Start from 0.5 in the 192.64-bit fixed-point format.
         result = 0x800000000000000000000000000000000000000000000000;
 
-        // Multiply the result by root(2, 2^-i) when the bit at position i is 1. None of the intermediary results overflows
-        // because the initial result is 2^191 and all magic factors are less than 2^65.
+        // Multiply the result by root(2, 2^-i) when the bit at position i is 1. None of the intermediary results
+        // overflows because the initial result is 2^191 and all magic factors are less than 2^65.
         if (x & 0xFF00000000000000 > 0) {
             if (x & 0x8000000000000000 > 0) {
                 result = (result * 0x16A09E667F3BCC909) >> 64;
