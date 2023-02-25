@@ -47,7 +47,12 @@ contract Div_Test is SD59x18_Test {
         return sets;
     }
 
-    function test_Div_NumeratorZero() external parameterizedTest(numeratorZero_Sets()) denominatorNotZero denominatorNotMinSD59x18 {
+    function test_Div_NumeratorZero()
+        external
+        parameterizedTest(numeratorZero_Sets())
+        denominatorNotZero
+        denominatorNotMinSD59x18
+    {
         SD59x18 actual = div(s.x, s.y);
         assertEq(actual, s.expected);
     }

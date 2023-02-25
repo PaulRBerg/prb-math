@@ -133,7 +133,7 @@ contract Pow_Test is SD59x18_Test {
 
     function positiveExponent_Sets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: 0.000000000000000001e18, y: 0.000000000000000001e18, expected: 0.999999999999999960e18 }));
+        sets.push(set({ x: 0.000000000000000001e18, y: 0.000000000000000001e18, expected: 0.99999999999999996e18 }));
         sets.push(set({ x: 1e6, y: 4.4e9, expected: 0.99999987842351448e18 }));
         sets.push(set({ x: 0.1e18, y: 0.8e18, expected: 0.158489319246111349e18 }));
         sets.push(set({ x: 0.24e18, y: 11e18, expected: 0.000000152168114316e18 }));

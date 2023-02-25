@@ -1,11 +1,9 @@
-# PRBMath [![GitHub Actions][gha-badge]][gha] [![Foundry][foundry-badge]][foundry] [![Styled with Prettier][prettier-badge]][prettier] [![License: MIT][license-badge]][license]
+# PRBMath [![GitHub Actions][gha-badge]][gha] [![Foundry][foundry-badge]][foundry] [![License: MIT][license-badge]][license]
 
 [gha]: https://github.com/PaulRBerg/prb-math/actions
 [gha-badge]: https://github.com/PaulRBerg/prb-math/actions/workflows/ci.yml/badge.svg
 [foundry]: https://getfoundry.sh/
 [foundry-badge]: https://img.shields.io/badge/Built%20with-Foundry-FFDB1C.svg
-[prettier]: https://prettier.io
-[prettier-badge]: https://img.shields.io/badge/Code_Style-Prettier-ff69b4.svg
 [license]: https://opensource.org/licenses/MIT
 [license-badge]: https://img.shields.io/badge/License-MIT-blue.svg
 
@@ -18,7 +16,7 @@ bound by the minimum and the maximum values permitted by the Solidity types int2
 - Provides type safety via user-defined value types
 - Gas efficient, but still user-friendly
 - Ergonomic developer experience thanks to using free functions instead of libraries
-- Bakes in overflow-safe multiplication and division
+- Bakes in overflow-safe multiplication and division via `mulDiv`
 - Reverts with custom errors instead of reason strings
 - Well-documented with NatSpec comments
 - Built and tested with Foundry
@@ -60,7 +58,7 @@ There are two user-defined value types:
 1. SD59x18 (signed)
 2. UD60x18 (unsigned)
 
-If you don't know what a user-defined value type is, check out [this blog post](https://blog.soliditylang.org/2021/09/27/user-defined-value-types/).
+If you don't know what a user-defined value type is, check out this [blog post](https://blog.soliditylang.org/2021/09/27/user-defined-value-types/).
 
 If you don't need negative numbers, there's no point in using the signed flavor `SD59x18`. The unsigned flavor `UD60x18` is more gas efficient.
 

@@ -16,3 +16,13 @@
 [profile.ci]
   fuzz = { runs = 1_000 }
   verbosity = 4
+
+[fmt]
+  bracket_spacing = true
+  int_types = "long"
+  line_length = 132
+  multiline_func_header = "all"
+  number_underscore = "preserve"
+  quote_style = "double"
+  tab_width = 4
+  wrap_comments = true

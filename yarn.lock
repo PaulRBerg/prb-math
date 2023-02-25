@@ -37,10 +37,8 @@ __metadata:
   resolution: "@prb/math@workspace:."
   dependencies:
     prettier: ^2.8.4
-    prettier-plugin-solidity: ^1.1.2
     rimraf: ^4.1.2
     solhint: ^3.4.0
-    solhint-plugin-prettier: ^0.0.5
   languageName: unknown
   linkType: soft
 
@@ -271,7 +269,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-diff@npm:^1.1.2, fast-diff@npm:^1.2.0":
+"fast-diff@npm:^1.2.0":
   version: 1.2.0
   resolution: "fast-diff@npm:1.2.0"
   checksum: 1b5306eaa9e826564d9e5ffcd6ebd881eb5f770b3f977fcbf38f05c824e42172b53c79920e8429c54eb742ce15a0caf268b0fdd5b38f6de52234c4a8368131ae
@@ -427,15 +425,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lru-cache@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "lru-cache@npm:6.0.0"
-  dependencies:
-    yallist: ^4.0.0
-  checksum: f97f499f898f23e4585742138a22f22526254fdba6d75d41a1c2526b3b6cc5747ef59c5612ba7375f42aca4f8461950e925ba08c991ead0651b4918b7c978297
-  languageName: node
-  linkType: hard
-
 "minimatch@npm:^5.0.1":
   version: 5.1.6
   resolution: "minimatch@npm:5.1.6"
@@ -486,28 +475,6 @@ __metadata:
   version: 8.0.0
   resolution: "pluralize@npm:8.0.0"
   checksum: 08931d4a6a4a5561a7f94f67a31c17e6632cb21e459ab3ff4f6f629d9a822984cf8afef2311d2005fbea5d7ef26016ebb090db008e2d8bce39d0a9a9d218736e
-  languageName: node
-  linkType: hard
-
-"prettier-linter-helpers@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "prettier-linter-helpers@npm:1.0.0"
-  dependencies:
-    fast-diff: ^1.1.2
-  checksum: 00ce8011cf6430158d27f9c92cfea0a7699405633f7f1d4a45f07e21bf78e99895911cbcdc3853db3a824201a7c745bd49bfea8abd5fb9883e765a90f74f8392
-  languageName: node
-  linkType: hard
-
-"prettier-plugin-solidity@npm:^1.1.2":
-  version: 1.1.2
-  resolution: "prettier-plugin-solidity@npm:1.1.2"
-  dependencies:
-    "@solidity-parser/parser": ^0.15.0
-    semver: ^7.3.8
-    solidity-comments-extractor: ^0.0.7
-  peerDependencies:
-    prettier: ">=2.3.0 || >=3.0.0-alpha.0"
-  checksum: 1aabeb4876f64eb083f2dcb3f7c0c13702cddd960fcc64395a8f5fa00f32d7432b265a68ca1f8207a1a023d26c3e2b7402179d68f85802694442a06fdc744b5b
   languageName: node
   linkType: hard
 
@@ -568,17 +535,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.3.8":
-  version: 7.3.8
-  resolution: "semver@npm:7.3.8"
-  dependencies:
-    lru-cache: ^6.0.0
-  bin:
-    semver: bin/semver.js
-  checksum: ba9c7cbbf2b7884696523450a61fee1a09930d888b7a8d7579025ad93d459b2d1949ee5bbfeb188b2be5f4ac163544c5e98491ad6152df34154feebc2cc337c1
-  languageName: node
-  linkType: hard
-
 "slice-ansi@npm:^4.0.0":
   version: 4.0.0
   resolution: "slice-ansi@npm:4.0.0"
@@ -587,18 +543,6 @@ __metadata:
     astral-regex: ^2.0.0
     is-fullwidth-code-point: ^3.0.0
   checksum: 4a82d7f085b0e1b070e004941ada3c40d3818563ac44766cca4ceadd2080427d337554f9f99a13aaeb3b4a94d9964d9466c807b3d7b7541d1ec37ee32d308756
-  languageName: node
-  linkType: hard
-
-"solhint-plugin-prettier@npm:^0.0.5":
-  version: 0.0.5
-  resolution: "solhint-plugin-prettier@npm:0.0.5"
-  dependencies:
-    prettier-linter-helpers: ^1.0.0
-  peerDependencies:
-    prettier: ^1.15.0 || ^2.0.0
-    prettier-plugin-solidity: ^1.0.0-alpha.14
-  checksum: ca721e327daf49a4d9ef0ee5c9622482a8c5563d600eedfd3856c69ce67e416dd77da5166a033e2e641c9cdd7a0f2cbc7913b0eb1712081b3c7e8c633eef82a5
   languageName: node
   linkType: hard
 
@@ -630,13 +574,6 @@ __metadata:
   bin:
     solhint: solhint.js
   checksum: b99ce230e6429275e1b63a0f4e41449d8a366b31d14c034f47b42bf3062b03574ac10d375ff28f4b389f796fb3f42db99dabc701fa56dddaba310dc59004806f
-  languageName: node
-  linkType: hard
-
-"solidity-comments-extractor@npm:^0.0.7":
-  version: 0.0.7
-  resolution: "solidity-comments-extractor@npm:0.0.7"
-  checksum: a5cedf2310709969bc1783a6c336171478536f2f0ea96ad88437e0ef1e8844c0b37dd75591b0a824ec9c30640ea7e31b5f03128e871e6235bef3426617ce96c4
   languageName: node
   linkType: hard
 
@@ -728,12 +665,5 @@ __metadata:
   version: 1.0.2
   resolution: "wrappy@npm:1.0.2"
   checksum: 159da4805f7e84a3d003d8841557196034155008f817172d4e986bd591f74aa82aa7db55929a54222309e01079a65a92a9e6414da5a6aa4b01ee44a511ac3ee5
-  languageName: node
-  linkType: hard
-
-"yallist@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "yallist@npm:4.0.0"
-  checksum: 343617202af32df2a15a3be36a5a8c0c8545208f3d3dfbc6bb7c3e3b7e8c6f8e7485432e4f3b88da3031a6e20afa7c711eded32ddfb122896ac5d914e75848d5
   languageName: node
   linkType: hard
