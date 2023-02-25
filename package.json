@@ -10,13 +10,6 @@
     "url": "https://github.com/PaulRBerg/prb-math/issues"
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.4.2",
-    "@commitlint/config-conventional": "^17.4.2",
-    "commitizen": "^4.3.0",
-    "cz-conventional-changelog": "^3.3.0",
-    "husky": "^8.0.3",
-    "lint-staged": "^13.1.0",
-    "pinst": "^3.0.0",
     "prettier": "^2.8.3",
     "prettier-plugin-solidity": "^1.1.2",
     "rimraf": "^4.1.2",
@@ -52,9 +45,6 @@
     "clean": "rimraf cache out",
     "lint": "yarn lint:sol && yarn prettier:check",
     "lint:sol": "solhint \"{src,test}/**/*.sol\"",
-    "postinstall": "husky install",
-    "postpublish": "pinst --enable",
-    "prepublishOnly": "pinst --disable",
     "prettier:check": "prettier --check \"**/*.{json,md,sol,yml}\"",
     "prettier:write": "prettier --write \"**/*.{json,md,sol,yml}\""
   }
