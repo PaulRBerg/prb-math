@@ -66,7 +66,7 @@ uint256 constant UNIT_INVERSE = 781566461551748419797279945988162623061752125920
 ///
 /// @param x The uint256 number for which to find the index of the most significant bit.
 /// @return result The index of the most significant bit as an uint256.
-  function msb(uint256 x) public pure returns (uint256) {
+  function msb(uint256 x) pure returns (uint256) {
         uint256 msbs;
         assembly {
             msbs := 0x80000000000000000000000000000000 // declare the mask
