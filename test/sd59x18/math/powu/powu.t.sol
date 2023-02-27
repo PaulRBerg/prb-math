@@ -145,7 +145,7 @@ contract Powu_Test is SD59x18_Test {
         sets.push(set({ x: PI, y: 3, expected: 31_006276680299820158 }));
         sets.push(set({ x: 5.491e18, y: 19, expected: 113077820843204_476043049664958463 }));
         sets.push(set({ x: 100e18, y: 4, expected: 1e26 }));
-        sets.push(set({ x: 478.77e18, y: 20, expected: 400441047687151121501368529571950234763284476825512183_793320584974037932 }));
+        sets.push(set({ x: 478.77e18, y: 20, expected: 400441047687151121501368529571950234763284476825512183793320584974037932 }));
         sets.push(set({ x: 6452.166e18, y: 7, expected: 4655204093726194074224341678_62736844121311696 }));
         sets.push(set({ x: 1e24, y: 3, expected: 1e36 }));
         sets.push(
