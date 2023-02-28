@@ -65,35 +65,35 @@ using {
     H.lte,
     H.mod,
     H.neq,
+    H.not,
     H.or,
     H.rshift,
     H.sub,
     H.uncheckedAdd,
     H.uncheckedSub,
     H.uncheckedUnary,
-    H.xor,
-    H.not
+    H.xor
 } for SD59x18 global;
 
 /*//////////////////////////////////////////////////////////////////////////
                                     OPERATORS
 //////////////////////////////////////////////////////////////////////////*/
 
-/// The global "using for" directive makes the functions in this library callable on the UD60x18 type as operators.
+/// The global "using for" directive makes it possible to use these operators on the SD59x18 type.
 using {
-    H.or as |,
-    H.and2 as &,
-    H.xor as ^,
-    H.not as ~,
     H.add as +,
-    H.sub as -,
-    M.mul as *,
+    H.and2 as &,
     M.div as /,
-    H.mod as %,
     H.eq as ==,
-    H.neq as !=,
-    H.lt as <,
     H.gt as >,
+    H.gte as >=,
+    H.lt as <,
     H.lte as <=,
-    H.gte as >=
+    H.mod as %,
+    M.mul as *,
+    H.neq as !=,
+    H.not as ~,
+    H.or as |,
+    H.sub as -,
+    H.xor as ^
 } for SD59x18 global;

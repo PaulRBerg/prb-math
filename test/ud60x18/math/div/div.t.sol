@@ -11,11 +11,18 @@ import { PRBMath_MulDiv_Overflow } from "src/Common.sol";
 import { UD60x18_Test } from "../../UD60x18.t.sol";
 
 contract Div_Test is UD60x18_Test {
-    function test_RevertWhen_DenominatorZero() external {
+    function test_RevertWhen_DenominatorZero_Function() external {
         UD60x18 x = ud(1e18);
         UD60x18 y = ZERO;
         vm.expectRevert(stdError.divisionError);
         div(x, y);
+    }
+
+    function test_RevertWhen_DenominatorZero_Operator() external {
+        UD60x18 x = ud(1e18);
+        UD60x18 y = ZERO;
+        vm.expectRevert(stdError.divisionError);
+        x / y;
     }
 
     modifier denominatorNotZero() {
@@ -36,11 +43,18 @@ contract Div_Test is UD60x18_Test {
         assertEq(s.x / s.y, s.expected);
     }
 
-    function test_RevertWhen_ResultOverflowUD60x18() external denominatorNotZero {
+    function test_RevertWhen_ResultOverflowUD60x18_Function() external denominatorNotZero {
         UD60x18 x = MAX_SCALED_UD60x18.add(ud(1));
         UD60x18 y = ud(0.000000000000000001e18);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_MulDiv_Overflow.selector, x.unwrap(), uUNIT, y.unwrap()));
         div(x, y);
+    }
+
+    function test_RevertWhen_ResultOverflowUD60x18_Operator() external denominatorNotZero {
+        UD60x18 x = MAX_SCALED_UD60x18.add(ud(1));
+        UD60x18 y = ud(0.000000000000000001e18);
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_MulDiv_Overflow.selector, x.unwrap(), uUNIT, y.unwrap()));
+        x / y;
     }
 
     modifier resultNotOverflowUD60x18() {

@@ -102,6 +102,12 @@ contract Helpers_Test is SD59x18_Test {
         assertTrue(sd(x) != sd(y));
     }
 
+    function testFuzz_Not(int256 x) external {
+        SD59x18 expected = sd(~x);
+        assertEq(not(sd(x)), expected);
+        assertEq(~sd(x), expected);
+    }
+
     function testFuzz_Or(int256 x, int256 y) external {
         SD59x18 expected = sd(x | y);
         assertEq(or(sd(x), sd(y)), expected);
@@ -142,11 +148,5 @@ contract Helpers_Test is SD59x18_Test {
         SD59x18 expected = sd(x ^ y);
         assertEq(xor(sd(x), sd(y)), expected);
         assertEq(sd(x) ^ sd(y), expected);
-    }
-
-    function testFuzz_Not(int256 x) external {
-        SD59x18 expected = sd(~x);
-        assertEq(not(sd(x)), expected);
-        assertEq(~sd(x), expected);
     }
 }

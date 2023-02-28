@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.19 <0.9.0;
 
+import { console2 } from "forge-std/console2.sol";
 import { ud, unwrap } from "src/ud60x18/Casting.sol";
 import {
     add,
@@ -98,6 +99,12 @@ contract Helpers_Test is UD60x18_Test {
         assertTrue(ud(x) != ud(y));
     }
 
+    function testFuzz_Not(uint256 x) external {
+        UD60x18 expected = ud(~x);
+        assertEq(not(ud(x)), expected);
+        assertEq(~ud(x), expected);
+    }
+
     function testFuzz_Or(uint256 x, uint256 y) external {
         UD60x18 expected = ud(x | y);
         assertEq(or(ud(x), ud(y)), expected);
@@ -137,11 +144,5 @@ contract Helpers_Test is UD60x18_Test {
         UD60x18 expected = ud(x ^ y);
         assertEq(xor(ud(x), ud(y)), expected);
         assertEq(ud(x) ^ ud(y), expected);
-    }
-
-    function testFuzz_Not(uint256 x) external {
-        UD60x18 expected = ud(~x);
-        assertEq(not(ud(x)), expected);
-        assertEq(~ud(x), expected);
     }
 }
