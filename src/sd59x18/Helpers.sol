@@ -64,6 +64,11 @@ function neq(SD59x18 x, SD59x18 y) pure returns (bool result) {
     result = unwrap(x) != unwrap(y);
 }
 
+/// @notice Implements the NOT (~) bitwise operation in the SD59x18 type.
+function not(SD59x18 x) pure returns (SD59x18 result) {
+    result = wrap(~unwrap(x));
+}
+
 /// @notice Implements the OR (|) bitwise operation in the SD59x18 type.
 function or(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     result = wrap(unwrap(x) | unwrap(y));
@@ -103,9 +108,4 @@ function uncheckedUnary(SD59x18 x) pure returns (SD59x18 result) {
 /// @notice Implements the XOR (^) bitwise operation in the SD59x18 type.
 function xor(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     result = wrap(unwrap(x) ^ unwrap(y));
-}
-
-/// @notice Implements the NOT (~) bitwise operation in the SD59x18 type.
-function not(SD59x18 x) pure returns (SD59x18 result) {
-    result = wrap(~unwrap(x));
 }

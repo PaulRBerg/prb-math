@@ -60,9 +60,14 @@ function mod(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     result = wrap(unwrap(x) % unwrap(y));
 }
 
-/// @notice Implements the not equal operation (!=) in the UD60x18 type
+/// @notice Implements the not equal operation (!=) in the UD60x18 type.
 function neq(UD60x18 x, UD60x18 y) pure returns (bool result) {
     result = unwrap(x) != unwrap(y);
+}
+
+/// @notice Implements the NOT (~) bitwise operation in the UD60x18 type.
+function not(UD60x18 x) pure returns (UD60x18 result) {
+    result = wrap(~unwrap(x));
 }
 
 /// @notice Implements the OR (|) bitwise operation in the UD60x18 type.
@@ -99,7 +104,3 @@ function xor(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     result = wrap(unwrap(x) ^ unwrap(y));
 }
 
-/// @notice Implements the NOT (~) bitwise operation in the UD60x18 type.
-function not(UD60x18 x) pure returns (UD60x18 result) {
-    result = wrap(~unwrap(x));
-}
