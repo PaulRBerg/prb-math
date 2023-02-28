@@ -12,22 +12,36 @@ import { SD59x18 } from "src/sd59x18/ValueType.sol";
 import { SD59x18_Test } from "../../SD59x18.t.sol";
 
 contract Div_Test is SD59x18_Test {
-    function test_RevertWhen_DenominatorZero() external {
+    function test_RevertWhen_DenominatorZero_Function() external {
         SD59x18 x = sd(1e18);
         SD59x18 y = ZERO;
         vm.expectRevert(stdError.divisionError);
         div(x, y);
     }
 
+    function test_RevertWhen_DenominatorZero_Operator() external {
+        SD59x18 x = sd(1e18);
+        SD59x18 y = ZERO;
+        vm.expectRevert(stdError.divisionError);
+        x / y;
+    }
+
     modifier denominatorNotZero() {
         _;
     }
 
-    function test_RevertWhen_DenominatorMinSD59x18() external denominatorNotZero {
+    function test_RevertWhen_DenominatorMinSD59x18_Function() external denominatorNotZero {
         SD59x18 x = sd(1e18);
         SD59x18 y = MIN_SD59x18;
         vm.expectRevert(PRBMath_SD59x18_Div_InputTooSmall.selector);
         div(x, y);
+    }
+
+    function test_RevertWhen_DenominatorMinSD59x18_Operator() external denominatorNotZero {
+        SD59x18 x = sd(1e18);
+        SD59x18 y = MIN_SD59x18;
+        vm.expectRevert(PRBMath_SD59x18_Div_InputTooSmall.selector);
+        x / y;
     }
 
     modifier denominatorNotMinSD59x18() {
@@ -61,18 +75,25 @@ contract Div_Test is SD59x18_Test {
         _;
     }
 
-    function test_RevertWhen_NumeratorMinSD59x18() external denominatorNotZero denominatorNotMinSD59x18 numeratorNotZero {
+    function test_RevertWhen_NumeratorMinSD59x18_Function() external denominatorNotZero denominatorNotMinSD59x18 numeratorNotZero {
         SD59x18 x = MIN_SD59x18;
         SD59x18 y = sd(0.000000000000000001e18);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Div_InputTooSmall.selector));
         div(x, y);
     }
 
+    function test_RevertWhen_NumeratorMinSD59x18_Operator() external denominatorNotZero denominatorNotMinSD59x18 numeratorNotZero {
+        SD59x18 x = MIN_SD59x18;
+        SD59x18 y = sd(0.000000000000000001e18);
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Div_InputTooSmall.selector));
+        x / y;
+    }
+
     modifier numeratorNotMinSD59x18() {
         _;
     }
 
-    function test_RevertWhen_ResultOverflowSD59x18()
+    function test_RevertWhen_ResultOverflowSD59x18_Function()
         external
         denominatorNotZero
         denominatorNotMinSD59x18
@@ -83,6 +104,19 @@ contract Div_Test is SD59x18_Test {
         SD59x18 y = sd(0.000000000000000001e18);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Div_Overflow.selector, x, y));
         div(x, y);
+    }
+
+    function test_RevertWhen_ResultOverflowSD59x18_Operator()
+        external
+        denominatorNotZero
+        denominatorNotMinSD59x18
+        numeratorNotZero
+        numeratorNotMinSD59x18
+    {
+        SD59x18 x = MIN_SCALED_SD59x18.sub(sd(1));
+        SD59x18 y = sd(0.000000000000000001e18);
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Div_Overflow.selector, x, y));
+        x / y;
     }
 
     modifier resultNotOverflowSD59x18() {

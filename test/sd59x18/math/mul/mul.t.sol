@@ -31,18 +31,18 @@ contract Mul_Test is SD59x18_Test {
         _;
     }
 
-    function test_RevertWhen_OneOperandMinSD59x18_1() external neitherOperandZero {
+    function test_RevertWhen_OneOperandMinSD59x18_Function() external neitherOperandZero {
         SD59x18 x = MIN_SD59x18;
         SD59x18 y = sd(0.000000000000000001e18);
         vm.expectRevert(PRBMath_SD59x18_Mul_InputTooSmall.selector);
         mul(x, y);
     }
 
-    function test_RevertWhen_OneOperandMinSD59x18_2() external neitherOperandZero {
+    function test_RevertWhen_OneOperandMinSD59x18_Operator() external neitherOperandZero {
         SD59x18 x = sd(0.000000000000000001e18);
         SD59x18 y = MIN_SD59x18;
         vm.expectRevert(PRBMath_SD59x18_Mul_InputTooSmall.selector);
-        mul(x, y);
+        x * y;
     }
 
     modifier neitherOperandMinSD59x18() {
