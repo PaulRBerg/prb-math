@@ -107,7 +107,7 @@ contract Casting_Test is UD60x18_Test {
 
     function testFuzz_Unwrap(UD60x18 x) external {
         uint256 actual = x.unwrap();
-        uint256 expected = x.unwrap();
+        uint256 expected = UD60x18.unwrap(x);
         assertEq(actual, expected);
     }
 
