@@ -6,10 +6,10 @@ import { SD59x18 } from "../SD59x18.sol";
 import { UD2x18, uMAX_UD2x18 } from "../UD2x18.sol";
 import { UD60x18 } from "../UD60x18.sol";
 
-/// @notice Emitted when trying to cast an uint128 that doesn't fit in SD1x18.
+/// @notice Thrown when trying to cast an uint128 that doesn't fit in SD1x18.
 error PRBMath_IntoSD1x18_Overflow(uint128 x);
 
-/// @notice Emitted when trying to cast an uint128 that doesn't fit in UD2x18.
+/// @notice Thrown when trying to cast an uint128 that doesn't fit in UD2x18.
 error PRBMath_IntoUD2x18_Overflow(uint128 x);
 
 /// @title PRBMathCastingUint128
