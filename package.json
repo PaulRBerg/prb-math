@@ -11,8 +11,8 @@
   },
   "devDependencies": {
     "prettier": "^2.8.4",
-    "rimraf": "^4.1.2",
-    "solhint": "^3.4.0"
+    "rimraf": "^4.3.1",
+    "solhint": "^3.4.1"
   },
   "files": [
     "/src",
