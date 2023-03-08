@@ -103,4 +103,3 @@ function uncheckedSub(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 function xor(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     result = wrap(unwrap(x) ^ unwrap(y));
 }
-
