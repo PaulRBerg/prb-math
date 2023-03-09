@@ -32,13 +32,13 @@ function convert(SD59x18 x) pure returns (int256 result) {
     result = SD59x18.unwrap(x) / uUNIT;
 }
 
-/// @notice Alias for the `convert` function defined above.
+/// @notice Alias for {convert}.
 /// @dev Here for backward compatibility. Will be removed in V4.
 function fromSD59x18(SD59x18 x) pure returns (int256 result) {
     result = convert(x);
 }
 
-/// @notice Alias for the `convert` function defined above.
+/// @notice Alias for {convert}.
 /// @dev Here for backward compatibility. Will be removed in V4.
 function toSD59x18(int256 x) pure returns (SD59x18 result) {
     result = convert(x);

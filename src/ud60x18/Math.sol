@@ -1,17 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.13;
 
-import { msb, mulDiv, mulDiv18, prbExp2, prbSqrt } from "../Common.sol";
+import "../Common.sol" as Common;
+import "./Errors.sol" as Errors;
 import { unwrap, wrap } from "./Casting.sol";
 import { uHALF_UNIT, uLOG2_10, uLOG2_E, uMAX_UD60x18, uMAX_WHOLE_UD60x18, UNIT, uUNIT, ZERO } from "./Constants.sol";
-import {
-    PRBMath_UD60x18_Ceil_Overflow,
-    PRBMath_UD60x18_Exp_InputTooBig,
-    PRBMath_UD60x18_Exp2_InputTooBig,
-    PRBMath_UD60x18_Gm_Overflow,
-    PRBMath_UD60x18_Log_InputTooSmall,
-    PRBMath_UD60x18_Sqrt_Overflow
-} from "./Errors.sol";
 import { UD60x18 } from "./ValueType.sol";
 
 /*//////////////////////////////////////////////////////////////////////////
@@ -59,7 +52,7 @@ function avg(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 function ceil(UD60x18 x) pure returns (UD60x18 result) {
     uint256 xUint = unwrap(x);
     if (xUint > uMAX_WHOLE_UD60x18) {
-        revert PRBMath_UD60x18_Ceil_Overflow(x);
+        revert Errors.PRBMath_UD60x18_Ceil_Overflow(x);
     }
 
     assembly ("memory-safe") {
@@ -76,16 +69,17 @@ function ceil(UD60x18 x) pure returns (UD60x18 result) {
 
 /// @notice Divides two UD60x18 numbers, returning a new UD60x18 number. Rounds towards zero.
 ///
-/// @dev Uses `mulDiv` to enable overflow-safe multiplication and division.
+/// @dev Uses {Common-mulDiv} to enable overflow-safe multiplication and division.
 ///
 /// Requirements:
 /// - The denominator cannot be zero.
+/// - All from {Common-mulDiv}.
 ///
 /// @param x The numerator as an UD60x18 number.
 /// @param y The denominator as an UD60x18 number.
 /// @param result The quotient as an UD60x18 number.
 function div(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
-    result = wrap(mulDiv(unwrap(x), uUNIT, unwrap(y)));
+    result = wrap(Common.mulDiv(unwrap(x), uUNIT, unwrap(y)));
 }
 
 /// @notice Calculates the natural exponent of x.
@@ -97,7 +91,7 @@ function div(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// $$
 ///
 /// Requirements:
-/// - All from `log2`.
+/// - All from {log2}.
 /// - x must be less than 133.084258667509499441.
 ///
 /// @param x The exponent as an UD60x18 number.
@@ -105,13 +99,13 @@ function div(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 function exp(UD60x18 x) pure returns (UD60x18 result) {
     uint256 xUint = unwrap(x);
 
-    // Without this check, the value passed to `exp2` would be greater than 192.
+    // Without this check, the value passed to {exp2} would be greater than 192.
     if (xUint >= 133_084258667509499441) {
-        revert PRBMath_UD60x18_Exp_InputTooBig(x);
+        revert Errors.PRBMath_UD60x18_Exp_InputTooBig(x);
     }
 
     unchecked {
-        // We do the fixed-point multiplication inline rather than via the `mul` function to save gas.
+        // We do the fixed-point multiplication inline rather than via {mul} to save gas.
         uint256 doubleUnitProduct = xUint * uLOG2_E;
         result = exp2(wrap(doubleUnitProduct / uUNIT));
     }
@@ -132,14 +126,14 @@ function exp2(UD60x18 x) pure returns (UD60x18 result) {
 
     // Numbers greater than or equal to 2^192 don't fit within the 192.64-bit format.
     if (xUint >= 192e18) {
-        revert PRBMath_UD60x18_Exp2_InputTooBig(x);
+        revert Errors.PRBMath_UD60x18_Exp2_InputTooBig(x);
     }
 
     // Convert x to the 192.64-bit fixed-point format.
     uint256 x_192x64 = (xUint << 64) / uUNIT;
 
-    // Pass x to the `prbExp2` function, which uses the 192.64-bit fixed-point number representation.
-    result = wrap(prbExp2(x_192x64));
+    // Pass x to the {Common-exp2} function, which uses the 192.64-bit fixed-point number representation.
+    result = wrap(Common.exp2(x_192x64));
 }
 
 /// @notice Yields the greatest whole UD60x18 number less than or equal to x.
@@ -186,12 +180,12 @@ function gm(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
         // Checking for overflow this way is faster than letting Solidity do it.
         uint256 xyUint = xUint * yUint;
         if (xyUint / xUint != yUint) {
-            revert PRBMath_UD60x18_Gm_Overflow(x, y);
+            revert Errors.PRBMath_UD60x18_Gm_Overflow(x, y);
         }
 
         // We don't need to multiply the result by `UNIT` here because the x*y product had picked up a factor of `UNIT`
-        // during multiplication. See the comments in the `prbSqrt` function.
-        result = wrap(prbSqrt(xyUint));
+        // during multiplication. See the comments in {Common-sqrt}.
+        result = wrap(Common.sqrt(xyUint));
     }
 }
 
@@ -204,7 +198,7 @@ function gm(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// @return result The inverse as an UD60x18 number.
 function inv(UD60x18 x) pure returns (UD60x18 result) {
     unchecked {
-        // 1e36 is UNIT * UNIT.
+        // 1e36 is `UNIT * UNIT`.
         result = wrap(1e36 / unwrap(x));
     }
 }
@@ -218,10 +212,10 @@ function inv(UD60x18 x) pure returns (UD60x18 result) {
 /// $$
 ///
 /// Requirements:
-/// - All from `log2`.
+/// - All from {log2}.
 ///
-/// Caveats:
-/// - All from `log2`.
+/// Notes:
+/// - All from {log2}.
 /// - This doesn't return exactly 1 for 2.718281828459045235, for that more fine-grained precision is needed.
 ///
 /// @param x The UD60x18 number for which to calculate the natural logarithm.
@@ -229,7 +223,7 @@ function inv(UD60x18 x) pure returns (UD60x18 result) {
 function ln(UD60x18 x) pure returns (UD60x18 result) {
     unchecked {
         // We do the fixed-point multiplication inline to save gas. This is overflow-safe because the maximum value
-        // that `log2` can return is 196.205294292027477728.
+        // that {log2} can return is 196.205294292027477728.
         result = wrap((unwrap(log2(x)) * uUNIT) / uLOG2_E);
     }
 }
@@ -244,20 +238,20 @@ function ln(UD60x18 x) pure returns (UD60x18 result) {
 /// $$
 ///
 /// Requirements:
-/// - All from `log2`.
+/// - All from {log2}.
 ///
-/// Caveats:
-/// - All from `log2`.
+/// Notes:
+/// - All from {log2}.
 ///
 /// @param x The UD60x18 number for which to calculate the common logarithm.
 /// @return result The common logarithm as an UD60x18 number.
 function log10(UD60x18 x) pure returns (UD60x18 result) {
     uint256 xUint = unwrap(x);
     if (xUint < uUNIT) {
-        revert PRBMath_UD60x18_Log_InputTooSmall(x);
+        revert Errors.PRBMath_UD60x18_Log_InputTooSmall(x);
     }
 
-    // Note that the `mul` in this assembly block is the assembly multiplication operation, not the UD60x18 `mul`.
+    // Note that the `mul` in this assembly block is the assembly multiplication operation, not {UD60x18-mul}.
     // prettier-ignore
     assembly ("memory-safe") {
         switch x
@@ -358,7 +352,7 @@ function log10(UD60x18 x) pure returns (UD60x18 result) {
 /// Requirements:
 /// - x must be greater than or equal to UNIT, otherwise the result would be negative.
 ///
-/// Caveats:
+/// Notes:
 /// - The results are nor perfectly accurate to the last decimal, due to the lossy precision of the iterative
 /// approximation.
 ///
@@ -368,12 +362,12 @@ function log2(UD60x18 x) pure returns (UD60x18 result) {
     uint256 xUint = unwrap(x);
 
     if (xUint < uUNIT) {
-        revert PRBMath_UD60x18_Log_InputTooSmall(x);
+        revert Errors.PRBMath_UD60x18_Log_InputTooSmall(x);
     }
 
     unchecked {
         // Calculate the integer part of the logarithm, add it to the result and finally calculate y = x * 2^(-n).
-        uint256 n = msb(xUint / uUNIT);
+        uint256 n = Common.msb(xUint / uUNIT);
 
         // This is the integer part of the logarithm as an UD60x18 number. The operation can't overflow because n
         // n is maximum 255 and UNIT is 1e18.
@@ -407,12 +401,12 @@ function log2(UD60x18 x) pure returns (UD60x18 result) {
 }
 
 /// @notice Multiplies two UD60x18 numbers together, returning a new UD60x18 number.
-/// @dev See the documentation for the `Common.mulDiv18` function.
+/// @dev See the documentation for the {Common-mulDiv18} function.
 /// @param x The multiplicand as an UD60x18 number.
 /// @param y The multiplier as an UD60x18 number.
 /// @return result The product as an UD60x18 number.
 function mul(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
-    result = wrap(mulDiv18(unwrap(x), unwrap(y)));
+    result = wrap(Common.mulDiv18(unwrap(x), unwrap(y)));
 }
 
 /// @notice Raises x to the power of y.
@@ -424,10 +418,10 @@ function mul(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// $$
 ///
 /// Requirements:
-/// - All from `exp2`, `log2` and `mul`.
+/// - All from {exp2}, {log2} and {mul}.
 ///
-/// Caveats:
-/// - All from `exp2`, `log2` and `mul`.
+/// Notes:
+/// - All from {exp2}, {log2} and {mul}.
 /// - Assumes 0^0 is 1.
 ///
 /// @param x Number to raise to given power y, as an UD60x18 number.
@@ -456,8 +450,8 @@ function pow(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// Requirements:
 /// - The result must fit within `MAX_UD60x18`.
 ///
-/// Caveats:
-/// - All from "Common.mulDiv18".
+/// Notes:
+/// - All from {Common-mulDiv18}.
 /// - Assumes 0^0 is 1.
 ///
 /// @param x The base as an UD60x18 number.
@@ -470,11 +464,11 @@ function powu(UD60x18 x, uint256 y) pure returns (UD60x18 result) {
 
     // Equivalent to "for(y /= 2; y > 0; y /= 2)" but faster.
     for (y >>= 1; y > 0; y >>= 1) {
-        xUint = mulDiv18(xUint, xUint);
+        xUint = Common.mulDiv18(xUint, xUint);
 
         // Equivalent to "y % 2 == 1" but faster.
         if (y & 1 > 0) {
-            resultUint = mulDiv18(resultUint, xUint);
+            resultUint = Common.mulDiv18(resultUint, xUint);
         }
     }
     result = wrap(resultUint);
@@ -493,10 +487,10 @@ function sqrt(UD60x18 x) pure returns (UD60x18 result) {
 
     unchecked {
         if (xUint > uMAX_UD60x18 / uUNIT) {
-            revert PRBMath_UD60x18_Sqrt_Overflow(x);
+            revert Errors.PRBMath_UD60x18_Sqrt_Overflow(x);
         }
         // Multiply x by `UNIT` to account for the factor of `UNIT` that is picked up when multiplying two UD60x18
         // numbers together (in this case, the two numbers are both the square root).
-        result = wrap(prbSqrt(xUint * uUNIT));
+        result = wrap(Common.sqrt(xUint * uUNIT));
     }
 }

@@ -3,15 +3,16 @@ pragma solidity >=0.8.13;
 
 import { PRBTest } from "@prb/test/PRBTest.sol";
 
-import { SD1x18 } from "../SD1x18.sol";
-import { SD59x18 } from "../SD59x18.sol";
-import { UD2x18 } from "../UD2x18.sol";
-import { UD60x18 } from "../UD60x18.sol";
+import { SD1x18 } from "../sd1x18/ValueType.sol";
+import { SD59x18 } from "../sd59x18/ValueType.sol";
+import { UD2x18 } from "../ud2x18/ValueType.sol";
+import { UD60x18 } from "../ud60x18/ValueType.sol";
 
 contract PRBMathAssertions is PRBTest {
     /*//////////////////////////////////////////////////////////////////////////
                                        SD1X18
     //////////////////////////////////////////////////////////////////////////*/
+
     function assertEq(SD1x18 a, SD1x18 b) internal {
         assertEq(SD1x18.unwrap(a), SD1x18.unwrap(b));
     }

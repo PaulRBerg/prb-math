@@ -29,13 +29,13 @@ function convert(uint256 x) pure returns (UD60x18 result) {
     }
 }
 
-/// @notice Alias for the `convert` function defined above.
+/// @notice Alias for {convert}.
 /// @dev Here for backward compatibility. Will be removed in V4.
 function fromUD60x18(UD60x18 x) pure returns (uint256 result) {
     result = convert(x);
 }
 
-/// @notice Alias for the `convert` function defined above.
+/// @notice Alias for {convert}.
 /// @dev Here for backward compatibility. Will be removed in V4.
 function toUD60x18(uint256 x) pure returns (UD60x18 result) {
     result = convert(x);

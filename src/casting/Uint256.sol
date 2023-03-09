@@ -1,10 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.13;
 
-import { SD1x18, uMAX_SD1x18 } from "../SD1x18.sol";
-import { SD59x18, uMAX_SD59x18 } from "../SD59x18.sol";
-import { UD2x18, uMAX_UD2x18 } from "../UD2x18.sol";
-import { UD60x18 } from "../UD60x18.sol";
+import { uMAX_SD1x18 } from "../sd1x18/Constants.sol";
+import { SD1x18 } from "../sd1x18/ValueType.sol";
+import { uMAX_SD59x18 } from "../sd59x18/Constants.sol";
+import { SD59x18 } from "../sd59x18/ValueType.sol";
+import { uMAX_UD2x18 } from "../ud2x18/Constants.sol";
+import { UD2x18 } from "../ud2x18/ValueType.sol";
+import { UD60x18 } from "../ud60x18/ValueType.sol";
 
 /// @notice Thrown when trying to cast an uint256 that doesn't fit in SD1x18.
 error PRBMath_IntoSD1x18_Overflow(uint256 x);
