@@ -1,18 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.13;
 
-import { MAX_UINT40 } from "../Common.sol";
+import "../Common.sol" as Common;
+import "./Errors.sol" as CastingErrors;
 import { SD59x18 } from "../sd59x18/ValueType.sol";
 import { UD2x18 } from "../ud2x18/ValueType.sol";
 import { UD60x18 } from "../ud60x18/ValueType.sol";
-import {
-    PRBMath_SD1x18_ToUD2x18_Underflow,
-    PRBMath_SD1x18_ToUD60x18_Underflow,
-    PRBMath_SD1x18_ToUint128_Underflow,
-    PRBMath_SD1x18_ToUint256_Underflow,
-    PRBMath_SD1x18_ToUint40_Overflow,
-    PRBMath_SD1x18_ToUint40_Underflow
-} from "./Errors.sol";
 import { SD1x18 } from "./ValueType.sol";
 
 /// @notice Casts an SD1x18 number into SD59x18.
@@ -26,7 +19,7 @@ function intoSD59x18(SD1x18 x) pure returns (SD59x18 result) {
 function intoUD2x18(SD1x18 x) pure returns (UD2x18 result) {
     int64 xInt = SD1x18.unwrap(x);
     if (xInt < 0) {
-        revert PRBMath_SD1x18_ToUD2x18_Underflow(x);
+        revert CastingErrors.PRBMath_SD1x18_ToUD2x18_Underflow(x);
     }
     result = UD2x18.wrap(uint64(xInt));
 }
@@ -37,7 +30,7 @@ function intoUD2x18(SD1x18 x) pure returns (UD2x18 result) {
 function intoUD60x18(SD1x18 x) pure returns (UD60x18 result) {
     int64 xInt = SD1x18.unwrap(x);
     if (xInt < 0) {
-        revert PRBMath_SD1x18_ToUD60x18_Underflow(x);
+        revert CastingErrors.PRBMath_SD1x18_ToUD60x18_Underflow(x);
     }
     result = UD60x18.wrap(uint64(xInt));
 }
@@ -48,7 +41,7 @@ function intoUD60x18(SD1x18 x) pure returns (UD60x18 result) {
 function intoUint256(SD1x18 x) pure returns (uint256 result) {
     int64 xInt = SD1x18.unwrap(x);
     if (xInt < 0) {
-        revert PRBMath_SD1x18_ToUint256_Underflow(x);
+        revert CastingErrors.PRBMath_SD1x18_ToUint256_Underflow(x);
     }
     result = uint256(uint64(xInt));
 }
@@ -59,7 +52,7 @@ function intoUint256(SD1x18 x) pure returns (uint256 result) {
 function intoUint128(SD1x18 x) pure returns (uint128 result) {
     int64 xInt = SD1x18.unwrap(x);
     if (xInt < 0) {
-        revert PRBMath_SD1x18_ToUint128_Underflow(x);
+        revert CastingErrors.PRBMath_SD1x18_ToUint128_Underflow(x);
     }
     result = uint128(uint64(xInt));
 }
@@ -71,15 +64,15 @@ function intoUint128(SD1x18 x) pure returns (uint128 result) {
 function intoUint40(SD1x18 x) pure returns (uint40 result) {
     int64 xInt = SD1x18.unwrap(x);
     if (xInt < 0) {
-        revert PRBMath_SD1x18_ToUint40_Underflow(x);
+        revert CastingErrors.PRBMath_SD1x18_ToUint40_Underflow(x);
     }
-    if (xInt > int64(uint64(MAX_UINT40))) {
-        revert PRBMath_SD1x18_ToUint40_Overflow(x);
+    if (xInt > int64(uint64(Common.MAX_UINT40))) {
+        revert CastingErrors.PRBMath_SD1x18_ToUint40_Overflow(x);
     }
     result = uint40(uint64(xInt));
 }
 
-/// @notice Alias for the `wrap` function.
+/// @notice Alias for {wrap}.
 function sd1x18(int64 x) pure returns (SD1x18 result) {
     result = SD1x18.wrap(x);
 }
@@ -89,7 +82,7 @@ function unwrap(SD1x18 x) pure returns (int64 result) {
     result = SD1x18.unwrap(x);
 }
 
-/// @notice Wraps an int64 number into the SD1x18 value type.
+/// @notice Wraps an int64 number into SD1x18.
 function wrap(int64 x) pure returns (SD1x18 result) {
     result = SD1x18.wrap(x);
 }

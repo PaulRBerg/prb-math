@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.13;
 
-import { MAX_UINT40 } from "../Common.sol";
+import "../Common.sol" as Common;
+import "./Errors.sol" as Errors;
 import { uMAX_SD1x18 } from "../sd1x18/Constants.sol";
 import { SD1x18 } from "../sd1x18/ValueType.sol";
 import { SD59x18 } from "../sd59x18/ValueType.sol";
 import { UD2x18 } from "../ud2x18/ValueType.sol";
 import { UD60x18 } from "../ud60x18/ValueType.sol";
-import { PRBMath_UD2x18_IntoSD1x18_Overflow, PRBMath_UD2x18_IntoUint40_Overflow } from "./Errors.sol";
 import { UD2x18 } from "./ValueType.sol";
 
 /// @notice Casts an UD2x18 number into SD1x18.
@@ -15,7 +15,7 @@ import { UD2x18 } from "./ValueType.sol";
 function intoSD1x18(UD2x18 x) pure returns (SD1x18 result) {
     uint64 xUint = UD2x18.unwrap(x);
     if (xUint > uint64(uMAX_SD1x18)) {
-        revert PRBMath_UD2x18_IntoSD1x18_Overflow(x);
+        revert Errors.PRBMath_UD2x18_IntoSD1x18_Overflow(x);
     }
     result = SD1x18.wrap(int64(xUint));
 }
@@ -49,13 +49,13 @@ function intoUint256(UD2x18 x) pure returns (uint256 result) {
 /// - x must be less than or equal to `MAX_UINT40`.
 function intoUint40(UD2x18 x) pure returns (uint40 result) {
     uint64 xUint = UD2x18.unwrap(x);
-    if (xUint > uint64(MAX_UINT40)) {
-        revert PRBMath_UD2x18_IntoUint40_Overflow(x);
+    if (xUint > uint64(Common.MAX_UINT40)) {
+        revert Errors.PRBMath_UD2x18_IntoUint40_Overflow(x);
     }
     result = uint40(xUint);
 }
 
-/// @notice Alias for the `wrap` function.
+/// @notice Alias for {wrap}.
 function ud2x18(uint64 x) pure returns (UD2x18 result) {
     result = UD2x18.wrap(x);
 }
@@ -65,7 +65,7 @@ function unwrap(UD2x18 x) pure returns (uint64 result) {
     result = UD2x18.unwrap(x);
 }
 
-/// @notice Wraps an uint64 number into the UD2x18 value type.
+/// @notice Wraps an uint64 number into UD2x18.
 function wrap(uint64 x) pure returns (UD2x18 result) {
     result = UD2x18.wrap(x);
 }
