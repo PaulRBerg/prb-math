@@ -2,7 +2,7 @@
 pragma solidity >=0.8.13;
 
 import "../Common.sol" as Common;
-import  "./Errors.sol" as Errors;
+import "./Errors.sol" as Errors;
 import {
     uHALF_UNIT,
     uLOG2_10,
