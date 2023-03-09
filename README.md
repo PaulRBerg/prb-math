@@ -16,7 +16,7 @@ bound by the minimum and the maximum values permitted by the Solidity types int2
 - Provides type safety via user-defined value types
 - Gas efficient, but still user-friendly
 - Ergonomic developer experience thanks to using free functions instead of libraries
-- Bakes in overflow-safe multiplication and division via `mulDiv`
+- Bakes in overflow-safe multiplication and division via {mulDiv}
 - Reverts with custom errors instead of reason strings
 - Well-documented with NatSpec comments
 - Built and tested with Foundry

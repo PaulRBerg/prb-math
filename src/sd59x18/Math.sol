@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.13;
 
-import { MAX_UINT128, MAX_UINT40, msb, mulDiv, mulDiv18, prbExp2, prbSqrt } from "../Common.sol";
+import "../Common.sol" as Common;
+import  "./Errors.sol" as Errors;
 import {
     uHALF_UNIT,
     uLOG2_10,
@@ -14,23 +15,6 @@ import {
     uUNIT,
     ZERO
 } from "./Constants.sol";
-import {
-    PRBMath_SD59x18_Abs_MinSD59x18,
-    PRBMath_SD59x18_Ceil_Overflow,
-    PRBMath_SD59x18_Div_InputTooSmall,
-    PRBMath_SD59x18_Div_Overflow,
-    PRBMath_SD59x18_Exp_InputTooBig,
-    PRBMath_SD59x18_Exp2_InputTooBig,
-    PRBMath_SD59x18_Floor_Underflow,
-    PRBMath_SD59x18_Gm_Overflow,
-    PRBMath_SD59x18_Gm_NegativeProduct,
-    PRBMath_SD59x18_Log_InputTooSmall,
-    PRBMath_SD59x18_Mul_InputTooSmall,
-    PRBMath_SD59x18_Mul_Overflow,
-    PRBMath_SD59x18_Powu_Overflow,
-    PRBMath_SD59x18_Sqrt_NegativeInput,
-    PRBMath_SD59x18_Sqrt_Overflow
-} from "./Errors.sol";
 import { unwrap, wrap } from "./Helpers.sol";
 import { SD59x18 } from "./ValueType.sol";
 
@@ -44,7 +28,7 @@ import { SD59x18 } from "./ValueType.sol";
 function abs(SD59x18 x) pure returns (SD59x18 result) {
     int256 xInt = unwrap(x);
     if (xInt == uMIN_SD59x18) {
-        revert PRBMath_SD59x18_Abs_MinSD59x18();
+        revert Errors.PRBMath_SD59x18_Abs_MinSD59x18();
     }
     result = xInt < 0 ? wrap(-xInt) : x;
 }
@@ -89,7 +73,7 @@ function avg(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 function ceil(SD59x18 x) pure returns (SD59x18 result) {
     int256 xInt = unwrap(x);
     if (xInt > uMAX_WHOLE_SD59x18) {
-        revert PRBMath_SD59x18_Ceil_Overflow(x);
+        revert Errors.PRBMath_SD59x18_Ceil_Overflow(x);
     }
 
     int256 remainder = xInt % uUNIT;
@@ -109,17 +93,17 @@ function ceil(SD59x18 x) pure returns (SD59x18 result) {
 
 /// @notice Divides two SD59x18 numbers, returning a new SD59x18 number. Rounds towards zero.
 ///
-/// @dev This is a variant of `mulDiv` that works with signed numbers. Works by computing the signs and the absolute
+/// @dev An extension of {Common-mulDiv} that works with signed numbers. It works by computing the signs and the absolute
 /// values separately.
 ///
 /// Requirements:
-/// - All from `Common.mulDiv`.
+/// - All from {Common-mulDiv}.
 /// - None of the inputs can be `MIN_SD59x18`.
 /// - The denominator cannot be zero.
-/// - The result must fit within int256.
+/// - The result must fit within SD59x18.
 ///
-/// Caveats:
-/// - All from `Common.mulDiv`.
+/// Notes:
+/// - All from {Common-mulDiv}.
 ///
 /// @param x The numerator as an SD59x18 number.
 /// @param y The denominator as an SD59x18 number.
@@ -128,7 +112,7 @@ function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     int256 xInt = unwrap(x);
     int256 yInt = unwrap(y);
     if (xInt == uMIN_SD59x18 || yInt == uMIN_SD59x18) {
-        revert PRBMath_SD59x18_Div_InputTooSmall();
+        revert Errors.PRBMath_SD59x18_Div_InputTooSmall();
     }
 
     // Get hold of the absolute values of x and y.
@@ -140,9 +124,9 @@ function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     }
 
     // Compute the absolute value (x*UNIT)÷y. The resulting value must fit within int256.
-    uint256 resultAbs = mulDiv(xAbs, uint256(uUNIT), yAbs);
+    uint256 resultAbs = Common.mulDiv(xAbs, uint256(uUNIT), yAbs);
     if (resultAbs > uint256(uMAX_SD59x18)) {
-        revert PRBMath_SD59x18_Div_Overflow(x, y);
+        revert Errors.PRBMath_SD59x18_Div_Overflow(x, y);
     }
 
     // Check if x and y have the same sign. This works thanks to two's complement; the left-most bit is the sign bit.
@@ -163,25 +147,25 @@ function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 /// $$
 ///
 /// Requirements:
-/// - All from `log2`.
+/// - All from {log2}.
 /// - x must be less than 133.084258667509499441.
 ///
-/// Caveats:
-/// - All from `exp2`.
+/// Notes:
+/// - All from {exp2}.
 /// - For any x less than -41.446531673892822322, the result is zero.
 ///
 /// @param x The exponent as an SD59x18 number.
 /// @return result The result as an SD59x18 number.
 function exp(SD59x18 x) pure returns (SD59x18 result) {
     int256 xInt = unwrap(x);
-    // Without this check, the value passed to `exp2` would be less than -59.794705707972522261.
+    // Without this check, the value passed to {exp2} would be less than -59.794705707972522261.
     if (xInt < -41_446531673892822322) {
         return ZERO;
     }
 
-    // Without this check, the value passed to `exp2` would be greater than 192.
+    // Without this check, the value passed to {exp2} would be greater than 192.
     if (xInt >= 133_084258667509499441) {
-        revert PRBMath_SD59x18_Exp_InputTooBig(x);
+        revert Errors.PRBMath_SD59x18_Exp_InputTooBig(x);
     }
 
     unchecked {
@@ -205,7 +189,7 @@ function exp(SD59x18 x) pure returns (SD59x18 result) {
 /// - x must be 192 or less.
 /// - The result must fit within `MAX_SD59x18`.
 ///
-/// Caveats:
+/// Notes:
 /// - For any x less than -59.794705707972522261, the result is zero.
 ///
 /// @param x The exponent as an SD59x18 number.
@@ -225,7 +209,7 @@ function exp2(SD59x18 x) pure returns (SD59x18 result) {
     } else {
         // 2^192 doesn't fit within the 192.64-bit format used internally in this function.
         if (xInt >= 192e18) {
-            revert PRBMath_SD59x18_Exp2_InputTooBig(x);
+            revert Errors.PRBMath_SD59x18_Exp2_InputTooBig(x);
         }
 
         unchecked {
@@ -234,7 +218,7 @@ function exp2(SD59x18 x) pure returns (SD59x18 result) {
 
             // It is safe to convert the result to int256 with no checks because the maximum input allowed in this
             // function is 192.
-            result = wrap(int256(prbExp2(x_192x64)));
+            result = wrap(int256(Common.exp2(x_192x64)));
         }
     }
 }
@@ -252,7 +236,7 @@ function exp2(SD59x18 x) pure returns (SD59x18 result) {
 function floor(SD59x18 x) pure returns (SD59x18 result) {
     int256 xInt = unwrap(x);
     if (xInt < uMIN_WHOLE_SD59x18) {
-        revert PRBMath_SD59x18_Floor_Underflow(x);
+        revert Errors.PRBMath_SD59x18_Floor_Underflow(x);
     }
 
     int256 remainder = xInt % uUNIT;
@@ -299,17 +283,17 @@ function gm(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
         // Equivalent to "xy / x != y". Checking for overflow this way is faster than letting Solidity do it.
         int256 xyInt = xInt * yInt;
         if (xyInt / xInt != yInt) {
-            revert PRBMath_SD59x18_Gm_Overflow(x, y);
+            revert Errors.PRBMath_SD59x18_Gm_Overflow(x, y);
         }
 
         // The product must not be negative, since this library does not handle complex numbers.
         if (xyInt < 0) {
-            revert PRBMath_SD59x18_Gm_NegativeProduct(x, y);
+            revert Errors.PRBMath_SD59x18_Gm_NegativeProduct(x, y);
         }
 
         // We don't need to multiply the result by `UNIT` here because the x*y product had picked up a factor of `UNIT`
-        // during multiplication. See the comments within the `prbSqrt` function.
-        uint256 resultUint = prbSqrt(uint256(xyInt));
+        // during multiplication. See the comments in {Common-sqrt}.
+        uint256 resultUint = Common.sqrt(uint256(xyInt));
         result = wrap(int256(resultUint));
     }
 }
@@ -335,10 +319,10 @@ function inv(SD59x18 x) pure returns (SD59x18 result) {
 /// $$
 ///
 /// Requirements:
-/// - All from `log2`.
+/// - All from {log2}.
 ///
-/// Caveats:
-/// - All from `log2`.
+/// Notes:
+/// - All from {log2}.
 /// - This doesn't return exactly 1 for 2.718281828459045235, for that more fine-grained precision is needed.
 ///
 /// @param x The SD59x18 number for which to calculate the natural logarithm.
@@ -359,20 +343,20 @@ function ln(SD59x18 x) pure returns (SD59x18 result) {
 /// $$
 ///
 /// Requirements:
-/// - All from `log2`.
+/// - All from {log2}.
 ///
-/// Caveats:
-/// - All from `log2`.
+/// Notes:
+/// - All from {log2}.
 ///
 /// @param x The SD59x18 number for which to calculate the common logarithm.
 /// @return result The common logarithm as an SD59x18 number.
 function log10(SD59x18 x) pure returns (SD59x18 result) {
     int256 xInt = unwrap(x);
     if (xInt < 0) {
-        revert PRBMath_SD59x18_Log_InputTooSmall(x);
+        revert Errors.PRBMath_SD59x18_Log_InputTooSmall(x);
     }
 
-    // Note that the `mul` in this block is the assembly mul operation, not the SD59x18 `mul`.
+    // Note that the `mul` in this block is the assembly mul operation, not {SD59x18-mul}.
     // prettier-ignore
     assembly ("memory-safe") {
         switch x
@@ -472,7 +456,7 @@ function log10(SD59x18 x) pure returns (SD59x18 result) {
 /// Requirements:
 /// - x must be greater than zero.
 ///
-/// Caveats:
+/// Notes:
 /// - The results are not perfectly accurate to the last decimal, due to the lossy precision of the iterative
 /// approximation.
 ///
@@ -481,7 +465,7 @@ function log10(SD59x18 x) pure returns (SD59x18 result) {
 function log2(SD59x18 x) pure returns (SD59x18 result) {
     int256 xInt = unwrap(x);
     if (xInt <= 0) {
-        revert PRBMath_SD59x18_Log_InputTooSmall(x);
+        revert Errors.PRBMath_SD59x18_Log_InputTooSmall(x);
     }
 
     unchecked {
@@ -495,15 +479,15 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
             sign = 1;
         } else {
             sign = -1;
-            // Do the fixed-point inversion inline to save gas. The numerator is UNIT * UNIT.
+            // Do the fixed-point inversion inline to save gas. The numerator is `UNIT * UNIT`.
             xInt = 1e36 / xInt;
         }
 
         // Calculate the integer part of the logarithm and add it to the result and finally calculate $y = x * 2^(-n)$.
-        uint256 n = msb(uint256(xInt / uUNIT));
+        uint256 n = Common.msb(uint256(xInt / uUNIT));
 
         // This is the integer part of the logarithm as an SD59x18 number. The operation can't overflow
-        // because n is maximum 255, UNIT is 1e18 and sign is either 1 or -1.
+        // because n is maximum 255, `UNIT` is 1e18 and sign is either 1 or -1.
         int256 resultInt = int256(n) * uUNIT;
 
         // This is $y = x * 2^{-n}$.
@@ -536,16 +520,13 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
 
 /// @notice Multiplies two SD59x18 numbers together, returning a new SD59x18 number.
 ///
-/// @dev This is a variant of `mulDiv` that works with signed numbers and employs constant folding, i.e. the denominator
-/// is always 1e18.
-///
-/// Requirements:
-/// - All from `Common.mulDiv18`.
+/// @dev Requirements:
+/// - All from {Common-mulDiv18}.
 /// - None of the inputs can be `MIN_SD59x18`.
 /// - The result must fit within `MAX_SD59x18`.
 ///
-/// Caveats:
-/// - To understand how this works in detail, see the NatSpec comments in `Common.mulDiv18`.
+/// Notes:
+/// - To understand how this works in detail, see the NatSpec comments in {Common-mulDiv18}.
 ///
 /// @param x The multiplicand as an SD59x18 number.
 /// @param y The multiplier as an SD59x18 number.
@@ -554,7 +535,7 @@ function mul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     int256 xInt = unwrap(x);
     int256 yInt = unwrap(y);
     if (xInt == uMIN_SD59x18 || yInt == uMIN_SD59x18) {
-        revert PRBMath_SD59x18_Mul_InputTooSmall();
+        revert Errors.PRBMath_SD59x18_Mul_InputTooSmall();
     }
 
     // Get hold of the absolute values of x and y.
@@ -565,9 +546,9 @@ function mul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
         yAbs = yInt < 0 ? uint256(-yInt) : uint256(yInt);
     }
 
-    uint256 resultAbs = mulDiv18(xAbs, yAbs);
+    uint256 resultAbs = Common.mulDiv18(xAbs, yAbs);
     if (resultAbs > uint256(uMAX_SD59x18)) {
-        revert PRBMath_SD59x18_Mul_Overflow(x, y);
+        revert Errors.PRBMath_SD59x18_Mul_Overflow(x, y);
     }
 
     // Check if x and y have the same sign. This works thanks to two's complement; the left-most bit is the sign bit.
@@ -588,11 +569,11 @@ function mul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 /// $$
 ///
 /// Requirements:
-/// - All from `exp2`, `log2` and `mul`.
+/// - All from {exp2}, {log2} and {mul}.
 /// - x cannot be zero.
 ///
-/// Caveats:
-/// - All from `exp2`, `log2` and `mul`.
+/// Notes:
+/// - All from {exp2}, {log2} and {mul}.
 /// - Assumes 0^0 is 1.
 ///
 /// @param x Number to raise to given power y, as an SD59x18 number.
@@ -619,11 +600,11 @@ function pow(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 /// @dev See https://en.wikipedia.org/wiki/Exponentiation_by_squaring
 ///
 /// Requirements:
-/// - All from `abs` and `Common.mulDiv18`.
+/// - All from {abs} and {Common-mulDiv18}.
 /// - The result must fit within `MAX_SD59x18`.
 ///
-/// Caveats:
-/// - All from `Common.mulDiv18`.
+/// Notes:
+/// - All from {Common-mulDiv18}.
 /// - Assumes 0^0 is 1.
 ///
 /// @param x The base as an SD59x18 number.
@@ -638,17 +619,17 @@ function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
     // Equivalent to "for(y /= 2; y > 0; y /= 2)" but faster.
     uint256 yAux = y;
     for (yAux >>= 1; yAux > 0; yAux >>= 1) {
-        xAbs = mulDiv18(xAbs, xAbs);
+        xAbs = Common.mulDiv18(xAbs, xAbs);
 
         // Equivalent to "y % 2 == 1" but faster.
         if (yAux & 1 > 0) {
-            resultAbs = mulDiv18(resultAbs, xAbs);
+            resultAbs = Common.mulDiv18(resultAbs, xAbs);
         }
     }
 
     // The result must fit within `MAX_SD59x18`.
     if (resultAbs > uint256(uMAX_SD59x18)) {
-        revert PRBMath_SD59x18_Powu_Overflow(x, y);
+        revert Errors.PRBMath_SD59x18_Powu_Overflow(x, y);
     }
 
     unchecked {
@@ -674,16 +655,16 @@ function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
 function sqrt(SD59x18 x) pure returns (SD59x18 result) {
     int256 xInt = unwrap(x);
     if (xInt < 0) {
-        revert PRBMath_SD59x18_Sqrt_NegativeInput(x);
+        revert Errors.PRBMath_SD59x18_Sqrt_NegativeInput(x);
     }
     if (xInt > uMAX_SD59x18 / uUNIT) {
-        revert PRBMath_SD59x18_Sqrt_Overflow(x);
+        revert Errors.PRBMath_SD59x18_Sqrt_Overflow(x);
     }
 
     unchecked {
         // Multiply x by `UNIT` to account for the factor of `UNIT` that is picked up when multiplying two SD59x18
         // numbers together (in this case, the two numbers are both the square root).
-        uint256 resultUint = prbSqrt(uint256(xInt * uUNIT));
+        uint256 resultUint = Common.sqrt(uint256(xInt * uUNIT));
         result = wrap(int256(resultUint));
     }
 }
