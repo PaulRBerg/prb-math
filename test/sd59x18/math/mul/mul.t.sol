@@ -23,26 +23,26 @@ contract Mul_Test is SD59x18_Test {
     }
 
     function test_Mul_OneOperandZero() external parameterizedTest(oneOperandZero_Sets()) {
-        SD59x18 actual = mul(s.x, s.y);
-        assertEq(actual, s.expected);
+        assertEq(mul(s.x, s.y), s.expected);
+        assertEq(s.x * s.y, s.expected);
     }
 
     modifier neitherOperandZero() {
         _;
     }
 
-    function test_RevertWhen_OneOperandMinSD59x18_1() external neitherOperandZero {
+    function test_RevertWhen_OneOperandMinSD59x18_Function() external neitherOperandZero {
         SD59x18 x = MIN_SD59x18;
         SD59x18 y = sd(0.000000000000000001e18);
         vm.expectRevert(PRBMath_SD59x18_Mul_InputTooSmall.selector);
         mul(x, y);
     }
 
-    function test_RevertWhen_OneOperandMinSD59x18_2() external neitherOperandZero {
+    function test_RevertWhen_OneOperandMinSD59x18_Operator() external neitherOperandZero {
         SD59x18 x = sd(0.000000000000000001e18);
         SD59x18 y = MIN_SD59x18;
         vm.expectRevert(PRBMath_SD59x18_Mul_InputTooSmall.selector);
-        mul(x, y);
+        x * y;
     }
 
     modifier neitherOperandMinSD59x18() {
@@ -148,8 +148,8 @@ contract Mul_Test is SD59x18_Test {
         resultDoesNotOverflowSD59x18
         resultDoesNotOverflowUint256
     {
-        SD59x18 actual = mul(s.x, s.y);
-        assertEq(actual, s.expected);
+        assertEq(mul(s.x, s.y), s.expected);
+        assertEq(s.x * s.y, s.expected);
     }
 
     function operandsDifferentSigns_Sets() internal returns (Set[] memory) {
@@ -201,7 +201,7 @@ contract Mul_Test is SD59x18_Test {
         resultDoesNotOverflowSD59x18
         resultDoesNotOverflowUint256
     {
-        SD59x18 actual = mul(s.x, s.y);
-        assertEq(actual, s.expected);
+        assertEq(mul(s.x, s.y), s.expected);
+        assertEq(s.x * s.y, s.expected);
     }
 }

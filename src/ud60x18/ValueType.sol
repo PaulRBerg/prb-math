@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.8.13;
+pragma solidity >=0.8.19;
 
 import "./Casting.sol" as C;
 import "./Helpers.sol" as H;
@@ -57,10 +57,34 @@ using {
     H.lte,
     H.mod,
     H.neq,
+    H.not,
     H.or,
     H.rshift,
     H.sub,
     H.uncheckedAdd,
     H.uncheckedSub,
     H.xor
+} for UD60x18 global;
+
+/*//////////////////////////////////////////////////////////////////////////
+                                    OPERATORS
+//////////////////////////////////////////////////////////////////////////*/
+
+/// The global "using for" directive makes it possible to use these operators on the UD60x18 type.
+using {
+    H.add as +,
+    H.and2 as &,
+    M.div as /,
+    H.eq as ==,
+    H.gt as >,
+    H.gte as >=,
+    H.lt as <,
+    H.lte as <=,
+    H.or as |,
+    H.mod as %,
+    M.mul as *,
+    H.neq as !=,
+    H.not as ~,
+    H.sub as -,
+    H.xor as ^
 } for UD60x18 global;
