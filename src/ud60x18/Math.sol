@@ -3,7 +3,7 @@ pragma solidity >=0.8.13;
 
 import "../Common.sol" as Common;
 import "./Errors.sol" as Errors;
-import { unwrap, wrap } from "./Casting.sol";
+import { wrap } from "./Casting.sol";
 import { uHALF_UNIT, uLOG2_10, uLOG2_E, uMAX_UD60x18, uMAX_WHOLE_UD60x18, UNIT, uUNIT, ZERO } from "./Constants.sol";
 import { UD60x18 } from "./ValueType.sol";
 
@@ -32,8 +32,8 @@ import { UD60x18 } from "./ValueType.sol";
 /// @param y The second operand as an UD60x18 number.
 /// @return result The arithmetic average as an UD60x18 number.
 function avg(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
-    uint256 xUint = unwrap(x);
-    uint256 yUint = unwrap(y);
+    uint256 xUint = x.unwrap();
+    uint256 yUint = y.unwrap();
     unchecked {
         result = wrap((xUint & yUint) + ((xUint ^ yUint) >> 1));
     }
@@ -50,7 +50,7 @@ function avg(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// @param x The UD60x18 number to ceil.
 /// @param result The least number greater than or equal to x, as an UD60x18 number.
 function ceil(UD60x18 x) pure returns (UD60x18 result) {
-    uint256 xUint = unwrap(x);
+    uint256 xUint = x.unwrap();
     if (xUint > uMAX_WHOLE_UD60x18) {
         revert Errors.PRBMath_UD60x18_Ceil_Overflow(x);
     }
@@ -79,7 +79,7 @@ function ceil(UD60x18 x) pure returns (UD60x18 result) {
 /// @param y The denominator as an UD60x18 number.
 /// @param result The quotient as an UD60x18 number.
 function div(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
-    result = wrap(Common.mulDiv(unwrap(x), uUNIT, unwrap(y)));
+    result = wrap(Common.mulDiv(x.unwrap(), uUNIT, y.unwrap()));
 }
 
 /// @notice Calculates the natural exponent of x.
@@ -97,7 +97,7 @@ function div(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// @param x The exponent as an UD60x18 number.
 /// @return result The result as an UD60x18 number.
 function exp(UD60x18 x) pure returns (UD60x18 result) {
-    uint256 xUint = unwrap(x);
+    uint256 xUint = x.unwrap();
 
     // Without this check, the value passed to {exp2} would be greater than 192.
     if (xUint >= 133_084258667509499441) {
@@ -122,7 +122,7 @@ function exp(UD60x18 x) pure returns (UD60x18 result) {
 /// @param x The exponent as an UD60x18 number.
 /// @return result The result as an UD60x18 number.
 function exp2(UD60x18 x) pure returns (UD60x18 result) {
-    uint256 xUint = unwrap(x);
+    uint256 xUint = x.unwrap();
 
     // Numbers greater than or equal to 2^192 don't fit within the 192.64-bit format.
     if (xUint >= 192e18) {
@@ -170,8 +170,8 @@ function frac(UD60x18 x) pure returns (UD60x18 result) {
 /// @param y The second operand as an UD60x18 number.
 /// @return result The result as an UD60x18 number.
 function gm(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
-    uint256 xUint = unwrap(x);
-    uint256 yUint = unwrap(y);
+    uint256 xUint = x.unwrap();
+    uint256 yUint = y.unwrap();
     if (xUint == 0 || yUint == 0) {
         return ZERO;
     }
@@ -199,7 +199,7 @@ function gm(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 function inv(UD60x18 x) pure returns (UD60x18 result) {
     unchecked {
         // 1e36 is `UNIT * UNIT`.
-        result = wrap(1e36 / unwrap(x));
+        result = wrap(1e36 / x.unwrap());
     }
 }
 
@@ -224,7 +224,7 @@ function ln(UD60x18 x) pure returns (UD60x18 result) {
     unchecked {
         // We do the fixed-point multiplication inline to save gas. This is overflow-safe because the maximum value
         // that {log2} can return is 196.205294292027477728.
-        result = wrap((unwrap(log2(x)) * uUNIT) / uLOG2_E);
+        result = wrap(log2(x).unwrap() * uUNIT / uLOG2_E);
     }
 }
 
@@ -246,7 +246,7 @@ function ln(UD60x18 x) pure returns (UD60x18 result) {
 /// @param x The UD60x18 number for which to calculate the common logarithm.
 /// @return result The common logarithm as an UD60x18 number.
 function log10(UD60x18 x) pure returns (UD60x18 result) {
-    uint256 xUint = unwrap(x);
+    uint256 xUint = x.unwrap();
     if (xUint < uUNIT) {
         revert Errors.PRBMath_UD60x18_Log_InputTooSmall(x);
     }
@@ -336,10 +336,10 @@ function log10(UD60x18 x) pure returns (UD60x18 result) {
         default { result := uMAX_UD60x18 }
     }
 
-    if (unwrap(result) == uMAX_UD60x18) {
+    if (result.unwrap() == uMAX_UD60x18) {
         unchecked {
             // Do the fixed-point division inline to save gas.
-            result = wrap((unwrap(log2(x)) * uUNIT) / uLOG2_10);
+            result = wrap(log2(x).unwrap() * uUNIT / uLOG2_10);
         }
     }
 }
@@ -359,7 +359,7 @@ function log10(UD60x18 x) pure returns (UD60x18 result) {
 /// @param x The UD60x18 number for which to calculate the binary logarithm.
 /// @return result The binary logarithm as an UD60x18 number.
 function log2(UD60x18 x) pure returns (UD60x18 result) {
-    uint256 xUint = unwrap(x);
+    uint256 xUint = x.unwrap();
 
     if (xUint < uUNIT) {
         revert Errors.PRBMath_UD60x18_Log_InputTooSmall(x);
@@ -406,7 +406,7 @@ function log2(UD60x18 x) pure returns (UD60x18 result) {
 /// @param y The multiplier as an UD60x18 number.
 /// @return result The product as an UD60x18 number.
 function mul(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
-    result = wrap(Common.mulDiv18(unwrap(x), unwrap(y)));
+    result = wrap(Common.mulDiv18(x.unwrap(), y.unwrap()));
 }
 
 /// @notice Raises x to the power of y.
@@ -428,8 +428,8 @@ function mul(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// @param y Exponent to raise x to, as an UD60x18 number.
 /// @return result x raised to power y, as an UD60x18 number.
 function pow(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
-    uint256 xUint = unwrap(x);
-    uint256 yUint = unwrap(y);
+    uint256 xUint = x.unwrap();
+    uint256 yUint = y.unwrap();
 
     if (xUint == 0) {
         result = yUint == 0 ? UNIT : ZERO;
@@ -459,7 +459,7 @@ function pow(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// @return result The result as an UD60x18 number.
 function powu(UD60x18 x, uint256 y) pure returns (UD60x18 result) {
     // Calculate the first iteration of the loop in advance.
-    uint256 xUint = unwrap(x);
+    uint256 xUint = x.unwrap();
     uint256 resultUint = y & 1 > 0 ? xUint : uUNIT;
 
     // Equivalent to "for(y /= 2; y > 0; y /= 2)" but faster.
@@ -483,7 +483,7 @@ function powu(UD60x18 x, uint256 y) pure returns (UD60x18 result) {
 /// @param x The UD60x18 number for which to calculate the square root.
 /// @return result The result as an UD60x18 number.
 function sqrt(UD60x18 x) pure returns (UD60x18 result) {
-    uint256 xUint = unwrap(x);
+    uint256 xUint = x.unwrap();
 
     unchecked {
         if (xUint > uMAX_UD60x18 / uUNIT) {
