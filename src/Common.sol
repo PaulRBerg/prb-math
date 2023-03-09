@@ -35,7 +35,8 @@ uint40 constant MAX_UINT40 = type(uint40).max;
 /// @dev How many trailing decimals can be represented.
 uint256 constant UNIT = 1e18;
 
-/// @dev Largest power of two that is a divisor of `UNIT`.
+/// @dev The the largest power of two that divides the decimal value of `UNIT`. The logarithm of this value is the least significant
+/// bit in the binary representation of `UNIT`.
 uint256 constant UNIT_LPOTD = 262144;
 
 /// @dev The `UNIT` number inverted mod 2^256.
@@ -401,7 +402,7 @@ function mulDiv(uint256 x, uint256 y, uint256 denominator) pure returns (uint256
 
     ////////////////////////////////////////////////////////////////////////////
     // 512 by 256 division
-    ///////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
 
     // Make division exact by subtracting the remainder from [prod1 prod0].
     uint256 remainder;
@@ -414,24 +415,28 @@ function mulDiv(uint256 x, uint256 y, uint256 denominator) pure returns (uint256
         prod0 := sub(prod0, remainder)
     }
 
-    // Factor powers of two out of denominator and compute largest power of two divisor of denominator. Always >= 1.
-    // See https://cs.stackexchange.com/q/138556/92363.
     unchecked {
-        // Does not overflow because the denominator cannot be zero at this stage in the function.
+        // Calculate the largest power of two divisor of the denominator using the unary operator ~. This operation cannot overflow
+        // because the denominator cannot be zero at this point in the function execution. The result is always >= 1.
+        // For more detail, see https://cs.stackexchange.com/q/138556/92363.
         uint256 lpotdod = denominator & (~denominator + 1);
+        uint256 flippedLpotdod;
+
         assembly ("memory-safe") {
-            // Divide denominator by lpotdod.
+            // Factor powers of two out of denominator.
             denominator := div(denominator, lpotdod)
 
             // Divide [prod1 prod0] by lpotdod.
             prod0 := div(prod0, lpotdod)
 
-            // Flip lpotdod such that it is 2^256 / lpotdod. If lpotdod is zero, then it becomes one.
-            lpotdod := add(div(sub(0, lpotdod), lpotdod), 1)
+            // Get the flipped value `2^256 / lpotdod`. If the `lpotdod` is zero, the flipped value is one.
+            // `sub(0, lpotdod)` produces the two's complement version of `lpotdod`, which is equivalent to flipping all the bits.
+            // However, `div` interprets this value as an unsigned value: https://ethereum.stackexchange.com/q/147168/24693
+            flippedLpotdod := add(div(sub(0, lpotdod), lpotdod), 1)
         }
 
         // Shift in bits from prod1 into prod0.
-        prod0 |= prod1 * lpotdod;
+        prod0 |= prod1 * flippedLpotdod;
 
         // Invert denominator mod 2^256. Now that denominator is an odd number, it has an inverse modulo 2^256 such
         // that denominator * inv = 1 mod 2^256. Compute the inverse by starting with a seed that is correct for
