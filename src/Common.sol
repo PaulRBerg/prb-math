@@ -16,7 +16,6 @@ error PRBMath_MulDiv_Overflow(uint256 x, uint256 y, uint256 denominator);
 /// @notice Thrown when the ending result in the fixed-point version of {mulDiv} would overflow uint256.
 error PRBMath_MulDiv18_Overflow(uint256 x, uint256 y);
 
-
 /// @notice Thrown when attempting to run {mulDiv} with one of the inputs `type(int256).min`.
 error PRBMath_MulDivSigned_InputTooSmall();
 
