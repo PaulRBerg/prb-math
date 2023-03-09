@@ -482,6 +482,12 @@ function mulDiv18(uint256 x, uint256 y) pure returns (uint256 result) {
         prod1 := sub(sub(mm, prod0), lt(mm, prod0))
     }
 
+    if (prod1 == 0) {
+        unchecked {
+            return prod0 / UNIT;
+        }
+    }
+
     if (prod1 >= UNIT) {
         revert PRBMath_MulDiv18_Overflow(x, y);
     }
@@ -489,15 +495,6 @@ function mulDiv18(uint256 x, uint256 y) pure returns (uint256 result) {
     uint256 remainder;
     assembly ("memory-safe") {
         remainder := mulmod(x, y, UNIT)
-    }
-
-    if (prod1 == 0) {
-        unchecked {
-            return prod0 / UNIT;
-        }
-    }
-
-    assembly ("memory-safe") {
         result :=
             mul(
                 or(
