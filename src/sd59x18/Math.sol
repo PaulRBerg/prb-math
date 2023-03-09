@@ -15,7 +15,7 @@ import {
     uUNIT,
     ZERO
 } from "./Constants.sol";
-import { unwrap, wrap } from "./Helpers.sol";
+import { wrap } from "./Helpers.sol";
 import { SD59x18 } from "./ValueType.sol";
 
 /// @notice Calculate the absolute value of x.
@@ -26,7 +26,7 @@ import { SD59x18 } from "./ValueType.sol";
 /// @param x The SD59x18 number for which to calculate the absolute value.
 /// @param result The absolute value of x as an SD59x18 number.
 function abs(SD59x18 x) pure returns (SD59x18 result) {
-    int256 xInt = unwrap(x);
+    int256 xInt = x.unwrap();
     if (xInt == uMIN_SD59x18) {
         revert Errors.PRBMath_SD59x18_Abs_MinSD59x18();
     }
@@ -38,8 +38,8 @@ function abs(SD59x18 x) pure returns (SD59x18 result) {
 /// @param y The second operand as an SD59x18 number.
 /// @return result The arithmetic average as an SD59x18 number.
 function avg(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
-    int256 xInt = unwrap(x);
-    int256 yInt = unwrap(y);
+    int256 xInt = x.unwrap();
+    int256 yInt = y.unwrap();
 
     unchecked {
         // This is equivalent to "x / 2 +  y / 2" but faster.
@@ -71,7 +71,7 @@ function avg(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 /// @param x The SD59x18 number to ceil.
 /// @param result The least number greater than or equal to x, as an SD59x18 number.
 function ceil(SD59x18 x) pure returns (SD59x18 result) {
-    int256 xInt = unwrap(x);
+    int256 xInt = x.unwrap();
     if (xInt > uMAX_WHOLE_SD59x18) {
         revert Errors.PRBMath_SD59x18_Ceil_Overflow(x);
     }
@@ -109,8 +109,8 @@ function ceil(SD59x18 x) pure returns (SD59x18 result) {
 /// @param y The denominator as an SD59x18 number.
 /// @param result The quotient as an SD59x18 number.
 function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
-    int256 xInt = unwrap(x);
-    int256 yInt = unwrap(y);
+    int256 xInt = x.unwrap();
+    int256 yInt = y.unwrap();
     if (xInt == uMIN_SD59x18 || yInt == uMIN_SD59x18) {
         revert Errors.PRBMath_SD59x18_Div_InputTooSmall();
     }
@@ -157,7 +157,7 @@ function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 /// @param x The exponent as an SD59x18 number.
 /// @return result The result as an SD59x18 number.
 function exp(SD59x18 x) pure returns (SD59x18 result) {
-    int256 xInt = unwrap(x);
+    int256 xInt = x.unwrap();
     // Without this check, the value passed to {exp2} would be less than -59.794705707972522261.
     if (xInt < -41_446531673892822322) {
         return ZERO;
@@ -195,7 +195,7 @@ function exp(SD59x18 x) pure returns (SD59x18 result) {
 /// @param x The exponent as an SD59x18 number.
 /// @return result The result as an SD59x18 number.
 function exp2(SD59x18 x) pure returns (SD59x18 result) {
-    int256 xInt = unwrap(x);
+    int256 xInt = x.unwrap();
     if (xInt < 0) {
         // 2^59.794705707972522262 is the maximum number whose inverse does not truncate down to zero.
         if (xInt < -59_794705707972522261) {
@@ -204,7 +204,7 @@ function exp2(SD59x18 x) pure returns (SD59x18 result) {
 
         unchecked {
             // Do the fixed-point inversion $1/2^x$ inline to save gas. 1e36 is UNIT * UNIT.
-            result = wrap(1e36 / unwrap(exp2(wrap(-xInt))));
+            result = wrap(1e36 / exp2(wrap(-xInt)).unwrap());
         }
     } else {
         // 2^192 doesn't fit within the 192.64-bit format used internally in this function.
@@ -234,7 +234,7 @@ function exp2(SD59x18 x) pure returns (SD59x18 result) {
 /// @param x The SD59x18 number to floor.
 /// @param result The greatest integer less than or equal to x, as an SD59x18 number.
 function floor(SD59x18 x) pure returns (SD59x18 result) {
-    int256 xInt = unwrap(x);
+    int256 xInt = x.unwrap();
     if (xInt < uMIN_WHOLE_SD59x18) {
         revert Errors.PRBMath_SD59x18_Floor_Underflow(x);
     }
@@ -260,7 +260,7 @@ function floor(SD59x18 x) pure returns (SD59x18 result) {
 /// @param x The SD59x18 number to get the fractional part of.
 /// @param result The fractional part of x as an SD59x18 number.
 function frac(SD59x18 x) pure returns (SD59x18 result) {
-    result = wrap(unwrap(x) % uUNIT);
+    result = wrap(x.unwrap() % uUNIT);
 }
 
 /// @notice Calculates the geometric mean of x and y, i.e. sqrt(x * y), rounding down.
@@ -273,8 +273,8 @@ function frac(SD59x18 x) pure returns (SD59x18 result) {
 /// @param y The second operand as an SD59x18 number.
 /// @return result The result as an SD59x18 number.
 function gm(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
-    int256 xInt = unwrap(x);
-    int256 yInt = unwrap(y);
+    int256 xInt = x.unwrap();
+    int256 yInt = y.unwrap();
     if (xInt == 0 || yInt == 0) {
         return ZERO;
     }
@@ -307,7 +307,7 @@ function gm(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 /// @return result The inverse as an SD59x18 number.
 function inv(SD59x18 x) pure returns (SD59x18 result) {
     // 1e36 is UNIT * UNIT.
-    result = wrap(1e36 / unwrap(x));
+    result = wrap(1e36 / x.unwrap());
 }
 
 /// @notice Calculates the natural logarithm of x.
@@ -330,7 +330,7 @@ function inv(SD59x18 x) pure returns (SD59x18 result) {
 function ln(SD59x18 x) pure returns (SD59x18 result) {
     // Do the fixed-point multiplication inline to save gas. This is overflow-safe because the maximum value that
     // log2(x) can return is 195.205294292027477728.
-    result = wrap((unwrap(log2(x)) * uUNIT) / uLOG2_E);
+    result = wrap(log2(x).unwrap() * uUNIT / uLOG2_E);
 }
 
 /// @notice Calculates the common logarithm of x.
@@ -351,7 +351,7 @@ function ln(SD59x18 x) pure returns (SD59x18 result) {
 /// @param x The SD59x18 number for which to calculate the common logarithm.
 /// @return result The common logarithm as an SD59x18 number.
 function log10(SD59x18 x) pure returns (SD59x18 result) {
-    int256 xInt = unwrap(x);
+    int256 xInt = x.unwrap();
     if (xInt < 0) {
         revert Errors.PRBMath_SD59x18_Log_InputTooSmall(x);
     }
@@ -440,10 +440,10 @@ function log10(SD59x18 x) pure returns (SD59x18 result) {
         default { result := uMAX_SD59x18 }
     }
 
-    if (unwrap(result) == uMAX_SD59x18) {
+    if (result.unwrap() == uMAX_SD59x18) {
         unchecked {
             // Do the fixed-point division inline to save gas.
-            result = wrap((unwrap(log2(x)) * uUNIT) / uLOG2_10);
+            result = wrap(log2(x).unwrap() * uUNIT / uLOG2_10);
         }
     }
 }
@@ -463,7 +463,7 @@ function log10(SD59x18 x) pure returns (SD59x18 result) {
 /// @param x The SD59x18 number for which to calculate the binary logarithm.
 /// @return result The binary logarithm as an SD59x18 number.
 function log2(SD59x18 x) pure returns (SD59x18 result) {
-    int256 xInt = unwrap(x);
+    int256 xInt = x.unwrap();
     if (xInt <= 0) {
         revert Errors.PRBMath_SD59x18_Log_InputTooSmall(x);
     }
@@ -532,8 +532,8 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
 /// @param y The multiplier as an SD59x18 number.
 /// @return result The product as an SD59x18 number.
 function mul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
-    int256 xInt = unwrap(x);
-    int256 yInt = unwrap(y);
+    int256 xInt = x.unwrap();
+    int256 yInt = y.unwrap();
     if (xInt == uMIN_SD59x18 || yInt == uMIN_SD59x18) {
         revert Errors.PRBMath_SD59x18_Mul_InputTooSmall();
     }
@@ -580,8 +580,8 @@ function mul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 /// @param y Exponent to raise x to, as an SD59x18 number
 /// @return result x raised to power y, as an SD59x18 number.
 function pow(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
-    int256 xInt = unwrap(x);
-    int256 yInt = unwrap(y);
+    int256 xInt = x.unwrap();
+    int256 yInt = y.unwrap();
 
     if (xInt == 0) {
         result = yInt == 0 ? UNIT : ZERO;
@@ -611,7 +611,7 @@ function pow(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 /// @param y The exponent as an uint256.
 /// @return result The result as an SD59x18 number.
 function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
-    uint256 xAbs = uint256(unwrap(abs(x)));
+    uint256 xAbs = uint256(abs(x).unwrap());
 
     // Calculate the first iteration of the loop in advance.
     uint256 resultAbs = y & 1 > 0 ? xAbs : uint256(uUNIT);
@@ -635,7 +635,7 @@ function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
     unchecked {
         // Is the base negative and the exponent an odd number?
         int256 resultInt = int256(resultAbs);
-        bool isNegative = unwrap(x) < 0 && y & 1 == 1;
+        bool isNegative = x.unwrap() < 0 && y & 1 == 1;
         if (isNegative) {
             resultInt = -resultInt;
         }
@@ -653,7 +653,7 @@ function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
 /// @param x The SD59x18 number for which to calculate the square root.
 /// @return result The result as an SD59x18 number.
 function sqrt(SD59x18 x) pure returns (SD59x18 result) {
-    int256 xInt = unwrap(x);
+    int256 xInt = x.unwrap();
     if (xInt < 0) {
         revert Errors.PRBMath_SD59x18_Sqrt_NegativeInput(x);
     }
