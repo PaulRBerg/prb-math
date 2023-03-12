@@ -31,7 +31,6 @@
     "solidity"
   ],
   "license": "MIT",
-  "packageManager": "yarn@3.4.1",
   "publishConfig": {
     "access": "public"
   },
@@ -42,8 +41,8 @@
   "scripts": {
     "build": "forge build",
     "clean": "rimraf cache out",
-    "lint": "yarn lint:sol && yarn prettier:check",
-    "lint:sol": "forge fmt --check && yarn solhint \"{src,test}/**/*.sol\"",
+    "lint": "pnpm lint:sol && pnpm prettier:check",
+    "lint:sol": "forge fmt --check && pnpm solhint \"{src,test}/**/*.sol\"",
     "prettier:check": "prettier --check \"**/*.{json,md,yml}\"",
     "prettier:write": "prettier --write \"**/*.{json,md,yml}\""
   }

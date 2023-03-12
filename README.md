@@ -34,7 +34,7 @@ all the boxes mentioned thus far, but it doesn't offer type safety.
 First, run the install step:
 
 ```sh
-forge install --no-commit PaulRBerg/prb-math@v3
+forge install PaulRBerg/prb-math@v3
 ```
 
 Then, add this to your `remappings.txt` file:
@@ -46,9 +46,7 @@ Then, add this to your `remappings.txt` file:
 ### Node.js
 
 ```sh
-yarn add @prb/math
-# or
-npm install @prb/math
+pnpm add @prb/math
 ```
 
 ## Usage
@@ -321,7 +319,7 @@ You will need the following software on your machine:
 - [Git](https://git-scm.com/downloads)
 - [Foundry](https://github.com/foundry-rs/foundry)
 - [Node.Js](https://nodejs.org/en/download/)
-- [Yarn](https://yarnpkg.com/)
+- [Pnpm](https://pnpm.io)
 
 In addition, familiarity with [Solidity](https://soliditylang.org/) is requisite.
 
@@ -336,7 +334,7 @@ $ git clone --recurse-submodules -j8 git@github.com:PaulRBerg/prb-math.git
 Then, inside the project's directory, run this to install the Node.js dependencies:
 
 ```sh
-$ yarn install
+$ pnpm install
 ```
 
 Now you can start making changes.
