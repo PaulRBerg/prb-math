@@ -21,17 +21,22 @@ jobs:
       - name: "Install Foundry"
         uses: "foundry-rs/foundry-toolchain@v1"
 
+      - name: "Install Pnpm"
+        uses: "pnpm/action-setup@v2"
+        with:
+          version: "latest"
+
       - name: "Install Node.js"
         uses: "actions/setup-node@v3"
         with:
-          cache: "yarn"
+          cache: "pnpm"
           node-version: "lts/*"
 
       - name: "Install the Node.js dependencies"
-        run: "yarn install --immutable"
+        run: "pnpm install"
 
       - name: "Lint the contracts"
-        run: "yarn lint"
+        run: "pnpm lint"
 
       - name: "Add lint summary"
         run: |
