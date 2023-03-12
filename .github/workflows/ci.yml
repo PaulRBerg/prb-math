@@ -49,8 +49,8 @@ jobs:
       - name: "Install Foundry"
         uses: "foundry-rs/foundry-toolchain@v1"
 
-      - name: "Build the contracts and print their size"
-        run: "forge build --sizes"
+      - name: "Build the Solidity code"
+        run: "forge build"
 
       - name: "Add build summary"
         run: |
