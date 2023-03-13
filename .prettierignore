@@ -1,8 +1,8 @@
 # directories
-**/cache
-**/lib
-**/node_modules
-**/out
+cache
+lib
+node_modules
+out
 
 # files
 *.env
