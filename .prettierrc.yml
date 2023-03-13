@@ -10,8 +10,3 @@ overrides:
   - files: "*.md"
     options:
       printWidth: 150
-  - files: "*.sol"
-    options:
-      compiler: "0.8.19"
-      printWidth: 132
-      tabWidth: 4
