@@ -95,5 +95,6 @@ using {
     Helpers.not as ~,
     Helpers.or as |,
     Helpers.sub as -,
+    Helpers.unary as -,
     Helpers.xor as ^
 } for SD59x18 global;

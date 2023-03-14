@@ -84,6 +84,11 @@ function sub(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     result = wrap(x.unwrap() - y.unwrap());
 }
 
+/// @notice Implements the checked unary minus operation (-) in the SD59x18 type.
+function unary(SD59x18 x) pure returns (SD59x18 result) {
+    result = wrap(-x.unwrap());
+}
+
 /// @notice Implements the unchecked addition operation (+) in the SD59x18 type.
 function uncheckedAdd(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     unchecked {

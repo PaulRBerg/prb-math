@@ -19,6 +19,7 @@ import {
     or,
     rshift,
     sub,
+    unary,
     uncheckedAdd,
     uncheckedSub,
     uncheckedUnary,
@@ -126,6 +127,15 @@ contract Helpers_Test is SD59x18_Test {
         SD59x18 expected = sd(x - y);
         assertEq(sub(sd(x), sd(y)), expected);
         assertEq(sd(x) - sd(y), expected);
+    }
+
+    function testFuzz_Unary(int256 x) external {
+        // Set the lower bound to MIN_INT256 + 1 to avoid overflow, as absolute value of MIN_INT256 would be 1 unit larger than
+        // MAX_INT256.
+        x = bound(x, MIN_INT256 + 1, MAX_INT256);
+        SD59x18 expected = sd(-x);
+        assertEq(unary(sd(x)), expected);
+        assertEq(-sd(x), expected);
     }
 
     function testFuzz_UncheckedAdd(int256 x, int256 y) external {
