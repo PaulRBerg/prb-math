@@ -41,7 +41,10 @@ Then, add this to your `remappings.txt` file:
 
 ```text
 @prb/math/=lib/prb-math/src/
+src/=src/
 ```
+
+The second remapping is needed because of https://github.com/foundry-rs/foundry/issues/3440.
 
 ### Node.js
 
