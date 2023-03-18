@@ -32,8 +32,8 @@ import { SD59x18_Test } from "../SD59x18.t.sol";
 
 /// @dev Collection of tests for the helpers functions available in the SD59x18 type.
 contract Helpers_Test is SD59x18_Test {
-    int256 internal constant HALF_MAX_INT256 = type(int256).max / 2;
-    int256 internal constant HALF_MIN_INT256 = type(int256).min / 2;
+    int256 internal constant HALF_MAX_INT256 = MAX_INT256 / 2;
+    int256 internal constant HALF_MIN_INT256 = MIN_INT256 / 2;
 
     function testFuzz_Add(int256 x, int256 y) external {
         x = bound(x, HALF_MIN_INT256, HALF_MAX_INT256);
@@ -130,8 +130,7 @@ contract Helpers_Test is SD59x18_Test {
     }
 
     function testFuzz_Unary(int256 x) external {
-        // Set the lower bound to MIN_INT256 + 1 to avoid overflow, as absolute value of MIN_INT256 would be 1 unit larger than
-        // MAX_INT256.
+        // Cannot take unary of MIN_INT256, because its absolute value would be 1 unit larger than MAX_INT256.
         x = bound(x, MIN_INT256 + 1, MAX_INT256);
         SD59x18 expected = sd(-x);
         assertEq(unary(sd(x)), expected);
