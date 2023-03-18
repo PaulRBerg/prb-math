@@ -27,14 +27,14 @@ abstract contract Base_Test is PRBTest, StdCheats, PRBMathAssertions, PRBMathUti
                                      CONSTANTS
     //////////////////////////////////////////////////////////////////////////*/
 
-    /// @dev The minimum value an uint128 number can have.
-    uint128 internal constant MIN_UINT128 = type(uint128).min;
-
     /// @dev The maximum value an uint128 number can have.
     uint128 internal constant MAX_UINT128 = type(uint128).max;
 
     /// @dev The maximum value an uint40 number can have.
     uint128 internal constant MAX_UINT40 = type(uint40).max;
+
+    /// @dev The minimum value an int256 number can have.
+    int256 internal constant MIN_INT256 = type(int256).min;
 
     /*//////////////////////////////////////////////////////////////////////////
                                   TESTING VARIABLES
