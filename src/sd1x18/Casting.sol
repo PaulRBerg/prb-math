@@ -81,7 +81,7 @@ function intoUint40(SD1x18 x) pure returns (uint40 result) {
 
 /// @notice Alias for the `wrap` function.
 function sd1x18(int64 x) pure returns (SD1x18 result) {
-    result = wrap(x);
+    result = SD1x18.wrap(x);
 }
 
 /// @notice Unwraps an SD1x18 number into int64.

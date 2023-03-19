@@ -111,12 +111,12 @@ function intoUint40(SD59x18 x) pure returns (uint40 result) {
 
 /// @notice Alias for the `wrap` function.
 function sd(int256 x) pure returns (SD59x18 result) {
-    result = wrap(x);
+    result = SD59x18.wrap(x);
 }
 
 /// @notice Alias for the `wrap` function.
 function sd59x18(int256 x) pure returns (SD59x18 result) {
-    result = wrap(x);
+    result = SD59x18.wrap(x);
 }
 
 /// @notice Unwraps an SD59x18 number into int256.

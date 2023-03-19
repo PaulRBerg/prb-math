@@ -80,12 +80,12 @@ function intoUint40(UD60x18 x) pure returns (uint40 result) {
 
 /// @notice Alias for the `wrap` function.
 function ud(uint256 x) pure returns (UD60x18 result) {
-    result = wrap(x);
+    result = UD60x18.wrap(x);
 }
 
 /// @notice Alias for the `wrap` function.
 function ud60x18(uint256 x) pure returns (UD60x18 result) {
-    result = wrap(x);
+    result = UD60x18.wrap(x);
 }
 
 /// @notice Unwraps an UD60x18 number into uint256.

@@ -57,7 +57,7 @@ function intoUint40(UD2x18 x) pure returns (uint40 result) {
 
 /// @notice Alias for the `wrap` function.
 function ud2x18(uint64 x) pure returns (UD2x18 result) {
-    result = wrap(x);
+    result = UD2x18.wrap(x);
 }
 
 /// @notice Unwrap an UD2x18 number into uint64.
