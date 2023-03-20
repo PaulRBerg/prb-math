@@ -72,7 +72,7 @@ It is recommended that you import PRBMath using specific symbols. Importing full
 and static analyzers like Slither erroring, especially as repos grow and have more dependencies with overlapping names.
 
 ```solidity
-pragma solidity >=0.8.13;
+pragma solidity >=0.8.19;
 
 import { SD59x18 } from "@prb/math/SD59x18.sol";
 import { UD60x18 } from "@prb/math/UD60x18.sol";
@@ -81,7 +81,7 @@ import { UD60x18 } from "@prb/math/UD60x18.sol";
 Any function that is not available in the types directly has to be imported explicitly. Here's an example for the `sd` and the `ud` functions:
 
 ```solidity
-pragma solidity >=0.8.13;
+pragma solidity >=0.8.19;
 
 import { SD59x18, sd } from "@prb/math/SD59x18.sol";
 import { UD60x18, ud } from "@prb/math/UD60x18.sol";
@@ -93,7 +93,7 @@ Note that PRBMath can only be used in [Solidity v0.8.13](https://blog.solidityla
 
 ```solidity
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity >=0.8.13;
+pragma solidity >=0.8.19;
 
 import { SD59x18, sd } from "@prb/math/SD59x18.sol";
 
@@ -117,7 +117,7 @@ contract SignedConsumer {
 
 ```solidity
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity >=0.8.13;
+pragma solidity >=0.8.19;
 
 import { UD60x18, ud } from "@prb/math/UD60x18.sol";
 
@@ -219,7 +219,7 @@ However, you should note that using these functions instead of the vanilla opera
 
 ```solidity
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity >=0.8.13;
+pragma solidity >=0.8.19;
 
 import { UD60x18, ud } "@prb/math/UD60x18.sol";
 
@@ -239,7 +239,7 @@ PRBMath is shipped with typed assertions that you can use for writing tests with
 Foundry. This is useful if, for example, you would like to assert that two SD59x18 or UD60x18 numbers are equal.
 
 ```solidity
-pragma solidity >=0.8.13;
+pragma solidity >=0.8.19;
 
 import { UD60x18, ud } from "@prb/math/UD60x18.sol";
 import { Assertions as PRBMathAssertions } from "@prb/math/test/Assertions.sol";

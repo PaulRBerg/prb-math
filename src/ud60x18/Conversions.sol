@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.8.13;
+pragma solidity >=0.8.19;
 
 import { uMAX_UD60x18, uUNIT } from "./Constants.sol";
 import { PRBMath_UD60x18_Convert_Overflow } from "./Errors.sol";

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.8.13;
+pragma solidity >=0.8.19;
 
 import "./Errors.sol" as CastingErrors;
 import { MAX_UINT128, MAX_UINT40 } from "../Common.sol";
