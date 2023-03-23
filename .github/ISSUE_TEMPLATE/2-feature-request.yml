@@ -1,0 +1,15 @@
+description: "Suggest an idea for this project"
+labels:
+  - "feature"
+name: "🚀 Feature request"
+body:
+  - type: "textarea"
+    attributes:
+      label: "Describe the feature you would like"
+      description: "Please also describe what the feature is aiming to solve, if relevant."
+    validations:
+      required: true
+  - type: "textarea"
+    attributes:
+      label: "Additional context"
+      description: "Add any other context to the feature (like screenshots, resources)"

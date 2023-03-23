@@ -1,0 +1,36 @@
+name: "🐛 Bug report"
+description: "File a bug report"
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please ensure that the bug has not already been filed in the issue tracker.
+
+        Thanks for taking the time to report this bug!
+  - type: input
+    attributes:
+      description: "Version tag or commit hash"
+      label: "What version of PRBMath are you using?"
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: "What version of Solidity are you using?"
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      description: "Leavy empty if not relevant"
+      label: Operating System
+      options:
+        - Linux
+        - macOS (Intel)
+        - macOS (Apple Silicon)
+        - Windows
+  - type: textarea
+    attributes:
+      label: "Describe the bug"
+      description: "Please include relevant Solidity snippets as well if relevant."
+    validations:
+      required: true
