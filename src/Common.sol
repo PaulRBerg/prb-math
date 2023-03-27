@@ -170,7 +170,7 @@ function exp2(uint256 x) pure returns (uint256 result) {
             }
         }
 
-        if (x & 0xFF00000000 > 0) {
+        if (x & 0xFF000000 > 0) {
             if (x & 0x80000000 > 0) {
                 result = (result * 0x10000000058B90BFC) >> 64;
             }
