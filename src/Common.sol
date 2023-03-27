@@ -47,8 +47,7 @@ uint256 constant UNIT_INVERSE = 781566461551748419797279945988162623061752125920
 //////////////////////////////////////////////////////////////////////////*/
 
 /// @notice Calculates the binary exponent of x using the binary fraction method.
-/// @dev Has to use 192.64-bit fixed-point numbers.
-/// See https://ethereum.stackexchange.com/a/96594/24693.
+/// @dev Has to use 192.64-bit fixed-point numbers. See https://ethereum.stackexchange.com/a/96594/24693.
 /// @param x The exponent as an unsigned 192.64-bit fixed-point number.
 /// @return result The result as an unsigned 60.18-decimal fixed-point number.
 /// @custom:smtchecker abstract-function-nondet
@@ -57,8 +56,12 @@ function exp2(uint256 x) pure returns (uint256 result) {
         // Start from 0.5 in the 192.64-bit fixed-point format.
         result = 0x800000000000000000000000000000000000000000000000;
 
-        // Multiply the result by root(2, 2^-i) when the bit at position i is 1. None of the intermediary results
-        // overflows because the initial result is 2^191 and all magic factors are less than 2^65.
+        // The following logic multiplies the result by $\sqrt{2^{-i}}$ when the bit at position i is 1. Key points:
+        //
+        // 1. Intermediate results will not overflow, as the starting point is 2^191 and all magic factors are under 2^65.
+        // 2. The rationale for organizing the if statements into groups of 8 is gas savings. If the result of performing
+        // a bitwise AND operation between x and any value in the array [0x80; 0x40; 0x20; 0x10; 0x08; 0x04; 0x02; 0x01] is 1,
+        // we know that `x & 0xFF` is also 1.
         if (x & 0xFF00000000000000 > 0) {
             if (x & 0x8000000000000000 > 0) {
                 result = (result * 0x16A09E667F3BCC909) >> 64;
