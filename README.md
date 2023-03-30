@@ -218,7 +218,7 @@ However, you should note that using these functions instead of the vanilla opera
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.19;
 
-import { UD60x18, ud } "@prb/math/UD60x18.sol";
+import { UD60x18, ud } from "@prb/math/UD60x18.sol";
 
 function addRshiftEq() pure returns (bool result) {
   UD60x18 x = ud(1e18);
