@@ -58,7 +58,7 @@ abstract contract Base_Test is PRBTest, StdCheats, PRBMathAssertions, PRBMathUti
                             INTERNAL CONSTANT FUNCTIONS
     //////////////////////////////////////////////////////////////////////////*/
 
-    /// @dev Bounds a `uint128` number.
+    /// @dev Bounds a uint128 number.
     function boundUint128(uint128 x, uint128 min, uint128 max) internal view returns (uint128 result) {
         result = uint128(bound(uint256(x), uint256(min), uint256(max)));
     }

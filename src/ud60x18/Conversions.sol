@@ -5,7 +5,7 @@ import { uMAX_UD60x18, uUNIT } from "./Constants.sol";
 import { PRBMath_UD60x18_Convert_Overflow } from "./Errors.sol";
 import { UD60x18 } from "./ValueType.sol";
 
-/// @notice Converts an UD60x18 number to a simple integer by dividing it by `UNIT`. Rounds towards zero in the process.
+/// @notice Converts a UD60x18 number to a simple integer by dividing it by `UNIT`. Rounds towards zero in the process.
 /// @dev Rounds down in the process.
 /// @param x The UD60x18 number to convert.
 /// @return result The same number in basic integer form.

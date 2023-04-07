@@ -201,7 +201,7 @@ them.
 | Name               | Description                                                           |
 | ------------------ | --------------------------------------------------------------------- |
 | `convert(SD59x18)` | Converts an SD59x18 number to a simple integer by dividing it by 1e18 |
-| `convert(UD60x18)` | Converts an UD60x18 number to a simple integer by dividing it by 1e18 |
+| `convert(UD60x18)` | Converts a UD60x18 number to a simple integer by dividing it by 1e18  |
 | `convert(int256)`  | Converts a simple integer to SD59x18 by multiplying it by 1e18        |
 | `convert(uint256)` | Converts a simple integer to UD60x18 type by multiplying it by 1e18   |
 

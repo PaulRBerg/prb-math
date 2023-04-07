@@ -26,10 +26,10 @@ error PRBMath_MulDivSigned_Overflow(int256 x, int256 y);
                                     CONSTANTS
 //////////////////////////////////////////////////////////////////////////*/
 
-/// @dev The maximum value an uint128 number can have.
+/// @dev The maximum value a uint128 number can have.
 uint128 constant MAX_UINT128 = type(uint128).max;
 
-/// @dev The maximum value an uint40 number can have.
+/// @dev The maximum value a uint40 number can have.
 uint40 constant MAX_UINT40 = type(uint40).max;
 
 /// @dev How many trailing decimals can be represented.
@@ -313,7 +313,7 @@ function exp2(uint256 x) pure returns (uint256 result) {
 /// - "shr" is "shift right"
 ///
 /// @param x The uint256 number for which to find the index of the most significant bit.
-/// @return result The index of the most significant bit as an uint256.
+/// @return result The index of the most significant bit as a uint256.
 /// @custom:smtchecker abstract-function-nondet
 function msb(uint256 x) pure returns (uint256 result) {
     // 2^128
@@ -377,10 +377,10 @@ function msb(uint256 x) pure returns (uint256 result) {
 /// Notes:
 /// - This function does not work with fixed-point numbers.
 ///
-/// @param x The multiplicand as an uint256.
-/// @param y The multiplier as an uint256.
-/// @param denominator The divisor as an uint256.
-/// @return result The result as an uint256.
+/// @param x The multiplicand as a uint256.
+/// @param y The multiplier as a uint256.
+/// @param denominator The divisor as a uint256.
+/// @return result The result as a uint256.
 /// @custom:smtchecker abstract-function-nondet
 function mulDiv(uint256 x, uint256 y, uint256 denominator) pure returns (uint256 result) {
     // 512-bit multiply [prod1 prod0] = x * y. Compute the product mod 2^256 and mod 2^256 - 1, then use
@@ -579,7 +579,7 @@ function mulDivSigned(int256 x, int256 y, int256 denominator) pure returns (int2
 /// - This function does not work with fixed-point numbers.
 ///
 /// @param x The uint256 number for which to calculate the square root.
-/// @return result The result as an uint256.
+/// @return result The result as a uint256.
 /// @custom:smtchecker abstract-function-nondet
 function sqrt(uint256 x) pure returns (uint256 result) {
     if (x == 0) {

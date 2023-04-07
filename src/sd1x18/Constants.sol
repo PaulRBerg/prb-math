@@ -17,6 +17,6 @@ SD1x18 constant MIN_SD1x18 = SD1x18.wrap(uMIN_SD1x18);
 /// @dev PI as an SD1x18 number.
 SD1x18 constant PI = SD1x18.wrap(3_141592653589793238);
 
-/// @dev The unit amount that implies how many trailing decimals can be represented.
+/// @dev The unit number, which implies how many trailing decimals can be represented.
 SD1x18 constant UNIT = SD1x18.wrap(1e18);
 int256 constant uUNIT = 1e18;
