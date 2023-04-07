@@ -25,7 +25,7 @@ contract Div_Test is UD60x18_Test {
         x / y;
     }
 
-    modifier denominatorNotZero() {
+    modifier whenDenominatorNotZero() {
         _;
     }
 
@@ -38,26 +38,26 @@ contract Div_Test is UD60x18_Test {
         return sets;
     }
 
-    function test_Div_NumeratorZero() external parameterizedTest(numeratorZero_Sets()) denominatorNotZero {
+    function test_Div_NumeratorZero() external parameterizedTest(numeratorZero_Sets()) whenDenominatorNotZero {
         assertEq(div(s.x, s.y), s.expected);
         assertEq(s.x / s.y, s.expected);
     }
 
-    function test_RevertWhen_ResultOverflowUD60x18_Function() external denominatorNotZero {
+    function test_RevertWhen_ResultOverflowUD60x18_Function() external whenDenominatorNotZero {
         UD60x18 x = MAX_SCALED_UD60x18.add(ud(1));
         UD60x18 y = ud(0.000000000000000001e18);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_MulDiv_Overflow.selector, x.unwrap(), uUNIT, y.unwrap()));
         div(x, y);
     }
 
-    function test_RevertWhen_ResultOverflowUD60x18_Operator() external denominatorNotZero {
+    function test_RevertWhen_ResultOverflowUD60x18_Operator() external whenDenominatorNotZero {
         UD60x18 x = MAX_SCALED_UD60x18.add(ud(1));
         UD60x18 y = ud(0.000000000000000001e18);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_MulDiv_Overflow.selector, x.unwrap(), uUNIT, y.unwrap()));
         x / y;
     }
 
-    modifier resultNotOverflowUD60x18() {
+    modifier whenResultNotOverflowUD60x18() {
         _;
     }
 
@@ -82,7 +82,7 @@ contract Div_Test is UD60x18_Test {
         return sets;
     }
 
-    function test_Div() external parameterizedTest(div_Sets()) denominatorNotZero resultNotOverflowUD60x18 {
+    function test_Div() external parameterizedTest(div_Sets()) whenDenominatorNotZero whenResultNotOverflowUD60x18 {
         assertEq(div(s.x, s.y), s.expected);
         assertEq(s.x / s.y, s.expected);
     }

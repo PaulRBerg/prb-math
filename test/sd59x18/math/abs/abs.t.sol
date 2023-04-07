@@ -17,17 +17,17 @@ contract Abs_Test is SD59x18_Test {
         assertEq(actual, expected);
     }
 
-    modifier notZero() {
+    modifier whenNotZero() {
         _;
     }
 
-    function test_RevertWhen_MinSD59x18() external notZero {
+    function test_RevertWhen_MinSD59x18() external whenNotZero {
         SD59x18 x = MIN_SD59x18;
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Abs_MinSD59x18.selector));
         abs(x);
     }
 
-    modifier notMinSD59x18() {
+    modifier whenNotMinSD59x18() {
         _;
     }
 
@@ -46,7 +46,7 @@ contract Abs_Test is SD59x18_Test {
         return sets;
     }
 
-    function test_Abs_Negative() external parameterizedTest(negative_Sets()) notZero notMinSD59x18 {
+    function test_Abs_Negative() external parameterizedTest(negative_Sets()) whenNotZero whenNotMinSD59x18 {
         SD59x18 actual = abs(s.x);
         assertEq(actual, s.expected);
     }
@@ -66,7 +66,7 @@ contract Abs_Test is SD59x18_Test {
         return sets;
     }
 
-    function test_Abs() external parameterizedTest(positive_Sets()) notZero notMinSD59x18 {
+    function test_Abs() external parameterizedTest(positive_Sets()) whenNotZero whenNotMinSD59x18 {
         SD59x18 actual = abs(s.x);
         assertEq(actual, s.expected);
     }

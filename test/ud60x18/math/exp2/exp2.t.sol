@@ -19,17 +19,17 @@ contract Exp2_Test is UD60x18_Test {
         assertEq(actual, expected);
     }
 
-    modifier notZero() {
+    modifier whenNotZero() {
         _;
     }
 
-    function test_RevertWhen_GreaterThanMaxPermitted() external notZero {
+    function test_RevertWhen_GreaterThanMaxPermitted() external whenNotZero {
         UD60x18 x = MAX_PERMITTED.add(ud(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMath_UD60x18_Exp2_InputTooBig.selector, x));
         exp2(x);
     }
 
-    modifier lessThanOrEqualToMaxPermitted() {
+    modifier whenLessThanOrEqualToMaxPermitted() {
         _;
     }
 
@@ -58,7 +58,7 @@ contract Exp2_Test is UD60x18_Test {
         return sets;
     }
 
-    function test_Exp2() external parameterizedTest(exp2_Sets()) notZero lessThanOrEqualToMaxPermitted {
+    function test_Exp2() external parameterizedTest(exp2_Sets()) whenNotZero whenLessThanOrEqualToMaxPermitted {
         UD60x18 actual = exp2(s.x);
         assertEq(actual, s.expected);
     }

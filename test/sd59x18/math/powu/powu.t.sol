@@ -34,7 +34,7 @@ contract Powu_Test is SD59x18_Test {
         assertEq(actual, s.expected);
     }
 
-    modifier baseNotZero() {
+    modifier whenBaseNotZero() {
         _;
     }
 
@@ -49,41 +49,51 @@ contract Powu_Test is SD59x18_Test {
         return sets;
     }
 
-    function test_Powu_ExponentZero() external parameterizedTest(exponentZero_Sets()) baseNotZero {
+    function test_Powu_ExponentZero() external parameterizedTest(exponentZero_Sets()) whenBaseNotZero {
         SD59x18 actual = powu(s.x, sdToUint(s.y));
         assertEq(actual, s.expected);
     }
 
-    modifier exponentNotZero() {
+    modifier whenExponentNotZero() {
         _;
     }
 
-    function test_RevertWhen_ResultOverflowUint256() external baseNotZero exponentNotZero {
+    function test_RevertWhen_ResultOverflowUint256() external whenBaseNotZero whenExponentNotZero {
         SD59x18 x = MIN_SD59x18.add(sd(1));
         uint256 y = 2;
         vm.expectRevert(abi.encodeWithSelector(PRBMath_MulDiv18_Overflow.selector, uint256(uMAX_SD59x18), uint256(uMAX_SD59x18)));
         powu(x, y);
     }
 
-    modifier resultDoesNotOverflowUint256() {
+    modifier whenResultDoesNotOverflowUint256() {
         _;
     }
 
-    function test_RevertWhen_ResultUnderflowSD59x18() external baseNotZero exponentNotZero resultDoesNotOverflowUint256 {
+    function test_RevertWhen_ResultUnderflowSD59x18()
+        external
+        whenBaseNotZero
+        whenExponentNotZero
+        whenResultDoesNotOverflowUint256
+    {
         SD59x18 x = NEGATIVE_SQRT_MAX_SD59x18.sub(sd(1));
         uint256 y = 2;
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Powu_Overflow.selector, x, y));
         powu(x, y);
     }
 
-    function test_RevertWhen_ResultOverflowSD59x18() external baseNotZero exponentNotZero resultDoesNotOverflowUint256 {
+    function test_RevertWhen_ResultOverflowSD59x18()
+        external
+        whenBaseNotZero
+        whenExponentNotZero
+        whenResultDoesNotOverflowUint256
+    {
         SD59x18 x = SQRT_MAX_SD59x18.add(sd(1));
         uint256 y = 2;
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Powu_Overflow.selector, x, y));
         powu(x, y);
     }
 
-    modifier resultDoesNotOverflowOrUnderflowSD59x18() {
+    modifier whenResultDoesNotOverflowOrUnderflowSD59x18() {
         _;
     }
 
@@ -125,10 +135,10 @@ contract Powu_Test is SD59x18_Test {
     function test_Powu_NegativeBase()
         external
         parameterizedTest(negativeBase_Sets())
-        baseNotZero
-        exponentNotZero
-        resultDoesNotOverflowUint256
-        resultDoesNotOverflowOrUnderflowSD59x18
+        whenBaseNotZero
+        whenExponentNotZero
+        whenResultDoesNotOverflowUint256
+        whenResultDoesNotOverflowOrUnderflowSD59x18
     {
         SD59x18 actual = powu(s.x, sdToUint(s.y));
         assertEq(actual, s.expected);
@@ -170,10 +180,10 @@ contract Powu_Test is SD59x18_Test {
     function test_Powu_PositiveBase()
         external
         parameterizedTest(positiveBase_Sets())
-        baseNotZero
-        exponentNotZero
-        resultDoesNotOverflowUint256
-        resultDoesNotOverflowOrUnderflowSD59x18
+        whenBaseNotZero
+        whenExponentNotZero
+        whenResultDoesNotOverflowUint256
+        whenResultDoesNotOverflowOrUnderflowSD59x18
     {
         SD59x18 actual = powu(s.x, sdToUint(s.y));
         assertEq(actual, s.expected);

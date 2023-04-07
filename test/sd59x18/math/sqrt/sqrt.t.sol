@@ -17,27 +17,27 @@ contract Sqrt_Test is SD59x18_Test {
         assertEq(actual, expected);
     }
 
-    modifier notZero() {
+    modifier whenNotZero() {
         _;
     }
 
-    function test_RevertWhen_Negative() external notZero {
+    function test_RevertWhen_Negative() external whenNotZero {
         SD59x18 x = sd(-1);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Sqrt_NegativeInput.selector, x));
         sqrt(x);
     }
 
-    modifier positive() {
+    modifier whenPositive() {
         _;
     }
 
-    function test_RevertWhen_GreaterThanMaxPermitted() external notZero positive {
+    function test_RevertWhen_GreaterThanMaxPermitted() external whenNotZero whenPositive {
         SD59x18 x = MAX_SCALED_SD59x18.add(sd(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Sqrt_Overflow.selector, x));
         sqrt(x);
     }
 
-    modifier lessThanOrEqualToMaxPermitted() {
+    modifier whenLessThanOrEqualToMaxPermitted() {
         _;
     }
 
@@ -61,7 +61,7 @@ contract Sqrt_Test is SD59x18_Test {
         return sets;
     }
 
-    function test_Sqrt() external parameterizedTest(sqrt_Sets()) notZero positive lessThanOrEqualToMaxPermitted {
+    function test_Sqrt() external parameterizedTest(sqrt_Sets()) whenNotZero whenPositive whenLessThanOrEqualToMaxPermitted {
         SD59x18 actual = sqrt(s.x);
         assertEq(actual, s.expected);
     }

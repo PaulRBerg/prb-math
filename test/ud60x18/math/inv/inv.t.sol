@@ -16,7 +16,7 @@ contract Inv_Test is UD60x18_Test {
         inv(x);
     }
 
-    modifier notZero() {
+    modifier whenNotZero() {
         _;
     }
 
@@ -41,7 +41,7 @@ contract Inv_Test is UD60x18_Test {
         return sets;
     }
 
-    function test_Inv() external parameterizedTest(inv_Sets()) notZero {
+    function test_Inv() external parameterizedTest(inv_Sets()) whenNotZero {
         UD60x18 actual = inv(s.x);
         assertEq(actual, s.expected);
     }

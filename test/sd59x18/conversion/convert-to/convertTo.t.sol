@@ -15,17 +15,17 @@ contract ConvertTo_Test is SD59x18_Test {
         convert(x);
     }
 
-    modifier greaterThanMinPermitted() {
+    modifier whenGreaterThanMinPermitted() {
         _;
     }
 
-    function test_RevertWhen_GreaterThanMaxPermitted() external greaterThanMinPermitted {
+    function test_RevertWhen_GreaterThanMaxPermitted() external whenGreaterThanMinPermitted {
         int256 x = MAX_SCALED_SD59x18.unwrap() + 1;
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Convert_Overflow.selector, x));
         convert(x);
     }
 
-    modifier lessThanOrEqualToMaxPermitted() {
+    modifier whenLessThanOrEqualToMaxPermitted() {
         _;
     }
 
@@ -51,7 +51,12 @@ contract ConvertTo_Test is SD59x18_Test {
         return sets;
     }
 
-    function test_ConvertTo() external parameterizedTest(convertTo_Sets()) greaterThanMinPermitted lessThanOrEqualToMaxPermitted {
+    function test_ConvertTo()
+        external
+        parameterizedTest(convertTo_Sets())
+        whenGreaterThanMinPermitted
+        whenLessThanOrEqualToMaxPermitted
+    {
         SD59x18 x = convert(s.x.unwrap());
         assertEq(x, s.expected);
     }

@@ -22,7 +22,7 @@ contract ConvertFrom_Test is UD60x18_Test {
         assertEq(actual, expected);
     }
 
-    modifier greaterThanOrEqualToOne() {
+    modifier whenGreaterThanOrEqualToOne() {
         _;
     }
 
@@ -42,7 +42,7 @@ contract ConvertFrom_Test is UD60x18_Test {
         return sets;
     }
 
-    function test_ConvertFrom() external parameterizedTest(greaterThanOne_Sets()) greaterThanOrEqualToOne {
+    function test_ConvertFrom() external parameterizedTest(greaterThanOne_Sets()) whenGreaterThanOrEqualToOne {
         uint256 actual = convert(s.x);
         uint256 expected = s.expected.unwrap();
         assertEq(actual, expected);

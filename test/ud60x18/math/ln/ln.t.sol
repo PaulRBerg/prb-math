@@ -18,7 +18,7 @@ contract Ln_Test is UD60x18_Test {
         ln(x);
     }
 
-    modifier greaterThanOrEqualToOne() {
+    modifier whenGreaterThanOrEqualToOne() {
         _;
     }
 
@@ -37,7 +37,7 @@ contract Ln_Test is UD60x18_Test {
         return sets;
     }
 
-    function test_Ln() external parameterizedTest(ln_Sets()) greaterThanOrEqualToOne {
+    function test_Ln() external parameterizedTest(ln_Sets()) whenGreaterThanOrEqualToOne {
         UD60x18 actual = ln(s.x);
         assertEq(actual, s.expected);
     }

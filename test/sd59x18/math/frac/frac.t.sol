@@ -16,7 +16,7 @@ contract Frac_Test is SD59x18_Test {
         assertEq(actual, expected);
     }
 
-    modifier notZero() {
+    modifier whenNotZero() {
         _;
     }
 
@@ -35,7 +35,7 @@ contract Frac_Test is SD59x18_Test {
         return sets;
     }
 
-    function test_Frac_Negative() external parameterizedTest(negative_Sets()) notZero {
+    function test_Frac_Negative() external parameterizedTest(negative_Sets()) whenNotZero {
         SD59x18 actual = frac(s.x);
         assertEq(actual, s.expected);
     }
@@ -55,7 +55,7 @@ contract Frac_Test is SD59x18_Test {
         return sets;
     }
 
-    function test_Frac() external parameterizedTest(positive_Sets()) notZero {
+    function test_Frac() external parameterizedTest(positive_Sets()) whenNotZero {
         SD59x18 actual = frac(s.x);
         assertEq(actual, s.expected);
     }

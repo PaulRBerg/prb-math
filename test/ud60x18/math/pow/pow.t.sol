@@ -33,18 +33,18 @@ contract PowTest is UD60x18_Test {
         assertEq(actual, s.expected);
     }
 
-    modifier baseNotZero() {
+    modifier whenBaseNotZero() {
         _;
     }
 
-    function test_RevertWhen_BaseLessThanOne() external baseNotZero {
+    function test_RevertWhen_BaseLessThanOne() external whenBaseNotZero {
         UD60x18 x = ud(1e18 - 1);
         UD60x18 y = PI;
         vm.expectRevert(abi.encodeWithSelector(PRBMath_UD60x18_Log_InputTooSmall.selector, x));
         pow(x, y);
     }
 
-    modifier baseGreaterThanOrEqualToOne() {
+    modifier whenBaseGreaterThanOrEqualToOne() {
         _;
     }
 
@@ -56,12 +56,17 @@ contract PowTest is UD60x18_Test {
         return sets;
     }
 
-    function test_Pow_ExponentZero() external parameterizedTest(exponentZero_Sets()) baseNotZero baseGreaterThanOrEqualToOne {
+    function test_Pow_ExponentZero()
+        external
+        parameterizedTest(exponentZero_Sets())
+        whenBaseNotZero
+        whenBaseGreaterThanOrEqualToOne
+    {
         UD60x18 actual = pow(s.x, s.y);
         assertEq(actual, s.expected);
     }
 
-    modifier exponentNotZero() {
+    modifier whenExponentNotZero() {
         _;
     }
 
@@ -76,25 +81,25 @@ contract PowTest is UD60x18_Test {
     function test_Pow_ExponentOne()
         external
         parameterizedTest(exponentOne_Sets())
-        baseNotZero
-        baseGreaterThanOrEqualToOne
-        exponentNotZero
-        exponentLessThanOrEqualToMaxPermitted
+        whenBaseNotZero
+        whenBaseGreaterThanOrEqualToOne
+        whenExponentNotZero
+        whenExponentLessThanOrEqualToMaxPermitted
     {
         UD60x18 actual = pow(s.x, s.y);
         assertEq(actual, s.expected);
     }
 
-    modifier exponentNotOne() {
+    modifier whenExponentNotOne() {
         _;
     }
 
     function test_RevertWhen_ExponentGreaterThanOrEqualToMaxPermitted()
         external
-        baseNotZero
-        baseGreaterThanOrEqualToOne
-        exponentNotZero
-        exponentNotOne
+        whenBaseNotZero
+        whenBaseGreaterThanOrEqualToOne
+        whenExponentNotZero
+        whenExponentNotOne
     {
         UD60x18 x = MAX_PERMITTED.add(ud(1));
         UD60x18 y = ud(1e18 + 1);
@@ -102,7 +107,7 @@ contract PowTest is UD60x18_Test {
         pow(x, y);
     }
 
-    modifier exponentLessThanOrEqualToMaxPermitted() {
+    modifier whenExponentLessThanOrEqualToMaxPermitted() {
         _;
     }
 
@@ -133,10 +138,10 @@ contract PowTest is UD60x18_Test {
     function test_Pow()
         external
         parameterizedTest(pow_Sets())
-        baseNotZero
-        exponentNotZero
-        exponentNotOne
-        exponentLessThanOrEqualToMaxPermitted
+        whenBaseNotZero
+        whenExponentNotZero
+        whenExponentNotOne
+        whenExponentLessThanOrEqualToMaxPermitted
     {
         UD60x18 actual = pow(s.x, s.y);
         assertEq(actual, s.expected);

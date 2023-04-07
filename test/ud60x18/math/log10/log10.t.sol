@@ -17,7 +17,7 @@ contract Log10_Test is UD60x18_Test {
         log10(x);
     }
 
-    modifier greaterThanOrEqualToOne() {
+    modifier whenGreaterThanOrEqualToOne() {
         _;
     }
 
@@ -33,7 +33,7 @@ contract Log10_Test is UD60x18_Test {
         return sets;
     }
 
-    function test_Log10_PowerOfTen() external parameterizedTest(powerOfTen_Sets()) greaterThanOrEqualToOne {
+    function test_Log10_PowerOfTen() external parameterizedTest(powerOfTen_Sets()) whenGreaterThanOrEqualToOne {
         UD60x18 actual = log10(s.x);
         assertEq(actual, s.expected);
     }
@@ -55,7 +55,7 @@ contract Log10_Test is UD60x18_Test {
         return sets;
     }
 
-    function test_Log10_NotPowerOfTen() external parameterizedTest(notPowerOfTen_Sets()) greaterThanOrEqualToOne {
+    function test_Log10_NotPowerOfTen() external parameterizedTest(notPowerOfTen_Sets()) whenGreaterThanOrEqualToOne {
         UD60x18 actual = log10(s.x);
         assertEq(actual, s.expected);
     }

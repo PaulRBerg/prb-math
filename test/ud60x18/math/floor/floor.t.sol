@@ -15,7 +15,7 @@ contract Floor_Test is UD60x18_Test {
         assertEq(actual, expected);
     }
 
-    modifier notZero() {
+    modifier whenNotZero() {
         _;
     }
 
@@ -34,7 +34,7 @@ contract Floor_Test is UD60x18_Test {
         return sets;
     }
 
-    function test_Floor_Positive() external parameterizedTest(floor_Sets()) notZero {
+    function test_Floor_Positive() external parameterizedTest(floor_Sets()) whenNotZero {
         UD60x18 actual = floor(s.x);
         assertEq(actual, s.expected);
     }

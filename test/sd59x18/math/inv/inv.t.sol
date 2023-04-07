@@ -16,7 +16,7 @@ contract Inv_Test is SD59x18_Test {
         inv(x);
     }
 
-    modifier notZero() {
+    modifier whenNotZero() {
         _;
     }
 
@@ -41,7 +41,7 @@ contract Inv_Test is SD59x18_Test {
         return sets;
     }
 
-    function test_Inv_Negative() external parameterizedTest(negative_Sets()) notZero {
+    function test_Inv_Negative() external parameterizedTest(negative_Sets()) whenNotZero {
         SD59x18 actual = inv(s.x);
         assertEq(actual, s.expected);
     }
@@ -67,7 +67,7 @@ contract Inv_Test is SD59x18_Test {
         return sets;
     }
 
-    function test_Inv_Positive() external parameterizedTest(positive_Sets()) notZero {
+    function test_Inv_Positive() external parameterizedTest(positive_Sets()) whenNotZero {
         SD59x18 actual = inv(s.x);
         assertEq(actual, s.expected);
     }
