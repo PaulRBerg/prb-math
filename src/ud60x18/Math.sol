@@ -4,7 +4,7 @@ pragma solidity >=0.8.19;
 import "../Common.sol" as Common;
 import "./Errors.sol" as Errors;
 import { wrap } from "./Casting.sol";
-import { uHALF_UNIT, uLOG2_10, uLOG2_E, uMAX_UD60x18, uMAX_WHOLE_UD60x18, UNIT, uUNIT, ZERO } from "./Constants.sol";
+import { uHALF_UNIT, uLOG2_10, uLOG2_E, uMAX_UD60x18, uMAX_WHOLE_UD60x18, UNIT, uUNIT, uUNIT_SQUARED, ZERO } from "./Constants.sol";
 import { UD60x18 } from "./ValueType.sol";
 
 /*//////////////////////////////////////////////////////////////////////////
@@ -109,7 +109,7 @@ function exp(UD60x18 x) pure returns (UD60x18 result) {
     }
 
     unchecked {
-        // We do the fixed-point multiplication inline rather than via {mul} to save gas.
+        // Inline the fixed-point multiplication to save gas.
         uint256 doubleUnitProduct = xUint * uLOG2_E;
         result = exp2(wrap(doubleUnitProduct / uUNIT));
     }
@@ -142,8 +142,8 @@ function exp2(UD60x18 x) pure returns (UD60x18 result) {
 }
 
 /// @notice Yields the greatest whole UD60x18 number less than or equal to x.
-/// @dev Optimized for fractional value inputs, because for every whole value there are (1e18 - 1) fractional
-/// counterparts. See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions.
+/// @dev Optimized for fractional value inputs, because every whole value has (1e18 - 1) fractional counterparts.
+/// See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions.
 /// @param x The UD60x18 number to floor.
 /// @param result The greatest whole number less than or equal to x, as a UD60x18 number.
 /// @custom:smtchecker abstract-function-nondet
@@ -207,8 +207,7 @@ function gm(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// @custom:smtchecker abstract-function-nondet
 function inv(UD60x18 x) pure returns (UD60x18 result) {
     unchecked {
-        // 1e36 is `UNIT * UNIT`.
-        result = wrap(1e36 / x.unwrap());
+        result = wrap(uUNIT_SQUARED / x.unwrap());
     }
 }
 
@@ -217,7 +216,7 @@ function inv(UD60x18 x) pure returns (UD60x18 result) {
 /// @dev Uses the following formula:
 ///
 /// $$
-/// ln{x} = log_2{x} / log_2{e}$$.
+/// ln{x} = log_2{x} / log_2{e}
 /// $$
 ///
 /// Requirements:
@@ -225,23 +224,22 @@ function inv(UD60x18 x) pure returns (UD60x18 result) {
 ///
 /// Notes:
 /// - All from {log2}.
-/// - This doesn't return exactly 1 for 2.718281828459045235, for that more fine-grained precision is needed.
+/// - This doesn't return exactly 1 for 2.718281828459045235. For that, more fine-grained precision would be needed.
 ///
 /// @param x The UD60x18 number for which to calculate the natural logarithm.
 /// @return result The natural logarithm as a UD60x18 number.
 /// @custom:smtchecker abstract-function-nondet
 function ln(UD60x18 x) pure returns (UD60x18 result) {
     unchecked {
-        // We do the fixed-point multiplication inline to save gas. This is overflow-safe because the maximum value
-        // that {log2} can return is 196.205294292027477728.
+        // Inline the fixed-point multiplication to save gas. This is overflow-safe because the maximum value that
+        // {log2} can return is 196.205294292027477728.
         result = wrap(log2(x).unwrap() * uUNIT / uLOG2_E);
     }
 }
 
 /// @notice Calculates the common logarithm of x.
 ///
-/// @dev If x is an exact power of ten, it returns a hard coded value. Otherwise, it calculates the common logarithm
-/// using the following formula:
+/// @dev If x is an exact power of ten, a hard coded value is returned. Otherwise, the following formula is used:
 ///
 /// $$
 /// log_{10}{x} = log_2{x} / log_2{10}
@@ -262,7 +260,7 @@ function log10(UD60x18 x) pure returns (UD60x18 result) {
         revert Errors.PRBMath_UD60x18_Log_InputTooSmall(x);
     }
 
-    // Note that the `mul` in this assembly block is the assembly multiplication operation, not {UD60x18-mul}.
+    // Note that the `mul` in this assembly block is the standard multiplication operation, not {UD60x18-mul}.
     // prettier-ignore
     assembly ("memory-safe") {
         switch x
@@ -349,7 +347,7 @@ function log10(UD60x18 x) pure returns (UD60x18 result) {
 
     if (result.unwrap() == uMAX_UD60x18) {
         unchecked {
-            // Do the fixed-point division inline to save gas.
+            // Inline the fixed-point division to save gas.
             result = wrap(log2(x).unwrap() * uUNIT / uLOG2_10);
         }
     }

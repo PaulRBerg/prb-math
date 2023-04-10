@@ -35,5 +35,9 @@ UD60x18 constant PI = UD60x18.wrap(3_141592653589793238);
 uint256 constant uUNIT = 1e18;
 UD60x18 constant UNIT = UD60x18.wrap(uUNIT);
 
+/// @dev The unit number squared.
+uint256 constant uUNIT_SQUARED = 1e36;
+UD60x18 constant UNIT_SQUARED = UD60x18.wrap(uUNIT_SQUARED);
+
 /// @dev Zero as a UD60x18 number.
 UD60x18 constant ZERO = UD60x18.wrap(0);

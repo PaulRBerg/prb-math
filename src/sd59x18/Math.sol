@@ -13,6 +13,7 @@ import {
     uMIN_WHOLE_SD59x18,
     UNIT,
     uUNIT,
+    uUNIT_SQUARED,
     ZERO
 } from "./Constants.sol";
 import { wrap } from "./Helpers.sol";
@@ -63,8 +64,8 @@ function avg(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 
 /// @notice Yields the smallest whole SD59x18 number greater than or equal to x.
 ///
-/// @dev Optimized for fractional value inputs, because for every whole value there are (1e18 - 1) fractional
-/// counterparts. See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions.
+/// @dev Optimized for fractional value inputs, because every whole value has (1e18 - 1) fractional counterparts.
+/// See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions.
 ///
 /// Requirements:
 /// - x must be less than or equal to `MAX_WHOLE_SD59x18`.
@@ -174,7 +175,7 @@ function exp(SD59x18 x) pure returns (SD59x18 result) {
     }
 
     unchecked {
-        // Do the fixed-point multiplication inline to save gas.
+        // Inline the fixed-point multiplication to save gas.
         int256 doubleUnitProduct = xInt * uLOG2_E;
         result = exp2(wrap(doubleUnitProduct / uUNIT));
     }
@@ -209,8 +210,8 @@ function exp2(SD59x18 x) pure returns (SD59x18 result) {
         }
 
         unchecked {
-            // Do the fixed-point inversion $1/2^x$ inline to save gas. 1e36 is `UNIT * UNIT`.
-            result = wrap(1e36 / exp2(wrap(-xInt)).unwrap());
+            // Inline the fixed-point inversion $1/2^x$ to save gas.
+            result = wrap(uUNIT_SQUARED / exp2(wrap(-xInt)).unwrap());
         }
     } else {
         // 2^192 doesn't fit within the 192.64-bit format used internally in this function.
@@ -222,8 +223,7 @@ function exp2(SD59x18 x) pure returns (SD59x18 result) {
             // Convert x to the 192.64-bit fixed-point format.
             uint256 x_192x64 = uint256((xInt << 64) / uUNIT);
 
-            // It is safe to convert the result to int256 with no checks because the maximum input allowed in this
-            // function is 192.
+            // It is safe to cast the result to int256 due to the checks above.
             result = wrap(int256(Common.exp2(x_192x64)));
         }
     }
@@ -315,8 +315,7 @@ function gm(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 /// @return result The inverse as an SD59x18 number.
 /// @custom:smtchecker abstract-function-nondet
 function inv(SD59x18 x) pure returns (SD59x18 result) {
-    // 1e36 is `UNIT * UNIT`.
-    result = wrap(1e36 / x.unwrap());
+    result = wrap(uUNIT_SQUARED / x.unwrap());
 }
 
 /// @notice Calculates the natural logarithm of x.
@@ -324,7 +323,7 @@ function inv(SD59x18 x) pure returns (SD59x18 result) {
 /// @dev Uses the following formula:
 ///
 /// $$
-/// ln{x} = log_2{x} / log_2{e}$$.
+/// ln{x} = log_2{x} / log_2{e}
 /// $$
 ///
 /// Requirements:
@@ -332,21 +331,20 @@ function inv(SD59x18 x) pure returns (SD59x18 result) {
 ///
 /// Notes:
 /// - All from {log2}.
-/// - This doesn't return exactly 1 for 2.718281828459045235, for that more fine-grained precision is needed.
+/// - This doesn't return exactly 1 for 2.718281828459045235. For that, more fine-grained precision would be needed.
 ///
 /// @param x The SD59x18 number for which to calculate the natural logarithm.
 /// @return result The natural logarithm as an SD59x18 number.
 /// @custom:smtchecker abstract-function-nondet
 function ln(SD59x18 x) pure returns (SD59x18 result) {
-    // Do the fixed-point multiplication inline to save gas. This is overflow-safe because the maximum value that
-    // log2(x) can return is 195.205294292027477728.
+    // Inline the fixed-point multiplication to save gas. This is overflow-safe because the maximum value that
+    // {log2} can return is 195.205294292027477728.
     result = wrap(log2(x).unwrap() * uUNIT / uLOG2_E);
 }
 
 /// @notice Calculates the common logarithm of x.
 ///
-/// @dev If x is an exact power of ten, it returns a hard coded value. Otherwise, it calculates the common logarithm
-/// using the following formula:
+/// @dev If x is an exact power of ten, a hard coded value is returned. Otherwise, the following formula is used:
 ///
 /// $$
 /// log_{10}{x} = log_2{x} / log_2{10}
@@ -367,7 +365,7 @@ function log10(SD59x18 x) pure returns (SD59x18 result) {
         revert Errors.PRBMath_SD59x18_Log_InputTooSmall(x);
     }
 
-    // Note that the `mul` in this block is the assembly mul operation, not {SD59x18-mul}.
+    // Note that the `mul` in this block is the standard multiplication operation, not {SD59x18-mul}.
     // prettier-ignore
     assembly ("memory-safe") {
         switch x
@@ -453,7 +451,7 @@ function log10(SD59x18 x) pure returns (SD59x18 result) {
 
     if (result.unwrap() == uMAX_SD59x18) {
         unchecked {
-            // Do the fixed-point division inline to save gas.
+            // Inline the fixed-point division to save gas.
             result = wrap(log2(x).unwrap() * uUNIT / uLOG2_10);
         }
     }
@@ -491,8 +489,8 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
             sign = 1;
         } else {
             sign = -1;
-            // Do the fixed-point inversion inline to save gas. The numerator is `UNIT * UNIT`.
-            xInt = 1e36 / xInt;
+            // Inline the fixed-point inversion to save gas.
+            xInt = uUNIT_SQUARED / xInt;
         }
 
         // Calculate the integer part of the logarithm and add it to the result and finally calculate $y = x * 2^(-n)$.
