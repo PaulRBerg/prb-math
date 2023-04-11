@@ -243,7 +243,7 @@ import { Assertions as PRBMathAssertions } from "@prb/math/test/Assertions.sol";
 import { PRBTest } from "@prb/math/test/PRBTest.sol";
 
 contract MyTest is PRBTest, PRBMathAssertions {
-  function testAdd() external {
+  function test_Add() external {
     UD60x18 x = ud(1e18);
     UD60x18 y = ud(2e18);
     UD60x18 z = ud(3e18);
