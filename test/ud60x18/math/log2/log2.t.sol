@@ -4,7 +4,7 @@ pragma solidity >=0.8.19 <0.9.0;
 import { stdError } from "forge-std/StdError.sol";
 
 import { ud } from "src/ud60x18/Casting.sol";
-import { E, PI, MAX_UD60x18, MAX_WHOLE_UD60x18 } from "src/ud60x18/Constants.sol";
+import { E, PI, MAX_UD60x18, MAX_WHOLE_UD60x18, UNIT } from "src/ud60x18/Constants.sol";
 import { PRBMath_UD60x18_Log_InputTooSmall } from "src/ud60x18/Errors.sol";
 import { log2 } from "src/ud60x18/Math.sol";
 import { UD60x18 } from "src/ud60x18/ValueType.sol";
@@ -12,13 +12,13 @@ import { UD60x18 } from "src/ud60x18/ValueType.sol";
 import { UD60x18_Test } from "../../UD60x18.t.sol";
 
 contract Log2_Test is UD60x18_Test {
-    function test_RevertWhen_LessThanOne() external {
-        UD60x18 x = ud(1e18 - 1);
+    function test_RevertWhen_LtUnit() external {
+        UD60x18 x = UNIT - ud(1);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_UD60x18_Log_InputTooSmall.selector, x));
         log2(x);
     }
 
-    modifier whenGreaterThanOrEqualToOne() {
+    modifier whenGteUnit() {
         _;
     }
 
@@ -29,11 +29,11 @@ contract Log2_Test is UD60x18_Test {
         sets.push(set({ x: 4e18, expected: 2e18 }));
         sets.push(set({ x: 8e18, expected: 3e18 }));
         sets.push(set({ x: 16e18, expected: 4e18 }));
-        sets.push(set({ x: 2 ** 195 * 10 ** 18, expected: 195e18 }));
+        sets.push(set({ x: 2 ** 195 * 1e18, expected: 195e18 }));
         return sets;
     }
 
-    function test_Log2_PowerOfTwo() external parameterizedTest(powerOfTwo_Sets()) whenGreaterThanOrEqualToOne {
+    function test_Log2_PowerOfTwo() external parameterizedTest(powerOfTwo_Sets()) whenGteUnit {
         UD60x18 actual = log2(s.x);
         assertEq(actual, s.expected, "UD60x18 log2");
     }
@@ -49,7 +49,7 @@ contract Log2_Test is UD60x18_Test {
         return sets;
     }
 
-    function test_Log2_NotPowerOfTwo() external parameterizedTest(notPowerOfTwo_Sets()) whenGreaterThanOrEqualToOne {
+    function test_Log2_NotPowerOfTwo() external parameterizedTest(notPowerOfTwo_Sets()) whenGteUnit {
         UD60x18 actual = log2(s.x);
         assertEq(actual, s.expected, "UD60x18 log2");
     }

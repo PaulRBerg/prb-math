@@ -22,13 +22,13 @@ contract Sqrt_Test is UD60x18_Test {
         _;
     }
 
-    function test_RevertWhen_GreaterThanMaxPermitted() external whenNotZero {
+    function test_RevertWhen_GtMaxPermitted() external whenNotZero {
         UD60x18 x = MAX_PERMITTED.add(ud(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMath_UD60x18_Sqrt_Overflow.selector, x));
         sqrt(x);
     }
 
-    modifier whenLessThanOrEqualToMaxPermitted() {
+    modifier whenLteMaxPermitted() {
         _;
     }
 
@@ -52,7 +52,7 @@ contract Sqrt_Test is UD60x18_Test {
         return sets;
     }
 
-    function test_Sqrt() external parameterizedTest(sqrt_Sets()) whenNotZero whenLessThanOrEqualToMaxPermitted {
+    function test_Sqrt() external parameterizedTest(sqrt_Sets()) whenNotZero whenLteMaxPermitted {
         UD60x18 actual = sqrt(s.x);
         assertEq(actual, s.expected, "UD60x18 sqrt");
     }

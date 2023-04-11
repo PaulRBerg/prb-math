@@ -41,7 +41,7 @@ contract Log2_Test is SD59x18_Test {
         sets.push(set({ x: 4e18, expected: 2e18 }));
         sets.push(set({ x: 8e18, expected: 3e18 }));
         sets.push(set({ x: 16e18, expected: 4e18 }));
-        sets.push(set({ x: 2 ** 195 * 10 ** 18, expected: 195e18 }));
+        sets.push(set({ x: 2 ** 195 * 1e18, expected: 195e18 }));
         return sets;
     }
 

@@ -2,7 +2,7 @@
 pragma solidity >=0.8.19 <0.9.0;
 
 import { ud } from "src/ud60x18/Casting.sol";
-import { E, PI, ZERO } from "src/ud60x18/Constants.sol";
+import { E, PI, UNIT, ZERO } from "src/ud60x18/Constants.sol";
 import { PRBMath_UD60x18_Exp2_InputTooBig } from "src/ud60x18/Errors.sol";
 import { exp2 } from "src/ud60x18/Math.sol";
 import { UD60x18 } from "src/ud60x18/ValueType.sol";
@@ -15,7 +15,7 @@ contract Exp2_Test is UD60x18_Test {
     function test_Exp2_Zero() external {
         UD60x18 x = ZERO;
         UD60x18 actual = exp2(x);
-        UD60x18 expected = ud(1e18);
+        UD60x18 expected = UNIT;
         assertEq(actual, expected, "UD60x18 exp2");
     }
 
@@ -23,13 +23,13 @@ contract Exp2_Test is UD60x18_Test {
         _;
     }
 
-    function test_RevertWhen_GreaterThanMaxPermitted() external whenNotZero {
+    function test_RevertWhen_GtMaxPermitted() external whenNotZero {
         UD60x18 x = MAX_PERMITTED.add(ud(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMath_UD60x18_Exp2_InputTooBig.selector, x));
         exp2(x);
     }
 
-    modifier whenLessThanOrEqualToMaxPermitted() {
+    modifier whenLteMaxPermitted() {
         _;
     }
 
@@ -58,7 +58,7 @@ contract Exp2_Test is UD60x18_Test {
         return sets;
     }
 
-    function test_Exp2() external parameterizedTest(exp2_Sets()) whenNotZero whenLessThanOrEqualToMaxPermitted {
+    function test_Exp2() external parameterizedTest(exp2_Sets()) whenNotZero whenLteMaxPermitted {
         UD60x18 actual = exp2(s.x);
         assertEq(actual, s.expected, "UD60x18 exp2");
     }

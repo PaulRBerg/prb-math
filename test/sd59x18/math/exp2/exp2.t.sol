@@ -2,7 +2,7 @@
 pragma solidity >=0.8.19 <0.9.0;
 
 import { sd } from "src/sd59x18/Casting.sol";
-import { E, MIN_SD59x18, MIN_WHOLE_SD59x18, PI, ZERO } from "src/sd59x18/Constants.sol";
+import { E, MIN_SD59x18, MIN_WHOLE_SD59x18, PI, UNIT, ZERO } from "src/sd59x18/Constants.sol";
 import { PRBMath_SD59x18_Exp2_InputTooBig } from "src/sd59x18/Errors.sol";
 import { exp2 } from "src/sd59x18/Math.sol";
 import { SD59x18 } from "src/sd59x18/ValueType.sol";
@@ -16,7 +16,7 @@ contract Exp2_Test is SD59x18_Test {
     function test_Exp2_Zero() external {
         SD59x18 x = ZERO;
         SD59x18 actual = exp2(x);
-        SD59x18 expected = sd(1e18);
+        SD59x18 expected = UNIT;
         assertEq(actual, expected, "SD59x18 exp2");
     }
 
@@ -24,7 +24,7 @@ contract Exp2_Test is SD59x18_Test {
         _;
     }
 
-    function negativeAndLessThanMinPermitted_Sets() internal returns (Set[] memory) {
+    function negativeAndLtMinPermitted_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_SD59x18, expected: 0 }));
         sets.push(set({ x: MIN_WHOLE_SD59x18, expected: 0 }));
@@ -32,16 +32,12 @@ contract Exp2_Test is SD59x18_Test {
         return sets;
     }
 
-    function test_Exp2_Negative_LessThanMinPermitted()
-        external
-        parameterizedTest(negativeAndLessThanMinPermitted_Sets())
-        whenNotZero
-    {
+    function test_Exp2_Negative_LtMinPermitted() external parameterizedTest(negativeAndLtMinPermitted_Sets()) whenNotZero {
         SD59x18 actual = exp2(s.x);
         assertEq(actual, s.expected, "SD59x18 exp2");
     }
 
-    function negativeAndGreaterThanOrEqualToMinPermitted_Sets() internal returns (Set[] memory) {
+    function negativeAndGteMinPermitted_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_PERMITTED, expected: 0.000000000000000001e18 }));
         sets.push(set({ x: -33.333333e18, expected: 0.000000000092398923e18 }));
@@ -59,26 +55,22 @@ contract Exp2_Test is SD59x18_Test {
         return sets;
     }
 
-    function test_Exp2_Negative_GreaterThanOrEqualToMinPermitted()
-        external
-        parameterizedTest(negativeAndGreaterThanOrEqualToMinPermitted_Sets())
-        whenNotZero
-    {
+    function test_Exp2_Negative_GteMinPermitted() external parameterizedTest(negativeAndGteMinPermitted_Sets()) whenNotZero {
         SD59x18 actual = exp2(s.x);
         assertEq(actual, s.expected, "SD59x18 exp2");
     }
 
-    function test_RevertWhen_Positive_GreaterThanMaxPermitted() external whenNotZero {
+    function test_RevertWhen_Positive_GtMaxPermitted() external whenNotZero {
         SD59x18 x = MAX_PERMITTED.add(sd(1));
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Exp2_InputTooBig.selector, x));
         exp2(x);
     }
 
-    modifier whenLessThanMaxPermitted() {
+    modifier whenLtMaxPermitted() {
         _;
     }
 
-    function positiveAndLessThanOrEqualToPermitted_Sets() internal returns (Set[] memory) {
+    function positiveAndLTePermitted_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.000000000000000001e18, expected: 1e18 }));
         sets.push(set({ x: 1e3, expected: 1_000000000000000693 }));
@@ -103,11 +95,7 @@ contract Exp2_Test is SD59x18_Test {
         return sets;
     }
 
-    function test_Exp2_Positive_LessThanOrEqualToPermittedMax()
-        external
-        parameterizedTest(positiveAndLessThanOrEqualToPermitted_Sets())
-        whenNotZero
-    {
+    function test_Exp2_Positive_LTePermittedMax() external parameterizedTest(positiveAndLTePermitted_Sets()) whenNotZero {
         SD59x18 actual = exp2(s.x);
         assertEq(actual, s.expected, "SD59x18 exp2");
     }

@@ -372,7 +372,7 @@ function msb(uint256 x) pure returns (uint256 result) {
 /// @dev Credits to Remco Bloemen under MIT license https://xn--2-umb.com/21/muldiv.
 ///
 /// Requirements:
-/// - The denominator cannot be zero.
+/// - The denominator must not be zero.
 /// - The result must fit within uint256.
 ///
 /// Notes:

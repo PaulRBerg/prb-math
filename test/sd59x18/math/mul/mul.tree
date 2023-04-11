@@ -1,7 +1,7 @@
 div.t.sol
 ├── when one of the operands is zero
 │  └── it should return zero
-└── when neither of the operands is zero
+└── when neither operand is zero
    ├── when one of the operands is min sd59x18
    │  └── it should revert
    └── when neither operand is min sd59x18

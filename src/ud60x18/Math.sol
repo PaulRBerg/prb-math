@@ -82,11 +82,11 @@ function ceil(UD60x18 x) pure returns (UD60x18 result) {
 
 /// @notice Divides two UD60x18 numbers, returning a new UD60x18 number. Rounds towards zero.
 ///
-/// @dev Uses {Common-mulDiv} to enable overflow-safe multiplication and division.
+/// @dev Uses {Common::mulDiv} to enable overflow-safe multiplication and division.
 ///
 /// Requirements:
-/// - The denominator cannot be zero.
-/// - All from {Common-mulDiv}.
+/// - The denominator must not be zero.
+/// - All from {Common::mulDiv}.
 ///
 /// @param x The numerator as a UD60x18 number.
 /// @param y The denominator as a UD60x18 number.
@@ -148,7 +148,7 @@ function exp2(UD60x18 x) pure returns (UD60x18 result) {
     // Convert x to the 192.64-bit fixed-point format.
     uint256 x_192x64 = (xUint << 64) / uUNIT;
 
-    // Pass x to the {Common-exp2} function, which uses the 192.64-bit fixed-point number representation.
+    // Pass x to the {Common::exp2} function, which uses the 192.64-bit fixed-point number representation.
     result = wrap(Common.exp2(x_192x64));
 }
 
@@ -203,7 +203,7 @@ function gm(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
         }
 
         // We don't need to multiply the result by `UNIT` here because the x*y product had picked up a factor of `UNIT`
-        // during multiplication. See the comments in {Common-sqrt}.
+        // during multiplication. See the comments in {Common::sqrt}.
         result = wrap(Common.sqrt(xyUint));
     }
 }
@@ -211,7 +211,7 @@ function gm(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// @notice Calculates $1 / x$, rounding toward zero.
 ///
 /// @dev Requirements:
-/// - x cannot be zero.
+/// - x must not be zero.
 ///
 /// @param x The UD60x18 number for which to calculate the inverse.
 /// @return result The inverse as a UD60x18 number.
@@ -271,7 +271,7 @@ function log10(UD60x18 x) pure returns (UD60x18 result) {
         revert Errors.PRBMath_UD60x18_Log_InputTooSmall(x);
     }
 
-    // Note that the `mul` in this assembly block is the standard multiplication operation, not {UD60x18-mul}.
+    // Note that the `mul` in this assembly block is the standard multiplication operation, not {UD60x18::mul}.
     // prettier-ignore
     assembly ("memory-safe") {
         switch x
@@ -421,7 +421,7 @@ function log2(UD60x18 x) pure returns (UD60x18 result) {
 }
 
 /// @notice Multiplies two UD60x18 numbers together, returning a new UD60x18 number.
-/// @dev See the documentation for the {Common-mulDiv18} function.
+/// @dev See the documentation for the {Common::mulDiv18} function.
 /// @param x The multiplicand as a UD60x18 number.
 /// @param y The multiplier as a UD60x18 number.
 /// @return result The product as a UD60x18 number.
@@ -502,7 +502,7 @@ function pow(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// - The result must fit within `MAX_UD60x18`.
 ///
 /// Notes:
-/// - All from {Common-mulDiv18}.
+/// - All from {Common::mulDiv18}.
 /// - Assumes that 0^0 is 1.
 ///
 /// @param x The base as a UD60x18 number.

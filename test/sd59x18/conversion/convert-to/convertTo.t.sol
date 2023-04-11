@@ -9,23 +9,23 @@ import { SD59x18 } from "src/sd59x18/ValueType.sol";
 import { SD59x18_Test } from "../../SD59x18.t.sol";
 
 contract ConvertTo_Test is SD59x18_Test {
-    function test_RevertWhen_LessThanMinPermitted() external {
+    function test_RevertWhen_LtMinPermitted() external {
         int256 x = MIN_SCALED_SD59x18.unwrap() - 1;
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Convert_Underflow.selector, x));
         convert(x);
     }
 
-    modifier whenGreaterThanMinPermitted() {
+    modifier whenGteMinPermitted() {
         _;
     }
 
-    function test_RevertWhen_GreaterThanMaxPermitted() external whenGreaterThanMinPermitted {
+    function test_RevertWhen_GtMaxPermitted() external whenGteMinPermitted {
         int256 x = MAX_SCALED_SD59x18.unwrap() + 1;
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Convert_Overflow.selector, x));
         convert(x);
     }
 
-    modifier whenLessThanOrEqualToMaxPermitted() {
+    modifier whenLteMaxPermitted() {
         _;
     }
 
@@ -51,12 +51,7 @@ contract ConvertTo_Test is SD59x18_Test {
         return sets;
     }
 
-    function test_ConvertTo()
-        external
-        parameterizedTest(convertTo_Sets())
-        whenGreaterThanMinPermitted
-        whenLessThanOrEqualToMaxPermitted
-    {
+    function test_ConvertTo() external parameterizedTest(convertTo_Sets()) whenGteMinPermitted whenLteMaxPermitted {
         SD59x18 x = convert(s.x.unwrap());
         assertEq(x, s.expected, "SD59x18 convert to");
     }

@@ -3,7 +3,7 @@ pragma solidity >=0.8.19 <0.9.0;
 
 import { stdError } from "forge-std/StdError.sol";
 
-import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI } from "src/ud60x18/Constants.sol";
+import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, UNIT } from "src/ud60x18/Constants.sol";
 import { PRBMath_UD60x18_Log_InputTooSmall } from "src/ud60x18/Errors.sol";
 import { log10 } from "src/ud60x18/Math.sol";
 import { UD60x18 } from "src/ud60x18/ValueType.sol";
@@ -11,13 +11,13 @@ import { UD60x18 } from "src/ud60x18/ValueType.sol";
 import { UD60x18_Test } from "../../UD60x18.t.sol";
 
 contract Log10_Test is UD60x18_Test {
-    function test_RevertWhen_LessThanOne() external {
-        UD60x18 x = ud(1e18 - 1);
+    function test_RevertWhen_LtUnit() external {
+        UD60x18 x = UNIT - ud(1);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_UD60x18_Log_InputTooSmall.selector, x));
         log10(x);
     }
 
-    modifier whenGreaterThanOrEqualToOne() {
+    modifier whenGteUnit() {
         _;
     }
 
@@ -33,7 +33,7 @@ contract Log10_Test is UD60x18_Test {
         return sets;
     }
 
-    function test_Log10_PowerOfTen() external parameterizedTest(powerOfTen_Sets()) whenGreaterThanOrEqualToOne {
+    function test_Log10_PowerOfTen() external parameterizedTest(powerOfTen_Sets()) whenGteUnit {
         UD60x18 actual = log10(s.x);
         assertEq(actual, s.expected, "UD60x18 log10");
     }
@@ -55,7 +55,7 @@ contract Log10_Test is UD60x18_Test {
         return sets;
     }
 
-    function test_Log10_NotPowerOfTen() external parameterizedTest(notPowerOfTen_Sets()) whenGreaterThanOrEqualToOne {
+    function test_Log10_NotPowerOfTen() external parameterizedTest(notPowerOfTen_Sets()) whenGteUnit {
         UD60x18 actual = log10(s.x);
         assertEq(actual, s.expected, "UD60x18 log10");
     }

@@ -1,12 +1,12 @@
 powu.t.sol
 ├── when the base is zero
 │  ├── when the exponent is zero
-│  │  └── it should return one
+│  │  └── it should return the unit number
 │  └── when the exponent is not zero
 │  │  └── it should return zero
 └── when the base is not zero
    ├── when the exponent is zero
-   │  └── it should return one
+   │  └── it should return the unit number
    └── when the exponent is not zero
       ├── when the result overflows ud60x18
       │  └── it should revert

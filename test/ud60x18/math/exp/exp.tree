@@ -1,6 +1,6 @@
 exp.t.sol
 ├── when x is zero
-│  └── it should return one
+│  └── it should return the unit number
 └── when x is not zero
    ├── when x is greater than the maximum permitted
    │  └── it should revert

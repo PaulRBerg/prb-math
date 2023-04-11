@@ -1,108 +1,70 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.19 <0.9.0;
 
-import { PRBMath_MulDiv18_Overflow } from "src/Common.sol";
 import { sd } from "src/sd59x18/Casting.sol";
-import { E, PI, ZERO } from "src/sd59x18/Constants.sol";
-import { PRBMath_SD59x18_Exp2_InputTooBig, PRBMath_SD59x18_Log_InputTooSmall } from "src/sd59x18/Errors.sol";
+import { E, PI, UNIT, ZERO } from "src/sd59x18/Constants.sol";
 import { pow } from "src/sd59x18/Math.sol";
 import { SD59x18 } from "src/sd59x18/ValueType.sol";
 
 import { SD59x18_Test } from "../../SD59x18.t.sol";
 
 contract Pow_Test is SD59x18_Test {
-    SD59x18 internal constant MAX_PERMITTED = SD59x18.wrap(2 ** 192 * 10 ** 18 - 1);
+    modifier baseZero() {
+        _;
+    }
 
-    function test_Pow_BaseAndExponentZero() external {
+    function test_Pow_ExponentZero() external baseZero {
         SD59x18 x = ZERO;
         SD59x18 y = ZERO;
         SD59x18 actual = pow(x, y);
-        SD59x18 expected = sd(1e18);
+        SD59x18 expected = UNIT;
         assertEq(actual, expected, "SD59x18 pow");
     }
 
-    function baseZeroExponentNotZero_Sets() internal returns (Set[] memory) {
-        delete sets;
-        sets.push(set({ x: 0, y: 1e18, expected: 0 }));
-        sets.push(set({ x: 0, y: E, expected: 0 }));
-        sets.push(set({ x: 0, y: PI, expected: 0 }));
-        return sets;
-    }
-
-    function test_Pow_BaseZeroExponentNotZero() external parameterizedTest(baseZeroExponentNotZero_Sets()) {
-        SD59x18 actual = pow(s.x, s.y);
-        assertEq(actual, s.expected, "SD59x18 pow");
+    function testFuzz_Pow_ExponentNotZero(SD59x18 y) external baseZero {
+        vm.assume(y != ZERO);
+        SD59x18 x = ZERO;
+        SD59x18 actual = pow(x, y);
+        SD59x18 expected = ZERO;
+        assertEq(actual, expected, "SD59x18 pow");
     }
 
     modifier whenBaseNotZero() {
         _;
     }
 
-    function test_RevertWhen_BaseNegative() external whenBaseNotZero {
-        SD59x18 x = sd(-0.000000000000000001e18);
-        SD59x18 y = sd(2e18);
-        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Log_InputTooSmall.selector, x));
-        pow(x, y);
+    function testFuzz_Pow_BaseUnit(SD59x18 y) external whenBaseNotZero {
+        SD59x18 x = UNIT;
+        SD59x18 actual = pow(x, y);
+        SD59x18 expected = UNIT;
+        assertEq(actual, expected, "SD59x18 pow");
     }
 
-    modifier whenBasePositive() {
+    modifier whenBaseNotUnit() {
         _;
     }
 
-    function exponentZero_Sets() internal returns (Set[] memory) {
-        delete sets;
-        sets.push(set({ x: 1e18, y: 0, expected: 1e18 }));
-        sets.push(set({ x: E, y: 0, expected: 1e18 }));
-        sets.push(set({ x: PI, y: 0, expected: 1e18 }));
-        return sets;
-    }
-
-    function test_Pow_ExponentZero() external parameterizedTest(exponentZero_Sets()) whenBaseNotZero whenBasePositive {
-        SD59x18 actual = pow(s.x, s.y);
-        assertEq(actual, s.expected, "SD59x18 pow");
+    function testFuzz_Pow_ExponentZero(SD59x18 x) external whenBaseNotZero whenBaseNotUnit {
+        vm.assume(x != ZERO && x != UNIT);
+        SD59x18 y = ZERO;
+        SD59x18 actual = pow(x, y);
+        SD59x18 expected = UNIT;
+        assertEq(actual, expected, "SD59x18 pow");
     }
 
     modifier whenExponentNotZero() {
         _;
     }
 
-    function exponentOne_Sets() internal returns (Set[] memory) {
-        delete sets;
-        sets.push(set({ x: 1e18, y: 1e18, expected: 1e18 }));
-        sets.push(set({ x: E, y: 1e18, expected: E }));
-        sets.push(set({ x: PI, y: 1e18, expected: PI }));
-        return sets;
+    function testFuzz_Pow_ExponentUnit(SD59x18 x) external whenBaseNotZero whenBaseNotUnit whenExponentNotZero {
+        vm.assume(x != ZERO && x != UNIT);
+        SD59x18 y = UNIT;
+        SD59x18 actual = pow(x, y);
+        SD59x18 expected = x;
+        assertEq(actual, expected, "SD59x18 pow");
     }
 
-    function test_Pow_ExponentOne()
-        external
-        parameterizedTest(exponentOne_Sets())
-        whenBaseNotZero
-        whenBasePositive
-        whenExponentNotZero
-    {
-        SD59x18 actual = pow(s.x, s.y);
-        assertEq(actual, s.expected, "SD59x18 pow");
-    }
-
-    modifier whenExponentNotOne() {
-        _;
-    }
-
-    function test_RevertWhen_ExponentGreaterThanMaxPermitted()
-        external
-        whenBaseNotZero
-        whenBasePositive
-        whenExponentNotZero
-        whenExponentNotOne
-    {
-        SD59x18 x = MAX_PERMITTED.add(sd(1));
-        SD59x18 y = sd(1e18 + 1);
-        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Exp2_InputTooBig.selector, sd(192e18 + 192)));
-        pow(x, y);
-    }
-
-    modifier whenExponentLessThanOrEqualToMaxPermitted() {
+    modifier whenExponentNotUnit() {
         _;
     }
 
@@ -125,8 +87,8 @@ contract Pow_Test is SD59x18_Test {
         sets.push(set({ x: 406e18, y: -0.25e18, expected: 0.222776046060941016e18 }));
         sets.push(set({ x: 1729e18, y: -0.98e18, expected: 0.00067136841637396e18 }));
         sets.push(set({ x: 33441e18, y: -2.1891e18, expected: 0.000000000124709713e18 }));
-        sets.push(set({ x: 2 ** 128 * 10 ** 18 - 1, y: -1e18, expected: 0 }));
-        sets.push(set({ x: MAX_PERMITTED, y: -1e18, expected: 0 }));
+        sets.push(set({ x: 2 ** 128 * 1e18 - 1, y: -1e18, expected: 0 }));
+        sets.push(set({ x: 2 ** 192 * 1e18 - 1, y: -1e18, expected: 0 }));
         return sets;
     }
 
@@ -134,10 +96,9 @@ contract Pow_Test is SD59x18_Test {
         external
         parameterizedTest(negativeExponent_Sets())
         whenBaseNotZero
-        whenBasePositive
+        whenBaseNotUnit
         whenExponentNotZero
-        whenExponentNotOne
-        whenExponentLessThanOrEqualToMaxPermitted
+        whenExponentNotUnit
     {
         SD59x18 actual = pow(s.x, s.y);
         assertEq(actual, s.expected, "SD59x18 pow");
@@ -169,7 +130,9 @@ contract Pow_Test is SD59x18_Test {
                 expected: 340282366920938487757736552507248225013_000000000004316573
             })
         );
-        sets.push(set({ x: MAX_PERMITTED, y: 1e18 - 1, expected: 6277101735386679823624773486129835356722228023657461399187e18 }));
+        sets.push(
+            set({ x: 2 ** 192 * 1e18 - 1, y: 1e18 - 1, expected: 6277101735386679823624773486129835356722228023657461399187e18 })
+        );
         return sets;
     }
 
@@ -177,10 +140,9 @@ contract Pow_Test is SD59x18_Test {
         external
         parameterizedTest(positiveExponent_Sets())
         whenBaseNotZero
-        whenBasePositive
+        whenBaseNotUnit
         whenExponentNotZero
-        whenExponentNotOne
-        whenExponentLessThanOrEqualToMaxPermitted
+        whenExponentNotUnit
     {
         SD59x18 actual = pow(s.x, s.y);
         assertEq(actual, s.expected, "SD59x18 pow");

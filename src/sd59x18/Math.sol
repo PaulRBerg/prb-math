@@ -96,17 +96,17 @@ function ceil(SD59x18 x) pure returns (SD59x18 result) {
 
 /// @notice Divides two SD59x18 numbers, returning a new SD59x18 number. Rounds towards zero.
 ///
-/// @dev An extension of {Common-mulDiv} for signed numbers, which works by computing the signs and the absolute
+/// @dev An extension of {Common::mulDiv} for signed numbers, which works by computing the signs and the absolute
 /// values separately.
 ///
 /// Requirements:
-/// - All from {Common-mulDiv}.
+/// - All from {Common::mulDiv}.
 /// - None of the inputs can be `MIN_SD59x18`.
-/// - The denominator cannot be zero.
+/// - The denominator must not be zero.
 /// - The result must fit within SD59x18.
 ///
 /// Notes:
-/// - All from {Common-mulDiv}.
+/// - All from {Common::mulDiv}.
 ///
 /// @param x The numerator as an SD59x18 number.
 /// @param y The denominator as an SD59x18 number.
@@ -300,7 +300,7 @@ function gm(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
         }
 
         // We don't need to multiply the result by `UNIT` here because the x*y product had picked up a factor of `UNIT`
-        // during multiplication. See the comments in {Common-sqrt}.
+        // during multiplication. See the comments in {Common::sqrt}.
         uint256 resultUint = Common.sqrt(uint256(xyInt));
         result = wrap(int256(resultUint));
     }
@@ -309,7 +309,7 @@ function gm(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 /// @notice Calculates $1 / x$, rounding toward zero.
 ///
 /// @dev Requirements:
-/// - x cannot be zero.
+/// - x must not be zero.
 ///
 /// @param x The SD59x18 number for which to calculate the inverse.
 /// @return result The inverse as an SD59x18 number.
@@ -365,7 +365,7 @@ function log10(SD59x18 x) pure returns (SD59x18 result) {
         revert Errors.PRBMath_SD59x18_Log_InputTooSmall(x);
     }
 
-    // Note that the `mul` in this block is the standard multiplication operation, not {SD59x18-mul}.
+    // Note that the `mul` in this block is the standard multiplication operation, not {SD59x18::mul}.
     // prettier-ignore
     assembly ("memory-safe") {
         switch x
@@ -530,12 +530,12 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
 /// @notice Multiplies two SD59x18 numbers together, returning a new SD59x18 number.
 ///
 /// @dev Requirements:
-/// - All from {Common-mulDiv18}.
+/// - All from {Common::mulDiv18}.
 /// - None of the inputs can be `MIN_SD59x18`.
 /// - The result must fit within `MAX_SD59x18`.
 ///
 /// Notes:
-/// - To understand how this works in detail, see the NatSpec comments in {Common-mulDiv18}.
+/// - To understand how this works in detail, see the NatSpec comments in {Common::mulDiv18}.
 ///
 /// @param x The multiplicand as an SD59x18 number.
 /// @param y The multiplier as an SD59x18 number.
@@ -581,7 +581,6 @@ function mul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 ///
 /// Requirements:
 /// - All from {exp2}, {log2} and {mul}.
-/// - x cannot be zero.
 ///
 /// Notes:
 /// - All from {exp2}, {log2} and {mul}.
@@ -595,15 +594,26 @@ function pow(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     int256 xInt = x.unwrap();
     int256 yInt = y.unwrap();
 
+    // If both x and y are zero, the result is `UNIT`. If just x is zero, the result is always zero.
     if (xInt == 0) {
-        result = yInt == 0 ? UNIT : ZERO;
-    } else {
-        if (yInt == uUNIT) {
-            result = x;
-        } else {
-            result = exp2(mul(log2(x), y));
-        }
+        return yInt == 0 ? UNIT : ZERO;
     }
+    // If x is `UNIT`, the result is always `UNIT`.
+    else if (xInt == uUNIT) {
+        return UNIT;
+    }
+
+    // If y is zero, the result is always `UNIT`.
+    if (yInt == 0) {
+        return UNIT;
+    }
+    // If y is `UNIT`, the result is always x.
+    else if (yInt == uUNIT) {
+        return x;
+    }
+
+    // Otherwise, use the formula.
+    result = exp2(mul(log2(x), y));
 }
 
 /// @notice Raises x (an SD59x18 number) to the power y (an unsigned basic integer) using the well-known
@@ -612,11 +622,11 @@ function pow(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 /// @dev See https://en.wikipedia.org/wiki/Exponentiation_by_squaring
 ///
 /// Requirements:
-/// - All from {abs} and {Common-mulDiv18}.
+/// - All from {abs} and {Common::mulDiv18}.
 /// - The result must fit within `MAX_SD59x18`.
 ///
 /// Notes:
-/// - All from {Common-mulDiv18}.
+/// - All from {Common::mulDiv18}.
 /// - Assumes that 0^0 is 1.
 ///
 /// @param x The base as an SD59x18 number.

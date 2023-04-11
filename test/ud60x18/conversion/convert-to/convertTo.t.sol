@@ -9,13 +9,13 @@ import { UD60x18 } from "src/ud60x18/ValueType.sol";
 import { UD60x18_Test } from "../../UD60x18.t.sol";
 
 contract ConvertTo_Test is UD60x18_Test {
-    function test_RevertWhen_GreaterThanMaxPermitted() external {
+    function test_RevertWhen_GtMaxPermitted() external {
         uint256 x = MAX_SCALED_UD60x18.unwrap() + 1;
         vm.expectRevert(abi.encodeWithSelector(PRBMath_UD60x18_Convert_Overflow.selector, x));
         convert(x);
     }
 
-    modifier whenLessThanOrEqualToMaxPermitted() {
+    modifier whenLteMaxPermitted() {
         _;
     }
 
@@ -32,7 +32,7 @@ contract ConvertTo_Test is UD60x18_Test {
         return sets;
     }
 
-    function test_ConvertTo() external parameterizedTest(convertTo_Sets()) whenLessThanOrEqualToMaxPermitted {
+    function test_ConvertTo() external parameterizedTest(convertTo_Sets()) whenLteMaxPermitted {
         UD60x18 x = convert(s.x.unwrap());
         assertEq(x, s.expected, "UD60x18 convertTo");
     }

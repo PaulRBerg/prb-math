@@ -68,7 +68,7 @@ contract Pow_Test is UD60x18_Test {
         _;
     }
 
-    function baseGreaterThanUnit_Sets() internal returns (Set[] memory) {
+    function baseGtUnit_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 1e18 + 1, y: 2e18, expected: 1e18 }));
         sets.push(set({ x: 2e18, y: 1.5e18, expected: 2_828427124746190097 }));
@@ -93,9 +93,9 @@ contract Pow_Test is UD60x18_Test {
         return sets;
     }
 
-    function test_Pow_BaseGreaterThanUnit()
+    function test_Pow_BaseGtUnit()
         external
-        parameterizedTest(baseGreaterThanUnit_Sets())
+        parameterizedTest(baseGtUnit_Sets())
         whenBaseNotZero
         whenBaseNotUnit
         whenExponentNotZero
@@ -105,7 +105,7 @@ contract Pow_Test is UD60x18_Test {
         assertEq(actual, s.expected);
     }
 
-    function baseLessThanUnit_Sets() internal returns (Set[] memory) {
+    function baseLtUnit_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.000000000000000001e18, y: 1.78e18, expected: 0 }));
         sets.push(set({ x: 0.01e18, y: E, expected: 0.000003659622955309e18 }));
@@ -118,13 +118,13 @@ contract Pow_Test is UD60x18_Test {
         sets.push(set({ x: 0.75e18, y: 4e18, expected: 0.316406250000000008e18 }));
         sets.push(set({ x: 0.8e18, y: 5e18, expected: 0.327680000000000015e18 }));
         sets.push(set({ x: 0.9e18, y: 2.5e18, expected: 0.768433471420916194e18 }));
-        sets.push(set({ x: 0.999999999999999999e18, y: 0.08e18, expected: UNIT }));
+        sets.push(set({ x: 1e18 - 1, y: 0.08e18, expected: 1e18 }));
         return sets;
     }
 
-    function test_Pow_BaseLessThanUnit()
+    function test_Pow_BaseLtUnit()
         external
-        parameterizedTest(baseLessThanUnit_Sets())
+        parameterizedTest(baseLtUnit_Sets())
         whenBaseNotZero
         whenBaseNotUnit
         whenExponentNotZero

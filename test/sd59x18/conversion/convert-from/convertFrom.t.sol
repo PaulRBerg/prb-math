@@ -1,34 +1,34 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.19 <0.9.0;
 
-import { E, MAX_SD59x18, MAX_WHOLE_SD59x18, MIN_SD59x18, MIN_WHOLE_SD59x18, PI, ZERO } from "src/sd59x18/Constants.sol";
+import { E, MAX_SD59x18, MAX_WHOLE_SD59x18, MIN_SD59x18, MIN_WHOLE_SD59x18, PI } from "src/sd59x18/Constants.sol";
 import { convert } from "src/sd59x18/Conversions.sol";
 import { SD59x18 } from "src/sd59x18/ValueType.sol";
 
 import { SD59x18_Test } from "../../SD59x18.t.sol";
 
 contract ConvertFrom_Test is SD59x18_Test {
-    function lessThanAbsoluteOne_Sets() internal returns (Set[] memory) {
+    function ltAbsoluteUnit_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: -1e18 + 1 }));
         sets.push(set({ x: -1 }));
-        sets.push(set({ x: ZERO }));
+        sets.push(set({ x: 0 }));
         sets.push(set({ x: 1 }));
         sets.push(set({ x: 1e18 - 1 }));
         return sets;
     }
 
-    function test_ConvertFrom_LessThanAbsoluteUnit() external parameterizedTest(lessThanAbsoluteOne_Sets()) {
+    function test_ConvertFrom_LtAbsoluteUnit() external parameterizedTest(ltAbsoluteUnit_Sets()) {
         int256 actual = convert(s.x);
         int256 expected = 0;
         assertEq(actual, expected, "SD59x18 convert from");
     }
 
-    modifier whenGreaterThanOrEqualToAbsoluteUnit() {
+    modifier whenGteAbsoluteUnit() {
         _;
     }
 
-    function greaterThanAbsoluteOne_Sets() internal returns (Set[] memory) {
+    function gteAbsoluteUnit_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_SD59x18, expected: MIN_SCALED_SD59x18 }));
         sets.push(set({ x: MIN_WHOLE_SD59x18, expected: MIN_SCALED_SD59x18 }));
@@ -54,7 +54,7 @@ contract ConvertFrom_Test is SD59x18_Test {
         return sets;
     }
 
-    function test_ConvertFrom() external parameterizedTest(greaterThanAbsoluteOne_Sets()) whenGreaterThanOrEqualToAbsoluteUnit {
+    function test_ConvertFrom() external parameterizedTest(gteAbsoluteUnit_Sets()) whenGteAbsoluteUnit {
         int256 actual = convert(s.x);
         int256 expected = s.expected.unwrap();
         assertEq(actual, expected, "SD59x18 convert from");
