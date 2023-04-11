@@ -1,20 +1,23 @@
 pow.t.sol
 ├── when the base is zero
 │  ├── when the exponent is zero
-│  │  └── it should return one
+│  │  └── it should return the unit number
 │  └── when the exponent is not zero
 │     └── it should return zero
 └── when the base is not zero
-   ├── when the base is less than one
-   │  └── it should revert
-   └── when the base is greater than or equal to one
+   ├── when the base is the unit number
+   │  └── it should return the unit number
+   └── when the base is not the unit number
       ├── when the exponent is zero
-      │  └── it should return one
+      │  └── it should return the base
       └── when the exponent is not zero
-        ├── when the exponent is one
-        │  └── it should return the base
-        └── when the exponent is not one
-           ├── when the exponent is greater than the maximum permitted
-           │  └── it should revert
-           └── when the exponent is less than or equal to the maximum permitted
-              └── it should return the correct value
+         ├── when the exponent is the unit number
+         │  └── it should return the base
+         └── when the exponent is not the unit number
+            ├── when the base is greater than the maximum permitted
+            │  └── it should revert
+            └── when the base is less than or equal to the maximum permitted
+               ├── when the base is greater than the unit number
+               │  └── it should use the standard formula and return the correct value
+               └── when the base is less than the unit number
+                  └── it should use the equivalent formula and return the correct value
