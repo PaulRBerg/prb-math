@@ -39,7 +39,7 @@ contract Powu_Test is UD60x18_Test {
         delete sets;
         sets.push(set({ x: 1e18, expected: 1e18 }));
         sets.push(set({ x: PI, expected: 1e18 }));
-        sets.push(set({ x: MAX_UD60x18.sub(ud(1)), expected: 1e18 }));
+        sets.push(set({ x: MAX_UD60x18 - ud(1), expected: 1e18 }));
         return sets;
     }
 

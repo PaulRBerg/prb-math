@@ -28,15 +28,15 @@ contract Mul_Test is UD60x18_Test {
     }
 
     function test_RevertWhen_ResultOverflowUD60x18_Function() external whenNeitherOperandZero {
-        UD60x18 x = SQRT_MAX_UD60x18.add(ud(1));
-        UD60x18 y = SQRT_MAX_UD60x18.add(ud(1));
+        UD60x18 x = SQRT_MAX_UD60x18 + ud(1);
+        UD60x18 y = SQRT_MAX_UD60x18 + ud(1);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_MulDiv18_Overflow.selector, x.unwrap(), y.unwrap()));
         mul(x, y);
     }
 
     function test_RevertWhen_ResultOverflowUD60x18_Operator() external whenNeitherOperandZero {
-        UD60x18 x = SQRT_MAX_UD60x18.add(ud(1));
-        UD60x18 y = SQRT_MAX_UD60x18.add(ud(1));
+        UD60x18 x = SQRT_MAX_UD60x18 + ud(1);
+        UD60x18 y = SQRT_MAX_UD60x18 + ud(1);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_MulDiv18_Overflow.selector, x.unwrap(), y.unwrap()));
         x * y;
     }
@@ -69,7 +69,7 @@ contract Mul_Test is UD60x18_Test {
             })
         );
         sets.push(set({ x: MAX_WHOLE_UD60x18, y: 0.000000000000000001e18, expected: MAX_SCALED_UD60x18 }));
-        sets.push(set({ x: MAX_UD60x18.sub(ud(0.5e18)), y: 0.000000000000000001e18, expected: MAX_SCALED_UD60x18 }));
+        sets.push(set({ x: MAX_UD60x18 - ud(0.5e18), y: 0.000000000000000001e18, expected: MAX_SCALED_UD60x18 }));
         return sets;
     }
 

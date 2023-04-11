@@ -42,7 +42,7 @@ contract Ceil_Test is SD59x18_Test {
     }
 
     function test_RevertWhen_GtMaxPermitted() external whenNotZero {
-        SD59x18 x = MAX_WHOLE_SD59x18.add(sd(1));
+        SD59x18 x = MAX_WHOLE_SD59x18 + sd(1);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Ceil_Overflow.selector, x));
         ceil(x);
     }
