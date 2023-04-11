@@ -20,7 +20,7 @@ import {
 import { wrap } from "./Helpers.sol";
 import { SD59x18 } from "./ValueType.sol";
 
-/// @notice Calculate the absolute value of x.
+/// @notice Calculates the absolute value of x.
 ///
 /// @dev Requirements:
 /// - x must be greater than `MIN_SD59x18`.
@@ -50,7 +50,7 @@ function avg(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
         int256 sum = (xInt >> 1) + (yInt >> 1);
 
         if (sum < 0) {
-            // If at least one of x and y is odd, we add 1 to the result, because shifting negative numbers to the right
+            // If at least one of x and y is odd, add 1 to the result, because shifting negative numbers to the right
             // rounds down to infinity. The right part is equivalent to `sum + (x % 2 == 1 || y % 2 == 1)`.
             assembly ("memory-safe") {
                 result := add(sum, and(or(xInt, yInt), 1))
@@ -94,19 +94,20 @@ function ceil(SD59x18 x) pure returns (SD59x18 result) {
     }
 }
 
-/// @notice Divides two SD59x18 numbers, returning a new SD59x18 number. Rounds towards zero.
+/// @notice Divides two SD59x18 numbers, returning a new SD59x18 number.
 ///
-/// @dev An extension of {Common::mulDiv} for signed numbers, which works by computing the signs and the absolute
+/// @dev This is an extension of {Common.mulDiv} for signed numbers, which works by computing the signs and the absolute
 /// values separately.
 ///
+/// Notes:
+/// - All from {Common.mulDiv}.
+/// - The result is rounded towards zero.
+///
 /// Requirements:
-/// - All from {Common::mulDiv}.
+/// - All from {Common.mulDiv}.
 /// - None of the inputs can be `MIN_SD59x18`.
 /// - The denominator must not be zero.
 /// - The result must fit within SD59x18.
-///
-/// Notes:
-/// - All from {Common::mulDiv}.
 ///
 /// @param x The numerator as an SD59x18 number.
 /// @param y The denominator as an SD59x18 number.
@@ -143,28 +144,26 @@ function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     }
 }
 
-/// @notice Calculates the natural exponent of x.
-///
-/// @dev Uses the following formula:
+/// @notice Calculates the natural exponent of x using the following formula:
 ///
 /// $$
 /// e^x = 2^{x * log_2{e}}
 /// $$
 ///
-/// Requirements:
-/// - All from {log2}.
-/// - x must be less than 133.084258667509499441.
-///
-/// Notes:
+/// @dev Notes:
 /// - All from {exp2}.
-/// - For any x less than -41.446531673892822322, the result is zero.
+/// - If x is less than 41.446531673892822322$, the result is zero.
+///
+/// Requirements:
+/// - All from {exp2}.
+/// - x must be less than 133_084258667509499441.
 ///
 /// @param x The exponent as an SD59x18 number.
 /// @return result The result as an SD59x18 number.
 /// @custom:smtchecker abstract-function-nondet
 function exp(SD59x18 x) pure returns (SD59x18 result) {
     int256 xInt = x.unwrap();
-    // Without this check, the value passed to {exp2} would be less than -59.794705707972522261.
+    // Without this check, the value passed to {exp2} would be less than -59_794705707972522261.
     if (xInt < -41_446531673892822322) {
         return ZERO;
     }
@@ -181,22 +180,20 @@ function exp(SD59x18 x) pure returns (SD59x18 result) {
     }
 }
 
-/// @notice Calculates the binary exponent of x using the binary fraction method.
-///
-/// @dev Uses the following formula:
+/// @notice Calculates the binary exponent of x using the binary fraction method using the following formula:
 ///
 /// $$
 /// 2^{-x} = \frac{1}{2^x}
 /// $$
 ///
-/// See https://ethereum.stackexchange.com/q/79903/24693.
-///
-/// Requirements:
-/// - x must be 192 or less.
-/// - The result must fit within `MAX_SD59x18`.
+/// @dev See https://ethereum.stackexchange.com/q/79903/24693.
 ///
 /// Notes:
-/// - For any x less than -59.794705707972522261, the result is zero.
+/// - If x is less than -59_794705707972522261, the result is zero.
+///
+/// Requirements:
+/// - x must be less than 192e18.
+/// - The result must fit within `MAX_SD59x18`.
 ///
 /// @param x The exponent as an SD59x18 number.
 /// @return result The result as an SD59x18 number.
@@ -204,17 +201,17 @@ function exp(SD59x18 x) pure returns (SD59x18 result) {
 function exp2(SD59x18 x) pure returns (SD59x18 result) {
     int256 xInt = x.unwrap();
     if (xInt < 0) {
-        // 2^59.794705707972522262 is the maximum number whose inverse does not truncate down to zero.
+        // 2^59.794705707972522262 is the greatest number whose inverse does not truncate down to zero.
         if (xInt < -59_794705707972522261) {
             return ZERO;
         }
 
         unchecked {
-            // Inline the fixed-point inversion $1/2^x$ to save gas.
+            // Inline the fixed-point inversion to save gas.
             result = wrap(uUNIT_SQUARED / exp2(wrap(-xInt)).unwrap());
         }
     } else {
-        // Numbers greater than or equal to 2^192 don't fit within the 192.64-bit format.
+        // Numbers greater than or equal to 192e18 don't fit within the 192.64-bit format.
         if (xInt > uEXP2_MAX_INPUT) {
             revert Errors.PRBMath_SD59x18_Exp2_InputTooBig(x);
         }
@@ -273,7 +270,7 @@ function frac(SD59x18 x) pure returns (SD59x18 result) {
 /// @notice Calculates the geometric mean of x and y, i.e. $\sqrt{x * y}$, rounding down.
 ///
 /// @dev Requirements:
-/// - x * y must fit within `MAX_SD59x18`, lest it overflows.
+/// - x * y must fit within `MAX_SD59x18`, otherwise the result overflows.
 /// - x * y must not be negative, since complex numbers are not supported.
 ///
 /// @param x The first operand as an SD59x18 number.
@@ -300,13 +297,13 @@ function gm(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
         }
 
         // We don't need to multiply the result by `UNIT` here because the x*y product had picked up a factor of `UNIT`
-        // during multiplication. See the comments in {Common::sqrt}.
+        // during multiplication. See the comments in {Common.sqrt}.
         uint256 resultUint = Common.sqrt(uint256(xyInt));
         result = wrap(int256(resultUint));
     }
 }
 
-/// @notice Calculates $1 / x$, rounding toward zero.
+/// @notice Calculates the inverse of x, rounding toward zero.
 ///
 /// @dev Requirements:
 /// - x must not be zero.
@@ -318,42 +315,40 @@ function inv(SD59x18 x) pure returns (SD59x18 result) {
     result = wrap(uUNIT_SQUARED / x.unwrap());
 }
 
-/// @notice Calculates the natural logarithm of x.
-///
-/// @dev Uses the following formula:
+/// @notice Calculates the natural logarithm of x using the following formula:
 ///
 /// $$
 /// ln{x} = log_2{x} / log_2{e}
 /// $$
 ///
+/// @dev Notes:
+/// - All from {log2}.
+/// - The precision isn't sufficiently fine-grained to return exactly `UNIT` when the input is `E`.
+///
 /// Requirements:
 /// - All from {log2}.
-///
-/// Notes:
-/// - All from {log2}.
-/// - This doesn't return exactly 1 for 2.718281828459045235. For that, more fine-grained precision would be needed.
 ///
 /// @param x The SD59x18 number for which to calculate the natural logarithm.
 /// @return result The natural logarithm as an SD59x18 number.
 /// @custom:smtchecker abstract-function-nondet
 function ln(SD59x18 x) pure returns (SD59x18 result) {
     // Inline the fixed-point multiplication to save gas. This is overflow-safe because the maximum value that
-    // {log2} can return is 195.205294292027477728.
+    // {log2} can return is ~195_205294292027477728.
     result = wrap(log2(x).unwrap() * uUNIT / uLOG2_E);
 }
 
-/// @notice Calculates the common logarithm of x.
-///
-/// @dev If x is an exact power of ten, a hard coded value is returned. Otherwise, the following formula is used:
+/// @notice Calculates the common logarithm of x using the following formula:
 ///
 /// $$
 /// log_{10}{x} = log_2{x} / log_2{10}
 /// $$
 ///
-/// Requirements:
+/// However, if x is an exact power of ten, a hard coded value is returned.
+///
+/// @dev Notes:
 /// - All from {log2}.
 ///
-/// Notes:
+/// Requirements:
 /// - All from {log2}.
 ///
 /// @param x The SD59x18 number for which to calculate the common logarithm.
@@ -365,7 +360,7 @@ function log10(SD59x18 x) pure returns (SD59x18 result) {
         revert Errors.PRBMath_SD59x18_Log_InputTooSmall(x);
     }
 
-    // Note that the `mul` in this block is the standard multiplication operation, not {SD59x18::mul}.
+    // Note that the `mul` in this block is the standard multiplication operation, not {SD59x18.mul}.
     // prettier-ignore
     assembly ("memory-safe") {
         switch x
@@ -457,16 +452,21 @@ function log10(SD59x18 x) pure returns (SD59x18 result) {
     }
 }
 
-/// @notice Calculates the binary logarithm of x.
+/// @notice Calculates the binary logarithm of x using the iterative approximation algorithm.
 ///
-/// @dev Based on the iterative approximation algorithm.
-/// https://en.wikipedia.org/wiki/Binary_logarithm#Iterative_approximation
+/// For $0 \leq x < 1$, the logarithm is calculated as:
 ///
-/// Requirements:
-/// - x must be greater than zero.
+/// $$
+/// log_2{x} = -log_2{\frac{1}{x}}
+/// $$
+///
+/// @dev See https://en.wikipedia.org/wiki/Binary_logarithm#Iterative_approximation.
 ///
 /// Notes:
 /// - Due to the lossy precision of the iterative approximation, the results are not perfectly accurate to the last decimal.
+///
+/// Requirements:
+/// - x must be greater than zero.
 ///
 /// @param x The SD59x18 number for which to calculate the binary logarithm.
 /// @return result The binary logarithm as an SD59x18 number.
@@ -478,11 +478,6 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
     }
 
     unchecked {
-        // This works because of the following identity:
-        //
-        // $$
-        // log_2{x} = -log_2{\frac{1}{x}}
-        // $$
         int256 sign;
         if (xInt >= uUNIT) {
             sign = 1;
@@ -496,29 +491,29 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
         uint256 n = Common.msb(uint256(xInt / uUNIT));
 
         // This is the integer part of the logarithm as an SD59x18 number. The operation can't overflow
-        // because n is maximum 255, `UNIT` is 1e18 and sign is either 1 or -1.
+        // because n is at most 255, `UNIT` is 1e18, and the sign is either 1 or -1.
         int256 resultInt = int256(n) * uUNIT;
 
         // This is $y = x * 2^{-n}$.
         int256 y = xInt >> n;
 
-        // If y is 1, the fractional part is zero.
+        // If y is the unit number, the fractional part is zero.
         if (y == uUNIT) {
             return wrap(resultInt * sign);
         }
 
         // Calculate the fractional part via the iterative approximation.
-        // The `delta >>= 1` part is equivalent to `delta /= 2`, but shifting bits is faster.
+        // The `delta >>= 1` part is equivalent to `delta /= 2`, but shifting bits is more gas efficient.
         int256 DOUBLE_UNIT = 2e18;
         for (int256 delta = uHALF_UNIT; delta > 0; delta >>= 1) {
             y = (y * y) / uUNIT;
 
-            // Is $y^2 > 2$ and so in the range [2,4)?
+            // Is y^2 >= 2e18 and so in the range [2e18, 4e18)?
             if (y >= DOUBLE_UNIT) {
                 // Add the 2^{-m} factor to the logarithm.
                 resultInt = resultInt + delta;
 
-                // Corresponds to z/2 on Wikipedia.
+                // Corresponds to z/2 in the Wikipedia article.
                 y >>= 1;
             }
         }
@@ -529,13 +524,14 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
 
 /// @notice Multiplies two SD59x18 numbers together, returning a new SD59x18 number.
 ///
-/// @dev Requirements:
-/// - All from {Common::mulDiv18}.
+/// @dev Notes:
+/// - All from {Common.mulDiv18}.
+/// - The result is rounded towards zero.
+///
+/// Requirements:
+/// - All from {Common.mulDiv18}.
 /// - None of the inputs can be `MIN_SD59x18`.
 /// - The result must fit within `MAX_SD59x18`.
-///
-/// Notes:
-/// - To understand how this works in detail, see the NatSpec comments in {Common::mulDiv18}.
 ///
 /// @param x The multiplicand as an SD59x18 number.
 /// @param y The multiplier as an SD59x18 number.
@@ -571,20 +567,18 @@ function mul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     }
 }
 
-/// @notice Raises x to the power of y.
-///
-/// @dev Uses the following formula:
+/// @notice Raises x to the power of y using the following formula:
 ///
 /// $$
 /// x^y = 2^{log_2{x} * y}
 /// $$
 ///
-/// Requirements:
-/// - All from {exp2}, {log2} and {mul}.
+/// @dev Notes:
+/// - All from {exp2}, {log2}, and {mul}.
+/// - Returns `UNIT` for 0^0.
 ///
-/// Notes:
-/// - All from {exp2}, {log2} and {mul}.
-/// - Assumes that 0^0 is 1.
+/// Requirements:
+/// - All from {exp2}, {log2}, and {mul}.
 ///
 /// @param x The base as an SD59x18 number.
 /// @param y Exponent to raise x to, as an SD59x18 number
@@ -612,22 +606,22 @@ function pow(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
         return x;
     }
 
-    // Otherwise, use the formula.
+    // Otherwise, calculate the result using the formula.
     result = exp2(mul(log2(x), y));
 }
 
 /// @notice Raises x (an SD59x18 number) to the power y (an unsigned basic integer) using the well-known
 /// algorithm "exponentiation by squaring".
 ///
-/// @dev See https://en.wikipedia.org/wiki/Exponentiation_by_squaring
-///
-/// Requirements:
-/// - All from {abs} and {Common::mulDiv18}.
-/// - The result must fit within `MAX_SD59x18`.
+/// @dev See https://en.wikipedia.org/wiki/Exponentiation_by_squaring.
 ///
 /// Notes:
-/// - All from {Common::mulDiv18}.
-/// - Assumes that 0^0 is 1.
+/// - All from {Common.mulDiv18}.
+/// - Returns `UNIT` for 0^0.
+///
+/// Requirements:
+/// - All from {abs} and {Common.mulDiv18}.
+/// - The result must fit within `MAX_SD59x18`.
 ///
 /// @param x The base as an SD59x18 number.
 /// @param y The exponent as a uint256.
@@ -656,7 +650,7 @@ function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
     }
 
     unchecked {
-        // Is the base negative and the exponent an odd number?
+        // Is the base negative and the exponent odd? If yes, the result is negative.
         int256 resultInt = int256(resultAbs);
         bool isNegative = x.unwrap() < 0 && y & 1 == 1;
         if (isNegative) {
@@ -666,9 +660,13 @@ function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
     }
 }
 
-/// @notice Calculates the square root of x, rounding down. Only the positive root is returned.
+/// @notice Calculates the square root of x using the Babylonian method.
 ///
-/// @dev Uses the Babylonian method https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Babylonian_method.
+/// @dev See https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Babylonian_method.
+///
+/// Notes:
+/// - Only the positive root is returned.
+/// - The result is rounded down.
 ///
 /// Requirements:
 /// - x cannot be negative, since complex numbers are not supported.
@@ -687,7 +685,7 @@ function sqrt(SD59x18 x) pure returns (SD59x18 result) {
     }
 
     unchecked {
-        // Multiply x by `UNIT` to account for the factor of `UNIT` picked up when multiplying two SD59x18 numbers
+        // Multiply x by `UNIT` to account for the factor of `UNIT` picked up when multiplying two SD59x18 numbers.
         // In this case, the two numbers are both the square root.
         uint256 resultUint = Common.sqrt(uint256(xInt * uUNIT));
         result = wrap(int256(resultUint));

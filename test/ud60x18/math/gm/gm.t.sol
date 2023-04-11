@@ -9,7 +9,7 @@ import { UD60x18 } from "src/ud60x18/ValueType.sol";
 import { UD60x18_Test } from "../../UD60x18.t.sol";
 
 contract Gm_Test is UD60x18_Test {
-    // Biggest number whose non-fixed-point square fits within uint256
+    // Biggest number whose non-fixed-point square fits in uint256
     uint256 internal constant SQRT_MAX_UINT256 = 340282366920938463463374607431768211455;
 
     function oneOperandZero_Sets() internal returns (Set[] memory) {

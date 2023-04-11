@@ -22,15 +22,13 @@ import { UD60x18 } from "./ValueType.sol";
                             MATHEMATICAL FUNCTIONS
 //////////////////////////////////////////////////////////////////////////*/
 
-/// @notice Calculates the arithmetic average of x and y, rounding down.
-///
-/// @dev Uses the following formula:
+/// @notice Calculates the arithmetic average of x and y using the following formula:
 ///
 /// $$
 /// avg(x, y) = (x & y) + ((xUint ^ yUint) / 2)
 /// $$
 //
-/// In English, what this formula does is:
+/// In English, this is what this formula does:
 ///
 /// 1. AND x and y.
 /// 2. Calculate half of XOR x and y.
@@ -38,6 +36,9 @@ import { UD60x18 } from "./ValueType.sol";
 ///
 /// This technique is known as SWAR, which stands for "SIMD within a register". You can read more about it here:
 /// https://devblogs.microsoft.com/oldnewthing/20220207-00/?p=106223
+///
+/// @dev Notes:
+/// - The result is rounded down.
 ///
 /// @param x The first operand as a UD60x18 number.
 /// @param y The second operand as a UD60x18 number.
@@ -80,13 +81,16 @@ function ceil(UD60x18 x) pure returns (UD60x18 result) {
     }
 }
 
-/// @notice Divides two UD60x18 numbers, returning a new UD60x18 number. Rounds towards zero.
+/// @notice Divides two UD60x18 numbers, returning a new UD60x18 number.
 ///
-/// @dev Uses {Common::mulDiv} to enable overflow-safe multiplication and division.
+/// @dev Uses {Common.mulDiv} to enable overflow-safe multiplication and division.
+///
+/// Notes:
+/// - The result is rounded down.
 ///
 /// Requirements:
 /// - The denominator must not be zero.
-/// - All from {Common::mulDiv}.
+/// - All from {Common.mulDiv}.
 ///
 /// @param x The numerator as a UD60x18 number.
 /// @param y The denominator as a UD60x18 number.
@@ -96,17 +100,14 @@ function div(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     result = wrap(Common.mulDiv(x.unwrap(), uUNIT, y.unwrap()));
 }
 
-/// @notice Calculates the natural exponent of x.
-///
-/// @dev Uses the following formula:
+/// @notice Calculates the natural exponent of x using the following formula:
 ///
 /// $$
 /// e^x = 2^{x * log_2{e}}
 /// $$
 ///
-/// Requirements:
-/// - All from {log2}.
-/// - x must be less than 133.084258667509499441.
+/// @dev Requirements:
+/// - x must be less than 133_084258667509499441.
 ///
 /// @param x The exponent as a UD60x18 number.
 /// @return result The result as a UD60x18 number.
@@ -128,10 +129,10 @@ function exp(UD60x18 x) pure returns (UD60x18 result) {
 
 /// @notice Calculates the binary exponent of x using the binary fraction method.
 ///
-/// @dev See https://ethereum.stackexchange.com/q/79903/24693.
+/// @dev See https://ethereum.stackexchange.com/q/79903/24693
 ///
 /// Requirements:
-/// - x must be 192 or less.
+/// - x must be less than 192e18.
 /// - The result must fit within `MAX_UD60x18`.
 ///
 /// @param x The exponent as a UD60x18 number.
@@ -140,7 +141,7 @@ function exp(UD60x18 x) pure returns (UD60x18 result) {
 function exp2(UD60x18 x) pure returns (UD60x18 result) {
     uint256 xUint = x.unwrap();
 
-    // Numbers greater than or equal to 2^192 don't fit within the 192.64-bit format.
+    // Numbers greater than or equal to 192e18 don't fit within the 192.64-bit format.
     if (xUint > uEXP2_MAX_INPUT) {
         revert Errors.PRBMath_UD60x18_Exp2_InputTooBig(x);
     }
@@ -148,7 +149,7 @@ function exp2(UD60x18 x) pure returns (UD60x18 result) {
     // Convert x to the 192.64-bit fixed-point format.
     uint256 x_192x64 = (xUint << 64) / uUNIT;
 
-    // Pass x to the {Common::exp2} function, which uses the 192.64-bit fixed-point number representation.
+    // Pass x to the {Common.exp2} function, which uses the 192.64-bit fixed-point number representation.
     result = wrap(Common.exp2(x_192x64));
 }
 
@@ -168,8 +169,8 @@ function floor(UD60x18 x) pure returns (UD60x18 result) {
     }
 }
 
-/// @notice Yields the excess beyond the floor of x.
-/// @dev Based on the odd function definition https://en.wikipedia.org/wiki/Fractional_part.
+/// @notice Yields the excess beyond the floor of x using the odd function definition.
+/// @dev See https://en.wikipedia.org/wiki/Fractional_part.
 /// @param x The UD60x18 number to get the fractional part of.
 /// @param result The fractional part of x as a UD60x18 number.
 /// @custom:smtchecker abstract-function-nondet
@@ -182,7 +183,7 @@ function frac(UD60x18 x) pure returns (UD60x18 result) {
 /// @notice Calculates the geometric mean of x and y, i.e. $\sqrt{x * y}$, rounding down.
 ///
 /// @dev Requirements:
-/// - x * y must fit within `MAX_UD60x18`, lest it overflows.
+/// - x * y must fit within `MAX_UD60x18`, otherwise the result overflows.
 ///
 /// @param x The first operand as a UD60x18 number.
 /// @param y The second operand as a UD60x18 number.
@@ -203,12 +204,12 @@ function gm(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
         }
 
         // We don't need to multiply the result by `UNIT` here because the x*y product had picked up a factor of `UNIT`
-        // during multiplication. See the comments in {Common::sqrt}.
+        // during multiplication. See the comments in {Common.sqrt}.
         result = wrap(Common.sqrt(xyUint));
     }
 }
 
-/// @notice Calculates $1 / x$, rounding toward zero.
+/// @notice Calculates the inverse of x, rounding toward zero.
 ///
 /// @dev Requirements:
 /// - x must not be zero.
@@ -222,20 +223,18 @@ function inv(UD60x18 x) pure returns (UD60x18 result) {
     }
 }
 
-/// @notice Calculates the natural logarithm of x.
-///
-/// @dev Uses the following formula:
+/// @notice Calculates the natural logarithm of x using the following formula:
 ///
 /// $$
 /// ln{x} = log_2{x} / log_2{e}
 /// $$
 ///
+/// @dev Notes:
+/// - All from {log2}.
+/// - The precision isn't sufficiently fine-grained to return exactly `UNIT` when the input is `E`.
+
 /// Requirements:
 /// - All from {log2}.
-///
-/// Notes:
-/// - All from {log2}.
-/// - This doesn't return exactly 1 for 2.718281828459045235. For that, more fine-grained precision would be needed.
 ///
 /// @param x The UD60x18 number for which to calculate the natural logarithm.
 /// @return result The natural logarithm as a UD60x18 number.
@@ -243,23 +242,23 @@ function inv(UD60x18 x) pure returns (UD60x18 result) {
 function ln(UD60x18 x) pure returns (UD60x18 result) {
     unchecked {
         // Inline the fixed-point multiplication to save gas. This is overflow-safe because the maximum value that
-        // {log2} can return is 196.205294292027477728.
+        // {log2} can return is ~196_205294292027477728.
         result = wrap(log2(x).unwrap() * uUNIT / uLOG2_E);
     }
 }
 
-/// @notice Calculates the common logarithm of x.
-///
-/// @dev If x is an exact power of ten, a hard coded value is returned. Otherwise, the following formula is used:
+/// @notice Calculates the common logarithm of x using the following formula:
 ///
 /// $$
 /// log_{10}{x} = log_2{x} / log_2{10}
 /// $$
 ///
-/// Requirements:
+/// However, if x is an exact power of ten, a hard coded value is returned.
+///
+/// @dev Notes:
 /// - All from {log2}.
 ///
-/// Notes:
+/// Requirements:
 /// - All from {log2}.
 ///
 /// @param x The UD60x18 number for which to calculate the common logarithm.
@@ -271,7 +270,7 @@ function log10(UD60x18 x) pure returns (UD60x18 result) {
         revert Errors.PRBMath_UD60x18_Log_InputTooSmall(x);
     }
 
-    // Note that the `mul` in this assembly block is the standard multiplication operation, not {UD60x18::mul}.
+    // Note that the `mul` in this assembly block is the standard multiplication operation, not {UD60x18.mul}.
     // prettier-ignore
     assembly ("memory-safe") {
         switch x
@@ -364,16 +363,21 @@ function log10(UD60x18 x) pure returns (UD60x18 result) {
     }
 }
 
-/// @notice Calculates the binary logarithm of x.
+/// @notice Calculates the binary logarithm of x using the iterative approximation algorithm.
 ///
-/// @dev Based on the iterative approximation algorithm.
-/// https://en.wikipedia.org/wiki/Binary_logarithm#Iterative_approximation
+/// For $0 \leq x < 1$, the logarithm is calculated as:
 ///
-/// Requirements:
-/// - x must be greater than or equal to UNIT, because the result must not be negative.
+/// $$
+/// log_2{x} = -log_2{\frac{1}{x}}
+/// $$
+///
+/// @dev See https://en.wikipedia.org/wiki/Binary_logarithm#Iterative_approximation
 ///
 /// Notes:
 /// - Due to the lossy precision of the iterative approximation, the results are not perfectly accurate to the last decimal.
+///
+/// Requirements:
+/// - x must be greater than zero.
 ///
 /// @param x The UD60x18 number for which to calculate the binary logarithm.
 /// @return result The binary logarithm as a UD60x18 number.
@@ -390,29 +394,29 @@ function log2(UD60x18 x) pure returns (UD60x18 result) {
         uint256 n = Common.msb(xUint / uUNIT);
 
         // This is the integer part of the logarithm as a UD60x18 number. The operation can't overflow because n
-        // n is maximum 255 and UNIT is 1e18.
+        // n is at most 255 and UNIT is 1e18.
         uint256 resultUint = n * uUNIT;
 
         // This is $y = x * 2^{-n}$.
         uint256 y = xUint >> n;
 
-        // If y is 1, the fractional part is zero.
+        // If y is the unit number, the fractional part is zero.
         if (y == uUNIT) {
             return wrap(resultUint);
         }
 
         // Calculate the fractional part via the iterative approximation.
-        // The "delta.rshift(1)" part is equivalent to `delta /= 2`, but shifting bits is faster.
+        // The `delta >>= 1` part is equivalent to `delta /= 2`, but shifting bits is more gas efficient.
         uint256 DOUBLE_UNIT = 2e18;
         for (uint256 delta = uHALF_UNIT; delta > 0; delta >>= 1) {
             y = (y * y) / uUNIT;
 
-            // Is y^2 > 2 and so in the range [2,4)?
+            // Is y^2 >= 2e18 and so in the range [2e18, 4e18)?
             if (y >= DOUBLE_UNIT) {
                 // Add the 2^{-m} factor to the logarithm.
                 resultUint += delta;
 
-                // Corresponds to z/2 on Wikipedia.
+                // Corresponds to z/2 in the Wikipedia article.
                 y >>= 1;
             }
         }
@@ -421,7 +425,7 @@ function log2(UD60x18 x) pure returns (UD60x18 result) {
 }
 
 /// @notice Multiplies two UD60x18 numbers together, returning a new UD60x18 number.
-/// @dev See the documentation for the {Common::mulDiv18} function.
+/// @dev See the documentation in {Common.mulDiv18}.
 /// @param x The multiplicand as a UD60x18 number.
 /// @param y The multiplier as a UD60x18 number.
 /// @return result The product as a UD60x18 number.
@@ -432,13 +436,13 @@ function mul(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 
 /// @notice Raises x to the power of y.
 ///
-/// @dev For $1 \leq x \leq \infty$, the following standard formula is used:
+/// For $1 \leq x \leq \infty$, the following standard formula is used:
 ///
 /// $$
 /// x^y = 2^{log_2{x} * y}
 /// $$
 ///
-/// For $0 \leq x < 1$, the following equivalent formula is used:
+/// For $0 \leq x < 1$, the unsigned {log2} is undefined, so the following equivalent formula is used instead:
 ///
 /// $$
 /// i = \frac{1}{x}
@@ -446,14 +450,12 @@ function mul(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// x^y = \frac{1}{w}
 /// $$
 ///
-/// This is because the unsigned {log2} is undefined for values less than 1.
+/// @dev Notes:
+/// - All from {log2} and {mul}.
+/// - Returns `UNIT` for 0^0.
 ///
 /// Requirements:
-/// - All from {exp2}, {log2} and {mul}.
-///
-/// Notes:
-/// - All from {exp2}, {log2} and {mul}.
-/// - Assumes that 0^0 is 1.
+/// - All from {exp2}, {log2}, and {mul}.
 ///
 /// @param x The base as a UD60x18 number.
 /// @param y The exponent as a UD60x18 number.
@@ -496,14 +498,14 @@ function pow(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// @notice Raises x (a UD60x18 number) to the power y (an unsigned basic integer) using the well-known
 /// algorithm "exponentiation by squaring".
 ///
-/// @dev See https://en.wikipedia.org/wiki/Exponentiation_by_squaring
+/// @dev See https://en.wikipedia.org/wiki/Exponentiation_by_squaring.
+///
+/// Notes:
+/// - All from {Common.mulDiv18}.
+/// - Returns `UNIT` for 0^0.
 ///
 /// Requirements:
 /// - The result must fit within `MAX_UD60x18`.
-///
-/// Notes:
-/// - All from {Common::mulDiv18}.
-/// - Assumes that 0^0 is 1.
 ///
 /// @param x The base as a UD60x18 number.
 /// @param y The exponent as a uint256.
@@ -526,9 +528,12 @@ function powu(UD60x18 x, uint256 y) pure returns (UD60x18 result) {
     result = wrap(resultUint);
 }
 
-/// @notice Calculates the square root of x, rounding down.
+/// @notice Calculates the square root of x using the Babylonian method.
 ///
-/// @dev Uses the Babylonian method https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Babylonian_method.
+/// @dev See https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Babylonian_method.
+///
+/// Notes:
+/// - The result is rounded down.
 ///
 /// Requirements:
 /// - x must be less than `MAX_UD60x18 / UNIT`.

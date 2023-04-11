@@ -280,21 +280,22 @@ function exp2(uint256 x) pure returns (uint256 result) {
 
         // We're doing two things at the same time:
         //
-        //   1. Multiply the result by 2^n + 1, where "2^n" is the integer part and the one is added to account for
+        //   1. Multiply the result by 2^n + 1, where 2^n is the integer part and the 1 is added to account for
         //      the fact that we initially set the result to 0.5. This is accomplished by subtracting from 191
         //      rather than 192.
         //   2. Convert the result to the unsigned 60.18-decimal fixed-point format.
         //
-        // This works because 2^(191-ip) = 2^ip / 2^191, where "ip" is the integer part "2^n".
+        // This works because 2^(191-ip) = 2^ip / 2^191, where "ip" is the integer part 2^n.
         result *= UNIT;
         result >>= (191 - (x >> 64));
     }
 }
 
-/// @notice Finds the zero-based index of the first one in the binary representation of x.
-/// @dev See the note on msb in this Wikipedia article: https://en.wikipedia.org/wiki/Find_first_set
+/// @notice Finds the zero-based index of the first 1 in the binary representation of x.
 ///
-/// Every step in this implementation is equivalent to this high-level code:
+/// @dev See the note on "msb" in this Wikipedia article: https://en.wikipedia.org/wiki/Find_first_set
+///
+/// Each step in this implementation is equivalent to this high-level code:
 ///
 /// ```solidity
 /// if (x >= 2 ** 128) {
@@ -367,16 +368,13 @@ function msb(uint256 x) pure returns (uint256 result) {
     }
 }
 
-/// @notice Calculates floor(x*y÷denominator) with full precision.
+/// @notice Calculates floor(x*y÷denominator) with 512-bit precision.
 ///
 /// @dev Credits to Remco Bloemen under MIT license https://xn--2-umb.com/21/muldiv.
 ///
 /// Requirements:
 /// - The denominator must not be zero.
-/// - The result must fit within uint256.
-///
-/// Notes:
-/// - This function does not work with fixed-point numbers.
+/// - The result must fit in uint256.
 ///
 /// @param x The multiplicand as a uint256.
 /// @param y The multiplier as a uint256.
@@ -385,7 +383,7 @@ function msb(uint256 x) pure returns (uint256 result) {
 /// @custom:smtchecker abstract-function-nondet
 function mulDiv(uint256 x, uint256 y, uint256 denominator) pure returns (uint256 result) {
     // 512-bit multiply [prod1 prod0] = x * y. Compute the product mod 2^256 and mod 2^256 - 1, then use
-    // use the Chinese Remainder Theorem to reconstruct the 512 bit result. The result is stored in two 256
+    // use the Chinese Remainder Theorem to reconstruct the 512-bit result. The result is stored in two 256
     // variables such that product = prod1 * 2^256 + prod0.
     uint256 prod0; // Least significant 256 bits of the product
     uint256 prod1; // Most significant 256 bits of the product
@@ -417,7 +415,7 @@ function mulDiv(uint256 x, uint256 y, uint256 denominator) pure returns (uint256
         // Compute remainder using the mulmod Yul instruction.
         remainder := mulmod(x, y, denominator)
 
-        // Subtract 256 bit number from 512 bit number.
+        // Subtract 256 bit number from 512-bit number.
         prod1 := sub(prod1, gt(remainder, prod0))
         prod0 := sub(prod0, remainder)
     }
@@ -467,20 +465,25 @@ function mulDiv(uint256 x, uint256 y, uint256 denominator) pure returns (uint256
     }
 }
 
-/// @notice Calculates floor(x*y÷1e18) with full precision.
+/// @notice Calculates floor(x*y÷1e18) with 512-bit precision.
 ///
 /// @dev A variant of {mulDiv} with constant folding, i.e. in which the denominator is always 1e18. Before returning the
 /// final result, we add 1 if `(x * y) % UNIT >= HALF_UNIT`. Without this adjustment, 6.6e-19 would be truncated to 0
 /// instead of being rounded to 1e-18. See "Listing 6" and text above it at https://accu.org/index.php/journals/1717.
 ///
-/// Requirements:
-/// - The result must fit within uint256.
-///
 /// Notes:
-/// - The body is purposely left uncommented; to understand how this works, see the NatSpec comments in {mulDiv}.
-/// - It is assumed that the result can never be `type(uint256).max` when x and y solve the following two equations:
-///     1. x * y = type(uint256).max * UNIT
-///     2. (x * y) % UNIT >= UNIT / 2
+/// - The body is purposely left uncommented; to understand how this works, see the documentation in {mulDiv}.
+/// - We take as an axiom that the result cannot be `MAX_UINT256` when x and y solve the following system of equations:
+///
+/// $$
+/// \begin{cases}
+///     x * y = MAX\_UINT256 * UNIT \\
+///     (x * y) \% UNIT \geq \frac{UNIT}{2}
+/// \end{cases}
+/// $$
+///
+/// Requirements:
+/// - The result must fit in uint256.
 ///
 /// @param x The multiplicand as an unsigned 60.18-decimal fixed-point number.
 /// @param y The multiplier as an unsigned 60.18-decimal fixed-point number.
@@ -519,9 +522,9 @@ function mulDiv18(uint256 x, uint256 y) pure returns (uint256 result) {
     }
 }
 
-/// @notice Calculates floor(x*y÷denominator) with full precision.
+/// @notice Calculates floor(x*y÷denominator) with 512-bit precision.
 ///
-/// @dev An extension of {mulDiv} for signed numbers. Works by computing the signs and the absolute values separately.
+/// @dev This is extension of {mulDiv} for signed numbers, which works by computing the signs and the absolute values separately.
 ///
 /// Requirements:
 /// - None of the inputs can be `type(int256).min`.
@@ -547,7 +550,7 @@ function mulDivSigned(int256 x, int256 y, int256 denominator) pure returns (int2
         dAbs = denominator < 0 ? uint256(-denominator) : uint256(denominator);
     }
 
-    // Compute the absolute value of (x*y)÷denominator. The result must fit within int256.
+    // Compute the absolute value of x*y÷denominator. The result must fit within int256.
     uint256 resultAbs = mulDiv(xAbs, yAbs, dAbs);
     if (resultAbs > uint256(type(int256).max)) {
         revert PRBMath_MulDivSigned_Overflow(x, y);
@@ -572,12 +575,13 @@ function mulDivSigned(int256 x, int256 y, int256 denominator) pure returns (int2
     }
 }
 
-/// @notice Calculates the square root of x, rounding down if x is not a perfect square.
-/// @dev Uses the Babylonian method https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Babylonian_method.
-/// Credits to OpenZeppelin for the explanations in code comments below.
+/// @notice Calculates the square root of x using the Babylonian method.
+///
+/// @dev See https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Babylonian_method.
 ///
 /// Notes:
-/// - This function does not work with fixed-point numbers.
+/// - The result is rounded down if x is not a perfect square.
+/// - Credits to OpenZeppelin for the explanations in comments below.
 ///
 /// @param x The uint256 number for which to calculate the square root.
 /// @return result The result as a uint256.
