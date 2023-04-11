@@ -8,6 +8,10 @@ import { UD60x18 } from "./ValueType.sol";
 /// @dev Euler's number as a UD60x18 number.
 UD60x18 constant E = UD60x18.wrap(2_718281828459045235);
 
+/// @dev The maximum input permitted in {exp2}.
+uint256 constant uEXP2_MAX_INPUT = 192e18 - 1;
+UD60x18 constant EXP2_MAX_INPUT = UD60x18.wrap(uEXP2_MAX_INPUT);
+
 /// @dev Half the UNIT number.
 uint256 constant uHALF_UNIT = 0.5e18;
 UD60x18 constant HALF_UNIT = UD60x18.wrap(uHALF_UNIT);
@@ -31,7 +35,7 @@ UD60x18 constant MAX_WHOLE_UD60x18 = UD60x18.wrap(uMAX_WHOLE_UD60x18);
 /// @dev PI as a UD60x18 number.
 UD60x18 constant PI = UD60x18.wrap(3_141592653589793238);
 
-/// @dev The unit number, which implies how many trailing decimals can be represented.
+/// @dev The unit number, which gives the decimal precision of UD60x18.
 uint256 constant uUNIT = 1e18;
 UD60x18 constant UNIT = UD60x18.wrap(uUNIT);
 

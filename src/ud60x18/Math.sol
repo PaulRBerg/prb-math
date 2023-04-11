@@ -4,7 +4,18 @@ pragma solidity >=0.8.19;
 import "../Common.sol" as Common;
 import "./Errors.sol" as Errors;
 import { wrap } from "./Casting.sol";
-import { uHALF_UNIT, uLOG2_10, uLOG2_E, uMAX_UD60x18, uMAX_WHOLE_UD60x18, UNIT, uUNIT, uUNIT_SQUARED, ZERO } from "./Constants.sol";
+import {
+    uEXP2_MAX_INPUT,
+    uHALF_UNIT,
+    uLOG2_10,
+    uLOG2_E,
+    uMAX_UD60x18,
+    uMAX_WHOLE_UD60x18,
+    UNIT,
+    uUNIT,
+    uUNIT_SQUARED,
+    ZERO
+} from "./Constants.sol";
 import { UD60x18 } from "./ValueType.sol";
 
 /*//////////////////////////////////////////////////////////////////////////
@@ -40,7 +51,7 @@ function avg(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     }
 }
 
-/// @notice Yields the smallest whole UD60x18 number greater than or equal to x.
+/// @notice Yields the smallest whole number greater than or equal to x.
 ///
 /// @dev This is optimized for fractional value inputs, because for every whole value there are (1e18 - 1) fractional
 /// counterparts. See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions.
@@ -58,13 +69,13 @@ function ceil(UD60x18 x) pure returns (UD60x18 result) {
     }
 
     assembly ("memory-safe") {
-        // Equivalent to `x % UNIT` but faster.
+        // Equivalent to `x % UNIT`.
         let remainder := mod(x, uUNIT)
 
-        // Equivalent to `UNIT - remainder` but faster.
+        // Equivalent to `UNIT - remainder`.
         let delta := sub(uUNIT, remainder)
 
-        // Equivalent to `x + delta * (remainder > 0 ? 1 : 0)` but faster.
+        // Equivalent to `x + delta * (remainder > 0 ? 1 : 0)`.
         result := add(x, mul(delta, gt(remainder, 0)))
     }
 }
@@ -130,7 +141,7 @@ function exp2(UD60x18 x) pure returns (UD60x18 result) {
     uint256 xUint = x.unwrap();
 
     // Numbers greater than or equal to 2^192 don't fit within the 192.64-bit format.
-    if (xUint >= 192e18) {
+    if (xUint > uEXP2_MAX_INPUT) {
         revert Errors.PRBMath_UD60x18_Exp2_InputTooBig(x);
     }
 
@@ -141,7 +152,7 @@ function exp2(UD60x18 x) pure returns (UD60x18 result) {
     result = wrap(Common.exp2(x_192x64));
 }
 
-/// @notice Yields the greatest whole UD60x18 number less than or equal to x.
+/// @notice Yields the greatest whole number less than or equal to x.
 /// @dev Optimized for fractional value inputs, because every whole value has (1e18 - 1) fractional counterparts.
 /// See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions.
 /// @param x The UD60x18 number to floor.
@@ -149,10 +160,10 @@ function exp2(UD60x18 x) pure returns (UD60x18 result) {
 /// @custom:smtchecker abstract-function-nondet
 function floor(UD60x18 x) pure returns (UD60x18 result) {
     assembly ("memory-safe") {
-        // Equivalent to `x % UNIT` but faster.
+        // Equivalent to `x % UNIT`.
         let remainder := mod(x, uUNIT)
 
-        // Equivalent to `x - remainder * (remainder > 0 ? 1 : 0)` but faster.
+        // Equivalent to `x - remainder * (remainder > 0 ? 1 : 0)`.
         result := sub(x, mul(remainder, gt(remainder, 0)))
     }
 }
@@ -168,7 +179,7 @@ function frac(UD60x18 x) pure returns (UD60x18 result) {
     }
 }
 
-/// @notice Calculates the geometric mean of x and y, i.e. $sqrt(x * y)$, rounding down.
+/// @notice Calculates the geometric mean of x and y, i.e. $\sqrt{x * y}$, rounding down.
 ///
 /// @dev Requirements:
 /// - x * y must fit within `MAX_UD60x18`, lest it overflows.
@@ -362,8 +373,7 @@ function log10(UD60x18 x) pure returns (UD60x18 result) {
 /// - x must be greater than or equal to UNIT, because the result must not be negative.
 ///
 /// Notes:
-/// - The results are nor perfectly accurate to the last decimal, due to the lossy precision of the iterative
-/// approximation.
+/// - Due to the lossy precision of the iterative approximation, the results are not perfectly accurate to the last decimal.
 ///
 /// @param x The UD60x18 number for which to calculate the binary logarithm.
 /// @return result The binary logarithm as a UD60x18 number.
@@ -376,7 +386,7 @@ function log2(UD60x18 x) pure returns (UD60x18 result) {
     }
 
     unchecked {
-        // Calculate the integer part of the logarithm, add it to the result and finally calculate $y = x * 2^(-n)$.
+        // Calculate the integer part of the logarithm, add it to the result and finally calculate $y = x * 2^{-n}$.
         uint256 n = Common.msb(xUint / uUNIT);
 
         // This is the integer part of the logarithm as a UD60x18 number. The operation can't overflow because n
@@ -475,11 +485,11 @@ function powu(UD60x18 x, uint256 y) pure returns (UD60x18 result) {
     uint256 xUint = x.unwrap();
     uint256 resultUint = y & 1 > 0 ? xUint : uUNIT;
 
-    // Equivalent to `for(y /= 2; y > 0; y /= 2)` but faster.
+    // Equivalent to `for(y /= 2; y > 0; y /= 2)`.
     for (y >>= 1; y > 0; y >>= 1) {
         xUint = Common.mulDiv18(xUint, xUint);
 
-        // Equivalent to `y % 2 == 1` but faster.
+        // Equivalent to `y % 2 == 1`.
         if (y & 1 > 0) {
             resultUint = Common.mulDiv18(resultUint, xUint);
         }
@@ -504,8 +514,8 @@ function sqrt(UD60x18 x) pure returns (UD60x18 result) {
         if (xUint > uMAX_UD60x18 / uUNIT) {
             revert Errors.PRBMath_UD60x18_Sqrt_Overflow(x);
         }
-        // Multiply x by `UNIT` to account for the factor of `UNIT` that is picked up when multiplying two UD60x18
-        // numbers together (in this case, the two numbers are both the square root).
+        // Multiply x by `UNIT` to account for the factor of `UNIT` picked up when multiplying two UD60x18 numbers.
+        // In this case, the two numbers are both the square root.
         result = wrap(Common.sqrt(xUint * uUNIT));
     }
 }

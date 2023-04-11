@@ -4,6 +4,7 @@ pragma solidity >=0.8.19;
 import "../Common.sol" as Common;
 import "./Errors.sol" as Errors;
 import {
+    uEXP2_MAX_INPUT,
     uHALF_UNIT,
     uLOG2_10,
     uLOG2_E,
@@ -45,13 +46,12 @@ function avg(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     int256 yInt = y.unwrap();
 
     unchecked {
-        // This is equivalent to `x / 2 +  y / 2` but faster.
-        // This operation can never overflow.
+        // This operation is equivalent to `x / 2 +  y / 2`, and it can never overflow.
         int256 sum = (xInt >> 1) + (yInt >> 1);
 
         if (sum < 0) {
             // If at least one of x and y is odd, we add 1 to the result, because shifting negative numbers to the right
-            // rounds down to infinity. The right part is equivalent to `sum + (x % 2 == 1 || y % 2 == 1)` but faster.
+            // rounds down to infinity. The right part is equivalent to `sum + (x % 2 == 1 || y % 2 == 1)`.
             assembly ("memory-safe") {
                 result := add(sum, and(or(xInt, yInt), 1))
             }
@@ -62,7 +62,7 @@ function avg(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     }
 }
 
-/// @notice Yields the smallest whole SD59x18 number greater than or equal to x.
+/// @notice Yields the smallest whole number greater than or equal to x.
 ///
 /// @dev Optimized for fractional value inputs, because every whole value has (1e18 - 1) fractional counterparts.
 /// See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions.
@@ -214,8 +214,8 @@ function exp2(SD59x18 x) pure returns (SD59x18 result) {
             result = wrap(uUNIT_SQUARED / exp2(wrap(-xInt)).unwrap());
         }
     } else {
-        // 2^192 doesn't fit within the 192.64-bit format used internally in this function.
-        if (xInt >= 192e18) {
+        // Numbers greater than or equal to 2^192 don't fit within the 192.64-bit format.
+        if (xInt > uEXP2_MAX_INPUT) {
             revert Errors.PRBMath_SD59x18_Exp2_InputTooBig(x);
         }
 
@@ -229,7 +229,7 @@ function exp2(SD59x18 x) pure returns (SD59x18 result) {
     }
 }
 
-/// @notice Yields the greatest whole SD59x18 number less than or equal to x.
+/// @notice Yields the greatest whole number less than or equal to x.
 ///
 /// @dev Optimized for fractional value inputs, because for every whole value there are (1e18 - 1) fractional
 /// counterparts. See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions.
@@ -270,11 +270,11 @@ function frac(SD59x18 x) pure returns (SD59x18 result) {
     result = wrap(x.unwrap() % uUNIT);
 }
 
-/// @notice Calculates the geometric mean of x and y, i.e. sqrt(x * y), rounding down.
+/// @notice Calculates the geometric mean of x and y, i.e. $\sqrt{x * y}$, rounding down.
 ///
 /// @dev Requirements:
 /// - x * y must fit within `MAX_SD59x18`, lest it overflows.
-/// - x * y must not be negative, since this library does not handle complex numbers.
+/// - x * y must not be negative, since complex numbers are not supported.
 ///
 /// @param x The first operand as an SD59x18 number.
 /// @param y The second operand as an SD59x18 number.
@@ -294,7 +294,7 @@ function gm(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
             revert Errors.PRBMath_SD59x18_Gm_Overflow(x, y);
         }
 
-        // The product must not be negative, since this library does not handle complex numbers.
+        // The product must not be negative, since complex numbers are not supported.
         if (xyInt < 0) {
             revert Errors.PRBMath_SD59x18_Gm_NegativeProduct(x, y);
         }
@@ -466,8 +466,7 @@ function log10(SD59x18 x) pure returns (SD59x18 result) {
 /// - x must be greater than zero.
 ///
 /// Notes:
-/// - The results are not perfectly accurate to the last decimal, due to the lossy precision of the iterative
-/// approximation.
+/// - Due to the lossy precision of the iterative approximation, the results are not perfectly accurate to the last decimal.
 ///
 /// @param x The SD59x18 number for which to calculate the binary logarithm.
 /// @return result The binary logarithm as an SD59x18 number.
@@ -493,7 +492,7 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
             xInt = uUNIT_SQUARED / xInt;
         }
 
-        // Calculate the integer part of the logarithm and add it to the result and finally calculate $y = x * 2^(-n)$.
+        // Calculate the integer part of the logarithm and add it to the result and finally calculate $y = x * 2^{-n}$.
         uint256 n = Common.msb(uint256(xInt / uUNIT));
 
         // This is the integer part of the logarithm as an SD59x18 number. The operation can't overflow
@@ -630,12 +629,12 @@ function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
     // Calculate the first iteration of the loop in advance.
     uint256 resultAbs = y & 1 > 0 ? xAbs : uint256(uUNIT);
 
-    // Equivalent to `for(y /= 2; y > 0; y /= 2)` but faster.
+    // Equivalent to `for(y /= 2; y > 0; y /= 2)`.
     uint256 yAux = y;
     for (yAux >>= 1; yAux > 0; yAux >>= 1) {
         xAbs = Common.mulDiv18(xAbs, xAbs);
 
-        // Equivalent to `y % 2 == 1` but faster.
+        // Equivalent to `y % 2 == 1`.
         if (yAux & 1 > 0) {
             resultAbs = Common.mulDiv18(resultAbs, xAbs);
         }
@@ -662,7 +661,7 @@ function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
 /// @dev Uses the Babylonian method https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Babylonian_method.
 ///
 /// Requirements:
-/// - x cannot be negative, since this library does not handle complex numbers.
+/// - x cannot be negative, since complex numbers are not supported.
 /// - x must be less than `MAX_SD59x18 / UNIT`.
 ///
 /// @param x The SD59x18 number for which to calculate the square root.
@@ -678,8 +677,8 @@ function sqrt(SD59x18 x) pure returns (SD59x18 result) {
     }
 
     unchecked {
-        // Multiply x by `UNIT` to account for the factor of `UNIT` that is picked up when multiplying two SD59x18
-        // numbers together (in this case, the two numbers are both the square root).
+        // Multiply x by `UNIT` to account for the factor of `UNIT` picked up when multiplying two SD59x18 numbers
+        // In this case, the two numbers are both the square root.
         uint256 resultUint = Common.sqrt(uint256(xInt * uUNIT));
         result = wrap(int256(resultUint));
     }

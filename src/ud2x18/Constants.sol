@@ -13,6 +13,6 @@ UD2x18 constant MAX_UD2x18 = UD2x18.wrap(uMAX_UD2x18);
 /// @dev PI as a UD2x18 number.
 UD2x18 constant PI = UD2x18.wrap(3_141592653589793238);
 
-/// @dev The unit number, which implies how many trailing decimals can be represented.
+/// @dev The unit number, which gives the decimal precision of UD2x18.
 uint256 constant uUNIT = 1e18;
 UD2x18 constant UNIT = UD2x18.wrap(1e18);

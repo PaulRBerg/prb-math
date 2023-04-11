@@ -306,7 +306,8 @@ function exp2(uint256 x) pure returns (uint256 result) {
 /// Where 128 is replaced with each respective power of two factor. See the full high-level implementation here:
 /// https://gist.github.com/PaulRBerg/f932f8693f2733e30c4d479e8e980948
 ///
-/// A list of the Yul instructions used below:
+/// The Yul instructions used below are:
+///
 /// - "gt" is "greater than"
 /// - "or" is the OR bitwise operator
 /// - "shl" is "shift left"
