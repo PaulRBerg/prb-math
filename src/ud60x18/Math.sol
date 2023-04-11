@@ -432,11 +432,21 @@ function mul(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 
 /// @notice Raises x to the power of y.
 ///
-/// @dev Uses the following formula:
+/// @dev For $1 \leq x \leq \infty$, the following standard formula is used:
 ///
 /// $$
 /// x^y = 2^{log_2{x} * y}
 /// $$
+///
+/// For $0 \leq x < 1$, the following equivalent formula is used:
+///
+/// $$
+/// i = \frac{1}{x}
+/// w = 2^{log_2{i} * y}
+/// x^y = \frac{1}{w}
+/// $$
+///
+/// This is because the unsigned {log2} is undefined for values less than 1.
 ///
 /// Requirements:
 /// - All from {exp2}, {log2} and {mul}.
@@ -453,14 +463,33 @@ function pow(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     uint256 xUint = x.unwrap();
     uint256 yUint = y.unwrap();
 
+    // If both x and y are zero, the result is `UNIT`. If just x is zero, the result is always zero.
     if (xUint == 0) {
-        result = yUint == 0 ? UNIT : ZERO;
-    } else {
-        if (yUint == uUNIT) {
-            result = x;
-        } else {
-            result = exp2(mul(log2(x), y));
-        }
+        return yUint == 0 ? UNIT : ZERO;
+    }
+    // If x is `UNIT`, the result is always `UNIT`.
+    else if (xUint == uUNIT) {
+        return UNIT;
+    }
+
+    // If y is zero, the result is always `UNIT`.
+    if (yUint == 0) {
+        return UNIT;
+    }
+    // If y is `UNIT`, the result is always x.
+    else if (yUint == uUNIT) {
+        return x;
+    }
+
+    // If x is greater than `UNIT`, use the standard formula.
+    if (xUint > uUNIT) {
+        result = exp2(mul(log2(x), y));
+    }
+    // Conversely, if x is less than `UNIT`, use the equivalent formula.
+    else {
+        UD60x18 i = wrap(uUNIT_SQUARED / xUint);
+        UD60x18 w = exp2(mul(log2(i), y));
+        result = wrap(uUNIT_SQUARED / w.unwrap());
     }
 }
 
