@@ -11,7 +11,6 @@
   },
   "devDependencies": {
     "prettier": "^2.8.4",
-    "rimraf": "^4.3.1",
     "solhint": "^3.4.1"
   },
   "files": [
@@ -40,7 +39,7 @@
   },
   "scripts": {
     "build": "forge build",
-    "clean": "rimraf cache out",
+    "clean": "rm -rf cache out",
     "lint": "pnpm lint:sol && pnpm prettier:check",
     "lint:sol": "forge fmt --check && pnpm solhint \"{src,test}/**/*.sol\"",
     "prettier:check": "prettier --check \"**/*.{json,md,yml}\"",
