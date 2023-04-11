@@ -467,9 +467,7 @@ function mulDiv(uint256 x, uint256 y, uint256 denominator) pure returns (uint256
 
 /// @notice Calculates floor(x*y÷1e18) with 512-bit precision.
 ///
-/// @dev A variant of {mulDiv} with constant folding, i.e. in which the denominator is always 1e18. Before returning the
-/// final result, we add 1 if `(x * y) % UNIT >= HALF_UNIT`. Without this adjustment, 6.6e-19 would be truncated to 0
-/// instead of being rounded to 1e-18. See "Listing 6" and text above it at https://accu.org/index.php/journals/1717.
+/// @dev A variant of {mulDiv} with constant folding, i.e. in which the denominator is always 1e18.
 ///
 /// Notes:
 /// - The body is purposely left uncommented; to understand how this works, see the documentation in {mulDiv}.
@@ -526,7 +524,11 @@ function mulDiv18(uint256 x, uint256 y) pure returns (uint256 result) {
 ///
 /// @dev This is extension of {mulDiv} for signed numbers, which works by computing the signs and the absolute values separately.
 ///
+/// Notes:
+/// - The result is rounded towards zero.
+///
 /// Requirements:
+/// - All from {mulDiv}.
 /// - None of the inputs can be `type(int256).min`.
 /// - The result must fit within int256.
 ///
