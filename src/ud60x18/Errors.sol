@@ -9,10 +9,10 @@ error PRBMath_UD60x18_Ceil_Overflow(UD60x18 x);
 /// @notice Thrown when converting a basic integer to the fixed-point format overflows UD60x18.
 error PRBMath_UD60x18_Convert_Overflow(uint256 x);
 
-/// @notice Thrown when taking the natural exponent of a base greater than 133.084258667509499441.
+/// @notice Thrown when taking the natural exponent of a base greater than 133_084258667509499441.
 error PRBMath_UD60x18_Exp_InputTooBig(UD60x18 x);
 
-/// @notice Thrown when taking the binary exponent of a base greater than 192.
+/// @notice Thrown when taking the binary exponent of a base greater than 192e18.
 error PRBMath_UD60x18_Exp2_InputTooBig(UD60x18 x);
 
 /// @notice Thrown when taking the geometric mean of two numbers and multiplying them overflows UD60x18.

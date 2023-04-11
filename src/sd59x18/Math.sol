@@ -4,6 +4,7 @@ pragma solidity >=0.8.19;
 import "../Common.sol" as Common;
 import "./Errors.sol" as Errors;
 import {
+    uEXP_MAX_INPUT,
     uEXP2_MAX_INPUT,
     uHALF_UNIT,
     uLOG2_10,
@@ -152,7 +153,6 @@ function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 ///
 /// @dev Notes:
 /// - All from {exp2}.
-/// - If x is less than 41.446531673892822322$, the result is zero.
 ///
 /// Requirements:
 /// - All from {exp2}.
@@ -163,13 +163,9 @@ function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 /// @custom:smtchecker abstract-function-nondet
 function exp(SD59x18 x) pure returns (SD59x18 result) {
     int256 xInt = x.unwrap();
-    // Without this check, the value passed to {exp2} would be less than -59_794705707972522261.
-    if (xInt < -41_446531673892822322) {
-        return ZERO;
-    }
 
-    // Without this check, the value passed to {exp2} would be greater than 192.
-    if (xInt >= 133_084258667509499441) {
+    // This check prevents values greater than 192 from being passed to {exp2}.
+    if (xInt > uEXP_MAX_INPUT) {
         revert Errors.PRBMath_SD59x18_Exp_InputTooBig(x);
     }
 
@@ -201,7 +197,7 @@ function exp(SD59x18 x) pure returns (SD59x18 result) {
 function exp2(SD59x18 x) pure returns (SD59x18 result) {
     int256 xInt = x.unwrap();
     if (xInt < 0) {
-        // 2^59.794705707972522262 is the greatest number whose inverse does not truncate down to zero.
+        // The inverse of any number less than this is truncated to zero.
         if (xInt < -59_794705707972522261) {
             return ZERO;
         }

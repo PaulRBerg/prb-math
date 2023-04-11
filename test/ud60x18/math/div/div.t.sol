@@ -57,7 +57,7 @@ contract Div_Test is UD60x18_Test {
         x / y;
     }
 
-    modifier whenResultNotOverflowUD60x18() {
+    modifier whenResultDoesNotOverflowUD60x18() {
         _;
     }
 
@@ -82,7 +82,7 @@ contract Div_Test is UD60x18_Test {
         return sets;
     }
 
-    function test_Div() external parameterizedTest(div_Sets()) whenDenominatorNotZero whenResultNotOverflowUD60x18 {
+    function test_Div() external parameterizedTest(div_Sets()) whenDenominatorNotZero whenResultDoesNotOverflowUD60x18 {
         assertEq(div(s.x, s.y), s.expected, "UD60x18 div");
         assertEq(s.x / s.y, s.expected, "UD60x18 /");
     }

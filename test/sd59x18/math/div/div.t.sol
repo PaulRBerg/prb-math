@@ -129,7 +129,7 @@ contract Div_Test is SD59x18_Test {
         x / y;
     }
 
-    modifier whenResultNotOverflowSD59x18() {
+    modifier whenResultDoesNotOverflowSD59x18() {
         _;
     }
 
@@ -177,7 +177,7 @@ contract Div_Test is SD59x18_Test {
         whenDenominatorNotMinSD59x18
         whenNumeratorNotZero
         whenNumeratorNotMinSD59x18
-        whenResultNotOverflowSD59x18
+        whenResultDoesNotOverflowSD59x18
     {
         assertEq(div(s.x, s.y), s.expected, "SD59x18 div");
         assertEq(s.x / s.y, s.expected, "SD59x18 /");
@@ -227,7 +227,7 @@ contract Div_Test is SD59x18_Test {
         whenDenominatorNotMinSD59x18
         whenNumeratorNotZero
         whenNumeratorNotMinSD59x18
-        whenResultNotOverflowSD59x18
+        whenResultDoesNotOverflowSD59x18
     {
         assertEq(div(s.x, s.y), s.expected, "SD59x18 div");
         assertEq(s.x / s.y, s.expected, "SD59x18 /");
