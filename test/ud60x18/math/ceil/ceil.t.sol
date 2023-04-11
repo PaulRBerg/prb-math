@@ -22,7 +22,7 @@ contract CeilTest is UD60x18_Test {
     }
 
     function test_RevertWhen_GtMaxPermitted() external whenNotZero {
-        UD60x18 x = MAX_WHOLE_UD60x18.add(ud(1));
+        UD60x18 x = MAX_WHOLE_UD60x18 + ud(1);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_UD60x18_Ceil_Overflow.selector, x));
         ceil(x);
     }

@@ -32,7 +32,7 @@ contract Sqrt_Test is SD59x18_Test {
     }
 
     function test_RevertWhen_GtMaxPermitted() external whenNotZero whenPositive {
-        SD59x18 x = MAX_SCALED_SD59x18.add(sd(1));
+        SD59x18 x = MAX_SCALED_SD59x18 + sd(1);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Sqrt_Overflow.selector, x));
         sqrt(x);
     }

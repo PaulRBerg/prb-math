@@ -28,7 +28,7 @@ contract Exp2_Test is SD59x18_Test {
         delete sets;
         sets.push(set({ x: MIN_SD59x18, expected: 0 }));
         sets.push(set({ x: MIN_WHOLE_SD59x18, expected: 0 }));
-        sets.push(set({ x: MIN_PERMITTED.sub(sd(1)), expected: 0 }));
+        sets.push(set({ x: MIN_PERMITTED - sd(1), expected: 0 }));
         return sets;
     }
 
@@ -61,7 +61,7 @@ contract Exp2_Test is SD59x18_Test {
     }
 
     function test_RevertWhen_Positive_GtMaxPermitted() external whenNotZero {
-        SD59x18 x = MAX_PERMITTED.add(sd(1));
+        SD59x18 x = MAX_PERMITTED + sd(1);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Exp2_InputTooBig.selector, x));
         exp2(x);
     }
