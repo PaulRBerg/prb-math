@@ -35,12 +35,12 @@ uint40 constant MAX_UINT40 = type(uint40).max;
 /// @dev How many trailing decimals can be represented.
 uint256 constant UNIT = 1e18;
 
+/// @dev The `UNIT` number inverted mod 2^256.
+uint256 constant UNIT_INVERSE = 78156646155174841979727994598816262306175212592076161876661_508869554232690281;
+
 /// @dev The the largest power of two that divides the decimal value of `UNIT`. The logarithm of this value is the least significant
 /// bit in the binary representation of `UNIT`.
 uint256 constant UNIT_LPOTD = 262144;
-
-/// @dev The `UNIT` number inverted mod 2^256.
-uint256 constant UNIT_INVERSE = 78156646155174841979727994598816262306175212592076161876661_508869554232690281;
 
 /*//////////////////////////////////////////////////////////////////////////
                                     FUNCTIONS
