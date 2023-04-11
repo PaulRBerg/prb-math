@@ -8,6 +8,10 @@ import { UD60x18 } from "./ValueType.sol";
 /// @dev Euler's number as a UD60x18 number.
 UD60x18 constant E = UD60x18.wrap(2_718281828459045235);
 
+/// @dev The maximum input permitted in {exp}.
+uint256 constant uEXP_MAX_INPUT = 133_084258667509499440;
+UD60x18 constant EXP_MAX_INPUT = UD60x18.wrap(uEXP_MAX_INPUT);
+
 /// @dev The maximum input permitted in {exp2}.
 uint256 constant uEXP2_MAX_INPUT = 192e18 - 1;
 UD60x18 constant EXP2_MAX_INPUT = UD60x18.wrap(uEXP2_MAX_INPUT);

@@ -2,7 +2,7 @@
 pragma solidity >=0.8.19 <0.9.0;
 
 import { sd } from "src/sd59x18/Casting.sol";
-import { E, MIN_SD59x18, MIN_WHOLE_SD59x18, PI, UNIT, ZERO } from "src/sd59x18/Constants.sol";
+import { E, EXP2_MAX_INPUT, MIN_SD59x18, MIN_WHOLE_SD59x18, PI, UNIT, ZERO } from "src/sd59x18/Constants.sol";
 import { PRBMath_SD59x18_Exp2_InputTooBig } from "src/sd59x18/Errors.sol";
 import { exp2 } from "src/sd59x18/Math.sol";
 import { SD59x18 } from "src/sd59x18/ValueType.sol";
@@ -10,8 +10,8 @@ import { SD59x18 } from "src/sd59x18/ValueType.sol";
 import { SD59x18_Test } from "../../SD59x18.t.sol";
 
 contract Exp2_Test is SD59x18_Test {
-    SD59x18 internal constant MAX_PERMITTED = SD59x18.wrap(192e18 - 1);
-    SD59x18 internal constant MIN_PERMITTED = SD59x18.wrap(-59_794705707972522261);
+    /// @dev Any input smaller than this makes the result zero.
+    SD59x18 internal constant THRESHOLD = SD59x18.wrap(-59_794705707972522261);
 
     function test_Exp2_Zero() external {
         SD59x18 x = ZERO;
@@ -24,22 +24,22 @@ contract Exp2_Test is SD59x18_Test {
         _;
     }
 
-    function negativeAndLtMinPermitted_Sets() internal returns (Set[] memory) {
+    function negativeAndLtThreshold_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_SD59x18, expected: 0 }));
         sets.push(set({ x: MIN_WHOLE_SD59x18, expected: 0 }));
-        sets.push(set({ x: MIN_PERMITTED - sd(1), expected: 0 }));
+        sets.push(set({ x: THRESHOLD - sd(1), expected: 0 }));
         return sets;
     }
 
-    function test_Exp2_Negative_LtMinPermitted() external parameterizedTest(negativeAndLtMinPermitted_Sets()) whenNotZero {
+    function test_Exp2_Negative_LtThreshold() external parameterizedTest(negativeAndLtThreshold_Sets()) whenNotZero {
         SD59x18 actual = exp2(s.x);
         assertEq(actual, s.expected, "SD59x18 exp2");
     }
 
     function negativeAndGteMinPermitted_Sets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: MIN_PERMITTED, expected: 0.000000000000000001e18 }));
+        sets.push(set({ x: THRESHOLD, expected: 0.000000000000000001e18 }));
         sets.push(set({ x: -33.333333e18, expected: 0.000000000092398923e18 }));
         sets.push(set({ x: -20.82e18, expected: 0.000000540201132438e18 }));
         sets.push(set({ x: -16e18, expected: 0.0000152587890625e18 }));
@@ -61,7 +61,7 @@ contract Exp2_Test is SD59x18_Test {
     }
 
     function test_RevertWhen_Positive_GtMaxPermitted() external whenNotZero {
-        SD59x18 x = MAX_PERMITTED + sd(1);
+        SD59x18 x = EXP2_MAX_INPUT + sd(1);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Exp2_InputTooBig.selector, x));
         exp2(x);
     }
@@ -91,7 +91,7 @@ contract Exp2_Test is SD59x18_Test {
         sets.push(set({ x: 95e18, expected: 39614081257_132168796771975168e18 }));
         sets.push(set({ x: 127e18, expected: 170141183460469231731_687303715884105728e18 }));
         sets.push(set({ x: 152.9065e18, expected: 10701459987152828635116598811554803403437267307_663014047009710338 }));
-        sets.push(set({ x: MAX_PERMITTED, expected: 6277101735386680759401282518710514696272033118492751795945e18 }));
+        sets.push(set({ x: EXP2_MAX_INPUT, expected: 6277101735386680759401282518710514696272033118492751795945e18 }));
         return sets;
     }
 

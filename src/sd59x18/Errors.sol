@@ -21,10 +21,10 @@ error PRBMath_SD59x18_Div_InputTooSmall();
 /// @notice Thrown when dividing two numbers and one of the intermediary unsigned results overflows SD59x18.
 error PRBMath_SD59x18_Div_Overflow(SD59x18 x, SD59x18 y);
 
-/// @notice Thrown when taking the natural exponent of a base greater than 133.084258667509499441.
+/// @notice Thrown when taking the natural exponent of a base greater than 133_084258667509499441.
 error PRBMath_SD59x18_Exp_InputTooBig(SD59x18 x);
 
-/// @notice Thrown when taking the binary exponent of a base greater than 192.
+/// @notice Thrown when taking the binary exponent of a base greater than 192e18.
 error PRBMath_SD59x18_Exp2_InputTooBig(SD59x18 x);
 
 /// @notice Thrown when flooring a number underflows SD59x18.

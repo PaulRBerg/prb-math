@@ -5,6 +5,7 @@ import "../Common.sol" as Common;
 import "./Errors.sol" as Errors;
 import { wrap } from "./Casting.sol";
 import {
+    uEXP_MAX_INPUT,
     uEXP2_MAX_INPUT,
     uHALF_UNIT,
     uLOG2_10,
@@ -115,8 +116,8 @@ function div(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 function exp(UD60x18 x) pure returns (UD60x18 result) {
     uint256 xUint = x.unwrap();
 
-    // Without this check, the value passed to {exp2} would be greater than 192.
-    if (xUint >= 133_084258667509499441) {
+    // This check prevents values greater than 192 from being passed to {exp2}.
+    if (xUint > uEXP_MAX_INPUT) {
         revert Errors.PRBMath_UD60x18_Exp_InputTooBig(x);
     }
 

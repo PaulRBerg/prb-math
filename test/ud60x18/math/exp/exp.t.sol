@@ -2,7 +2,7 @@
 pragma solidity >=0.8.19 <0.9.0;
 
 import { ud } from "src/ud60x18/Casting.sol";
-import { E, PI, UNIT, ZERO } from "src/ud60x18/Constants.sol";
+import { E, EXP_MAX_INPUT, PI, UNIT, ZERO } from "src/ud60x18/Constants.sol";
 import { PRBMath_UD60x18_Exp_InputTooBig } from "src/ud60x18/Errors.sol";
 import { exp } from "src/ud60x18/Math.sol";
 import { UD60x18 } from "src/ud60x18/ValueType.sol";
@@ -10,8 +10,6 @@ import { UD60x18 } from "src/ud60x18/ValueType.sol";
 import { UD60x18_Test } from "../../UD60x18.t.sol";
 
 contract Exp_Test is UD60x18_Test {
-    UD60x18 internal constant MAX_PERMITTED = UD60x18.wrap(133_084258667509499440);
-
     function test_Exp_Zero() external {
         UD60x18 x = ZERO;
         UD60x18 actual = exp(x);
@@ -24,7 +22,7 @@ contract Exp_Test is UD60x18_Test {
     }
 
     function test_RevertWhen_GtMaxPermitted() external whenNotZero {
-        UD60x18 x = MAX_PERMITTED + ud(1);
+        UD60x18 x = EXP_MAX_INPUT + ud(1);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_UD60x18_Exp_InputTooBig.selector, x));
         exp(x);
     }
@@ -50,7 +48,7 @@ contract Exp_Test is UD60x18_Test {
         sets.push(set({ x: 64e18, expected: 6235149080811616783682415370_612321304359995711 }));
         sets.push(set({ x: 71.002e18, expected: 6851360256686183998595702657852_843771046889809565 }));
         sets.push(set({ x: 88.722839111672999627e18, expected: 340282366920938463222979506443879150094_819893272894857679 }));
-        sets.push(set({ x: MAX_PERMITTED, expected: 6277101735386680754977611748738314679353920434623901771623e18 }));
+        sets.push(set({ x: EXP_MAX_INPUT, expected: 6277101735386680754977611748738314679353920434623901771623e18 }));
         return sets;
     }
 
