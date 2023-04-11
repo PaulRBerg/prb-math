@@ -14,7 +14,7 @@ contract Floor_Test is SD59x18_Test {
         SD59x18 x = ZERO;
         SD59x18 actual = floor(x);
         SD59x18 expected = ZERO;
-        assertEq(actual, expected);
+        assertEq(actual, expected, "SD59x18 floor");
     }
 
     modifier whenNotZero() {
@@ -46,7 +46,7 @@ contract Floor_Test is SD59x18_Test {
         whenNotZero
     {
         SD59x18 actual = floor(s.x);
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "SD59x18 floor");
     }
 
     function positive_Sets() internal returns (Set[] memory) {
@@ -66,6 +66,6 @@ contract Floor_Test is SD59x18_Test {
 
     function test_Floor_Positive() external parameterizedTest(positive_Sets()) whenNotZero {
         SD59x18 actual = floor(s.x);
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "SD59x18 floor");
     }
 }

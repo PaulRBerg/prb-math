@@ -13,7 +13,7 @@ contract Avg_Test is SD59x18_Test {
         SD59x18 y = ZERO;
         SD59x18 actual = avg(x, y);
         SD59x18 expected = ZERO;
-        assertEq(actual, expected);
+        assertEq(actual, expected, "SD59x18 avg");
     }
 
     function onlyOneOperandZero_Sets() internal returns (Set[] memory) {
@@ -27,7 +27,7 @@ contract Avg_Test is SD59x18_Test {
 
     function test_Avg_OnlyOneOperandZero() external parameterizedTest(onlyOneOperandZero_Sets()) {
         SD59x18 actual = avg(s.x, s.y);
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "SD59x18 avg");
     }
 
     modifier whenNeitherOperandZero() {
@@ -52,7 +52,7 @@ contract Avg_Test is SD59x18_Test {
         whenNeitherOperandZero
     {
         SD59x18 actual = avg(s.x, s.y);
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "SD59x18 avg");
     }
 
     function bothOperandsNegative_Sets() internal returns (Set[] memory) {
@@ -74,7 +74,7 @@ contract Avg_Test is SD59x18_Test {
 
     function test_Avg_BothOperandsNegative() external parameterizedTest(bothOperandsNegative_Sets()) whenNeitherOperandZero {
         SD59x18 actual = avg(s.x, s.y);
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "SD59x18 avg");
     }
 
     modifier whenBothOperandsPositive() {
@@ -98,7 +98,7 @@ contract Avg_Test is SD59x18_Test {
         whenBothOperandsPositive
     {
         SD59x18 actual = avg(s.x, s.y);
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "SD59x18 avg");
     }
 
     function bothOperandsOdd_Sets() internal returns (Set[] memory) {
@@ -116,7 +116,7 @@ contract Avg_Test is SD59x18_Test {
         SD59x18 actual = avg(s.x, s.y);
         logSd(s.x);
         logSd(s.y);
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "SD59x18 avg");
     }
 
     function oneOperandEvenTheOtherOdd_Sets() internal returns (Set[] memory) {
@@ -138,6 +138,6 @@ contract Avg_Test is SD59x18_Test {
 
     function test_Avg_OneOperandEvenTheOtherOdd() external parameterizedTest(oneOperandEvenTheOtherOdd_Sets()) {
         SD59x18 actual = avg(s.x, s.y);
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "SD59x18 avg");
     }
 }

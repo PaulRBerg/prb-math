@@ -31,7 +31,7 @@ contract Casting_Test is SD59x18_Test {
     function testFuzz_IntoInt256(SD59x18 x) external {
         int256 actual = x.intoInt256();
         int256 expected = SD59x18.unwrap(x);
-        assertEq(actual, expected);
+        assertEq(actual, expected, "SD59x18 intoInt256");
     }
 
     function testFuzz_RevertWhen_UnderflowSD1x18(SD59x18 x) external {
@@ -50,7 +50,7 @@ contract Casting_Test is SD59x18_Test {
         x = bound(x, uMIN_SD1x18, uMAX_SD1x18);
         SD1x18 actual = x.intoSD1x18();
         SD1x18 expected = SD1x18.wrap(int64(x.unwrap()));
-        assertEq(actual, expected);
+        assertEq(actual, expected, "SD59x18 intoSD1x18");
     }
 
     function testFuzz_RevertWhen_UnderflowUD2x18(SD59x18 x) external {
@@ -69,7 +69,7 @@ contract Casting_Test is SD59x18_Test {
         x = bound(x, 0, int256(uint256(uMAX_UD2x18)));
         UD2x18 actual = x.intoUD2x18();
         UD2x18 expected = UD2x18.wrap(uint64(uint256(x.unwrap())));
-        assertEq(actual, expected);
+        assertEq(actual, expected, "SD59x18 intoUD2x18");
     }
 
     function testFuzz_RevertWhen_UnderflowUD60x18(SD59x18 x) external {
@@ -82,7 +82,7 @@ contract Casting_Test is SD59x18_Test {
         x = bound(x, 0, MAX_SD59x18);
         UD60x18 actual = x.intoUD60x18();
         UD60x18 expected = UD60x18.wrap(uint256(x.unwrap()));
-        assertEq(actual, expected);
+        assertEq(actual, expected, "SD59x18 intoUD60x18");
     }
 
     function testFuzz_RevertWhen_UnderflowUint128(SD59x18 x) external {
@@ -101,7 +101,7 @@ contract Casting_Test is SD59x18_Test {
         x = bound(x, 0, int256(uint256(MAX_UINT128)));
         uint128 actual = x.intoUint128();
         uint128 expected = uint128(uint256(x.unwrap()));
-        assertEq(actual, expected);
+        assertEq(actual, expected, "SD59x18 intoUint128");
     }
 
     function testFuzz_RevertWhen_UnderflowUint256(SD59x18 x) external {
@@ -114,7 +114,7 @@ contract Casting_Test is SD59x18_Test {
         x = bound(x, 0, MAX_SD59x18);
         uint256 actual = x.intoUint256();
         uint256 expected = uint256(x.unwrap());
-        assertEq(actual, expected);
+        assertEq(actual, expected, "SD59x18 intoUint256");
     }
 
     function testFuzz_RevertWhen_UnderflowUint40(SD59x18 x) external {
@@ -133,30 +133,30 @@ contract Casting_Test is SD59x18_Test {
         x = bound(x, 0, int256(uint256(MAX_UINT40)));
         uint40 actual = x.intoUint40();
         uint40 expected = uint40(uint256(x.unwrap()));
-        assertEq(actual, expected);
+        assertEq(actual, expected, "SD59x18 intoUint40");
     }
 
     function testFuzz_Sd(int256 x) external {
         SD59x18 actual = sd(x);
         SD59x18 expected = SD59x18.wrap(x);
-        assertEq(actual, expected);
+        assertEq(actual, expected, "sd");
     }
 
-    function testFuzz_SD59x18(int256 x) external {
+    function testFuzz_sd59x18(int256 x) external {
         SD59x18 actual = sd59x18(x);
         SD59x18 expected = SD59x18.wrap(x);
-        assertEq(actual, expected);
+        assertEq(actual, expected, "sd59x18");
     }
 
     function testFuzz_Unwrap(SD59x18 x) external {
         int256 actual = x.unwrap();
         int256 expected = SD59x18.unwrap(x);
-        assertEq(actual, expected);
+        assertEq(actual, expected, "SD59x18 unwrap");
     }
 
     function testFuzz_Wrap(int256 x) external {
         SD59x18 actual = wrap(x);
         SD59x18 expected = SD59x18.wrap(x);
-        assertEq(actual, expected);
+        assertEq(actual, expected, "SD59x18 wrap");
     }
 }

@@ -18,7 +18,7 @@ contract Pow_Test is SD59x18_Test {
         SD59x18 y = ZERO;
         SD59x18 actual = pow(x, y);
         SD59x18 expected = sd(1e18);
-        assertEq(actual, expected);
+        assertEq(actual, expected, "SD59x18 pow");
     }
 
     function baseZeroExponentNotZero_Sets() internal returns (Set[] memory) {
@@ -31,7 +31,7 @@ contract Pow_Test is SD59x18_Test {
 
     function test_Pow_BaseZeroExponentNotZero() external parameterizedTest(baseZeroExponentNotZero_Sets()) {
         SD59x18 actual = pow(s.x, s.y);
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "SD59x18 pow");
     }
 
     modifier whenBaseNotZero() {
@@ -59,7 +59,7 @@ contract Pow_Test is SD59x18_Test {
 
     function test_Pow_ExponentZero() external parameterizedTest(exponentZero_Sets()) whenBaseNotZero whenBasePositive {
         SD59x18 actual = pow(s.x, s.y);
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "SD59x18 pow");
     }
 
     modifier whenExponentNotZero() {
@@ -82,7 +82,7 @@ contract Pow_Test is SD59x18_Test {
         whenExponentNotZero
     {
         SD59x18 actual = pow(s.x, s.y);
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "SD59x18 pow");
     }
 
     modifier whenExponentNotOne() {
@@ -140,7 +140,7 @@ contract Pow_Test is SD59x18_Test {
         whenExponentLessThanOrEqualToMaxPermitted
     {
         SD59x18 actual = pow(s.x, s.y);
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "SD59x18 pow");
     }
 
     function positiveExponent_Sets() internal returns (Set[] memory) {
@@ -183,6 +183,6 @@ contract Pow_Test is SD59x18_Test {
         whenExponentLessThanOrEqualToMaxPermitted
     {
         SD59x18 actual = pow(s.x, s.y);
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "SD59x18 pow");
     }
 }

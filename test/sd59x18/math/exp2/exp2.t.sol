@@ -17,7 +17,7 @@ contract Exp2_Test is SD59x18_Test {
         SD59x18 x = ZERO;
         SD59x18 actual = exp2(x);
         SD59x18 expected = sd(1e18);
-        assertEq(actual, expected);
+        assertEq(actual, expected, "SD59x18 exp2");
     }
 
     modifier whenNotZero() {
@@ -38,7 +38,7 @@ contract Exp2_Test is SD59x18_Test {
         whenNotZero
     {
         SD59x18 actual = exp2(s.x);
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "SD59x18 exp2");
     }
 
     function negativeAndGreaterThanOrEqualToMinPermitted_Sets() internal returns (Set[] memory) {
@@ -65,7 +65,7 @@ contract Exp2_Test is SD59x18_Test {
         whenNotZero
     {
         SD59x18 actual = exp2(s.x);
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "SD59x18 exp2");
     }
 
     function test_RevertWhen_Positive_GreaterThanMaxPermitted() external whenNotZero {
@@ -109,6 +109,6 @@ contract Exp2_Test is SD59x18_Test {
         whenNotZero
     {
         SD59x18 actual = exp2(s.x);
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "SD59x18 exp2");
     }
 }

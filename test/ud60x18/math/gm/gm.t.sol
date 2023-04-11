@@ -21,7 +21,7 @@ contract Gm_Test is UD60x18_Test {
 
     function test_Gm_OneOperandZero() external parameterizedTest(oneOperandZero_Sets()) {
         UD60x18 actual = gm(s.x, s.y);
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "UD60x18 gm");
     }
 
     modifier whenOperandsNotZero() {
@@ -56,6 +56,6 @@ contract Gm_Test is UD60x18_Test {
 
     function test_Gm() external parameterizedTest(gm_Sets()) whenOperandsNotZero whenProductDoesNotOverflow {
         UD60x18 actual = gm(s.x, s.y);
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "UD60x18 gm");
     }
 }

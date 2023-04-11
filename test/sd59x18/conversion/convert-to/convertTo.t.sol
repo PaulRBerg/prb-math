@@ -58,6 +58,6 @@ contract ConvertTo_Test is SD59x18_Test {
         whenLessThanOrEqualToMaxPermitted
     {
         SD59x18 x = convert(s.x.unwrap());
-        assertEq(x, s.expected);
+        assertEq(x, s.expected, "SD59x18 convert to");
     }
 }

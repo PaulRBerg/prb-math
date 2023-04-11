@@ -1,5 +1,5 @@
 convertFrom.t.sol
-├── when x is less than absolute one
+├── when x is less than the absolute value of the unit number
 │  └── it should return zero
-└── when x is greater than or equal to absolute one
+└── when x is greater than or equal to the absolute value of the unit number
    └── it should return the correct value

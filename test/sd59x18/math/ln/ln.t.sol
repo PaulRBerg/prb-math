@@ -56,6 +56,6 @@ contract Ln_Test is SD59x18_Test {
 
     function test_Ln() external parameterizedTest(ln_Sets()) whenNotZero whenPositive {
         SD59x18 actual = ln(s.x);
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "SD59x18 ln");
     }
 }

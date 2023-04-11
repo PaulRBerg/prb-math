@@ -14,7 +14,7 @@ contract CeilTest is UD60x18_Test {
         UD60x18 x = ZERO;
         UD60x18 actual = ceil(x);
         UD60x18 expected = ZERO;
-        assertEq(actual, expected);
+        assertEq(actual, expected, "UD60x18 ceil");
     }
 
     modifier whenNotZero() {
@@ -47,6 +47,6 @@ contract CeilTest is UD60x18_Test {
 
     function test_Ceil() external parameterizedTest(ceil_Sets()) whenNotZero whenLessThanOrEqualToMaxWholeUD60x18 {
         UD60x18 actual = ceil(s.x);
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "UD60x18 ceil");
     }
 }

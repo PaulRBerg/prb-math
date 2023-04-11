@@ -18,7 +18,7 @@ contract Powu_Test is SD59x18_Test {
         uint256 y = 0;
         SD59x18 actual = powu(x, y);
         SD59x18 expected = sd(1e18);
-        assertEq(actual, expected);
+        assertEq(actual, expected, "SD59x18 powu");
     }
 
     function baseZeroExponentNotZero_Sets() internal returns (Set[] memory) {
@@ -31,7 +31,7 @@ contract Powu_Test is SD59x18_Test {
 
     function test_Powu_BaseZeroExponentNotZero() external parameterizedTest(baseZeroExponentNotZero_Sets()) {
         SD59x18 actual = powu(s.x, sdToUint(s.y));
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "SD59x18 powu");
     }
 
     modifier whenBaseNotZero() {
@@ -51,7 +51,7 @@ contract Powu_Test is SD59x18_Test {
 
     function test_Powu_ExponentZero() external parameterizedTest(exponentZero_Sets()) whenBaseNotZero {
         SD59x18 actual = powu(s.x, sdToUint(s.y));
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "SD59x18 powu");
     }
 
     modifier whenExponentNotZero() {
@@ -141,7 +141,7 @@ contract Powu_Test is SD59x18_Test {
         whenResultDoesNotOverflowOrUnderflowSD59x18
     {
         SD59x18 actual = powu(s.x, sdToUint(s.y));
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "SD59x18 powu");
     }
 
     function positiveBase_Sets() internal returns (Set[] memory) {
@@ -186,6 +186,6 @@ contract Powu_Test is SD59x18_Test {
         whenResultDoesNotOverflowOrUnderflowSD59x18
     {
         SD59x18 actual = powu(s.x, sdToUint(s.y));
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "SD59x18 powu");
     }
 }

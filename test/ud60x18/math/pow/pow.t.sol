@@ -18,7 +18,7 @@ contract Pow_Test is UD60x18_Test {
         UD60x18 y = ZERO;
         UD60x18 actual = pow(x, y);
         UD60x18 expected = UNIT;
-        assertEq(actual, expected);
+        assertEq(actual, expected, "UD60x18 pow");
     }
 
     function testFuzz_Pow_ExponentNotZero(UD60x18 y) external baseZero {
@@ -26,7 +26,7 @@ contract Pow_Test is UD60x18_Test {
         UD60x18 x = ZERO;
         UD60x18 actual = pow(x, y);
         UD60x18 expected = ZERO;
-        assertEq(actual, expected);
+        assertEq(actual, expected, "UD60x18 pow");
     }
 
     modifier whenBaseNotZero() {
@@ -37,7 +37,7 @@ contract Pow_Test is UD60x18_Test {
         UD60x18 x = UNIT;
         UD60x18 actual = pow(x, y);
         UD60x18 expected = UNIT;
-        assertEq(actual, expected);
+        assertEq(actual, expected, "UD60x18 pow");
     }
 
     modifier whenBaseNotUnit() {
@@ -49,7 +49,7 @@ contract Pow_Test is UD60x18_Test {
         UD60x18 y = ZERO;
         UD60x18 actual = pow(x, y);
         UD60x18 expected = UNIT;
-        assertEq(actual, expected);
+        assertEq(actual, expected, "UD60x18 pow");
     }
 
     modifier whenExponentNotZero() {
@@ -61,7 +61,7 @@ contract Pow_Test is UD60x18_Test {
         UD60x18 y = UNIT;
         UD60x18 actual = pow(x, y);
         UD60x18 expected = x;
-        assertEq(actual, expected);
+        assertEq(actual, expected, "UD60x18 pow");
     }
 
     modifier whenExponentNotUnit() {

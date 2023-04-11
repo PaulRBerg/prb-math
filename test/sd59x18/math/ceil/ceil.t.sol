@@ -14,7 +14,7 @@ contract Ceil_Test is SD59x18_Test {
         SD59x18 x = ZERO;
         SD59x18 actual = ceil(x);
         SD59x18 expected = ZERO;
-        assertEq(actual, expected);
+        assertEq(actual, expected, "SD59x18 ceil");
     }
 
     modifier whenNotZero() {
@@ -38,7 +38,7 @@ contract Ceil_Test is SD59x18_Test {
 
     function test_Ceil_Negative() external parameterizedTest(negative_Sets()) whenNotZero {
         SD59x18 actual = ceil(s.x);
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "SD59x18 ceil");
     }
 
     function test_RevertWhen_GreaterThanMaxPermitted() external whenNotZero {
@@ -67,6 +67,6 @@ contract Ceil_Test is SD59x18_Test {
 
     function test_Ceil_Positive() external parameterizedTest(positive_Sets()) whenNotZero whenLessThanOrEqualToMaxPermitted {
         SD59x18 actual = ceil(s.x);
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "SD59x18 ceil");
     }
 }

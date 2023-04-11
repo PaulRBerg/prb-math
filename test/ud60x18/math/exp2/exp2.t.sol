@@ -16,7 +16,7 @@ contract Exp2_Test is UD60x18_Test {
         UD60x18 x = ZERO;
         UD60x18 actual = exp2(x);
         UD60x18 expected = ud(1e18);
-        assertEq(actual, expected);
+        assertEq(actual, expected, "UD60x18 exp2");
     }
 
     modifier whenNotZero() {
@@ -60,6 +60,6 @@ contract Exp2_Test is UD60x18_Test {
 
     function test_Exp2() external parameterizedTest(exp2_Sets()) whenNotZero whenLessThanOrEqualToMaxPermitted {
         UD60x18 actual = exp2(s.x);
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "UD60x18 exp2");
     }
 }

@@ -35,7 +35,7 @@ contract Log10_Test is UD60x18_Test {
 
     function test_Log10_PowerOfTen() external parameterizedTest(powerOfTen_Sets()) whenGreaterThanOrEqualToOne {
         UD60x18 actual = log10(s.x);
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "UD60x18 log10");
     }
 
     function notPowerOfTen_Sets() internal returns (Set[] memory) {
@@ -57,6 +57,6 @@ contract Log10_Test is UD60x18_Test {
 
     function test_Log10_NotPowerOfTen() external parameterizedTest(notPowerOfTen_Sets()) whenGreaterThanOrEqualToOne {
         UD60x18 actual = log10(s.x);
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "UD60x18 log10");
     }
 }

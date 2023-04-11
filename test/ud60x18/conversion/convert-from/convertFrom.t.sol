@@ -19,7 +19,7 @@ contract ConvertFrom_Test is UD60x18_Test {
     function test_ConvertFrom_LessThanOne() external parameterizedTest(lessThanOne_Sets()) {
         uint256 actual = convert(s.x);
         uint256 expected = 0;
-        assertEq(actual, expected);
+        assertEq(actual, expected, "UD60x18 convertFrom");
     }
 
     modifier whenGreaterThanOrEqualToOne() {
@@ -45,6 +45,6 @@ contract ConvertFrom_Test is UD60x18_Test {
     function test_ConvertFrom() external parameterizedTest(greaterThanOne_Sets()) whenGreaterThanOrEqualToOne {
         uint256 actual = convert(s.x);
         uint256 expected = s.expected.unwrap();
-        assertEq(actual, expected);
+        assertEq(actual, expected, "UD60x18 convertFrom");
     }
 }

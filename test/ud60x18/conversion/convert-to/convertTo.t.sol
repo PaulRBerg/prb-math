@@ -34,6 +34,6 @@ contract ConvertTo_Test is UD60x18_Test {
 
     function test_ConvertTo() external parameterizedTest(convertTo_Sets()) whenLessThanOrEqualToMaxPermitted {
         UD60x18 x = convert(s.x.unwrap());
-        assertEq(x, s.expected);
+        assertEq(x, s.expected, "UD60x18 convertTo");
     }
 }

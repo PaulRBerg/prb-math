@@ -35,7 +35,7 @@ contract Log2_Test is UD60x18_Test {
 
     function test_Log2_PowerOfTwo() external parameterizedTest(powerOfTwo_Sets()) whenGreaterThanOrEqualToOne {
         UD60x18 actual = log2(s.x);
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "UD60x18 log2");
     }
 
     function notPowerOfTwo_Sets() internal returns (Set[] memory) {
@@ -51,6 +51,6 @@ contract Log2_Test is UD60x18_Test {
 
     function test_Log2_NotPowerOfTwo() external parameterizedTest(notPowerOfTwo_Sets()) whenGreaterThanOrEqualToOne {
         UD60x18 actual = log2(s.x);
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "UD60x18 log2");
     }
 }

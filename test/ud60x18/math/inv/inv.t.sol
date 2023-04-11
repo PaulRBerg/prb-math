@@ -43,6 +43,6 @@ contract Inv_Test is UD60x18_Test {
 
     function test_Inv() external parameterizedTest(inv_Sets()) whenNotZero {
         UD60x18 actual = inv(s.x);
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "UD60x18 inv");
     }
 }

@@ -15,7 +15,7 @@ contract Sqrt_Test is UD60x18_Test {
         UD60x18 x = ZERO;
         UD60x18 actual = sqrt(x);
         UD60x18 expected = ZERO;
-        assertEq(actual, expected);
+        assertEq(actual, expected, "UD60x18 sqrt");
     }
 
     modifier whenNotZero() {
@@ -54,6 +54,6 @@ contract Sqrt_Test is UD60x18_Test {
 
     function test_Sqrt() external parameterizedTest(sqrt_Sets()) whenNotZero whenLessThanOrEqualToMaxPermitted {
         UD60x18 actual = sqrt(s.x);
-        assertEq(actual, s.expected);
+        assertEq(actual, s.expected, "UD60x18 sqrt");
     }
 }

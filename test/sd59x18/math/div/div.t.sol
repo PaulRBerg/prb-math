@@ -67,8 +67,8 @@ contract Div_Test is SD59x18_Test {
         whenDenominatorNotZero
         whenDenominatorNotMinSD59x18
     {
-        assertEq(div(s.x, s.y), s.expected);
-        assertEq(s.x / s.y, s.expected);
+        assertEq(div(s.x, s.y), s.expected, "SD59x18 div");
+        assertEq(s.x / s.y, s.expected, "SD59x18 /");
     }
 
     modifier whenNumeratorNotZero() {
@@ -179,8 +179,8 @@ contract Div_Test is SD59x18_Test {
         whenNumeratorNotMinSD59x18
         whenResultNotOverflowSD59x18
     {
-        assertEq(div(s.x, s.y), s.expected);
-        assertEq(s.x / s.y, s.expected);
+        assertEq(div(s.x, s.y), s.expected, "SD59x18 div");
+        assertEq(s.x / s.y, s.expected, "SD59x18 /");
     }
 
     function numeratorDenominatorDifferentSign_Sets() internal returns (Set[] memory) {
@@ -229,7 +229,7 @@ contract Div_Test is SD59x18_Test {
         whenNumeratorNotMinSD59x18
         whenResultNotOverflowSD59x18
     {
-        assertEq(div(s.x, s.y), s.expected);
-        assertEq(s.x / s.y, s.expected);
+        assertEq(div(s.x, s.y), s.expected, "SD59x18 div");
+        assertEq(s.x / s.y, s.expected, "SD59x18 /");
     }
 }

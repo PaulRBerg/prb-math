@@ -18,13 +18,13 @@ contract ConvertFrom_Test is SD59x18_Test {
         return sets;
     }
 
-    function test_ConvertFrom_LessThanAbsoluteOne() external parameterizedTest(lessThanAbsoluteOne_Sets()) {
+    function test_ConvertFrom_LessThanAbsoluteUnit() external parameterizedTest(lessThanAbsoluteOne_Sets()) {
         int256 actual = convert(s.x);
         int256 expected = 0;
-        assertEq(actual, expected);
+        assertEq(actual, expected, "SD59x18 convert from");
     }
 
-    modifier whenGreaterThanOrEqualToAbsoluteOne() {
+    modifier whenGreaterThanOrEqualToAbsoluteUnit() {
         _;
     }
 
@@ -54,9 +54,9 @@ contract ConvertFrom_Test is SD59x18_Test {
         return sets;
     }
 
-    function test_ConvertFrom() external parameterizedTest(greaterThanAbsoluteOne_Sets()) whenGreaterThanOrEqualToAbsoluteOne {
+    function test_ConvertFrom() external parameterizedTest(greaterThanAbsoluteOne_Sets()) whenGreaterThanOrEqualToAbsoluteUnit {
         int256 actual = convert(s.x);
         int256 expected = s.expected.unwrap();
-        assertEq(actual, expected);
+        assertEq(actual, expected, "SD59x18 convert from");
     }
 }

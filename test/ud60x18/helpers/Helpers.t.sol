@@ -35,100 +35,100 @@ contract Helpers_Test is UD60x18_Test {
         x = bound(x, 0, HALF_MAX_UINT256);
         y = bound(y, 0, HALF_MAX_UINT256);
         UD60x18 expected = ud(x + y);
-        assertEq(add(ud(x), ud(y)), expected);
-        assertEq(ud(x) + ud(y), expected);
+        assertEq(add(ud(x), ud(y)), expected, "UD60x18 add");
+        assertEq(ud(x) + ud(y), expected, "UD60x18 +");
     }
 
     function testFuzz_And(uint256 x, uint256 y) external {
         UD60x18 expected = ud(x & y);
-        assertEq(and(ud(x), y), expected);
-        assertEq(ud(x) & ud(y), expected);
+        assertEq(and(ud(x), y), expected, "UD60x18 and");
+        assertEq(ud(x) & ud(y), expected, "UD60x18 &");
     }
 
     function testFuzz_Eq(uint256 x) external {
         uint256 y = x;
-        assertTrue(eq(ud(x), ud(y)));
-        assertTrue(ud(x) == ud(y));
+        assertTrue(eq(ud(x), ud(y)), "UD60x18 eq");
+        assertTrue(ud(x) == ud(y), "UD60x18 ==");
     }
 
     function testFuzz_Gt(uint256 x, uint256 y) external {
         vm.assume(x > y);
-        assertTrue(gt(ud(x), ud(y)));
-        assertTrue(ud(x) > ud(y));
+        assertTrue(gt(ud(x), ud(y)), "UD60x18 gt");
+        assertTrue(ud(x) > ud(y), "UD60x18 >");
     }
 
     function testFuzz_Gte(uint256 x, uint256 y) external {
         vm.assume(x >= y);
-        assertTrue(gte(ud(x), ud(y)));
-        assertTrue(ud(x) >= ud(y));
+        assertTrue(gte(ud(x), ud(y)), "UD60x18 gte");
+        assertTrue(ud(x) >= ud(y), "UD60x18 >=");
     }
 
     function test_IsZero() external {
         UD60x18 x = ud(0);
-        assertTrue(isZero(x));
+        assertTrue(isZero(x), "UD60x18 isZero");
     }
 
     function testFuzz_Lshift(uint256 x, uint256 y) external {
         vm.assume(y <= 512);
         UD60x18 expected = ud(x << y);
-        assertEq(lshift(ud(x), y), expected);
+        assertEq(lshift(ud(x), y), expected, "UD60x18 lshift");
     }
 
     function testFuzz_Lt(uint256 x, uint256 y) external {
         vm.assume(x < y);
-        assertTrue(lt(ud(x), ud(y)));
-        assertTrue(ud(x) < ud(y));
+        assertTrue(lt(ud(x), ud(y)), "UD60x18 lt");
+        assertTrue(ud(x) < ud(y), "UD60x18 <");
     }
 
     function testFuzz_Lte(uint256 x, uint256 y) external {
         vm.assume(x <= y);
-        assertTrue(lte(ud(x), ud(y)));
-        assertTrue(ud(x) <= ud(y));
+        assertTrue(lte(ud(x), ud(y)), "UD60x18 lte");
+        assertTrue(ud(x) <= ud(y), "UD60x18 <=");
     }
 
     function testFuzz_Mod(uint256 x, uint256 y) external {
         vm.assume(y > 0);
         UD60x18 expected = ud(x % y);
-        assertEq(mod(ud(x), ud(y)), expected);
-        assertEq(ud(x) % ud(y), expected);
+        assertEq(mod(ud(x), ud(y)), expected, "UD60x18 mod");
+        assertEq(ud(x) % ud(y), expected, "UD60x18 %");
     }
 
     function testFuzz_Neq(uint256 x, uint256 y) external {
         vm.assume(x != y);
-        assertTrue(neq(ud(x), ud(y)));
-        assertTrue(ud(x) != ud(y));
+        assertTrue(neq(ud(x), ud(y)), "UD60x18 neq");
+        assertTrue(ud(x) != ud(y), "UD60x18 !=");
     }
 
     function testFuzz_Not(uint256 x) external {
         UD60x18 expected = ud(~x);
-        assertEq(not(ud(x)), expected);
-        assertEq(~ud(x), expected);
+        assertEq(not(ud(x)), expected, "UD60x18 not");
+        assertEq(~ud(x), expected, "UD60x18 ~");
     }
 
     function testFuzz_Or(uint256 x, uint256 y) external {
         UD60x18 expected = ud(x | y);
-        assertEq(or(ud(x), ud(y)), expected);
-        assertEq(ud(x) | ud(y), expected);
+        assertEq(or(ud(x), ud(y)), expected, "UD60x18 or");
+        assertEq(ud(x) | ud(y), expected, "UD60x18 |");
     }
 
     function testFuzz_Rshift(uint256 x, uint256 y) external {
         vm.assume(y <= 512);
         UD60x18 expected = ud(x >> y);
-        assertEq(rshift(ud(x), y), expected);
+        assertEq(rshift(ud(x), y), expected, "UD60x18 rshift");
     }
 
     function testFuzz_Sub(uint256 x, uint256 y) external {
         vm.assume(x >= y);
         UD60x18 expected = ud(x - y);
-        assertEq(sub(ud(x), ud(y)), expected);
-        assertEq(ud(x) - ud(y), expected);
+        assertEq(sub(ud(x), ud(y)), expected, "UD60x18 sub");
+        assertEq(ud(x) - ud(y), expected, "UD60x18 -");
     }
 
     function testFuzz_UncheckedAdd(uint256 x, uint256 y) external {
         unchecked {
             UD60x18 expected = ud(x + y);
             UD60x18 actual = uncheckedAdd(ud(x), ud(y));
-            assertEq(actual, expected);
+            assertEq(actual, expected, "UD60x18 uncheckedAdd");
         }
     }
 
@@ -136,13 +136,13 @@ contract Helpers_Test is UD60x18_Test {
         unchecked {
             UD60x18 expected = ud(x - y);
             UD60x18 actual = uncheckedSub(ud(x), ud(y));
-            assertEq(actual, expected);
+            assertEq(actual, expected, "UD60x18 uncheckedSub");
         }
     }
 
     function testFuzz_Xor(uint256 x, uint256 y) external {
         UD60x18 expected = ud(x ^ y);
-        assertEq(xor(ud(x), ud(y)), expected);
-        assertEq(ud(x) ^ ud(y), expected);
+        assertEq(xor(ud(x), ud(y)), expected, "UD60x18 xor");
+        assertEq(ud(x) ^ ud(y), expected, "UD60x18 ^");
     }
 }

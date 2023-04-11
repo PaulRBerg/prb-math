@@ -19,8 +19,8 @@ contract Mul_Test is UD60x18_Test {
     }
 
     function test_Mul_OneOperandZero() external parameterizedTest(oneOperandZero_Sets()) {
-        assertEq(mul(s.x, s.y), s.expected);
-        assertEq(s.x * s.y, s.expected);
+        assertEq(mul(s.x, s.y), s.expected, "UD60x18 mul");
+        assertEq(s.x * s.y, s.expected, "UD60x18 *");
     }
 
     modifier whenNeitherOperandZero() {
@@ -74,7 +74,7 @@ contract Mul_Test is UD60x18_Test {
     }
 
     function test_Mul() external parameterizedTest(mul_Sets()) whenNeitherOperandZero whenResultDoesNotOverflowUD60x18 {
-        assertEq(mul(s.x, s.y), s.expected);
-        assertEq(s.x * s.y, s.expected);
+        assertEq(mul(s.x, s.y), s.expected, "UD60x18 mul");
+        assertEq(s.x * s.y, s.expected, "UD60x18 *");
     }
 }
