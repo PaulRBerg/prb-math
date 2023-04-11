@@ -31,14 +31,14 @@ contract Gm_Test is SD59x18_Test {
         _;
     }
 
-    function test_RevertWhen_ProductNegative_1() external whenOperandsNotZero {
+    function test_RevertWhen_ProductNegative_A() external whenOperandsNotZero {
         SD59x18 x = sd(-1e18);
         SD59x18 y = PI;
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Gm_NegativeProduct.selector, x, y));
         gm(x, y);
     }
 
-    function test_RevertWhen_ProductNegative_2() external whenOperandsNotZero {
+    function test_RevertWhen_ProductNegative_B() external whenOperandsNotZero {
         SD59x18 x = PI;
         SD59x18 y = sd(-1e18);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Gm_NegativeProduct.selector, x, y));
@@ -49,28 +49,28 @@ contract Gm_Test is SD59x18_Test {
         _;
     }
 
-    function test_RevertWhen_ProductOverflow_1() external whenOperandsNotZero whenProductPositive {
+    function test_RevertWhen_ProductOverflow_A() external whenOperandsNotZero whenProductPositive {
         SD59x18 x = MIN_SD59x18;
         SD59x18 y = sd(0.000000000000000002e18);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Gm_Overflow.selector, x, y));
         gm(x, y);
     }
 
-    function test_RevertWhen_ProductOverflow_2() external whenOperandsNotZero whenProductPositive {
+    function test_RevertWhen_ProductOverflow_B() external whenOperandsNotZero whenProductPositive {
         SD59x18 x = NEGATIVE_SQRT_MAX_INT256;
         SD59x18 y = NEGATIVE_SQRT_MAX_INT256 - sd(1);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Gm_Overflow.selector, x, y));
         gm(x, y);
     }
 
-    function test_RevertWhen_ProductOverflow_3() external whenOperandsNotZero whenProductPositive {
+    function test_RevertWhen_ProductOverflow_C() external whenOperandsNotZero whenProductPositive {
         SD59x18 x = SQRT_MAX_INT256 + sd(1);
         SD59x18 y = SQRT_MAX_INT256 + sd(1);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Gm_Overflow.selector, x, y));
         gm(x, y);
     }
 
-    function test_RevertWhen_ProductOverflow_4() external whenOperandsNotZero whenProductPositive {
+    function test_RevertWhen_ProductOverflow_D() external whenOperandsNotZero whenProductPositive {
         SD59x18 x = MAX_SD59x18;
         SD59x18 y = sd(0.000000000000000002e18);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Gm_Overflow.selector, x, y));

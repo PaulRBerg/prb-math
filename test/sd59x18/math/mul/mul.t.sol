@@ -49,14 +49,14 @@ contract Mul_Test is SD59x18_Test {
         _;
     }
 
-    function test_RevertWhen_ResultOverflowSD59x18_1() external whenNeitherOperandZero whenNeitherOperandMinSD59x18 {
+    function test_RevertWhen_ResultOverflowSD59x18_A() external whenNeitherOperandZero whenNeitherOperandMinSD59x18 {
         SD59x18 x = NEGATIVE_SQRT_MAX_SD59x18;
         SD59x18 y = NEGATIVE_SQRT_MAX_SD59x18 - sd(1);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Mul_Overflow.selector, x, y));
         mul(x, y);
     }
 
-    function test_RevertWhen_ResultOverflowSD59x18_2() external whenNeitherOperandZero whenNeitherOperandMinSD59x18 {
+    function test_RevertWhen_ResultOverflowSD59x18_B() external whenNeitherOperandZero whenNeitherOperandMinSD59x18 {
         SD59x18 x = SQRT_MAX_SD59x18;
         SD59x18 y = SQRT_MAX_SD59x18 + sd(1);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Mul_Overflow.selector, x, y));
