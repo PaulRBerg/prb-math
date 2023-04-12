@@ -134,7 +134,7 @@ function exp(UD60x18 x) pure returns (UD60x18 result) {
 ///
 /// Requirements:
 /// - x must be less than 192e18.
-/// - The result must fit within `MAX_UD60x18`.
+/// - The result must fit in UD60x18.
 ///
 /// @param x The exponent as a UD60x18 number.
 /// @return result The result as a UD60x18 number.
@@ -142,7 +142,7 @@ function exp(UD60x18 x) pure returns (UD60x18 result) {
 function exp2(UD60x18 x) pure returns (UD60x18 result) {
     uint256 xUint = x.unwrap();
 
-    // Numbers greater than or equal to 192e18 don't fit within the 192.64-bit format.
+    // Numbers greater than or equal to 192e18 don't fit in the 192.64-bit format.
     if (xUint > uEXP2_MAX_INPUT) {
         revert Errors.PRBMath_UD60x18_Exp2_InputTooBig(x);
     }
@@ -184,7 +184,7 @@ function frac(UD60x18 x) pure returns (UD60x18 result) {
 /// @notice Calculates the geometric mean of x and y, i.e. $\sqrt{x * y}$, rounding down.
 ///
 /// @dev Requirements:
-/// - x * y must fit within `MAX_UD60x18`, otherwise the result overflows.
+/// - x * y must fit in UD60x18, otherwise the result overflows.
 ///
 /// @param x The first operand as a UD60x18 number.
 /// @param y The second operand as a UD60x18 number.
@@ -426,6 +426,15 @@ function log2(UD60x18 x) pure returns (UD60x18 result) {
 }
 
 /// @notice Multiplies two UD60x18 numbers together, returning a new UD60x18 number.
+///
+/// @dev Uses {Common.mulDiv} to enable overflow-safe multiplication and division.
+///
+/// Notes:
+/// - The result is rounded down.
+///
+/// Requirements:
+/// - All from {Common.mulDiv}.
+///
 /// @dev See the documentation in {Common.mulDiv18}.
 /// @param x The multiplicand as a UD60x18 number.
 /// @param y The multiplier as a UD60x18 number.
@@ -506,7 +515,7 @@ function pow(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// - Returns `UNIT` for 0^0.
 ///
 /// Requirements:
-/// - The result must fit within `MAX_UD60x18`.
+/// - The result must fit in UD60x18.
 ///
 /// @param x The base as a UD60x18 number.
 /// @param y The exponent as a uint256.

@@ -25,7 +25,7 @@ function convert(int256 x) pure returns (SD59x18 result) {
     }
 }
 
-/// @notice Converts an SD59x18 number to a simple integer by dividing it by `UNIT`. Rounds towards zero in the process.
+/// @notice Converts an SD59x18 number to a simple integer by dividing it by `UNIT`. Rounds toward zero in the process.
 /// @param x The SD59x18 number to convert.
 /// @return result The same number as a simple integer.
 function convert(SD59x18 x) pure returns (int256 result) {

@@ -37,7 +37,11 @@ function abs(SD59x18 x) pure returns (SD59x18 result) {
     result = xInt < 0 ? wrap(-xInt) : x;
 }
 
-/// @notice Calculates the arithmetic average of x and y, rounding towards zero.
+/// @notice Calculates the arithmetic average of x and y.
+///
+/// @dev Notes:
+/// - The result is rounded toward zero.
+///
 /// @param x The first operand as an SD59x18 number.
 /// @param y The second operand as an SD59x18 number.
 /// @return result The arithmetic average as an SD59x18 number.
@@ -102,13 +106,13 @@ function ceil(SD59x18 x) pure returns (SD59x18 result) {
 ///
 /// Notes:
 /// - All from {Common.mulDiv}.
-/// - The result is rounded towards zero.
+/// - The result is rounded toward zero.
 ///
 /// Requirements:
 /// - All from {Common.mulDiv}.
 /// - None of the inputs can be `MIN_SD59x18`.
 /// - The denominator must not be zero.
-/// - The result must fit within SD59x18.
+/// - The result must fit in SD59x18.
 ///
 /// @param x The numerator as an SD59x18 number.
 /// @param y The denominator as an SD59x18 number.
@@ -129,7 +133,7 @@ function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
         yAbs = yInt < 0 ? uint256(-yInt) : uint256(yInt);
     }
 
-    // Compute the absolute value (x*UNIT)÷y. The resulting value must fit within int256.
+    // Compute the absolute value (x*UNIT÷y). The resulting value must fit in int256.
     uint256 resultAbs = Common.mulDiv(xAbs, uint256(uUNIT), yAbs);
     if (resultAbs > uint256(uMAX_SD59x18)) {
         revert Errors.PRBMath_SD59x18_Div_Overflow(x, y);
@@ -189,7 +193,7 @@ function exp(SD59x18 x) pure returns (SD59x18 result) {
 ///
 /// Requirements:
 /// - x must be less than 192e18.
-/// - The result must fit within `MAX_SD59x18`.
+/// - The result must fit in SD59x18.
 ///
 /// @param x The exponent as an SD59x18 number.
 /// @return result The result as an SD59x18 number.
@@ -207,7 +211,7 @@ function exp2(SD59x18 x) pure returns (SD59x18 result) {
             result = wrap(uUNIT_SQUARED / exp2(wrap(-xInt)).unwrap());
         }
     } else {
-        // Numbers greater than or equal to 192e18 don't fit within the 192.64-bit format.
+        // Numbers greater than or equal to 192e18 don't fit in the 192.64-bit format.
         if (xInt > uEXP2_MAX_INPUT) {
             revert Errors.PRBMath_SD59x18_Exp2_InputTooBig(x);
         }
@@ -266,7 +270,7 @@ function frac(SD59x18 x) pure returns (SD59x18 result) {
 /// @notice Calculates the geometric mean of x and y, i.e. $\sqrt{x * y}$, rounding down.
 ///
 /// @dev Requirements:
-/// - x * y must fit within `MAX_SD59x18`, otherwise the result overflows.
+/// - x * y must fit in SD59x18, otherwise the result overflows.
 /// - x * y must not be negative, since complex numbers are not supported.
 ///
 /// @param x The first operand as an SD59x18 number.
@@ -522,12 +526,12 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
 ///
 /// @dev Notes:
 /// - All from {Common.mulDiv18}.
-/// - The result is rounded towards zero.
+/// - The result is rounded toward zero.
 ///
 /// Requirements:
 /// - All from {Common.mulDiv18}.
 /// - None of the inputs can be `MIN_SD59x18`.
-/// - The result must fit within `MAX_SD59x18`.
+/// - The result must fit in SD59x18.
 ///
 /// @param x The multiplicand as an SD59x18 number.
 /// @param y The multiplier as an SD59x18 number.
@@ -617,7 +621,7 @@ function pow(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 ///
 /// Requirements:
 /// - All from {abs} and {Common.mulDiv18}.
-/// - The result must fit within `MAX_SD59x18`.
+/// - The result must fit in SD59x18.
 ///
 /// @param x The base as an SD59x18 number.
 /// @param y The exponent as a uint256.
@@ -640,7 +644,7 @@ function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
         }
     }
 
-    // The result must fit within `MAX_SD59x18`.
+    // The result must fit in SD59x18.
     if (resultAbs > uint256(uMAX_SD59x18)) {
         revert Errors.PRBMath_SD59x18_Powu_Overflow(x, y);
     }

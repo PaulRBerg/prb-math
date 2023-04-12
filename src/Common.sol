@@ -278,14 +278,14 @@ function exp2(uint256 x) pure returns (uint256 result) {
             }
         }
 
-        // We're doing two things at the same time:
+        // In the code snippet below, two operations are executed simultaneously:
         //
-        //   1. Multiply the result by 2^n + 1, where 2^n is the integer part and the 1 is added to account for
-        //      the fact that we initially set the result to 0.5. This is accomplished by subtracting from 191
-        //      rather than 192.
-        //   2. Convert the result to the unsigned 60.18-decimal fixed-point format.
+        // 1. The result is multiplied by $(2^n + 1)$, where $2^n$ represents the integer part, and the additional 1
+        // accounts for the initial guess of 0.5. This is achieved by subtracting from 191 instead of 192.
+        // 2. The result is then converted to an unsigned 60.18-decimal fixed-point format.
         //
-        // This works because 2^(191-ip) = 2^ip / 2^191, where "ip" is the integer part 2^n.
+        // The underlying logic is based on the relationship $2^{191-ip} = 2^{ip} / 2^{191}$, where $ip$ denotes the,
+        // integer part, $2^n$.
         result *= UNIT;
         result >>= (191 - (x >> 64));
     }
@@ -467,7 +467,7 @@ function mulDiv(uint256 x, uint256 y, uint256 denominator) pure returns (uint256
 
 /// @notice Calculates floor(x*y÷1e18) with 512-bit precision.
 ///
-/// @dev A variant of {mulDiv} with constant folding, i.e. in which the denominator is always 1e18.
+/// @dev A variant of {mulDiv} with constant folding, i.e. in which the denominator is hard coded to 1e18.
 ///
 /// Notes:
 /// - The body is purposely left uncommented; to understand how this works, see the documentation in {mulDiv}.
@@ -525,12 +525,12 @@ function mulDiv18(uint256 x, uint256 y) pure returns (uint256 result) {
 /// @dev This is extension of {mulDiv} for signed numbers, which works by computing the signs and the absolute values separately.
 ///
 /// Notes:
-/// - The result is rounded towards zero.
+/// - The result is rounded toward zero.
 ///
 /// Requirements:
 /// - All from {mulDiv}.
 /// - None of the inputs can be `type(int256).min`.
-/// - The result must fit within int256.
+/// - The result must fit in int256.
 ///
 /// @param x The multiplicand as an int256.
 /// @param y The multiplier as an int256.
@@ -552,7 +552,7 @@ function mulDivSigned(int256 x, int256 y, int256 denominator) pure returns (int2
         dAbs = denominator < 0 ? uint256(-denominator) : uint256(denominator);
     }
 
-    // Compute the absolute value of x*y÷denominator. The result must fit within int256.
+    // Compute the absolute value of x*y÷denominator. The result must fit in int256.
     uint256 resultAbs = mulDiv(xAbs, yAbs, dAbs);
     if (resultAbs > uint256(type(int256).max)) {
         revert PRBMath_MulDivSigned_Overflow(x, y);
@@ -582,7 +582,7 @@ function mulDivSigned(int256 x, int256 y, int256 denominator) pure returns (int2
 /// @dev See https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Babylonian_method.
 ///
 /// Notes:
-/// - The result is rounded down if x is not a perfect square.
+/// - The result is rounded down.
 /// - Credits to OpenZeppelin for the explanations in comments below.
 ///
 /// @param x The uint256 number for which to calculate the square root.
