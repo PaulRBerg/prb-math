@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Common Changelog](https://common-changelog.org/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+[4.0.0]: https://github.com/PaulRBerg/prb-math/compare/v3.3.2...v4.0.0
 [3.3.2]: https://github.com/PaulRBerg/prb-math/compare/v3.3.1...v3.3.2
 [3.3.1]: https://github.com/PaulRBerg/prb-math/compare/v3.3.0...v3.3.1
 [3.3.0]: https://github.com/PaulRBerg/prb-math/compare/v3.2.0...v3.3.0
@@ -28,6 +29,50 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 [1.0.2]: https://github.com/PaulRBerg/prb-math/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/PaulRBerg/prb-math/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/PaulRBerg/prb-math/releases/tag/v1.0.0
+
+## [4.0.0] - 2023-04-13
+
+### Changed
+
+- **Breaking**: Rename `fromSD590x18`, `fromUD60x18`, `toSD59x18`, and `toUD60x18` to `convert` (@PaulRBerg)
+- **Breaking**: Rename `Core.sol` to `Common.sol` (@PaulRBerg)
+- **Breaking:** Set minimum compiler pragma to `>=0.8.19` (@PaulRBerg)
+- Bump Node.js dependencies (@PaulRBerg)
+- Bump submodules (@PaulRBerg)
+- Clarify rounding modes ([6bb53eada291](https://github.com/PaulRBerg/prb-math/tree/6bb53ea)) (@PaulRBerg)
+- Clarify that `mulDiv` rounds toward zero ([cda291](https://github.com/PaulRBerg/prb-math/tree/cda291)) (@PaulRBerg)
+- Fix typo in code snippet in README ([#180](https://github.com/PaulRBerg/prb-math/pull/180)) (@cygaar)
+- Format contracts with Forge Formatter (@PaulRBerg)
+- Improve writing and formatting in documentation (@PaulRBerg)
+- Make a distinction between `lpotdod` and its flipped counterpart in `Common.mulDiv` (@PaulRBerg)
+- Open pragma in test assertions and utils (@PaulRBerg)
+- Reorder statements in `Common.mulDiv18` (@PaulRBerg)
+- Rename `Common.prbExp2` to `Common.exp2` (@PaulRBerg)
+- Rename `Common.prbSqrt` to `Common.sqrt` (@PaulRBerg)
+- Rename `Assertions` to `PRBMathAssertions` (@PaulRBerg)
+- Return base when exponent is unit in `pow` ([#182](https://github.com/PaulRBerg/prb-math/pull/182)) (@PaulRBerg)
+- Return unit when base is unit in `pow` ([#182](https://github.com/PaulRBerg/prb-math/pull/182)) (@PaulRBerg)
+- Switch to Pnpm for Node.js package management (@PaulRBerg)
+- Use bound `unwrap` instead of imported `unwrap` (@PaulRBerg)
+- Use long names in named imports (@PaulRBerg)
+
+### Added
+
+- Add `EXP_MAX_INPUT` and `EXP2_MAX_INPUT` constants, and use them in `exp` and `exp2` (@PaulRBerg)
+- Add `UNIT_SQUARED` and use it instead of the hard coded value (@PaulRBerg)
+- Add user-defined operators ([#168](https://github.com/PaulRBerg/prb-math/pull/168)) (@Amxx,@PaulRBerg)
+- Add unary operator ([#173](https://github.com/PaulRBerg/prb-math/pull/173)) (@Lumyo,@PaulRBerg)
+- Expand domain of `pow` in `UD60x18` by allowing inputs lower than `UNIT` ([#182](https://github.com/PaulRBerg/prb-math/pull/182)) (@PaulRBerg)
+
+### Removed
+
+- Remove "memory-safe" annotation in test assertions (@PaulRBerg)
+- Remove development-related Node.js dependencies (@PaulRBerg)
+- Remove superfluous threshold check in `SD59x19.exp` (@PaulRBerg)
+
+### Fixed
+
+- Fix bit mask in `Common.exp2` ([#179](https://github.com/PaulRBerg/prb-math/pull/179)) (@andreivladbrg)
 
 ## [3.3.2] - 2023-03-19
 
@@ -210,7 +255,7 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 
 ### Removed
 
-- `@param` tags for custom errors NatSpec (@PaulRBerg)
+- Remove `@param` tags in custom errors' NatSpec (@PaulRBerg)
 
 ## [2.1.0] - 2021-06-27
 
@@ -232,7 +277,7 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 ### Removed
 
 - Remove stale `hardhat/console.sol` import (@PaulRBerg)
-- Remove stale caveat in `sqrt` function NatSpec (@PaulRBerg)
+- Remove stale caveat in the NatSpec for `sqrt` (@PaulRBerg)
 
 ## [2.0.1] - 2021-06-16
 
@@ -250,8 +295,8 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 
 ### Changed
 
+- **Breaking**: Rename `PRBMathCommon.sol` to `PRBMath.sol` (@PaulRBerg)
 - Increase the accuracy of `exp2` by using the 192.64-bit format instead of 128.128-bit (@PaulRBerg)
-- Rename `PRBMathCommon.sol` to `PRBMath.sol` (@PaulRBerg)
 - Set named parameter instead of returning result in `pow` functions (@PaulRBerg)
 - Update gas estimates for `exp` and `exp2` (@PaulRBerg)
 
@@ -303,7 +348,7 @@ _This release was yanked because it was accidentally published with the wrong ve
 
 ### Changed
 
-- Optimize the `pow` function in PRBMathUD60x18.sol by calling `mulDivFixedPoint` directly (@PaulRBerg)
+- Optimize the `pow` function in `PRBMathUD60x18` by calling `mulDivFixedPoint` directly (@PaulRBerg)
 
 ## [1.0.3] - 2021-04-20
 
@@ -314,13 +359,13 @@ _This release was yanked because it was accidentally published with the wrong ve
 
 ### Removed
 
-- Remove `SCALE_LPOTD` and `SCALE_INVERSE` constants in PRBMathSD59x18.sol (@PaulRBerg)
+- Remove `SCALE_LPOTD` and `SCALE_INVERSE` constants in `PRBMathSD59x18` (@PaulRBerg)
 
 ## [1.0.2] - 2021-04-19
 
 ### Removed
 
-- Remove stale `SCALE_LPOTD` and `SCALE_INVERSE` constants in PRBMathUD60x18.sol (@PaulRBerg)
+- Remove stale `SCALE_LPOTD` and `SCALE_INVERSE` constants in `PRBMathUD60x18` (@PaulRBerg)
 
 ## [1.0.1] - 2021-04-19
 
