@@ -485,7 +485,7 @@ function mulDiv(uint256 x, uint256 y, uint256 denominator) pure returns (uint256
 /// $$
 ///
 /// Requirements:
-/// - All from {mulDiv}.
+/// - Refer to the requirements in {mulDiv}.
 /// - The result must fit in uint256.
 ///
 /// @param x The multiplicand as an unsigned 60.18-decimal fixed-point number.
@@ -533,7 +533,7 @@ function mulDiv18(uint256 x, uint256 y) pure returns (uint256 result) {
 /// - Unlike {mulDiv}, the result is rounded toward zero.
 ///
 /// Requirements:
-/// - All from {mulDiv}.
+/// - Refer to the requirements in {mulDiv}.
 /// - None of the inputs can be `type(int256).min`.
 /// - The result must fit in int256.
 ///
@@ -598,7 +598,7 @@ function sqrt(uint256 x) pure returns (uint256 result) {
         return 0;
     }
 
-    // For our first guess, we get the biggest power of 2 which is smaller than the square root of x.
+    // For our first guess, we calculate the biggest power of 2 which is smaller than the square root of x.
     //
     // We know that the "msb" (most significant bit) of x is a power of 2 such that we have:
     //
@@ -606,13 +606,13 @@ function sqrt(uint256 x) pure returns (uint256 result) {
     // msb(x) <= x <= 2*msb(x)$
     // $$
     //
-    // We write $msb(x)$ as $2^k$ and we get:
+    // We write $msb(x)$ as $2^k$, and we get:
     //
     // $$
     // k = log_2(x)
     // $$
     //
-    // Thus we can write the initial inequality as:
+    // Thus, we can write the initial inequality as:
     //
     // $$
     // 2^{log_2(x)} <= x <= 2*2^{log_2(x)+1} \\

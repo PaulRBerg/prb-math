@@ -105,11 +105,11 @@ function ceil(SD59x18 x) pure returns (SD59x18 result) {
 /// values separately.
 ///
 /// Notes:
-/// - All from {Common.mulDiv}.
+/// - Refer to the notes in {Common.mulDiv}.
 /// - The result is rounded toward zero.
 ///
 /// Requirements:
-/// - All from {Common.mulDiv}.
+/// - Refer to the requirements in {Common.mulDiv}.
 /// - None of the inputs can be `MIN_SD59x18`.
 /// - The denominator must not be zero.
 /// - The result must fit in SD59x18.
@@ -133,7 +133,7 @@ function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
         yAbs = yInt < 0 ? uint256(-yInt) : uint256(yInt);
     }
 
-    // Compute the absolute value (x*UNIT÷y). The resulting value must fit in int256.
+    // Compute the absolute value (x*UNIT÷y). The resulting value must fit in SD59x18.
     uint256 resultAbs = Common.mulDiv(xAbs, uint256(uUNIT), yAbs);
     if (resultAbs > uint256(uMAX_SD59x18)) {
         revert Errors.PRBMath_SD59x18_Div_Overflow(x, y);
@@ -143,7 +143,7 @@ function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     // negative, 0 for positive or zero).
     bool sameSign = (xInt ^ yInt) > -1;
 
-    // If the inputs don't have the same sign, the result should be negative. Otherwise, it should be positive.
+    // If the inputs have the same sign, the result should be positive. Otherwise, it should be negative.
     unchecked {
         result = wrap(sameSign ? int256(resultAbs) : -int256(resultAbs));
     }
@@ -156,10 +156,10 @@ function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 /// $$
 ///
 /// @dev Notes:
-/// - All from {exp2}.
+/// - Refer to the notes in {exp2}.
 ///
 /// Requirements:
-/// - All from {exp2}.
+/// - Refer to the requirements in {exp2}.
 /// - x must be less than 133_084258667509499441.
 ///
 /// @param x The exponent as an SD59x18 number.
@@ -273,7 +273,7 @@ function frac(SD59x18 x) pure returns (SD59x18 result) {
 /// - The result is rounded toward zero.
 ///
 /// Requirements:
-/// - x * y must fit in SD59x18, otherwise the result overflows.
+/// - x * y must fit in SD59x18.
 /// - x * y must not be negative, since complex numbers are not supported.
 ///
 /// @param x The first operand as an SD59x18 number.
@@ -299,7 +299,7 @@ function gm(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
             revert Errors.PRBMath_SD59x18_Gm_NegativeProduct(x, y);
         }
 
-        // We don't need to multiply the result by `UNIT` here because the x*y product had picked up a factor of `UNIT`
+        // We don't need to multiply the result by `UNIT` here because the x*y product picked up a factor of `UNIT`
         // during multiplication. See the comments in {Common.sqrt}.
         uint256 resultUint = Common.sqrt(uint256(xyInt));
         result = wrap(int256(resultUint));
@@ -328,11 +328,11 @@ function inv(SD59x18 x) pure returns (SD59x18 result) {
 /// $$
 ///
 /// @dev Notes:
-/// - All from {log2}.
+/// - Refer to the notes in {log2}.
 /// - The precision isn't sufficiently fine-grained to return exactly `UNIT` when the input is `E`.
 ///
 /// Requirements:
-/// - All from {log2}.
+/// - Refer to the requirements in {log2}.
 ///
 /// @param x The SD59x18 number for which to calculate the natural logarithm.
 /// @return result The natural logarithm as an SD59x18 number.
@@ -352,10 +352,10 @@ function ln(SD59x18 x) pure returns (SD59x18 result) {
 /// However, if x is an exact power of ten, a hard coded value is returned.
 ///
 /// @dev Notes:
-/// - All from {log2}.
+/// - Refer to the notes in {log2}.
 ///
 /// Requirements:
-/// - All from {log2}.
+/// - Refer to the requirements in {log2}.
 ///
 /// @param x The SD59x18 number for which to calculate the common logarithm.
 /// @return result The common logarithm as an SD59x18 number.
@@ -460,7 +460,7 @@ function log10(SD59x18 x) pure returns (SD59x18 result) {
 
 /// @notice Calculates the binary logarithm of x using the iterative approximation algorithm.
 ///
-/// For $0 \leq x < 1$, the logarithm is calculated as:
+/// For $0 \leq x \lt 1$, the logarithm is calculated as:
 ///
 /// $$
 /// log_2{x} = -log_2{\frac{1}{x}}
@@ -531,11 +531,10 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
 /// @notice Multiplies two SD59x18 numbers together, returning a new SD59x18 number.
 ///
 /// @dev Notes:
-/// - All from {Common.mulDiv18}.
-/// - The result is rounded toward zero.
+/// - Refer to the notes in {Common.mulDiv18}.
 ///
 /// Requirements:
-/// - All from {Common.mulDiv18}.
+/// - Refer to the requirements in {Common.mulDiv18}.
 /// - None of the inputs can be `MIN_SD59x18`.
 /// - The result must fit in SD59x18.
 ///
@@ -558,6 +557,7 @@ function mul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
         yAbs = yInt < 0 ? uint256(-yInt) : uint256(yInt);
     }
 
+    // Compute the absolute value (x*y÷UNIT). The resulting value must fit in SD59x18.
     uint256 resultAbs = Common.mulDiv18(xAbs, yAbs);
     if (resultAbs > uint256(uMAX_SD59x18)) {
         revert Errors.PRBMath_SD59x18_Mul_Overflow(x, y);
@@ -567,7 +567,7 @@ function mul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     // negative, 0 for positive or zero).
     bool sameSign = (xInt ^ yInt) > -1;
 
-    // If the inputs have the same sign, the result should be negative. Otherwise, it should be positive.
+    // If the inputs have the same sign, the result should be positive. Otherwise, it should be negative.
     unchecked {
         result = wrap(sameSign ? int256(resultAbs) : -int256(resultAbs));
     }
@@ -580,11 +580,11 @@ function mul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 /// $$
 ///
 /// @dev Notes:
-/// - All from {exp2}, {log2}, and {mul}.
+/// - Refer to the notes in {exp2}, {log2}, and {mul}.
 /// - Returns `UNIT` for 0^0.
 ///
 /// Requirements:
-/// - All from {exp2}, {log2}, and {mul}.
+/// - Refer to the requirements in {exp2}, {log2}, and {mul}.
 ///
 /// @param x The base as an SD59x18 number.
 /// @param y Exponent to raise x to, as an SD59x18 number
@@ -622,11 +622,11 @@ function pow(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 /// @dev See https://en.wikipedia.org/wiki/Exponentiation_by_squaring.
 ///
 /// Notes:
-/// - All from {Common.mulDiv18}.
+/// - Refer to the notes in {Common.mulDiv18}.
 /// - Returns `UNIT` for 0^0.
 ///
 /// Requirements:
-/// - All from {abs} and {Common.mulDiv18}.
+/// - Refer to the requirements in {abs} and {Common.mulDiv18}.
 /// - The result must fit in SD59x18.
 ///
 /// @param x The base as an SD59x18 number.
@@ -656,7 +656,7 @@ function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
     }
 
     unchecked {
-        // Is the base negative and the exponent odd? If yes, the result is negative.
+        // Is the base negative and the exponent odd? If yes, the result should be negative.
         int256 resultInt = int256(resultAbs);
         bool isNegative = x.unwrap() < 0 && y & 1 == 1;
         if (isNegative) {

@@ -87,11 +87,10 @@ function ceil(UD60x18 x) pure returns (UD60x18 result) {
 /// @dev Uses {Common.mulDiv} to enable overflow-safe multiplication and division.
 ///
 /// Notes:
-/// - The result is rounded down.
+/// - Refer to the notes in {Common.mulDiv}.
 ///
 /// Requirements:
-/// - The denominator must not be zero.
-/// - All from {Common.mulDiv}.
+/// - Refer to the requirements in {Common.mulDiv}.
 ///
 /// @param x The numerator as a UD60x18 number.
 /// @param y The denominator as a UD60x18 number.
@@ -184,7 +183,7 @@ function frac(UD60x18 x) pure returns (UD60x18 result) {
 /// @notice Calculates the geometric mean of x and y, i.e. $\sqrt{x * y}$, rounding down.
 ///
 /// @dev Requirements:
-/// - x * y must fit in UD60x18, otherwise the result overflows.
+/// - x * y must fit in UD60x18.
 ///
 /// @param x The first operand as a UD60x18 number.
 /// @param y The second operand as a UD60x18 number.
@@ -204,7 +203,7 @@ function gm(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
             revert Errors.PRBMath_UD60x18_Gm_Overflow(x, y);
         }
 
-        // We don't need to multiply the result by `UNIT` here because the x*y product had picked up a factor of `UNIT`
+        // We don't need to multiply the result by `UNIT` here because the x*y product picked up a factor of `UNIT`
         // during multiplication. See the comments in {Common.sqrt}.
         result = wrap(Common.sqrt(xyUint));
     }
@@ -234,11 +233,11 @@ function inv(UD60x18 x) pure returns (UD60x18 result) {
 /// $$
 ///
 /// @dev Notes:
-/// - All from {log2}.
+/// - Refer to the notes in {log2}.
 /// - The precision isn't sufficiently fine-grained to return exactly `UNIT` when the input is `E`.
-
+///
 /// Requirements:
-/// - All from {log2}.
+/// - Refer to the requirements in {log2}.
 ///
 /// @param x The UD60x18 number for which to calculate the natural logarithm.
 /// @return result The natural logarithm as a UD60x18 number.
@@ -260,10 +259,10 @@ function ln(UD60x18 x) pure returns (UD60x18 result) {
 /// However, if x is an exact power of ten, a hard coded value is returned.
 ///
 /// @dev Notes:
-/// - All from {log2}.
+/// - Refer to the notes in {log2}.
 ///
 /// Requirements:
-/// - All from {log2}.
+/// - Refer to the requirements in {log2}.
 ///
 /// @param x The UD60x18 number for which to calculate the common logarithm.
 /// @return result The common logarithm as a UD60x18 number.
@@ -433,10 +432,10 @@ function log2(UD60x18 x) pure returns (UD60x18 result) {
 /// @dev Uses {Common.mulDiv} to enable overflow-safe multiplication and division.
 ///
 /// Notes:
-/// - The result is rounded down.
+/// - Refer to the notes in {Common.mulDiv}.
 ///
 /// Requirements:
-/// - All from {Common.mulDiv}.
+/// - Refer to the requirements in {Common.mulDiv}.
 ///
 /// @dev See the documentation in {Common.mulDiv18}.
 /// @param x The multiplicand as a UD60x18 number.
@@ -455,7 +454,7 @@ function mul(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// x^y = 2^{log_2{x} * y}
 /// $$
 ///
-/// For $0 \leq x < 1$, since the unsigned {log2} is undefined, an equivalent formula is used:
+/// For $0 \leq x \lt 1$, since the unsigned {log2} is undefined, an equivalent formula is used:
 ///
 /// $$
 /// i = \frac{1}{x}
@@ -464,12 +463,12 @@ function mul(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// $$
 ///
 /// @dev Notes:
-/// - All from {log2} and {mul}.
+/// - Refer to the notes in {log2} and {mul}.
 /// - Returns `UNIT` for 0^0.
 /// - It may not perform well with very small values of x. Consider using SD59x18 as an alternative.
 ///
 /// Requirements:
-/// - All from {exp2}, {log2}, and {mul}.
+/// - Refer to the requirements in {exp2}, {log2}, and {mul}.
 ///
 /// @param x The base as a UD60x18 number.
 /// @param y The exponent as a UD60x18 number.
@@ -515,7 +514,7 @@ function pow(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// @dev See https://en.wikipedia.org/wiki/Exponentiation_by_squaring.
 ///
 /// Notes:
-/// - All from {Common.mulDiv18}.
+/// - Refer to the notes in {Common.mulDiv18}.
 /// - Returns `UNIT` for 0^0.
 ///
 /// Requirements:

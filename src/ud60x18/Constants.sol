@@ -20,11 +20,11 @@ UD60x18 constant EXP2_MAX_INPUT = UD60x18.wrap(uEXP2_MAX_INPUT);
 uint256 constant uHALF_UNIT = 0.5e18;
 UD60x18 constant HALF_UNIT = UD60x18.wrap(uHALF_UNIT);
 
-/// @dev $log2(10)$ as a UD60x18 number.
+/// @dev $log_2(10)$ as a UD60x18 number.
 uint256 constant uLOG2_10 = 3_321928094887362347;
 UD60x18 constant LOG2_10 = UD60x18.wrap(uLOG2_10);
 
-/// @dev $log2(e)$ as a UD60x18 number.
+/// @dev $log_2(e)$ as a UD60x18 number.
 uint256 constant uLOG2_E = 1_442695040888963407;
 UD60x18 constant LOG2_E = UD60x18.wrap(uLOG2_E);
 
