@@ -67,9 +67,10 @@ contract SD59x18_Helpers_Fuzz_Test is Base_Test {
         assertTrue(sd(x) >= sd(y), "SD59x18 >=");
     }
 
-    function test_IsZero() external {
-        SD59x18 x = sd(0);
-        assertTrue(isZero(x), "SD59x18 isZero");
+    function testFuzz_IsZero(SD59x18 x) external {
+        bool actual = isZero(x);
+        bool expected = x == sd(0);
+        assertEq(actual, expected, "SD59x18 isZero");
     }
 
     function testFuzz_Lshift(int256 x, uint256 y) external {

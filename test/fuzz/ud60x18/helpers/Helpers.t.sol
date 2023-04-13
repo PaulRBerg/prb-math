@@ -63,9 +63,10 @@ contract UD60x18_Helpers_Fuzz_Test is Base_Test {
         assertTrue(ud(x) >= ud(y), "UD60x18 >=");
     }
 
-    function test_IsZero() external {
-        UD60x18 x = ud(0);
-        assertTrue(isZero(x), "UD60x18 isZero");
+    function testFuzz_IsZero(UD60x18 x) external {
+        bool actual = isZero(x);
+        bool expected = x == ud(0);
+        assertEq(actual, expected, "SD59x18 isZero");
     }
 
     function testFuzz_Lshift(uint256 x, uint256 y) external {
