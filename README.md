@@ -84,7 +84,7 @@ import { SD59x18, sd } from "@prb/math/SD59x18.sol";
 import { UD60x18, ud } from "@prb/math/UD60x18.sol";
 ```
 
-Note that PRBMath can only be used in [Solidity v0.8.13](https://blog.soliditylang.org/2022/03/16/solidity-0.8.13-release-announcement/) or above.
+Note that PRBMath can only be used in Solidity v0.8.19 and above.
 
 ### SD59x18
 
@@ -136,30 +136,30 @@ contract UnsignedConsumer {
 
 ## Features
 
-There's significant overlap between the functions available in SD59x18 and UD60x18, so I did not duplicate the functions tables below. If in doubt,
-refer to the source code, which is well-documented with NatSpec comments.
+Because there's significant overlap between the features available in SD59x18 and UD60x18, there is only one table per section. If in doubt, refer to
+the source code, which is well-documented with NatSpec comments.
 
 ### Mathematical Functions
 
-| Name    | Description                                      |
-| ------- | ------------------------------------------------ |
-| `abs`   | Absolute value                                   |
-| `avg`   | Arithmetic average                               |
-| `ceil`  | Smallest whole number greater than or equal to x |
-| `div`   | Fixed-point division                             |
-| `exp`   | Natural exponential e^x                          |
-| `exp2`  | Binary exponential 2^x                           |
-| `floor` | Greatest whole number less than or equal to x    |
-| `frac`  | Fractional part                                  |
-| `gm`    | Geometric mean                                   |
-| `inv`   | Inverse 1÷x                                      |
-| `ln`    | Natural logarithm ln(x)                          |
-| `log10` | Common logarithm log10(x)                        |
-| `log2`  | Binary logarithm log2(x)                         |
-| `mul`   | Fixed-point multiplication                       |
-| `pow`   | Power function x^y                               |
-| `powu`  | Power function x^y with y simple integer         |
-| `sqrt`  | Square root                                      |
+| Name    | Operator | Description                                      |
+| ------- | -------- | ------------------------------------------------ |
+| `abs`   | N/A      | Absolute value                                   |
+| `avg`   | N/A      | Arithmetic average                               |
+| `ceil`  | N/A      | Smallest whole number greater than or equal to x |
+| `div`   | `/`      | Fixed-point division                             |
+| `exp`   | N/A      | Natural exponential e^x                          |
+| `exp2`  | N/A      | Binary exponential 2^x                           |
+| `floor` | N/A      | Greatest whole number less than or equal to x    |
+| `frac`  | N/A      | Fractional part                                  |
+| `gm`    | N/A      | Geometric mean                                   |
+| `inv`   | N/A      | Inverse 1÷x                                      |
+| `ln`    | N/A      | Natural logarithm ln(x)                          |
+| `log10` | N/A      | Common logarithm log10(x)                        |
+| `log2`  | N/A      | Binary logarithm log2(x)                         |
+| `mul`   | `*`      | Fixed-point multiplication                       |
+| `pow`   | N/A      | Power function x^y                               |
+| `powu`  | N/A      | Power function x^y with y simple integer         |
+| `sqrt`  | N/A      | Square root                                      |
 
 ### Adjacent Value Types
 
@@ -207,12 +207,33 @@ them.
 
 ### Helper Functions
 
-In addition to the mathematical, casting, and conversion functions, PRBMath provides many other helpers for the user-defined value types, such as
-`add`, `eq`, and `rshift`. These functions are not part of the core API and are frequently updated, so I invite you to take a look at the source code
-to see the full list.
+In addition to offering mathematical, casting, and conversion functions, PRBMath provides numerous helper functions for user-defined value types:
 
-The goal with these helpers is to not have to always unwrap and re-wrap variables to perform such basic operations as addition and equality checks.
-However, you should note that using these functions instead of the vanilla operators (e.g. `+`, `==`, and `>>`) will result in a higher gas cost.
+| Name           | Operator | Description               |
+| -------------- | -------- | ------------------------- |
+| `add`          | `+`      | Checked addition          |
+| `and`          | `&`      | Logical AND               |
+| `eq`           | `==`     | Equality                  |
+| `gt`           | `>`      | Greater than operator     |
+| `gte`          | `>=`     | Greater than or equal to  |
+| `isZero`       | N/A      | Check if a number is zero |
+| `lshift`       | N/A      | Bitwise left shift        |
+| `lt`           | `<`      | Less than                 |
+| `lte`          | `<=`     | Less than or equal to     |
+| `mod`          | `%`      | Modulo                    |
+| `neq`          | `!=`     | Not equal operator        |
+| `not`          | `~`      | Negation operator         |
+| `or`           | `\|`     | Logical OR                |
+| `rshift`       | N/A      | Bitwise right shift       |
+| `sub`          | `-`      | Checked subtraction       |
+| `unary`        | `-`      | Checked unary             |
+| `uncheckedAdd` | N/A      | Unchecked addition        |
+| `uncheckedSub` | N/A      | Unchecked subtraction     |
+| `xor`          | `^`      | Exclusive or (XOR)        |
+
+These helpers are designed to streamline basic operations such as addition and equality checks, eliminating the need to constantly unwrap and re-wrap
+variables. However, it is important to be aware that utilizing these functions may result in increased gas costs compared to unwrapping and directly
+using the vanilla types.
 
 ```solidity
 // SPDX-License-Identifier: UNLICENSED
@@ -223,17 +244,17 @@ import { UD60x18, ud } from "@prb/math/UD60x18.sol";
 function addRshiftEq() pure returns (bool result) {
   UD60x18 x = ud(1e18);
   UD60x18 y = ud(3e18);
-  y = y.add(x);
+  y = y.add(x); // also: y = y + x
   y = y.rshift(2);
-  result = x.eq(y);
+  result = x.eq(y); // also: y == x
 }
 
 ```
 
 ### Assertions
 
-PRBMath is shipped with typed assertions that you can use for writing tests with [PRBTest](https://github.com/PaulRBerg/prb-test), which is based on
-Foundry. This is useful if, for example, you would like to assert that two SD59x18 or UD60x18 numbers are equal.
+PRBMath comes with typed assertions that you can use for writing tests with [PRBTest](https://github.com/PaulRBerg/prb-test), which is based on
+Foundry. This is useful if, for example, you would like to assert that two UD60x18 numbers are equal.
 
 ```solidity
 pragma solidity >=0.8.19;
@@ -243,7 +264,7 @@ import { Assertions as PRBMathAssertions } from "@prb/math/test/Assertions.sol";
 import { PRBTest } from "@prb/math/test/PRBTest.sol";
 
 contract MyTest is PRBTest, PRBMathAssertions {
-  function test_Add() external {
+  function testAdd() external {
     UD60x18 x = ud(1e18);
     UD60x18 y = ud(2e18);
     UD60x18 z = ud(3e18);
