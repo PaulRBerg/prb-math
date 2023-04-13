@@ -2,8 +2,8 @@ lockfileVersion: '6.0'
 
 devDependencies:
   prettier:
-    specifier: ^2.8.4
-    version: 2.8.4
+    specifier: ^2.8.7
+    version: 2.8.7
   solhint:
     specifier: ^3.4.1
     version: 3.4.1
@@ -323,9 +323,10 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
-  /prettier@2.8.4:
-    resolution: {integrity: sha512-vIS4Rlc2FNh0BySk3Wkd6xmwxB0FpOndW5fisM5H8hsZSxU2VWVB5CWIkIjWvrHjIhxk2g3bfMKM87zNTrZddw==}
+  /prettier@2.8.7:
+    resolution: {integrity: sha512-yPngTo3aXUUmyuTjeTUT75txrf+aMh9FiD7q9ZE/i6r0bPb22g4FsE6Y338PQX1bmfy08i9QQCB7/rcUAVntfw==}
     engines: {node: '>=10.13.0'}
+    hasBin: true
     dev: true
 
   /punycode@2.3.0:
@@ -377,7 +378,7 @@ packages:
       table: 6.8.1
       text-table: 0.2.0
     optionalDependencies:
-      prettier: 2.8.4
+      prettier: 2.8.7
     dev: true
 
   /string-width@4.2.3:

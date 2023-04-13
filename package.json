@@ -10,7 +10,7 @@
     "url": "https://github.com/PaulRBerg/prb-math/issues"
   },
   "devDependencies": {
-    "prettier": "^2.8.4",
+    "prettier": "^2.8.7",
     "solhint": "^3.4.1"
   },
   "files": [
