@@ -210,9 +210,12 @@ function gm(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     }
 }
 
-/// @notice Calculates the inverse of x, rounding toward zero.
+/// @notice Calculates the inverse of x.
 ///
-/// @dev Requirements:
+/// @dev Notes:
+/// - The result is rounded down.
+///
+/// Requirements:
 /// - x must not be zero.
 ///
 /// @param x The UD60x18 number for which to calculate the inverse.

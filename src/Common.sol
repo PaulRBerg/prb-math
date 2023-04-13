@@ -10,16 +10,16 @@ pragma solidity >=0.8.19;
                                 CUSTOM ERRORS
 //////////////////////////////////////////////////////////////////////////*/
 
-/// @notice Thrown when the ending result in {mulDiv} would overflow uint256.
+/// @notice Thrown when the resultant value in {mulDiv} overflows uint256.
 error PRBMath_MulDiv_Overflow(uint256 x, uint256 y, uint256 denominator);
 
-/// @notice Thrown when the ending result in the fixed-point version of {mulDiv} would overflow uint256.
+/// @notice Thrown when the resultant value in {mulDiv18} overflows uint256.
 error PRBMath_MulDiv18_Overflow(uint256 x, uint256 y);
 
-/// @notice Thrown when attempting to run {mulDiv} with one of the inputs `type(int256).min`.
+/// @notice Thrown when one of the inputs passed to {mulDivSigned} is `type(int256).min`.
 error PRBMath_MulDivSigned_InputTooSmall();
 
-/// @notice Thrown when the ending result in the signed version of {mulDiv} would overflow int256.
+/// @notice Thrown when the resultant value in {mulDivSigned} overflows int256.
 error PRBMath_MulDivSigned_Overflow(int256 x, int256 y);
 
 /*//////////////////////////////////////////////////////////////////////////
@@ -32,10 +32,10 @@ uint128 constant MAX_UINT128 = type(uint128).max;
 /// @dev The maximum value a uint40 number can have.
 uint40 constant MAX_UINT40 = type(uint40).max;
 
-/// @dev How many trailing decimals can be represented.
+/// @dev The unit number, which the decimal precision of the fixed-point types.
 uint256 constant UNIT = 1e18;
 
-/// @dev The `UNIT` number inverted mod 2^256.
+/// @dev The unit number inverted mod 2^256.
 uint256 constant UNIT_INVERSE = 78156646155174841979727994598816262306175212592076161876661_508869554232690281;
 
 /// @dev The the largest power of two that divides the decimal value of `UNIT`. The logarithm of this value is the least significant
@@ -372,6 +372,9 @@ function msb(uint256 x) pure returns (uint256 result) {
 ///
 /// @dev Credits to Remco Bloemen under MIT license https://xn--2-umb.com/21/muldiv.
 ///
+/// Notes:
+/// - The result is rounded down.
+///
 /// Requirements:
 /// - The denominator must not be zero.
 /// - The result must fit in uint256.
@@ -471,6 +474,7 @@ function mulDiv(uint256 x, uint256 y, uint256 denominator) pure returns (uint256
 ///
 /// Notes:
 /// - The body is purposely left uncommented; to understand how this works, see the documentation in {mulDiv}.
+/// - The result is rounded down.
 /// - We take as an axiom that the result cannot be `MAX_UINT256` when x and y solve the following system of equations:
 ///
 /// $$
@@ -481,6 +485,7 @@ function mulDiv(uint256 x, uint256 y, uint256 denominator) pure returns (uint256
 /// $$
 ///
 /// Requirements:
+/// - All from {mulDiv}.
 /// - The result must fit in uint256.
 ///
 /// @param x The multiplicand as an unsigned 60.18-decimal fixed-point number.
@@ -522,10 +527,10 @@ function mulDiv18(uint256 x, uint256 y) pure returns (uint256 result) {
 
 /// @notice Calculates floor(x*y÷denominator) with 512-bit precision.
 ///
-/// @dev This is extension of {mulDiv} for signed numbers, which works by computing the signs and the absolute values separately.
+/// @dev This is an extension of {mulDiv} for signed numbers, which works by computing the signs and the absolute values separately.
 ///
 /// Notes:
-/// - The result is rounded toward zero.
+/// - Unlike {mulDiv}, the result is rounded toward zero.
 ///
 /// Requirements:
 /// - All from {mulDiv}.
@@ -582,7 +587,7 @@ function mulDivSigned(int256 x, int256 y, int256 denominator) pure returns (int2
 /// @dev See https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Babylonian_method.
 ///
 /// Notes:
-/// - The result is rounded down.
+/// - If x is not a perfect square, the result is rounded down.
 /// - Credits to OpenZeppelin for the explanations in comments below.
 ///
 /// @param x The uint256 number for which to calculate the square root.
@@ -659,7 +664,7 @@ function sqrt(uint256 x) pure returns (uint256 result) {
         result = (result + x / result) >> 1;
         result = (result + x / result) >> 1;
 
-        // Round down the result in case x is not a perfect square.
+        // If x is not a perfect square, round down the result.
         uint256 roundedDownResult = x / result;
         if (result >= roundedDownResult) {
             result = roundedDownResult;

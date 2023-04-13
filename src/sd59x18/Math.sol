@@ -267,9 +267,12 @@ function frac(SD59x18 x) pure returns (SD59x18 result) {
     result = wrap(x.unwrap() % uUNIT);
 }
 
-/// @notice Calculates the geometric mean of x and y, i.e. $\sqrt{x * y}$, rounding down.
+/// @notice Calculates the geometric mean of x and y, i.e. $\sqrt{x * y}$.
 ///
-/// @dev Requirements:
+/// @dev Notes:
+/// - The result is rounded toward zero.
+///
+/// Requirements:
 /// - x * y must fit in SD59x18, otherwise the result overflows.
 /// - x * y must not be negative, since complex numbers are not supported.
 ///
@@ -303,9 +306,12 @@ function gm(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     }
 }
 
-/// @notice Calculates the inverse of x, rounding toward zero.
+/// @notice Calculates the inverse of x.
 ///
-/// @dev Requirements:
+/// @dev Notes:
+/// - The result is rounded toward zero.
+///
+/// Requirements:
 /// - x must not be zero.
 ///
 /// @param x The SD59x18 number for which to calculate the inverse.
@@ -666,7 +672,7 @@ function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
 ///
 /// Notes:
 /// - Only the positive root is returned.
-/// - The result is rounded down.
+/// - The result is rounded toward zero.
 ///
 /// Requirements:
 /// - x cannot be negative, since complex numbers are not supported.
