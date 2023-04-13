@@ -345,8 +345,3 @@ contract PRBMathAssertions is PRBTest {
         assertEq(a, b, err);
     }
 }
-
-/// @dev Here for backward compatibility. Will be removed in V4.
-contract Assertions is PRBMathAssertions {
-// solhint-disable-previous-line no-empty-blocks
-}
