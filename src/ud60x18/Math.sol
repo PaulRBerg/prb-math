@@ -455,7 +455,7 @@ function mul(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// x^y = 2^{log_2{x} * y}
 /// $$
 ///
-/// For $0 \leq x < 1$, the unsigned {log2} is undefined, so the following equivalent formula is used instead:
+/// For $0 \leq x < 1$, since the unsigned {log2} is undefined, an equivalent formula is used:
 ///
 /// $$
 /// i = \frac{1}{x}
@@ -466,6 +466,7 @@ function mul(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// @dev Notes:
 /// - All from {log2} and {mul}.
 /// - Returns `UNIT` for 0^0.
+/// - It may not perform well with very small values of x. Consider using SD59x18 as an alternative.
 ///
 /// Requirements:
 /// - All from {exp2}, {log2}, and {mul}.

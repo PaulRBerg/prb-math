@@ -612,7 +612,7 @@ function pow(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
         return x;
     }
 
-    // Otherwise, calculate the result using the formula.
+    // Calculate the result using the formula.
     result = exp2(mul(log2(x), y));
 }
 
