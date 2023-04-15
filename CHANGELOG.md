@@ -39,7 +39,7 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 - **Breaking:** Set minimum compiler pragma to `>=0.8.19` (@PaulRBerg)
 - Bump Node.js dependencies (@PaulRBerg)
 - Bump submodules (@PaulRBerg)
-- Clarify rounding modes ([6bb53eada291](https://github.com/PaulRBerg/prb-math/tree/6bb53ea)) (@PaulRBerg)
+- Clarify rounding modes ([6bb53ea](https://github.com/PaulRBerg/prb-math/tree/6bb53ea)) (@PaulRBerg)
 - Clarify that `mulDiv` rounds toward zero ([cda291](https://github.com/PaulRBerg/prb-math/tree/cda291)) (@PaulRBerg)
 - Fix typo in code snippet in README ([#180](https://github.com/PaulRBerg/prb-math/pull/180)) (@cygaar)
 - Format contracts with Forge Formatter (@PaulRBerg)
@@ -59,15 +59,16 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 ### Added
 
 - Add `EXP_MAX_INPUT` and `EXP2_MAX_INPUT` constants, and use them in `exp` and `exp2` (@PaulRBerg)
-- Add `UNIT_SQUARED` and use it instead of the hard coded value (@PaulRBerg)
+- Add `UNIT_SQUARED` and use it instead of the hard-coded value (@PaulRBerg)
 - Add user-defined operators ([#168](https://github.com/PaulRBerg/prb-math/pull/168)) (@Amxx,@PaulRBerg)
 - Add unary operator ([#173](https://github.com/PaulRBerg/prb-math/pull/173)) (@Lumyo,@PaulRBerg)
 - Expand domain of `pow` in `UD60x18` by allowing inputs lower than `UNIT` ([#182](https://github.com/PaulRBerg/prb-math/pull/182)) (@PaulRBerg)
 
 ### Removed
 
-- Remove "memory-safe" annotation in test assertions (@PaulRBerg)
 - Remove development-related Node.js dependencies (@PaulRBerg)
+- Remove "memory-safe" annotation in test assertions (@PaulRBerg)
+- Remove problematic src/=src/ remapping (#41) (@PaulRBerg)
 - Remove superfluous threshold check in `SD59x19.exp` (@PaulRBerg)
 
 ### Fixed
@@ -137,7 +138,7 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 - **Breaking:** Refactor the libraries into free functions and user defined value types ([`a69b4b`][a69b4b]) (@PaulRBerg)
 - **Breaking:** Set minimum compiler pragma to `>=0.8.13` ([`a69b4b`][a69b4b]) (@PaulRBerg)
 - **Breaking:** Rename `SCALE` to `UNIT` ([`4d3658`](https://github.com/PaulRBerg/prb-math/commit/4d3658)) (@PaulRBerg)
-- Always truncate instead of rounding down in multiplication functions ([21fb32](https://github.com/PaulRBerg/prb-math/commit/21fb32)) (@PaulRBerg)
+- Always truncate instead of rounding up in multiplication functions ([21fb32](https://github.com/PaulRBerg/prb-math/commit/21fb32)) (@PaulRBerg)
 - Change license to MIT (@PaulRBerg)
 - Check if `y` is zero in `gm` ([`5b585c`](https://github.com/PaulRBerg/prb-math/commit/5b585c)) (@PaulRBerg)
 - Optimize `avg` by using the SWAR technique ([#89](https://github.com/PaulRBerg/prb-math/pull/89)) (@PaulRBerg)
