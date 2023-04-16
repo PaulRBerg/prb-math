@@ -39,7 +39,7 @@ import { UD60x18 } from "./ValueType.sol";
 /// https://devblogs.microsoft.com/oldnewthing/20220207-00/?p=106223
 ///
 /// @dev Notes:
-/// - The result is rounded down.
+/// - The result is rounded toward zero.
 ///
 /// @param x The first operand as a UD60x18 number.
 /// @param y The second operand as a UD60x18 number.
@@ -77,7 +77,7 @@ function ceil(UD60x18 x) pure returns (UD60x18 result) {
         // Equivalent to `UNIT - remainder`.
         let delta := sub(uUNIT, remainder)
 
-        // Equivalent to `x + delta * (remainder > 0 ? 1 : 0)`.
+        // Equivalent to `x + remainder > 0 ? delta : 0`.
         result := add(x, mul(delta, gt(remainder, 0)))
     }
 }
@@ -115,7 +115,7 @@ function div(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 function exp(UD60x18 x) pure returns (UD60x18 result) {
     uint256 xUint = x.unwrap();
 
-    // This check prevents values greater than 192 from being passed to {exp2}.
+    // This check prevents values greater than 192e18 from being passed to {exp2}.
     if (xUint > uEXP_MAX_INPUT) {
         revert Errors.PRBMath_UD60x18_Exp_InputTooBig(x);
     }
@@ -164,7 +164,7 @@ function floor(UD60x18 x) pure returns (UD60x18 result) {
         // Equivalent to `x % UNIT`.
         let remainder := mod(x, uUNIT)
 
-        // Equivalent to `x - remainder * (remainder > 0 ? 1 : 0)`.
+        // Equivalent to `x - remainder > 0 ? remainder : 0)`.
         result := sub(x, mul(remainder, gt(remainder, 0)))
     }
 }
@@ -212,7 +212,7 @@ function gm(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// @notice Calculates the inverse of x.
 ///
 /// @dev Notes:
-/// - The result is rounded down.
+/// - The result is rounded toward zero.
 ///
 /// Requirements:
 /// - x must not be zero.
@@ -366,9 +366,13 @@ function log10(UD60x18 x) pure returns (UD60x18 result) {
     }
 }
 
-/// @notice Calculates the binary logarithm of x using the iterative approximation algorithm.
+/// @notice Calculates the binary logarithm of x using the iterative approximation algorithm:
 ///
-/// For $0 \leq x < 1$, the logarithm is calculated as:
+/// $$
+/// log_2{x} = n + log_2{y}, \text{ where } y = x*2^{-n}, \ y \in [1, 2)
+/// $$
+///
+/// For $0 \leq x \lt 1$, the input is inverted:
 ///
 /// $$
 /// log_2{x} = -log_2{\frac{1}{x}}
@@ -393,14 +397,14 @@ function log2(UD60x18 x) pure returns (UD60x18 result) {
     }
 
     unchecked {
-        // Calculate the integer part of the logarithm, add it to the result and finally calculate $y = x * 2^{-n}$.
+        // Calculate the integer part of the logarithm.
         uint256 n = Common.msb(xUint / uUNIT);
 
         // This is the integer part of the logarithm as a UD60x18 number. The operation can't overflow because n
         // n is at most 255 and UNIT is 1e18.
         uint256 resultUint = n * uUNIT;
 
-        // This is $y = x * 2^{-n}$.
+        // Calculate $y = x * 2^{-n}$.
         uint256 y = xUint >> n;
 
         // If y is the unit number, the fractional part is zero.
@@ -419,7 +423,7 @@ function log2(UD60x18 x) pure returns (UD60x18 result) {
                 // Add the 2^{-m} factor to the logarithm.
                 resultUint += delta;
 
-                // Corresponds to z/2 in the Wikipedia article.
+                // Halve y, which corresponds to z/2 in the Wikipedia article.
                 y >>= 1;
             }
         }
@@ -546,7 +550,7 @@ function powu(UD60x18 x, uint256 y) pure returns (UD60x18 result) {
 /// @dev See https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Babylonian_method.
 ///
 /// Notes:
-/// - The result is rounded down.
+/// - The result is rounded toward zero.
 ///
 /// Requirements:
 /// - x must be less than `MAX_UD60x18 / UNIT`.

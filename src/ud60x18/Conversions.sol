@@ -6,7 +6,7 @@ import { PRBMath_UD60x18_Convert_Overflow } from "./Errors.sol";
 import { UD60x18 } from "./ValueType.sol";
 
 /// @notice Converts a UD60x18 number to a simple integer by dividing it by `UNIT`.
-/// @dev The result is rounded down.
+/// @dev The result is rounded toward zero.
 /// @param x The UD60x18 number to convert.
 /// @return result The same number in basic integer form.
 function convert(UD60x18 x) pure returns (uint256 result) {

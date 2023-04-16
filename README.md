@@ -383,11 +383,11 @@ If you discover any bugs or security issues, please report them via [Telegram](h
 
 ## Acknowledgments
 
-- Mikhail Vladimirov for the insights he shared in his [Math in Solidity](https://medium.com/coinmonks/math-in-solidity-part-1-numbers-384c8377f26d)
-  series.
-- Remco Bloemen for his work on [overflow-safe multiplication and division](https://xn--2-umb.com/21/muldiv/) and for responding to the questions I
+- Mikhail Vladimirov for the insights he shared in the [Math in Solidity](https://medium.com/coinmonks/math-in-solidity-part-1-numbers-384c8377f26d)
+  article series.
+- Remco Bloemen for his work on [overflow-safe multiplication and division](https://xn--2-umb.com/21/muldiv/), and for responding to the questions I
   asked him while developing the library.
-- Everyone who contributed a PR to this repository.
+- Everyone who has contributed a PR to this repository.
 
 ## License
 

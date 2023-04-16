@@ -373,7 +373,7 @@ function msb(uint256 x) pure returns (uint256 result) {
 /// @dev Credits to Remco Bloemen under MIT license https://xn--2-umb.com/21/muldiv.
 ///
 /// Notes:
-/// - The result is rounded down.
+/// - The result is rounded toward zero.
 ///
 /// Requirements:
 /// - The denominator must not be zero.
@@ -474,7 +474,7 @@ function mulDiv(uint256 x, uint256 y, uint256 denominator) pure returns (uint256
 ///
 /// Notes:
 /// - The body is purposely left uncommented; to understand how this works, see the documentation in {mulDiv}.
-/// - The result is rounded down.
+/// - The result is rounded toward zero.
 /// - We take as an axiom that the result cannot be `MAX_UINT256` when x and y solve the following system of equations:
 ///
 /// $$
@@ -530,7 +530,7 @@ function mulDiv18(uint256 x, uint256 y) pure returns (uint256 result) {
 /// @dev This is an extension of {mulDiv} for signed numbers, which works by computing the signs and the absolute values separately.
 ///
 /// Notes:
-/// - Unlike {mulDiv}, the result is rounded toward zero.
+/// - Refer to the requirements in {mulDiv}.
 ///
 /// Requirements:
 /// - Refer to the requirements in {mulDiv}.
@@ -568,8 +568,7 @@ function mulDivSigned(int256 x, int256 y, int256 denominator) pure returns (int2
     uint256 sy;
     uint256 sd;
     assembly ("memory-safe") {
-        // This works thanks to two's complement.
-        // "sgt" stands for "signed greater than" and "sub(0,1)" is max uint256.
+        // "sgt" is the "signed greater than" assembly instruction and "sub(0,1)" is -1 in two's complement.
         sx := sgt(x, sub(0, 1))
         sy := sgt(y, sub(0, 1))
         sd := sgt(denominator, sub(0, 1))
@@ -652,7 +651,7 @@ function sqrt(uint256 x) pure returns (uint256 result) {
     }
 
     // At this point, `result` is an estimation with at least one bit of precision. We know the true value has at
-    // most 128 bits, since  it is the square root of a uint256. Newton's method converges quadratically (precision
+    // most 128 bits, since it is the square root of a uint256. Newton's method converges quadratically (precision
     // doubles at every iteration). We thus need at most 7 iteration to turn our partial result with one bit of
     // precision into the expected uint128 result.
     unchecked {
@@ -664,10 +663,10 @@ function sqrt(uint256 x) pure returns (uint256 result) {
         result = (result + x / result) >> 1;
         result = (result + x / result) >> 1;
 
-        // If x is not a perfect square, round down the result.
-        uint256 roundedDownResult = x / result;
-        if (result >= roundedDownResult) {
-            result = roundedDownResult;
+        // If x is not a perfect square, round the result toward zero.
+        uint256 roundedResult = x / result;
+        if (result >= roundedResult) {
+            result = roundedResult;
         }
     }
 }

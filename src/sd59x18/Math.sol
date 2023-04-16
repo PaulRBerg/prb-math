@@ -56,7 +56,7 @@ function avg(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 
         if (sum < 0) {
             // If at least one of x and y is odd, add 1 to the result, because shifting negative numbers to the right
-            // rounds down to infinity. The right part is equivalent to `sum + (x % 2 == 1 || y % 2 == 1)`.
+            // rounds toward negative infinity. The right part is equivalent to `sum + (x % 2 == 1 || y % 2 == 1)`.
             assembly ("memory-safe") {
                 result := add(sum, and(or(xInt, yInt), 1))
             }
@@ -168,7 +168,7 @@ function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 function exp(SD59x18 x) pure returns (SD59x18 result) {
     int256 xInt = x.unwrap();
 
-    // This check prevents values greater than 192 from being passed to {exp2}.
+    // This check prevents values greater than 192e18 from being passed to {exp2}.
     if (xInt > uEXP_MAX_INPUT) {
         revert Errors.PRBMath_SD59x18_Exp_InputTooBig(x);
     }
@@ -458,9 +458,13 @@ function log10(SD59x18 x) pure returns (SD59x18 result) {
     }
 }
 
-/// @notice Calculates the binary logarithm of x using the iterative approximation algorithm.
+/// @notice Calculates the binary logarithm of x using the iterative approximation algorithm:
 ///
-/// For $0 \leq x \lt 1$, the logarithm is calculated as:
+/// $$
+/// log_2{x} = n + log_2{y}, \text{ where } y = x*2^{-n}, \ y \in [1, 2)
+/// $$
+///
+/// For $0 \leq x \lt 1$, the input is inverted:
 ///
 /// $$
 /// log_2{x} = -log_2{\frac{1}{x}}
@@ -493,14 +497,14 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
             xInt = uUNIT_SQUARED / xInt;
         }
 
-        // Calculate the integer part of the logarithm and add it to the result and finally calculate $y = x * 2^{-n}$.
+        // Calculate the integer part of the logarithm.
         uint256 n = Common.msb(uint256(xInt / uUNIT));
 
         // This is the integer part of the logarithm as an SD59x18 number. The operation can't overflow
         // because n is at most 255, `UNIT` is 1e18, and the sign is either 1 or -1.
         int256 resultInt = int256(n) * uUNIT;
 
-        // This is $y = x * 2^{-n}$.
+        // Calculate $y = x * 2^{-n}$.
         int256 y = xInt >> n;
 
         // If y is the unit number, the fractional part is zero.
@@ -519,7 +523,7 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
                 // Add the 2^{-m} factor to the logarithm.
                 resultInt = resultInt + delta;
 
-                // Corresponds to z/2 in the Wikipedia article.
+                // Halve y, which corresponds to z/2 in the Wikipedia article.
                 y >>= 1;
             }
         }
