@@ -9,7 +9,6 @@ import { UD60x18 } from "src/ud60x18/ValueType.sol";
 import { Base_Test } from "../../Base.t.sol";
 
 /// @title UD60x18_Unit_Test
-/// @author Paul Razvan Berg
 /// @notice Common contract members needed across UD60x18 tests.
 abstract contract UD60x18_Unit_Test is Base_Test {
     /*//////////////////////////////////////////////////////////////////////////
