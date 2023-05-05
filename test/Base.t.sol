@@ -35,7 +35,7 @@ abstract contract Base_Test is PRBTest, StdCheats, PRBMathAssertions, PRBMathUti
     uint128 internal constant MAX_UINT40 = type(uint40).max;
 
     /*//////////////////////////////////////////////////////////////////////////
-                                  TESTING VARIABLES
+                                     VARIABLES
     //////////////////////////////////////////////////////////////////////////*/
 
     Users internal users;
@@ -50,14 +50,5 @@ abstract contract Base_Test is PRBTest, StdCheats, PRBMathAssertions, PRBMathUti
 
         // Make Alice the `msg.sender` and `tx.origin` for all subsequent calls.
         vm.startPrank({ msgSender: users.alice, txOrigin: users.alice });
-    }
-
-    /*//////////////////////////////////////////////////////////////////////////
-                            INTERNAL CONSTANT FUNCTIONS
-    //////////////////////////////////////////////////////////////////////////*/
-
-    /// @dev Bounds a uint128 number.
-    function boundUint128(uint128 x, uint128 min, uint128 max) internal view returns (uint128 result) {
-        result = uint128(bound(uint256(x), uint256(min), uint256(max)));
     }
 }
