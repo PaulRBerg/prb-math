@@ -22,39 +22,39 @@ contract CastingUint256_Test is Base_Test {
     using CastingUint256 for uint256;
 
     function testFuzz_RevertWhen_OverflowSD1x18(uint256 x) external {
-        x = bound(x, uint64(uMAX_SD1x18) + 1, type(uint256).max);
+        x = _bound(x, uint64(uMAX_SD1x18) + 1, type(uint256).max);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_IntoSD1x18_Overflow.selector, x));
         x.intoSD1x18();
     }
 
     function testFuzz_intoSD1x18(uint256 x) external {
-        x = bound(x, 0, uint64(uMAX_SD1x18));
+        x = _bound(x, 0, uint64(uMAX_SD1x18));
         SD1x18 actual = x.intoSD1x18();
         SD1x18 expected = SD1x18.wrap(int64(uint64(x)));
         assertEq(actual, expected, "uint256 intoSD1x18");
     }
 
     function testFuzz_RevertWhen_OverflowSD59x18(uint256 x) external {
-        x = bound(x, uint256(uMAX_SD59x18) + 1, type(uint256).max);
+        x = _bound(x, uint256(uMAX_SD59x18) + 1, type(uint256).max);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_IntoSD59x18_Overflow.selector, x));
         x.intoSD59x18();
     }
 
     function testFuzz_intoSD59x18(uint256 x) external {
-        x = bound(x, 0, uint256(uMAX_SD59x18));
+        x = _bound(x, 0, uint256(uMAX_SD59x18));
         SD59x18 actual = x.intoSD59x18();
         SD59x18 expected = SD59x18.wrap(int256(uint256(x)));
         assertEq(actual, expected, "uint256 intoSD59x18");
     }
 
     function testFuzz_RevertWhen_OverflowUD2x18(uint256 x) external {
-        x = bound(x, uint256(uMAX_UD2x18) + 1, type(uint256).max);
+        x = _bound(x, uint256(uMAX_UD2x18) + 1, type(uint256).max);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_IntoUD2x18_Overflow.selector, x));
         x.intoUD2x18();
     }
 
     function testFuzz_intoUD2x18(uint256 x) external {
-        x = bound(x, 0, uint256(uMAX_UD2x18));
+        x = _bound(x, 0, uint256(uMAX_UD2x18));
         UD2x18 actual = x.intoUD2x18();
         UD2x18 expected = UD2x18.wrap(uint64(x));
         assertEq(actual, expected, "uint256 intoUD2x18");

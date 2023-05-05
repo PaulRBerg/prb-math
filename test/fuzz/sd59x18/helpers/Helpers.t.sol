@@ -35,12 +35,12 @@ contract SD59x18_Helpers_Fuzz_Test is Base_Test {
     int256 internal constant HALF_MAX_INT256 = MAX_INT256 / 2;
     int256 internal constant HALF_MIN_INT256 = MIN_INT256 / 2;
 
-    function testFuzz_Add(int256 x, int256 y) external {
+    function testFuzz_Add(SD59x18 x, SD59x18 y) external {
         x = bound(x, HALF_MIN_INT256, HALF_MAX_INT256);
         y = bound(y, HALF_MIN_INT256, HALF_MAX_INT256);
-        SD59x18 expected = sd(x + y);
-        assertEq(add(sd(x), sd(y)), expected, "SD59x18 add");
-        assertEq(sd(x) + sd(y), expected, "SD59x18 +");
+        SD59x18 expected = sd(x.unwrap() + y.unwrap());
+        assertEq(add(x, y), expected, "SD59x18 add");
+        assertEq(x + y, expected, "SD59x18 +");
     }
 
     function testFuzz_And(int256 x, int256 y) external {
@@ -74,7 +74,7 @@ contract SD59x18_Helpers_Fuzz_Test is Base_Test {
     }
 
     function testFuzz_Lshift(int256 x, uint256 y) external {
-        bound(y, 0, 512);
+        _bound(y, 0, 512);
         SD59x18 expected = sd(x << y);
         assertEq(lshift(sd(x), y), expected, "SD59x18 lshift");
     }
@@ -117,22 +117,22 @@ contract SD59x18_Helpers_Fuzz_Test is Base_Test {
     }
 
     function testFuzz_Rshift(int256 x, uint256 y) external {
-        bound(y, 0, 512);
+        _bound(y, 0, 512);
         SD59x18 expected = sd(x >> y);
         assertEq(rshift(sd(x), y), expected, "SD59x18 rshift");
     }
 
-    function testFuzz_Sub(int256 x, int256 y) external {
+    function testFuzz_Sub(SD59x18 x, SD59x18 y) external {
         x = bound(x, HALF_MIN_INT256, HALF_MAX_INT256);
         y = bound(y, HALF_MIN_INT256, HALF_MAX_INT256);
-        SD59x18 expected = sd(x - y);
-        assertEq(sub(sd(x), sd(y)), expected, "SD59x18 sub");
-        assertEq(sd(x) - sd(y), expected, "SD59x18 -");
+        SD59x18 expected = sd(x.unwrap() - y.unwrap());
+        assertEq(sub(x, y), expected, "SD59x18 sub");
+        assertEq(x - y, expected, "SD59x18 -");
     }
 
     function testFuzz_Unary(int256 x) external {
         // Cannot take unary of MIN_INT256, because its absolute value would be 1 unit larger than MAX_INT256.
-        x = bound(x, MIN_INT256 + 1, MAX_INT256);
+        x = _bound(x, MIN_INT256 + 1, MAX_INT256);
         SD59x18 expected = sd(-x);
         assertEq(unary(sd(x)), expected, "SD59x18 unary");
         assertEq(-sd(x), expected, "SD59x18 -");

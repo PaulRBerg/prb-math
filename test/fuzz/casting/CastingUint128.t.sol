@@ -56,4 +56,8 @@ contract CastingUint128_Test is Base_Test {
         UD60x18 expected = UD60x18.wrap(uint256(x));
         assertEq(actual, expected, "uint128 intoUD60x18");
     }
+
+    function boundUint128(uint128 x, uint128 min, uint128 max) internal pure returns (uint128 result) {
+        result = uint128(_bound(uint256(x), uint256(min), uint256(max)));
+    }
 }
