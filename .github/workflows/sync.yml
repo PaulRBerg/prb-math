@@ -1,14 +1,14 @@
-name: "Sync Release Branch"
+name: "Sync"
 
 on:
-  release:
-    types:
-      - "created"
+  push:
+    tags:
+      - "v4.x"
 
 jobs:
   sync-release-branch:
     runs-on: "ubuntu-latest"
-    if: "startsWith(github.event.release.tag_name, 'v4')"
+    if: "startsWith(github.ref, 'refs/tags/v4.')"
     steps:
       - name: "Check out the repo"
         uses: "actions/checkout@v3"
