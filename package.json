@@ -14,7 +14,7 @@
     "solhint": "^3.4.1"
   },
   "files": [
-    "/src",
+    "src",
     "CHANGELOG.md"
   ],
   "homepage": "https://github.com/PaulRBerg/prb-math#readme",
