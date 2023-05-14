@@ -32,8 +32,8 @@ contract UD60x18_Helpers_Fuzz_Test is Base_Test {
     uint256 internal constant HALF_MAX_UINT256 = type(uint256).max / 2;
 
     function testFuzz_Add(UD60x18 x, UD60x18 y) external {
-        x = bound(x, 0, HALF_MAX_UINT256);
-        y = bound(y, 0, HALF_MAX_UINT256);
+        x = _bound(x, 0, HALF_MAX_UINT256);
+        y = _bound(y, 0, HALF_MAX_UINT256);
         UD60x18 expected = ud(x.unwrap() + y.unwrap());
         assertEq(add(x, y), expected, "UD60x18 add");
         assertEq(x + y, expected, "UD60x18 +");

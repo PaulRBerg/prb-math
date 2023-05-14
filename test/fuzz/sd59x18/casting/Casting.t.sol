@@ -35,102 +35,102 @@ contract SD59x18_Casting_Fuzz_Test is Base_Test {
     }
 
     function testFuzz_RevertWhen_UnderflowSD1x18(SD59x18 x) external {
-        x = bound(x, MIN_SD59x18, int256(uMIN_SD1x18) - 1);
+        x = _bound(x, MIN_SD59x18, int256(uMIN_SD1x18) - 1);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_IntoSD1x18_Underflow.selector, x));
         x.intoSD1x18();
     }
 
     function testFuzz_RevertWhen_OverflowSD1x18(SD59x18 x) external {
-        x = bound(x, int256(uMAX_SD1x18) + 1, MAX_SD59x18);
+        x = _bound(x, int256(uMAX_SD1x18) + 1, MAX_SD59x18);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_IntoSD1x18_Overflow.selector, x));
         x.intoSD1x18();
     }
 
     function testFuzz_IntoSD1x18(SD59x18 x) external {
-        x = bound(x, uMIN_SD1x18, uMAX_SD1x18);
+        x = _bound(x, uMIN_SD1x18, uMAX_SD1x18);
         SD1x18 actual = x.intoSD1x18();
         SD1x18 expected = SD1x18.wrap(int64(x.unwrap()));
         assertEq(actual, expected, "SD59x18 intoSD1x18");
     }
 
     function testFuzz_RevertWhen_UnderflowUD2x18(SD59x18 x) external {
-        x = bound(x, MIN_SD59x18, -1);
+        x = _bound(x, MIN_SD59x18, -1);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_IntoUD2x18_Underflow.selector, x));
         x.intoUD2x18();
     }
 
     function testFuzz_RevertWhen_OverflowUD2x18(SD59x18 x) external {
-        x = bound(x, int256(uint256(uMAX_UD2x18)) + 1, MAX_SD59x18);
+        x = _bound(x, int256(uint256(uMAX_UD2x18)) + 1, MAX_SD59x18);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_IntoUD2x18_Overflow.selector, x));
         x.intoUD2x18();
     }
 
     function testFuzz_IntoUD2x18(SD59x18 x) external {
-        x = bound(x, 0, int256(uint256(uMAX_UD2x18)));
+        x = _bound(x, 0, int256(uint256(uMAX_UD2x18)));
         UD2x18 actual = x.intoUD2x18();
         UD2x18 expected = UD2x18.wrap(uint64(uint256(x.unwrap())));
         assertEq(actual, expected, "SD59x18 intoUD2x18");
     }
 
     function testFuzz_RevertWhen_UnderflowUD60x18(SD59x18 x) external {
-        x = bound(x, MIN_SD59x18, -1);
+        x = _bound(x, MIN_SD59x18, -1);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_IntoUD60x18_Underflow.selector, x));
         x.intoUD60x18();
     }
 
     function testFuzz_IntoUD60x18(SD59x18 x) external {
-        x = bound(x, 0, MAX_SD59x18);
+        x = _bound(x, 0, MAX_SD59x18);
         UD60x18 actual = x.intoUD60x18();
         UD60x18 expected = UD60x18.wrap(uint256(x.unwrap()));
         assertEq(actual, expected, "SD59x18 intoUD60x18");
     }
 
     function testFuzz_RevertWhen_UnderflowUint128(SD59x18 x) external {
-        x = bound(x, MIN_SD59x18, -1);
+        x = _bound(x, MIN_SD59x18, -1);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_IntoUint128_Underflow.selector, x));
         x.intoUint128();
     }
 
     function testFuzz_RevertWhen_OverflowUint128(SD59x18 x) external {
-        x = bound(x, int256(uint256(MAX_UINT128)) + 1, MAX_SD59x18);
+        x = _bound(x, int256(uint256(MAX_UINT128)) + 1, MAX_SD59x18);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_IntoUint128_Overflow.selector, x));
         x.intoUint128();
     }
 
     function testFuzz_IntoUint128(SD59x18 x) external {
-        x = bound(x, 0, int256(uint256(MAX_UINT128)));
+        x = _bound(x, 0, int256(uint256(MAX_UINT128)));
         uint128 actual = x.intoUint128();
         uint128 expected = uint128(uint256(x.unwrap()));
         assertEq(actual, expected, "SD59x18 intoUint128");
     }
 
     function testFuzz_RevertWhen_UnderflowUint256(SD59x18 x) external {
-        x = bound(x, MIN_SD59x18, -1);
+        x = _bound(x, MIN_SD59x18, -1);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_IntoUint256_Underflow.selector, x));
         x.intoUint256();
     }
 
     function testFuzz_IntoUint256(SD59x18 x) external {
-        x = bound(x, 0, MAX_SD59x18);
+        x = _bound(x, 0, MAX_SD59x18);
         uint256 actual = x.intoUint256();
         uint256 expected = uint256(x.unwrap());
         assertEq(actual, expected, "SD59x18 intoUint256");
     }
 
     function testFuzz_RevertWhen_UnderflowUint40(SD59x18 x) external {
-        x = bound(x, MIN_SD59x18, -1);
+        x = _bound(x, MIN_SD59x18, -1);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_IntoUint40_Underflow.selector, x));
         x.intoUint40();
     }
 
     function testFuzz_RevertWhen_OverflowUint40(SD59x18 x) external {
-        x = bound(x, int256(uint256(MAX_UINT40)) + 1, MAX_SD59x18);
+        x = _bound(x, int256(uint256(MAX_UINT40)) + 1, MAX_SD59x18);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_IntoUint40_Overflow.selector, x));
         x.intoUint40();
     }
 
     function testFuzz_IntoUint40(SD59x18 x) external {
-        x = bound(x, 0, int256(uint256(MAX_UINT40)));
+        x = _bound(x, 0, int256(uint256(MAX_UINT40)));
         uint40 actual = x.intoUint40();
         uint40 expected = uint40(uint256(x.unwrap()));
         assertEq(actual, expected, "SD59x18 intoUint40");
