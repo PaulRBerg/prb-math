@@ -23,52 +23,52 @@ import { Base_Test } from "../../../Base.t.sol";
 /// @dev Collection of tests for the casting functions available in UD60x18.
 contract UD60x18_Casting_Fuzz_Test is Base_Test {
     function testFuzz_RevertWhen_OverflowSD1x18(UD60x18 x) external {
-        x = bound(x, ud(uint64(uMAX_SD1x18) + 1), MAX_UD60x18);
+        x = _bound(x, ud(uint64(uMAX_SD1x18) + 1), MAX_UD60x18);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_UD60x18_IntoSD1x18_Overflow.selector, x));
         x.intoSD1x18();
     }
 
     function testFuzz_intoSD1x18(UD60x18 x) external {
-        x = bound(x, 0, ud(uint64(uMAX_SD1x18)));
+        x = _bound(x, 0, ud(uint64(uMAX_SD1x18)));
         SD1x18 actual = x.intoSD1x18();
         SD1x18 expected = SD1x18.wrap(int64(uint64(x.unwrap())));
         assertEq(actual, expected, "UD60x18 intoSD1x18");
     }
 
     function testFuzz_RevertWhen_OverflowSD59x18(UD60x18 x) external {
-        x = bound(x, ud(uint256(uMAX_SD59x18) + 1), MAX_UD60x18);
+        x = _bound(x, ud(uint256(uMAX_SD59x18) + 1), MAX_UD60x18);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_UD60x18_IntoSD59x18_Overflow.selector, x));
         x.intoSD59x18();
     }
 
     function testFuzz_intoSD59x18(UD60x18 x) external {
-        x = bound(x, 0, ud(uint256(uMAX_SD59x18)));
+        x = _bound(x, 0, ud(uint256(uMAX_SD59x18)));
         SD59x18 actual = x.intoSD59x18();
         SD59x18 expected = SD59x18.wrap(int256(uint256(x.unwrap())));
         assertEq(actual, expected, "UD60x18 intoSD59x18");
     }
 
     function testFuzz_RevertWhen_OverflowUD2x18(UD60x18 x) external {
-        x = bound(x, ud(uint256(uMAX_UD2x18) + 1), MAX_UD60x18);
+        x = _bound(x, ud(uint256(uMAX_UD2x18) + 1), MAX_UD60x18);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_UD60x18_IntoUD2x18_Overflow.selector, x));
         x.intoUD2x18();
     }
 
     function testFuzz_intoUD2x18(UD60x18 x) external {
-        x = bound(x, 0, ud(uint256(uMAX_UD2x18)));
+        x = _bound(x, 0, ud(uint256(uMAX_UD2x18)));
         UD2x18 actual = x.intoUD2x18();
         UD2x18 expected = UD2x18.wrap(uint64(x.unwrap()));
         assertEq(actual, expected, "UD60x18 intoUD2x18");
     }
 
     function testFuzz_RevertWhen_OverflowUint128(UD60x18 x) external {
-        x = bound(x, ud(uint256(MAX_UINT128) + 1), MAX_UD60x18);
+        x = _bound(x, ud(uint256(MAX_UINT128) + 1), MAX_UD60x18);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_UD60x18_IntoUint128_Overflow.selector, x));
         x.intoUint128();
     }
 
     function testFuzz_intoUint128(UD60x18 x) external {
-        x = bound(x, 0, ud(uint256(MAX_UINT128)));
+        x = _bound(x, 0, ud(uint256(MAX_UINT128)));
         uint128 actual = x.intoUint128();
         uint128 expected = uint128(x.unwrap());
         assertEq(actual, expected, "UD60x18 intoUint128");
@@ -81,13 +81,13 @@ contract UD60x18_Casting_Fuzz_Test is Base_Test {
     }
 
     function testFuzz_RevertWhen_OverflowUint40(UD60x18 x) external {
-        x = bound(x, ud(uint256(MAX_UINT40) + 1), MAX_UD60x18);
+        x = _bound(x, ud(uint256(MAX_UINT40) + 1), MAX_UD60x18);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_UD60x18_IntoUint40_Overflow.selector, x));
         x.intoUint40();
     }
 
     function testFuzz_intoUint40(UD60x18 x) external {
-        x = bound(x, 0, ud(uint256(MAX_UINT40)));
+        x = _bound(x, 0, ud(uint256(MAX_UINT40)));
         uint40 actual = uint40(x.intoUint40());
         uint40 expected = uint40(x.unwrap());
         assertEq(actual, expected, "UD60x18 intoUint40");

@@ -36,8 +36,8 @@ contract SD59x18_Helpers_Fuzz_Test is Base_Test {
     int256 internal constant HALF_MIN_INT256 = MIN_INT256 / 2;
 
     function testFuzz_Add(SD59x18 x, SD59x18 y) external {
-        x = bound(x, HALF_MIN_INT256, HALF_MAX_INT256);
-        y = bound(y, HALF_MIN_INT256, HALF_MAX_INT256);
+        x = _bound(x, HALF_MIN_INT256, HALF_MAX_INT256);
+        y = _bound(y, HALF_MIN_INT256, HALF_MAX_INT256);
         SD59x18 expected = sd(x.unwrap() + y.unwrap());
         assertEq(add(x, y), expected, "SD59x18 add");
         assertEq(x + y, expected, "SD59x18 +");
@@ -123,8 +123,8 @@ contract SD59x18_Helpers_Fuzz_Test is Base_Test {
     }
 
     function testFuzz_Sub(SD59x18 x, SD59x18 y) external {
-        x = bound(x, HALF_MIN_INT256, HALF_MAX_INT256);
-        y = bound(y, HALF_MIN_INT256, HALF_MAX_INT256);
+        x = _bound(x, HALF_MIN_INT256, HALF_MAX_INT256);
+        y = _bound(y, HALF_MIN_INT256, HALF_MAX_INT256);
         SD59x18 expected = sd(x.unwrap() - y.unwrap());
         assertEq(sub(x, y), expected, "SD59x18 sub");
         assertEq(x - y, expected, "SD59x18 -");
