@@ -4,6 +4,7 @@
   auto_detect_solc = false
   bytecode_hash = "none"
   cbor_metadata = false
+  evm_version = "paris"
   fuzz = { runs = 256 }
   libs = ["lib"]
   optimizer = true
