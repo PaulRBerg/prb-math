@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Common Changelog](https://common-changelog.org/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+[4.0.1]: https://github.com/PaulRBerg/prb-math/compare/v4.0.0...v4.0.1
 [4.0.0]: https://github.com/PaulRBerg/prb-math/compare/v3.3.2...v4.0.0
 [3.3.2]: https://github.com/PaulRBerg/prb-math/compare/v3.3.1...v3.3.2
 [3.3.1]: https://github.com/PaulRBerg/prb-math/compare/v3.3.0...v3.3.1
@@ -29,6 +30,19 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 [1.0.2]: https://github.com/PaulRBerg/prb-math/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/PaulRBerg/prb-math/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/PaulRBerg/prb-math/releases/tag/v1.0.0
+
+## [4.0.1] - 2023-05-28
+
+### Changed
+
+- Bump submodules (@PaulRBerg)
+- Clarify rounding modes (@PaulRBerg)
+- Move test utils from `src/test` to `test/utils` (@PaulRBerg)
+- Improve documentation (@PaulRBerg)
+
+### Added
+
+- Provide silent `bound` utils (@PaulRBerg)
 
 ## [4.0.0] - 2023-04-13
 
