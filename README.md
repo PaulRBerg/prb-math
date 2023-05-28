@@ -34,7 +34,7 @@ all the boxes mentioned thus far, but it doesn't offer type safety.
 First, run the install step:
 
 ```sh
-forge install PaulRBerg/prb-math@v4
+forge install PaulRBerg/prb-math@release-v4
 ```
 
 Then, add this to your `remappings.txt` file:
