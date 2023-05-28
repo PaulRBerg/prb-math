@@ -9,7 +9,7 @@ import { SD59x18 } from "src/sd59x18/ValueType.sol";
 import { Base_Test } from "../../Base.t.sol";
 
 /// @title SD59x18_Unit_Test
-/// @notice Common contract members needed across SD59x18 tests.
+/// @notice Common logic needed by all SD59x18 unit tests.
 abstract contract SD59x18_Unit_Test is Base_Test {
     /*//////////////////////////////////////////////////////////////////////////
                                       CONSTANTS
