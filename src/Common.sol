@@ -368,7 +368,7 @@ function msb(uint256 x) pure returns (uint256 result) {
     }
 }
 
-/// @notice Calculates floor(x*y÷denominator) with 512-bit precision.
+/// @notice Calculates x*y÷denominator with 512-bit precision.
 ///
 /// @dev Credits to Remco Bloemen under MIT license https://xn--2-umb.com/21/muldiv.
 ///
@@ -468,7 +468,7 @@ function mulDiv(uint256 x, uint256 y, uint256 denominator) pure returns (uint256
     }
 }
 
-/// @notice Calculates floor(x*y÷1e18) with 512-bit precision.
+/// @notice Calculates x*y÷1e18 with 512-bit precision.
 ///
 /// @dev A variant of {mulDiv} with constant folding, i.e. in which the denominator is hard coded to 1e18.
 ///
@@ -525,12 +525,12 @@ function mulDiv18(uint256 x, uint256 y) pure returns (uint256 result) {
     }
 }
 
-/// @notice Calculates floor(x*y÷denominator) with 512-bit precision.
+/// @notice Calculates x*y÷denominator with 512-bit precision.
 ///
 /// @dev This is an extension of {mulDiv} for signed numbers, which works by computing the signs and the absolute values separately.
 ///
 /// Notes:
-/// - Refer to the requirements in {mulDiv}.
+/// - The result is rounded toward zero.
 ///
 /// Requirements:
 /// - Refer to the requirements in {mulDiv}.
