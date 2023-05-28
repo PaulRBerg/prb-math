@@ -64,7 +64,7 @@ abstract contract SD59x18_Unit_Test is Base_Test {
                               CONSTANT HELPER FUNCTIONS
     //////////////////////////////////////////////////////////////////////////*/
 
-    function logSd(SD59x18 p0) internal view {
+    function logSd(SD59x18 p0) internal pure {
         console2.logInt(p0.unwrap());
     }
 

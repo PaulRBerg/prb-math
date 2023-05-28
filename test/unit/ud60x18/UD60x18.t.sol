@@ -58,11 +58,11 @@ abstract contract UD60x18_Unit_Test is Base_Test {
                               CONSTANT HELPER FUNCTIONS
     //////////////////////////////////////////////////////////////////////////*/
 
-    function log(string memory p0, UD60x18 p1) internal view {
+    function log(string memory p0, UD60x18 p1) internal pure {
         console2.log(p0, p1.unwrap());
     }
 
-    function logUd(UD60x18 p0) internal view {
+    function logUd(UD60x18 p0) internal pure {
         console2.logUint(p0.unwrap());
     }
 
