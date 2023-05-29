@@ -8,7 +8,6 @@ import { UD60x18 } from "src/ud60x18/ValueType.sol";
 
 import { Base_Test } from "../../Base.t.sol";
 
-/// @title UD60x18_Unit_Test
 /// @notice Common logic needed by all UD60x18 unit tests.
 abstract contract UD60x18_Unit_Test is Base_Test {
     /*//////////////////////////////////////////////////////////////////////////

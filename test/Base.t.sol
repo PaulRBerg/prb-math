@@ -10,8 +10,6 @@ import { UD60x18 } from "src/ud60x18/ValueType.sol";
 import { PRBMathAssertions } from "./utils/Assertions.sol";
 import { PRBMathUtils } from "./utils/Utils.sol";
 
-/// @title Base_Test
-/// @author Paul Razvan Berg
 /// @notice Base test contract with common logic needed by all tests.
 abstract contract Base_Test is PRBTest, StdCheats, PRBMathAssertions, PRBMathUtils {
     /*//////////////////////////////////////////////////////////////////////////
