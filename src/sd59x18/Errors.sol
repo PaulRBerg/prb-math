@@ -75,7 +75,7 @@ error PRBMath_SD59x18_Mul_InputTooSmall();
 /// @notice Thrown when multiplying two numbers and the intermediary absolute result overflows SD59x18.
 error PRBMath_SD59x18_Mul_Overflow(SD59x18 x, SD59x18 y);
 
-/// @notice Thrown when raising a number to a power and hte intermediary absolute result overflows SD59x18.
+/// @notice Thrown when raising a number to a power and the intermediary absolute result overflows SD59x18.
 error PRBMath_SD59x18_Powu_Overflow(SD59x18 x, uint256 y);
 
 /// @notice Thrown when taking the square root of a negative number.
