@@ -3,7 +3,7 @@ pragma solidity >=0.8.19;
 
 // Common.sol
 //
-// Common mathematical functions needed by both SD59x18 and UD60x18. Note that these global functions do not
+// Common mathematical functions used in both SD59x18 and UD60x18. Note that these global functions do not
 // always operate with SD59x18 and UD60x18 numbers.
 
 /*//////////////////////////////////////////////////////////////////////////
