@@ -33,10 +33,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/PaulRBerg/prb-math"
-  },
+  "repository": "github:PaulRBerg/prb-math",
   "scripts": {
     "build": "forge build",
     "clean": "rm -rf cache out",
