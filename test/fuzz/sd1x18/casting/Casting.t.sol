@@ -4,7 +4,6 @@ pragma solidity >=0.8.19 <0.9.0;
 import { sd1x18, wrap } from "src/sd1x18/Casting.sol";
 import { SD1x18 } from "src/sd1x18/ValueType.sol";
 import { SD59x18 } from "src/sd59x18/ValueType.sol";
-import { uMAX_UD2x18 } from "src/ud2x18/Constants.sol";
 import { MAX_SD1x18, MIN_SD1x18 } from "src/sd1x18/Constants.sol";
 import {
     PRBMath_SD1x18_ToUD2x18_Underflow,

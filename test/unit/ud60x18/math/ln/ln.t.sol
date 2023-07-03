@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.19 <0.9.0;
 
-import { stdError } from "forge-std/StdError.sol";
-
 import { ud } from "src/ud60x18/Casting.sol";
 import { E, MAX_UD60x18, MAX_WHOLE_UD60x18, PI, UNIT } from "src/ud60x18/Constants.sol";
 import { PRBMath_UD60x18_Log_InputTooSmall } from "src/ud60x18/Errors.sol";
