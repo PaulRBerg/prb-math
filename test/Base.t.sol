@@ -4,9 +4,6 @@ pragma solidity >=0.8.19 <0.9.0;
 import { PRBTest } from "@prb/test/PRBTest.sol";
 import { StdCheats } from "forge-std/StdCheats.sol";
 
-import { SD59x18 } from "../src/sd59x18/ValueType.sol";
-import { UD60x18 } from "../src/ud60x18/ValueType.sol";
-
 import { PRBMathAssertions } from "./utils/Assertions.sol";
 import { PRBMathUtils } from "./utils/Utils.sol";
 

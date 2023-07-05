@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.19 <0.9.0;
 
-import { stdError } from "forge-std/StdError.sol";
-
 import { PRBMath_MulDiv18_Overflow } from "src/Common.sol";
 import { sd } from "src/sd59x18/Casting.sol";
 import { E, MAX_SD59x18, MAX_WHOLE_SD59x18, MIN_SD59x18, MIN_WHOLE_SD59x18, PI, ZERO } from "src/sd59x18/Constants.sol";

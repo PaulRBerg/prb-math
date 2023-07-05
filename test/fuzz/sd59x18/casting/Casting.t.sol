@@ -3,8 +3,6 @@ pragma solidity >=0.8.19 <0.9.0;
 
 import { uMAX_SD1x18, uMIN_SD1x18 } from "src/sd1x18/Constants.sol";
 import { SD1x18 } from "src/sd1x18/ValueType.sol";
-import { uMAX_SD59x18, uMIN_SD59x18 } from "src/sd59x18/Constants.sol";
-import { SD59x18 } from "src/sd59x18/ValueType.sol";
 import { sd, sd59x18, wrap } from "src/sd59x18/Casting.sol";
 import { MAX_SD59x18, MIN_SD59x18 } from "src/sd59x18/Constants.sol";
 import {

@@ -2,7 +2,7 @@
 pragma solidity >=0.8.19 <0.9.0;
 
 import { sd } from "src/sd59x18/Casting.sol";
-import { E, PI, uMAX_SD59x18, ZERO } from "src/sd59x18/Constants.sol";
+import { E, PI, ZERO } from "src/sd59x18/Constants.sol";
 import { PRBMath_SD59x18_Sqrt_NegativeInput, PRBMath_SD59x18_Sqrt_Overflow } from "src/sd59x18/Errors.sol";
 import { sqrt } from "src/sd59x18/Math.sol";
 import { SD59x18 } from "src/sd59x18/ValueType.sol";

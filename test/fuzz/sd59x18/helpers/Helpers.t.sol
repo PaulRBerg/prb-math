@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.19 <0.9.0;
 
-import { stdMath } from "forge-std/StdMath.sol";
-
 import { sd } from "src/sd59x18/Casting.sol";
 import {
     add,
@@ -22,7 +20,6 @@ import {
     unary,
     uncheckedAdd,
     uncheckedSub,
-    uncheckedUnary,
     xor,
     not
 } from "src/sd59x18/Helpers.sol";
