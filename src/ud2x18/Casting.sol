@@ -6,7 +6,6 @@ import "./Errors.sol" as Errors;
 import { uMAX_SD1x18 } from "../sd1x18/Constants.sol";
 import { SD1x18 } from "../sd1x18/ValueType.sol";
 import { SD59x18 } from "../sd59x18/ValueType.sol";
-import { UD2x18 } from "../ud2x18/ValueType.sol";
 import { UD60x18 } from "../ud60x18/ValueType.sol";
 import { UD2x18 } from "./ValueType.sol";
 
