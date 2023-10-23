@@ -1,2 +1,2 @@
-@prb/test/=lib/prb-test/src/
+@prb/test/=node_modules/@prb/test/
 forge-std/=lib/forge-std/src/

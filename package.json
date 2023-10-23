@@ -9,6 +9,9 @@
   "bugs": {
     "url": "https://github.com/PaulRBerg/prb-math/issues"
   },
+  "dependencies": {
+    "@prb/test": "0.6.4"
+  },
   "devDependencies": {
     "prettier": "^2.8.7",
     "solhint-community": "^3.5.2"

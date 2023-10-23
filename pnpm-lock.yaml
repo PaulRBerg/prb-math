@@ -1,8 +1,13 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
+
+dependencies:
+  '@prb/test':
+    specifier: 0.6.4
+    version: 0.6.4
 
 devDependencies:
   prettier:
@@ -34,6 +39,10 @@ packages:
       chalk: 2.4.2
       js-tokens: 4.0.0
     dev: true
+
+  /@prb/test@0.6.4:
+    resolution: {integrity: sha512-P0tTMsB6XQ0Wp61EYdXJYFhsOVGyZvcOFub2y9yk0sF+GYDusctR7DzEI+vOP0SILm3knFkEJASjewHEBppdRQ==}
+    dev: false
 
   /@solidity-parser/parser@0.16.0:
     resolution: {integrity: sha512-ESipEcHyRHg4Np4SqBCfcXwyxxna1DgFVz69bgpLV8vzl/NP1DtcKsJ4dJZXWQhY/Z4J2LeKBiOkOVZn9ct33Q==}
