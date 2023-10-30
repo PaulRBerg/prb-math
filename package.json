@@ -9,11 +9,9 @@
   "bugs": {
     "url": "https://github.com/PaulRBerg/prb-math/issues"
   },
-  "dependencies": {
-    "@forge/std": "github:foundry-rs/forge-std#e8a047e3f40f13fa37af6fe14e6e06283d9a060e",
-    "@prb/test": "0.6.4"
-  },
   "devDependencies": {
+    "@forge/std": "github:foundry-rs/forge-std#e8a047e3f40f13fa37af6fe14e6e06283d9a060e",
+    "@prb/test": "0.6.4",
     "prettier": "^2.8.7",
     "solhint-community": "^3.5.2"
   },
@@ -34,6 +32,10 @@
     "solidity"
   ],
   "license": "MIT",
+  "peerDependencies": {
+    "@forge/std": "github:foundry-rs/forge-std#e8a047e3f40f13fa37af6fe14e6e06283d9a060e",
+    "@prb/test": "0.6.4"
+  },
   "publishConfig": {
     "access": "public"
   },
