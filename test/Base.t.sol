@@ -4,8 +4,8 @@ pragma solidity >=0.8.19 <0.9.0;
 import { StdCheats } from "@forge-std/src/StdCheats.sol";
 import { PRBTest } from "@prb/test/src/PRBTest.sol";
 
-import { PRBMathAssertions } from "../src/test/Assertions.sol";
-import { PRBMathUtils } from "../src/test/Utils.sol";
+import { PRBMathAssertions } from "./utils/Assertions.sol";
+import { PRBMathUtils } from "./utils/Utils.sol";
 
 /// @notice Base test contract with common logic needed by all tests.
 abstract contract Base_Test is PRBTest, StdCheats, PRBMathAssertions, PRBMathUtils {

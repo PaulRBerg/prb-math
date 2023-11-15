@@ -17,6 +17,7 @@
   },
   "files": [
     "src",
+    "test/utils",
     "CHANGELOG.md"
   ],
   "homepage": "https://github.com/PaulRBerg/prb-math#readme",
