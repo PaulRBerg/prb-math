@@ -5,6 +5,7 @@ import { PRBMathCastingUint40 as CastingUint40 } from "src/casting/Uint40.sol";
 import { SD1x18 } from "src/sd1x18/ValueType.sol";
 import { SD59x18 } from "src/sd59x18/ValueType.sol";
 import { UD2x18 } from "src/ud2x18/ValueType.sol";
+import { UD21x18 } from "src/ud21x18/ValueType.sol";
 import { UD60x18 } from "src/ud60x18/ValueType.sol";
 
 import { Base_Test } from "../../Base.t.sol";
@@ -29,6 +30,12 @@ contract CastingUint40_Test is Base_Test {
         UD2x18 actual = x.intoUD2x18();
         UD2x18 expected = UD2x18.wrap(uint64(x));
         assertEq(actual, expected, "uint40 intoUD2x18");
+    }
+
+    function testFuzz_intoUD21x18(uint40 x) external {
+        UD21x18 actual = x.intoUD21x18();
+        UD21x18 expected = UD21x18.wrap(uint128(x));
+        assertEq(actual, expected, "uint40 intoUD21x18");
     }
 
     function testFuzz_intoUD60x18(uint40 x) external {

@@ -18,6 +18,7 @@ using {
     Casting.intoInt256,
     Casting.intoSD1x18,
     Casting.intoUD2x18,
+    Casting.intoUD21x18,
     Casting.intoUD60x18,
     Casting.intoUint256,
     Casting.intoUint128,

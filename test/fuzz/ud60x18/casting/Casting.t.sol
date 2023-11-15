@@ -6,7 +6,9 @@ import { SD1x18 } from "src/sd1x18/ValueType.sol";
 import { uMAX_SD59x18 } from "src/sd59x18/Constants.sol";
 import { SD59x18 } from "src/sd59x18/ValueType.sol";
 import { uMAX_UD2x18 } from "src/ud2x18/Constants.sol";
+import { uMAX_UD21x18 } from "src/ud21x18/Constants.sol";
 import { UD2x18 } from "src/ud2x18/ValueType.sol";
+import { UD21x18 } from "src/ud21x18/ValueType.sol";
 import { ud, ud60x18, wrap } from "src/ud60x18/Casting.sol";
 import { MAX_UD60x18 } from "src/ud60x18/Constants.sol";
 import {
@@ -59,6 +61,13 @@ contract UD60x18_Casting_Fuzz_Test is Base_Test {
         UD2x18 actual = x.intoUD2x18();
         UD2x18 expected = UD2x18.wrap(uint64(x.unwrap()));
         assertEq(actual, expected, "UD60x18 intoUD2x18");
+    }
+
+    function testFuzz_intoUD21x18(UD60x18 x) external {
+        x = _bound(x, 0, ud(uint256(uMAX_UD21x18)));
+        UD21x18 actual = x.intoUD21x18();
+        UD21x18 expected = UD21x18.wrap(uint128(x.unwrap()));
+        assertEq(actual, expected, "UD60x18 intoUD21x18");
     }
 
     function testFuzz_RevertWhen_OverflowUint128(UD60x18 x) external {

@@ -36,34 +36,37 @@ error PRBMath_SD59x18_Gm_NegativeProduct(SD59x18 x, SD59x18 y);
 /// @notice Thrown when taking the geometric mean of two numbers and multiplying them overflows SD59x18.
 error PRBMath_SD59x18_Gm_Overflow(SD59x18 x, SD59x18 y);
 
-/// @notice Thrown when trying to cast a UD60x18 number that doesn't fit in SD1x18.
+/// @notice Thrown when trying to cast a SD59x18 number that doesn't fit in SD1x18.
 error PRBMath_SD59x18_IntoSD1x18_Overflow(SD59x18 x);
 
-/// @notice Thrown when trying to cast a UD60x18 number that doesn't fit in SD1x18.
+/// @notice Thrown when trying to cast a SD59x18 number that doesn't fit in SD1x18.
 error PRBMath_SD59x18_IntoSD1x18_Underflow(SD59x18 x);
 
-/// @notice Thrown when trying to cast a UD60x18 number that doesn't fit in UD2x18.
+/// @notice Thrown when trying to cast a SD59x18 number that doesn't fit in UD2x18.
 error PRBMath_SD59x18_IntoUD2x18_Overflow(SD59x18 x);
 
-/// @notice Thrown when trying to cast a UD60x18 number that doesn't fit in UD2x18.
+/// @notice Thrown when trying to cast a SD59x18 number that doesn't fit in UD2x18.
 error PRBMath_SD59x18_IntoUD2x18_Underflow(SD59x18 x);
 
-/// @notice Thrown when trying to cast a UD60x18 number that doesn't fit in UD60x18.
+/// @notice Thrown when trying to cast a SD59x18 number that doesn't fit in UD21x18.
+error PRBMath_SD59x18_IntoUD21x18_Underflow(SD59x18 x);
+
+/// @notice Thrown when trying to cast a SD59x18 number that doesn't fit in UD60x18.
 error PRBMath_SD59x18_IntoUD60x18_Underflow(SD59x18 x);
 
-/// @notice Thrown when trying to cast a UD60x18 number that doesn't fit in uint128.
+/// @notice Thrown when trying to cast a SD59x18 number that doesn't fit in uint128.
 error PRBMath_SD59x18_IntoUint128_Overflow(SD59x18 x);
 
-/// @notice Thrown when trying to cast a UD60x18 number that doesn't fit in uint128.
+/// @notice Thrown when trying to cast a SD59x18 number that doesn't fit in uint128.
 error PRBMath_SD59x18_IntoUint128_Underflow(SD59x18 x);
 
-/// @notice Thrown when trying to cast a UD60x18 number that doesn't fit in uint256.
+/// @notice Thrown when trying to cast a SD59x18 number that doesn't fit in uint256.
 error PRBMath_SD59x18_IntoUint256_Underflow(SD59x18 x);
 
-/// @notice Thrown when trying to cast a UD60x18 number that doesn't fit in uint40.
+/// @notice Thrown when trying to cast a SD59x18 number that doesn't fit in uint40.
 error PRBMath_SD59x18_IntoUint40_Overflow(SD59x18 x);
 
-/// @notice Thrown when trying to cast a UD60x18 number that doesn't fit in uint40.
+/// @notice Thrown when trying to cast a SD59x18 number that doesn't fit in uint40.
 error PRBMath_SD59x18_IntoUint40_Underflow(SD59x18 x);
 
 /// @notice Thrown when taking the logarithm of a number less than or equal to zero.

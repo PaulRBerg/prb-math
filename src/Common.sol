@@ -32,6 +32,9 @@ uint128 constant MAX_UINT128 = type(uint128).max;
 /// @dev The maximum value a uint40 number can have.
 uint40 constant MAX_UINT40 = type(uint40).max;
 
+/// @dev The maximum value a uint64 number can have.
+uint64 constant MAX_UINT64 = type(uint64).max;
+
 /// @dev The unit number, which the decimal precision of the fixed-point types.
 uint256 constant UNIT = 1e18;
 
