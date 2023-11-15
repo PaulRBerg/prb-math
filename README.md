@@ -40,7 +40,7 @@ forge install PaulRBerg/prb-math@release-v4
 Then, add this to your `remappings.txt` file:
 
 ```text
-@prb/math/=lib/prb-math/src/
+@prb/math/=lib/prb-math/
 ```
 
 ### Node.js
@@ -71,8 +71,8 @@ and static analyzers like Slither erroring, especially as repos grow and have mo
 ```solidity
 pragma solidity >=0.8.19;
 
-import { SD59x18 } from "@prb/math/SD59x18.sol";
-import { UD60x18 } from "@prb/math/UD60x18.sol";
+import { SD59x18 } from "@prb/math/src/SD59x18.sol";
+import { UD60x18 } from "@prb/math/src/UD60x18.sol";
 ```
 
 Any function that is not available in the types directly has to be imported explicitly. Here's an example for the `sd` and the `ud` functions:
@@ -80,8 +80,8 @@ Any function that is not available in the types directly has to be imported expl
 ```solidity
 pragma solidity >=0.8.19;
 
-import { SD59x18, sd } from "@prb/math/SD59x18.sol";
-import { UD60x18, ud } from "@prb/math/UD60x18.sol";
+import { SD59x18, sd } from "@prb/math/src/SD59x18.sol";
+import { UD60x18, ud } from "@prb/math/src/UD60x18.sol";
 ```
 
 Note that PRBMath can only be used in Solidity v0.8.19 and above.
@@ -92,7 +92,7 @@ Note that PRBMath can only be used in Solidity v0.8.19 and above.
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.19;
 
-import { SD59x18, sd } from "@prb/math/SD59x18.sol";
+import { SD59x18, sd } from "@prb/math/src/SD59x18.sol";
 
 contract SignedConsumer {
   /// @notice Calculates 5% of the given signed number.
@@ -116,7 +116,7 @@ contract SignedConsumer {
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.19;
 
-import { UD60x18, ud } from "@prb/math/UD60x18.sol";
+import { UD60x18, ud } from "@prb/math/src/UD60x18.sol";
 
 contract UnsignedConsumer {
   /// @notice Calculates 5% of the given signed number.
@@ -239,7 +239,7 @@ using the vanilla types.
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.19;
 
-import { UD60x18, ud } from "@prb/math/UD60x18.sol";
+import { UD60x18, ud } from "@prb/math/src/UD60x18.sol";
 
 function addRshiftEq() pure returns (bool result) {
   UD60x18 x = ud(1e18);
@@ -259,9 +259,9 @@ Foundry. This is useful if, for example, you would like to assert that two UD60x
 ```solidity
 pragma solidity >=0.8.19;
 
-import { UD60x18, ud } from "@prb/math/UD60x18.sol";
+import { UD60x18, ud } from "@prb/math/src/UD60x18.sol";
 import { Assertions as PRBMathAssertions } from "@prb/math/test/Assertions.sol";
-import { PRBTest } from "@prb/math/test/PRBTest.sol";
+import { PRBTest } from "@prb/math/src/test/PRBTest.sol";
 
 contract MyTest is PRBTest, PRBMathAssertions {
   function testAdd() external {
