@@ -5,6 +5,7 @@ import "../Common.sol" as Common;
 import "./Errors.sol" as CastingErrors;
 import { SD59x18 } from "../sd59x18/ValueType.sol";
 import { UD2x18 } from "../ud2x18/ValueType.sol";
+import { UD21x18 } from "../ud21x18/ValueType.sol";
 import { UD60x18 } from "../ud60x18/ValueType.sol";
 import { SD1x18 } from "./ValueType.sol";
 
@@ -22,6 +23,16 @@ function intoUD2x18(SD1x18 x) pure returns (UD2x18 result) {
         revert CastingErrors.PRBMath_SD1x18_ToUD2x18_Underflow(x);
     }
     result = UD2x18.wrap(uint64(xInt));
+}
+
+/// @notice Casts an SD1x18 number into UD21x18.
+/// - x must be positive.
+function intoUD21x18(SD1x18 x) pure returns (UD21x18 result) {
+    int64 xInt = SD1x18.unwrap(x);
+    if (xInt < 0) {
+        revert CastingErrors.PRBMath_SD1x18_ToUD21x18_Underflow(x);
+    }
+    result = UD21x18.wrap(uint128(uint64(xInt)));
 }
 
 /// @notice Casts an SD1x18 number into UD60x18.

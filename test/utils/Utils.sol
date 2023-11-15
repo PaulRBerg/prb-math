@@ -6,6 +6,7 @@ import { StdUtils } from "forge-std/src/StdUtils.sol";
 import { SD1x18 } from "../../src/sd1x18/ValueType.sol";
 import { SD59x18 } from "../../src/sd59x18/ValueType.sol";
 import { UD2x18 } from "../../src/ud2x18/ValueType.sol";
+import { UD21x18 } from "../../src/ud21x18/ValueType.sol";
 import { UD60x18 } from "../../src/ud60x18/ValueType.sol";
 
 contract PRBMathUtils is StdUtils {
@@ -139,6 +140,50 @@ contract PRBMathUtils is StdUtils {
     /// @dev Helper function to bound a UD2x18 number.
     function _bound(UD2x18 x, uint64 min, uint64 max) internal pure returns (UD2x18) {
         return UD2x18.wrap(uint64(_bound(uint256(x.unwrap()), uint256(min), uint256(max))));
+    }
+
+    /*//////////////////////////////////////////////////////////////////////////
+                                      UD21x18
+    //////////////////////////////////////////////////////////////////////////*/
+
+    /// @dev Helper function to bound a UD21x18 number, which console logs the bounded result.
+    function bound(UD21x18 x, UD21x18 min, UD21x18 max) internal view returns (UD21x18) {
+        return UD21x18.wrap(uint128(bound(uint256(x.unwrap()), uint256(min.unwrap()), uint256(max.unwrap()))));
+    }
+
+    /// @dev Helper function to bound a UD21x18 number.
+    function _bound(UD21x18 x, UD21x18 min, UD21x18 max) internal pure returns (UD21x18) {
+        return UD21x18.wrap(uint128(_bound(uint256(x.unwrap()), uint256(min.unwrap()), uint256(max.unwrap()))));
+    }
+
+    /// @dev Helper function to bound a UD21x18 number, which console logs the bounded result.
+    function bound(UD21x18 x, uint128 min, UD21x18 max) internal view returns (UD21x18) {
+        return UD21x18.wrap(uint128(bound(uint256(x.unwrap()), uint256(min), uint256(max.unwrap()))));
+    }
+
+    /// @dev Helper function to bound a UD21x18 number.
+    function _bound(UD21x18 x, uint128 min, UD21x18 max) internal pure returns (UD21x18) {
+        return UD21x18.wrap(uint128(_bound(uint256(x.unwrap()), uint256(min), uint256(max.unwrap()))));
+    }
+
+    /// @dev Helper function to bound a UD21x18 number, which console logs the bounded result.
+    function bound(UD21x18 x, UD21x18 min, uint128 max) internal view returns (UD21x18) {
+        return UD21x18.wrap(uint128(bound(uint256(x.unwrap()), uint256(min.unwrap()), uint256(max))));
+    }
+
+    /// @dev Helper function to bound a UD21x18 number.
+    function _bound(UD21x18 x, UD21x18 min, uint128 max) internal pure returns (UD21x18) {
+        return UD21x18.wrap(uint128(_bound(uint256(x.unwrap()), uint256(min.unwrap()), uint256(max))));
+    }
+
+    /// @dev Helper function to bound a UD21x18 number, which console logs the bounded result.
+    function bound(UD21x18 x, uint128 min, uint128 max) internal view returns (UD21x18) {
+        return UD21x18.wrap(uint128(bound(uint256(x.unwrap()), uint256(min), uint256(max))));
+    }
+
+    /// @dev Helper function to bound a UD21x18 number.
+    function _bound(UD21x18 x, uint128 min, uint128 max) internal pure returns (UD21x18) {
+        return UD21x18.wrap(uint128(_bound(uint256(x.unwrap()), uint256(min), uint256(max))));
     }
 
     /*//////////////////////////////////////////////////////////////////////////

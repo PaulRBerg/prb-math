@@ -6,6 +6,7 @@ import { StdAssertions } from "forge-std/src/StdAssertions.sol";
 import { SD1x18 } from "../../src/sd1x18/ValueType.sol";
 import { SD59x18 } from "../../src/sd59x18/ValueType.sol";
 import { UD2x18 } from "../../src/ud2x18/ValueType.sol";
+import { UD21x18 } from "../../src/ud21x18/ValueType.sol";
 import { UD60x18 } from "../../src/ud60x18/ValueType.sol";
 
 contract PRBMathAssertions is StdAssertions {
@@ -256,6 +257,94 @@ contract PRBMathAssertions is StdAssertions {
     }
 
     function assertEq(uint64[] memory a, UD2x18[] memory b, string memory err) internal pure {
+        uint256[] memory castedA;
+        uint256[] memory castedB;
+        assembly {
+            castedA := a
+            castedB := b
+        }
+        assertEq(castedA, castedB, err);
+    }
+
+    /*//////////////////////////////////////////////////////////////////////////
+                                       UD21X18
+    //////////////////////////////////////////////////////////////////////////*/
+
+    function assertEq(UD21x18 a, UD21x18 b) internal {
+        assertEq(UD21x18.unwrap(a), UD21x18.unwrap(b));
+    }
+
+    function assertEq(UD21x18 a, UD21x18 b, string memory err) internal {
+        assertEq(UD21x18.unwrap(a), UD21x18.unwrap(b), err);
+    }
+
+    function assertEq(UD21x18 a, uint128 b) internal {
+        assertEq(UD21x18.unwrap(a), uint256(b));
+    }
+
+    function assertEq(UD21x18 a, uint128 b, string memory err) internal {
+        assertEq(UD21x18.unwrap(a), uint256(b), err);
+    }
+
+    function assertEq(uint128 a, UD21x18 b) internal {
+        assertEq(uint256(a), UD21x18.unwrap(b));
+    }
+
+    function assertEq(uint128 a, UD21x18 b, string memory err) internal {
+        assertEq(uint256(a), UD21x18.unwrap(b), err);
+    }
+
+    function assertEq(UD21x18[] memory a, UD21x18[] memory b) internal {
+        uint256[] memory castedA;
+        uint256[] memory castedB;
+        assembly {
+            castedA := a
+            castedB := b
+        }
+        assertEq(castedA, castedB);
+    }
+
+    function assertEq(UD21x18[] memory a, UD21x18[] memory b, string memory err) internal {
+        uint256[] memory castedA;
+        uint256[] memory castedB;
+        assembly {
+            castedA := a
+            castedB := b
+        }
+        assertEq(castedA, castedB, err);
+    }
+
+    function assertEq(UD21x18[] memory a, uint128[] memory b) internal {
+        uint256[] memory castedA;
+        uint256[] memory castedB;
+        assembly {
+            castedA := a
+            castedB := b
+        }
+        assertEq(castedA, castedB);
+    }
+
+    function assertEq(UD21x18[] memory a, uint128[] memory b, string memory err) internal {
+        uint256[] memory castedA;
+        uint256[] memory castedB;
+        assembly {
+            castedA := a
+            castedB := b
+        }
+        assertEq(castedA, castedB, err);
+    }
+
+    function assertEq(uint128[] memory a, UD21x18[] memory b) internal {
+        uint256[] memory castedA;
+        uint256[] memory castedB;
+        assembly {
+            castedA := a
+            castedB := b
+        }
+        assertEq(castedA, castedB);
+    }
+
+    function assertEq(uint128[] memory a, UD21x18[] memory b, string memory err) internal {
         uint256[] memory castedA;
         uint256[] memory castedB;
         assembly {

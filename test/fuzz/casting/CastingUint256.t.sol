@@ -12,7 +12,9 @@ import { SD1x18 } from "src/sd1x18/ValueType.sol";
 import { uMAX_SD59x18 } from "src/sd59x18/Constants.sol";
 import { SD59x18 } from "src/sd59x18/ValueType.sol";
 import { uMAX_UD2x18 } from "src/ud2x18/Constants.sol";
+import { uMAX_UD21x18 } from "src/ud21x18/Constants.sol";
 import { UD2x18 } from "src/ud2x18/ValueType.sol";
+import { UD21x18 } from "src/ud21x18/ValueType.sol";
 import { UD60x18 } from "src/ud60x18/ValueType.sol";
 
 import { Base_Test } from "../../Base.t.sol";
@@ -60,7 +62,14 @@ contract CastingUint256_Test is Base_Test {
         assertEq(actual, expected, "uint256 intoUD2x18");
     }
 
-    function testFuzz_intoUD60x18(uint256 x) external pure {
+    function testFuzz_intoUD21x18(uint256 x) external {
+        x = _bound(x, 0, uint256(uMAX_UD21x18));
+        UD21x18 actual = x.intoUD21x18();
+        UD21x18 expected = UD21x18.wrap(uint128(x));
+        assertEq(actual, expected, "uint256 intoUD21x18");
+    }
+
+    function testFuzz_intoUD60x18(uint256 x) external {
         UD60x18 actual = x.intoUD60x18();
         UD60x18 expected = UD60x18.wrap(x);
         assertEq(actual, expected, "uint256 intoUD60x18");

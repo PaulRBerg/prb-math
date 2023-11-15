@@ -6,7 +6,9 @@ import { SD1x18 } from "../sd1x18/ValueType.sol";
 import { uMAX_SD59x18 } from "../sd59x18/Constants.sol";
 import { SD59x18 } from "../sd59x18/ValueType.sol";
 import { uMAX_UD2x18 } from "../ud2x18/Constants.sol";
+import { uMAX_UD21x18 } from "../ud21x18/Constants.sol";
 import { UD2x18 } from "../ud2x18/ValueType.sol";
+import { UD21x18 } from "../ud21x18/ValueType.sol";
 import { UD60x18 } from "../ud60x18/ValueType.sol";
 
 /// @notice Thrown when trying to cast a uint256 that doesn't fit in SD1x18.
@@ -17,6 +19,9 @@ error PRBMath_IntoSD59x18_Overflow(uint256 x);
 
 /// @notice Thrown when trying to cast a uint256 that doesn't fit in UD2x18.
 error PRBMath_IntoUD2x18_Overflow(uint256 x);
+
+/// @notice Thrown when trying to cast a uint256 that doesn't fit in UD21x18.
+error PRBMath_IntoUD21x18_Overflow(uint256 x);
 
 /// @title PRBMathCastingUint256
 /// @notice Casting utilities for uint256.
@@ -47,6 +52,14 @@ library PRBMathCastingUint256 {
             revert PRBMath_IntoUD2x18_Overflow(x);
         }
         result = UD2x18.wrap(uint64(x));
+    }
+
+    /// @notice Casts a uint256 number to UD2x18.
+    function intoUD21x18(uint256 x) internal pure returns (UD21x18 result) {
+        if (x > uint256(uMAX_UD21x18)) {
+            revert PRBMath_IntoUD21x18_Overflow(x);
+        }
+        result = UD21x18.wrap(uint128(x));
     }
 
     /// @notice Casts a uint256 number to UD60x18.
