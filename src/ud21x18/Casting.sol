@@ -5,6 +5,8 @@ import "../Common.sol" as Common;
 import "./Errors.sol" as Errors;
 import { uMAX_SD1x18 } from "../sd1x18/Constants.sol";
 import { SD1x18 } from "../sd1x18/ValueType.sol";
+import { SD21x18 } from "../sd21x18/ValueType.sol";
+import { uMAX_SD21x18 } from "../sd21x18/Constants.sol";
 import { SD59x18 } from "../sd59x18/ValueType.sol";
 import { UD60x18 } from "../ud60x18/ValueType.sol";
 import { UD2x18 } from "../ud2x18/ValueType.sol";
@@ -18,6 +20,16 @@ function intoSD1x18(UD21x18 x) pure returns (SD1x18 result) {
         revert Errors.PRBMath_UD21x18_IntoSD1x18_Overflow(x);
     }
     result = SD1x18.wrap(int64(uint64(xUint)));
+}
+
+/// @notice Casts a UD21x18 number into SD21x18.
+/// - x must be less than or equal to `uMAX_SD21x18`.
+function intoSD21x18(UD21x18 x) pure returns (SD21x18 result) {
+    uint128 xUint = UD21x18.unwrap(x);
+    if (xUint > uint128(uMAX_SD21x18)) {
+        revert Errors.PRBMath_UD21x18_IntoSD21x18_Overflow(x);
+    }
+    result = SD21x18.wrap(int128(xUint));
 }
 
 /// @notice Casts a UD21x18 number into SD59x18.

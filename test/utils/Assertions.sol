@@ -4,6 +4,7 @@ pragma solidity >=0.8.19;
 import { StdAssertions } from "forge-std/src/StdAssertions.sol";
 
 import { SD1x18 } from "../../src/sd1x18/ValueType.sol";
+import { SD21x18 } from "../../src/sd21x18/ValueType.sol";
 import { SD59x18 } from "../../src/sd59x18/ValueType.sol";
 import { UD2x18 } from "../../src/ud2x18/ValueType.sol";
 import { UD21x18 } from "../../src/ud21x18/ValueType.sol";
@@ -89,6 +90,94 @@ contract PRBMathAssertions is StdAssertions {
     }
 
     function assertEq(int64[] memory a, SD1x18[] memory b, string memory err) internal pure {
+        int256[] memory castedA;
+        int256[] memory castedB;
+        assembly {
+            castedA := a
+            castedB := b
+        }
+        assertEq(castedA, castedB, err);
+    }
+
+    /*//////////////////////////////////////////////////////////////////////////
+                                       SD21X18
+    //////////////////////////////////////////////////////////////////////////*/
+
+    function assertEq(SD21x18 a, SD21x18 b) internal {
+        assertEq(SD21x18.unwrap(a), SD21x18.unwrap(b));
+    }
+
+    function assertEq(SD21x18 a, SD21x18 b, string memory err) internal {
+        assertEq(SD21x18.unwrap(a), SD21x18.unwrap(b), err);
+    }
+
+    function assertEq(SD21x18 a, int64 b) internal {
+        assertEq(SD21x18.unwrap(a), b);
+    }
+
+    function assertEq(SD21x18 a, int64 b, string memory err) internal {
+        assertEq(SD21x18.unwrap(a), b, err);
+    }
+
+    function assertEq(int64 a, SD21x18 b) internal {
+        assertEq(a, SD21x18.unwrap(b));
+    }
+
+    function assertEq(int64 a, SD21x18 b, string memory err) internal {
+        assertEq(a, SD21x18.unwrap(b), err);
+    }
+
+    function assertEq(SD21x18[] memory a, SD21x18[] memory b) internal {
+        int256[] memory castedA;
+        int256[] memory castedB;
+        assembly {
+            castedA := a
+            castedB := b
+        }
+        assertEq(castedA, castedB);
+    }
+
+    function assertEq(SD21x18[] memory a, SD21x18[] memory b, string memory err) internal {
+        int256[] memory castedA;
+        int256[] memory castedB;
+        assembly {
+            castedA := a
+            castedB := b
+        }
+        assertEq(castedA, castedB, err);
+    }
+
+    function assertEq(SD21x18[] memory a, int64[] memory b) internal {
+        int256[] memory castedA;
+        int256[] memory castedB;
+        assembly {
+            castedA := a
+            castedB := b
+        }
+        assertEq(castedA, castedB);
+    }
+
+    function assertEq(SD21x18[] memory a, int64[] memory b, string memory err) internal {
+        int256[] memory castedA;
+        int256[] memory castedB;
+        assembly {
+            castedA := a
+            castedB := b
+        }
+        assertEq(castedA, castedB, err);
+    }
+
+    function assertEq(int64[] memory a, SD21x18[] memory b) internal {
+        int256[] memory castedA;
+        int256[] memory castedB;
+        assembly {
+            castedA := a
+            castedB := b
+        }
+        assertEq(castedA, castedB);
+    }
+
+    function assertEq(int64[] memory a, SD21x18[] memory b, string memory err) internal {
         int256[] memory castedA;
         int256[] memory castedB;
         assembly {

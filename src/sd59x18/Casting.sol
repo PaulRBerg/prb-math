@@ -5,6 +5,8 @@ import "./Errors.sol" as CastingErrors;
 import { MAX_UINT128, MAX_UINT40 } from "../Common.sol";
 import { uMAX_SD1x18, uMIN_SD1x18 } from "../sd1x18/Constants.sol";
 import { SD1x18 } from "../sd1x18/ValueType.sol";
+import { uMAX_SD21x18, uMIN_SD21x18 } from "../sd21x18/Constants.sol";
+import { SD21x18 } from "../sd21x18/ValueType.sol";
 import { uMAX_UD2x18 } from "../ud2x18/Constants.sol";
 import { UD2x18 } from "../ud2x18/ValueType.sol";
 import { UD21x18 } from "../ud21x18/ValueType.sol";
@@ -30,6 +32,21 @@ function intoSD1x18(SD59x18 x) pure returns (SD1x18 result) {
         revert CastingErrors.PRBMath_SD59x18_IntoSD1x18_Overflow(x);
     }
     result = SD1x18.wrap(int64(xInt));
+}
+
+/// @notice Casts an SD59x18 number into SD21x18.
+/// @dev Requirements:
+/// - x must be greater than or equal to `uMIN_SD21x18`.
+/// - x must be less than or equal to `uMAX_SD21x18`.
+function intoSD21x18(SD59x18 x) pure returns (SD21x18 result) {
+    int256 xInt = SD59x18.unwrap(x);
+    if (xInt < uMIN_SD21x18) {
+        revert CastingErrors.PRBMath_SD59x18_IntoSD21x18_Underflow(x);
+    }
+    if (xInt > uMAX_SD21x18) {
+        revert CastingErrors.PRBMath_SD59x18_IntoSD21x18_Overflow(x);
+    }
+    result = SD21x18.wrap(int128(xInt));
 }
 
 /// @notice Casts an SD59x18 number into UD2x18.

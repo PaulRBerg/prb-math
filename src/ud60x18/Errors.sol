@@ -21,6 +21,9 @@ error PRBMath_UD60x18_Gm_Overflow(UD60x18 x, UD60x18 y);
 /// @notice Thrown when trying to cast a UD60x18 number that doesn't fit in SD1x18.
 error PRBMath_UD60x18_IntoSD1x18_Overflow(UD60x18 x);
 
+/// @notice Thrown when trying to cast a UD60x18 number that doesn't fit in SD21x18.
+error PRBMath_UD60x18_IntoSD21x18_Overflow(UD60x18 x);
+
 /// @notice Thrown when trying to cast a UD60x18 number that doesn't fit in SD59x18.
 error PRBMath_UD60x18_IntoSD59x18_Overflow(UD60x18 x);
 

@@ -14,6 +14,7 @@ type SD1x18 is int64;
 //////////////////////////////////////////////////////////////////////////*/
 
 using {
+    Casting.intoSD21x18,
     Casting.intoSD59x18,
     Casting.intoUD2x18,
     Casting.intoUD21x18,

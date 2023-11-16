@@ -3,11 +3,18 @@ pragma solidity >=0.8.19;
 
 import "../Common.sol" as Common;
 import "./Errors.sol" as CastingErrors;
+import { SD21x18 } from "../sd21x18/ValueType.sol";
 import { SD59x18 } from "../sd59x18/ValueType.sol";
 import { UD2x18 } from "../ud2x18/ValueType.sol";
 import { UD21x18 } from "../ud21x18/ValueType.sol";
 import { UD60x18 } from "../ud60x18/ValueType.sol";
 import { SD1x18 } from "./ValueType.sol";
+
+/// @notice Casts an SD1x18 number into SD21x18.
+/// @dev There is no overflow check because the domain of SD1x18 is a subset of SD21x18.
+function intoSD21x18(SD1x18 x) pure returns (SD21x18 result) {
+    result = SD21x18.wrap(int128(int256(SD1x18.unwrap(x))));
+}
 
 /// @notice Casts an SD1x18 number into SD59x18.
 /// @dev There is no overflow check because the domain of SD1x18 is a subset of SD59x18.
