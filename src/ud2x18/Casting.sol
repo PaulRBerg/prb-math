@@ -5,6 +5,7 @@ import "../Common.sol" as Common;
 import "./Errors.sol" as Errors;
 import { uMAX_SD1x18 } from "../sd1x18/Constants.sol";
 import { SD1x18 } from "../sd1x18/ValueType.sol";
+import { SD21x18 } from "../sd21x18/ValueType.sol";
 import { SD59x18 } from "../sd59x18/ValueType.sol";
 import { UD21x18 } from "../ud21x18/ValueType.sol";
 import { UD60x18 } from "../ud60x18/ValueType.sol";
@@ -18,6 +19,11 @@ function intoSD1x18(UD2x18 x) pure returns (SD1x18 result) {
         revert Errors.PRBMath_UD2x18_IntoSD1x18_Overflow(x);
     }
     result = SD1x18.wrap(int64(xUint));
+}
+
+/// @notice Casts a UD2x18 number into SD21x18.
+function intoSD21x18(UD2x18 x) pure returns (SD21x18 result) {
+    result = SD21x18.wrap(int128(uint128(UD2x18.unwrap(x))));
 }
 
 /// @notice Casts a UD2x18 number into SD59x18.

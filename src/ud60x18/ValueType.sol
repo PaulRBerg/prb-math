@@ -16,6 +16,7 @@ type UD60x18 is uint256;
 
 using {
     Casting.intoSD1x18,
+    Casting.intoSD21x18,
     Casting.intoSD59x18,
     Casting.intoUD2x18,
     Casting.intoUD21x18,

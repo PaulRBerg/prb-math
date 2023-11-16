@@ -3,6 +3,7 @@ pragma solidity >=0.8.19 <0.9.0;
 
 import { uMAX_SD1x18 } from "src/sd1x18/Constants.sol";
 import { SD1x18 } from "src/sd1x18/ValueType.sol";
+import { SD21x18 } from "src/sd21x18/ValueType.sol";
 import { SD59x18 } from "src/sd59x18/ValueType.sol";
 import { ud2x18, wrap } from "src/ud2x18/Casting.sol";
 import { uMAX_UD2x18 } from "src/ud2x18/Constants.sol";
@@ -25,6 +26,12 @@ contract UD2x18_Casting_Fuzz_Test is Base_Test {
         SD1x18 actual = x.intoSD1x18();
         SD1x18 expected = SD1x18.wrap(int64(uint64(x.unwrap())));
         assertEq(actual, expected, "UD2x18 intoSD1x18");
+    }
+
+    function testFuzz_IntoSD21x18(UD2x18 x) external {
+        SD21x18 actual = x.intoSD21x18();
+        SD21x18 expected = SD21x18.wrap(int128(uint128(x.unwrap())));
+        assertEq(actual, expected, "UD2x18 intoSD21x18");
     }
 
     function testFuzz_IntoSD59x18(UD2x18 x) external {

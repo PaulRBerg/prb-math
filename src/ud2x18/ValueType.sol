@@ -15,6 +15,7 @@ type UD2x18 is uint64;
 
 using {
     Casting.intoSD1x18,
+    Casting.intoSD21x18,
     Casting.intoSD59x18,
     Casting.intoUD21x18,
     Casting.intoUD60x18,

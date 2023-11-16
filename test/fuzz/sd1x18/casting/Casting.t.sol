@@ -3,6 +3,7 @@ pragma solidity >=0.8.19 <0.9.0;
 
 import { sd1x18, wrap } from "src/sd1x18/Casting.sol";
 import { SD1x18 } from "src/sd1x18/ValueType.sol";
+import { SD21x18 } from "src/sd21x18/ValueType.sol";
 import { SD59x18 } from "src/sd59x18/ValueType.sol";
 import { MAX_SD1x18, MIN_SD1x18 } from "src/sd1x18/Constants.sol";
 import {
@@ -20,6 +21,12 @@ import { Base_Test } from "../../../Base.t.sol";
 
 /// @dev Collection of tests for the casting functions available in SD1x18.
 contract Casting_Fuzz_Test is Base_Test {
+    function testFuzz_IntoSD21x18(SD1x18 x) external {
+        SD21x18 actual = x.intoSD21x18();
+        SD21x18 expected = SD21x18.wrap(int128(x.unwrap()));
+        assertEq(actual, expected, "SD1x18 intoSD21x18");
+    }
+
     function testFuzz_IntoSD59x18(SD1x18 x) external {
         SD59x18 actual = x.intoSD59x18();
         SD59x18 expected = SD59x18.wrap(int256(x.unwrap()));

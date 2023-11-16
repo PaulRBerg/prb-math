@@ -3,6 +3,8 @@ pragma solidity >=0.8.19;
 
 import { uMAX_SD1x18 } from "../sd1x18/Constants.sol";
 import { SD1x18 } from "../sd1x18/ValueType.sol";
+import { uMAX_SD21x18 } from "../sd21x18/Constants.sol";
+import { SD21x18 } from "../sd21x18/ValueType.sol";
 import { SD59x18 } from "../sd59x18/ValueType.sol";
 import { uMAX_UD2x18 } from "../ud2x18/Constants.sol";
 import { UD2x18 } from "../ud2x18/ValueType.sol";
@@ -12,6 +14,9 @@ import { UD60x18 } from "../ud60x18/ValueType.sol";
 /// @notice Thrown when trying to cast a uint128 that doesn't fit in SD1x18.
 error PRBMath_IntoSD1x18_Overflow(uint128 x);
 
+/// @notice Thrown when trying to cast a uint128 that doesn't fit in SD1x18.
+error PRBMath_IntoSD21x18_Overflow(uint128 x);
+
 /// @notice Thrown when trying to cast a uint128 that doesn't fit in UD2x18.
 error PRBMath_IntoUD2x18_Overflow(uint128 x);
 
@@ -20,12 +25,22 @@ error PRBMath_IntoUD2x18_Overflow(uint128 x);
 library PRBMathCastingUint128 {
     /// @notice Casts a uint128 number to SD1x18.
     /// @dev Requirements:
-    /// - x must be less than or equal to `MAX_SD1x18`.
+    /// - x must be less than or equal to `uMAX_SD1x18`.
     function intoSD1x18(uint128 x) internal pure returns (SD1x18 result) {
         if (x > uint256(int256(uMAX_SD1x18))) {
             revert PRBMath_IntoSD1x18_Overflow(x);
         }
         result = SD1x18.wrap(int64(uint64(x)));
+    }
+
+    /// @notice Casts a uint256 number to SD21x18.
+    /// @dev Requirements:
+    /// - x must be less than or equal to `uMAX_SD21x18`.
+    function intoSD21x18(uint128 x) internal pure returns (SD21x18 result) {
+        if (x > uint256(int256(uMAX_SD21x18))) {
+            revert PRBMath_IntoSD21x18_Overflow(x);
+        }
+        result = SD21x18.wrap(int128(x));
     }
 
     /// @notice Casts a uint128 number to SD59x18.
@@ -36,7 +51,7 @@ library PRBMathCastingUint128 {
 
     /// @notice Casts a uint128 number to UD2x18.
     /// @dev Requirements:
-    /// - x must be less than or equal to `MAX_SD1x18`.
+    /// - x must be less than or equal to `uMAX_UD2x18`.
     function intoUD2x18(uint128 x) internal pure returns (UD2x18 result) {
         if (x > uint64(uMAX_UD2x18)) {
             revert PRBMath_IntoUD2x18_Overflow(x);
