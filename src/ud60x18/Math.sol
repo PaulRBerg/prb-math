@@ -28,7 +28,7 @@ import { UD60x18 } from "./ValueType.sol";
 /// $$
 /// avg(x, y) = (x & y) + ((xUint ^ yUint) / 2)
 /// $$
-//
+///
 /// In English, this is what this formula does:
 ///
 /// 1. AND x and y.
