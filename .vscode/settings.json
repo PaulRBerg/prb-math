@@ -5,6 +5,5 @@
   "[toml]": {
     "editor.defaultFormatter": "tamasfe.even-better-toml"
   },
-  "npm.exclude": "**/lib/**",
   "solidity.formatter": "forge"
 }
