@@ -42,7 +42,7 @@ This example uses Pnpm, but using Yarn or Npm is also possible.
 If you're using Foundry, you have to add this to your `remappings.txt` file:
 
 ```text
-@prb/math/=lib/prb-math/
+@prb/math/=node_modules/@prb/math/
 ```
 
 ## Usage
