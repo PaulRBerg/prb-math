@@ -29,24 +29,20 @@ all the boxes mentioned thus far, but it doesn't offer type safety.
 
 ## Install
 
-### Foundry
-
-First, run the install step:
-
-```sh
-forge install PaulRBerg/prb-math@release-v4
-```
-
-Then, add this to your `remappings.txt` file:
-
-```text
-@prb/math/=lib/prb-math/
-```
-
-### Node.js
+All users are recommended to install PRBMath as a Node.js package:
 
 ```sh
 pnpm add @prb/math
+```
+
+This example uses Pnpm, but using Yarn or Npm is also possible.
+
+### Foundry
+
+If you're using Foundry, you have to add this to your `remappings.txt` file:
+
+```text
+@prb/math/=lib/prb-math/
 ```
 
 ## Usage
