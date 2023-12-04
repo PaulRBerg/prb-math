@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.19;
 
-import { StdUtils } from "forge-std/StdUtils.sol";
+import { StdUtils } from "forge-std/src/StdUtils.sol";
 
 import { SD1x18 } from "../../src/sd1x18/ValueType.sol";
 import { SD59x18 } from "../../src/sd59x18/ValueType.sol";

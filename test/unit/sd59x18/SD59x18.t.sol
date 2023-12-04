@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.19 <0.9.0;
 
-import { console2 } from "forge-std/console2.sol";
+import { console2 } from "forge-std/src/console2.sol";
 
 import { sd } from "src/sd59x18/Casting.sol";
 import { ZERO } from "src/sd59x18/Constants.sol";

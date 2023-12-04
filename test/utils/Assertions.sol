@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.19;
 
-import { PRBTest } from "@prb/test/PRBTest.sol";
+import { PRBTest } from "@prb/test/src/PRBTest.sol";
 
 import { SD1x18 } from "../../src/sd1x18/ValueType.sol";
 import { SD59x18 } from "../../src/sd59x18/ValueType.sol";
