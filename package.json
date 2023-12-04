@@ -1,7 +1,7 @@
 {
   "name": "@prb/math",
   "description": "Solidity library for advanced fixed-point math",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "author": {
     "name": "Paul Razvan Berg",
     "url": "https://github.com/PaulRBerg"
