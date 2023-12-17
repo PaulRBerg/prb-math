@@ -6,14 +6,14 @@ settings:
 
 devDependencies:
   '@prb/test':
-    specifier: 0.6.4
-    version: 0.6.4
+    specifier: 0.6.5
+    version: 0.6.5
   forge-std:
-    specifier: github:foundry-rs/forge-std#e8a047e3f40f13fa37af6fe14e6e06283d9a060e
-    version: github.com/foundry-rs/forge-std/e8a047e3f40f13fa37af6fe14e6e06283d9a060e
+    specifier: github:foundry-rs/forge-std#v1.7.4
+    version: github.com/foundry-rs/forge-std/155d547c449afa8715f538d69454b83944117811
   prettier:
-    specifier: ^2.8.7
-    version: 2.8.7
+    specifier: ^3.1.1
+    version: 3.1.1
   solhint:
     specifier: ^4.0.0
     version: 4.0.0
@@ -63,8 +63,8 @@ packages:
       config-chain: 1.1.13
     dev: true
 
-  /@prb/test@0.6.4:
-    resolution: {integrity: sha512-P0tTMsB6XQ0Wp61EYdXJYFhsOVGyZvcOFub2y9yk0sF+GYDusctR7DzEI+vOP0SILm3knFkEJASjewHEBppdRQ==}
+  /@prb/test@0.6.5:
+    resolution: {integrity: sha512-00EJ855eiY6/iQeDoliS0qT1w2ZK05jmxpk7tPY0CnoDgB4kQLJtONXBfXUExOvJKslzGTLcCWcXm1OPKuLr8w==}
     dev: true
 
   /@sindresorhus/is@5.6.0:
@@ -537,6 +537,14 @@ packages:
     resolution: {integrity: sha512-yPngTo3aXUUmyuTjeTUT75txrf+aMh9FiD7q9ZE/i6r0bPb22g4FsE6Y338PQX1bmfy08i9QQCB7/rcUAVntfw==}
     engines: {node: '>=10.13.0'}
     hasBin: true
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /prettier@3.1.1:
+    resolution: {integrity: sha512-22UbSzg8luF4UuZtzgiUOfcGM8s4tjBv6dJRT7j275NXsy2jb4aJa4NNveul5x4eqlF1wuhuR2RElK71RvmVaw==}
+    engines: {node: '>=14'}
+    hasBin: true
     dev: true
 
   /proto-list@1.2.4:
@@ -707,8 +715,8 @@ packages:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
     dev: true
 
-  github.com/foundry-rs/forge-std/e8a047e3f40f13fa37af6fe14e6e06283d9a060e:
-    resolution: {tarball: https://codeload.github.com/foundry-rs/forge-std/tar.gz/e8a047e3f40f13fa37af6fe14e6e06283d9a060e}
+  github.com/foundry-rs/forge-std/155d547c449afa8715f538d69454b83944117811:
+    resolution: {tarball: https://codeload.github.com/foundry-rs/forge-std/tar.gz/155d547c449afa8715f538d69454b83944117811}
     name: forge-std
-    version: 1.5.6
+    version: 1.7.4
     dev: true
