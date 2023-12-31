@@ -29,20 +29,45 @@ all the boxes mentioned thus far, but it doesn't offer type safety.
 
 ## Install
 
-All users are recommended to install PRBMath as a Node.js package:
+### Node.js
 
-```sh
+This is the recommended approach.
+
+Install PRBMath using your favorite package manager, e.g., with Bun:
+
+```shell
 bun add @prb/math
 ```
 
-This example uses Bun, but it also possible to use Npm, Yarn, or Pnpm.
-
-### Foundry
-
-If you're using Foundry, you have to add this to your `remappings.txt` file:
+Then, if you are using Foundry, you need to add this to your `remappings.txt` file:
 
 ```text
 @prb/math/=node_modules/@prb/math/
+```
+
+### Git Submodules
+
+This installation method is not recommended, but it is available for those who prefer it.
+
+First, install the submodule using Forge:
+
+```shell
+forge install --no-commit PaulRBerg/prb-math@release-v4
+```
+
+Your `.gitmodules` file should now contain the following entry:
+
+```toml
+[submodule "lib/prb-math"]
+  branch = "release-v4"
+  path = "lib/prb-math"
+  url = "https://github.com/PaulRBerg/prb-math"
+```
+
+Finally, add this to your `remappings.txt` file:
+
+```text
+@prb/math/=lib/prb-math/
 ```
 
 ## Usage
