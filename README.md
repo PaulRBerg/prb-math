@@ -32,10 +32,10 @@ all the boxes mentioned thus far, but it doesn't offer type safety.
 All users are recommended to install PRBMath as a Node.js package:
 
 ```sh
-pnpm add @prb/math
+bun add @prb/math
 ```
 
-This example uses Pnpm, but using Yarn or Npm is also possible.
+This example uses Bun, but it also possible to use Npm, Yarn, or Pnpm.
 
 ### Foundry
 
@@ -336,7 +336,7 @@ You will need the following software on your machine:
 - [Git](https://git-scm.com/downloads)
 - [Foundry](https://github.com/foundry-rs/foundry)
 - [Node.Js](https://nodejs.org/en/download/)
-- [Pnpm](https://pnpm.io)
+- [Bun](https://bun.sh)
 
 In addition, familiarity with [Solidity](https://soliditylang.org/) is requisite.
 
@@ -351,7 +351,7 @@ $ git clone --recurse-submodules -j8 git@github.com:PaulRBerg/prb-math.git
 Then, inside the project's directory, run this to install the Node.js dependencies:
 
 ```sh
-$ pnpm install
+$ bun install
 ```
 
 Now you can start making changes.
