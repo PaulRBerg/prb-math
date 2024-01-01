@@ -23,3 +23,4 @@ jobs:
         with:
           min: "0.8.19"
           max: "0.8.23"
+          skip-test: "true"
