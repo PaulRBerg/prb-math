@@ -25,6 +25,8 @@ abstract contract Base_Test is PRBTest, StdCheats, PRBMathAssertions, PRBMathUti
 
     uint128 internal constant MAX_UINT128 = type(uint128).max;
 
+    uint128 internal constant MAX_UINT64 = type(uint64).max;
+
     uint128 internal constant MAX_UINT40 = type(uint40).max;
 
     /*//////////////////////////////////////////////////////////////////////////
