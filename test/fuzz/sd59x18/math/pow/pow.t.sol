@@ -8,7 +8,7 @@ import { SD59x18 } from "src/sd59x18/ValueType.sol";
 import { Base_Test } from "../../../../Base.t.sol";
 
 contract Pow_Fuzz_Test is Base_Test {
-    function testFuzz_Pow_BaseZero_ExponentNotZero(SD59x18 y) external {
+    function testFuzz_Pow_BaseZero_ExponentNotZero(SD59x18 y) external pure {
         vm.assume(y != ZERO);
         SD59x18 x = ZERO;
         SD59x18 actual = pow(x, y);
@@ -20,7 +20,7 @@ contract Pow_Fuzz_Test is Base_Test {
         _;
     }
 
-    function testFuzz_Pow_BaseUnit(SD59x18 y) external whenBaseNotZero {
+    function testFuzz_Pow_BaseUnit(SD59x18 y) external pure whenBaseNotZero {
         SD59x18 x = UNIT;
         SD59x18 actual = pow(x, y);
         SD59x18 expected = UNIT;
@@ -31,7 +31,7 @@ contract Pow_Fuzz_Test is Base_Test {
         _;
     }
 
-    function testFuzz_Pow_ExponentZero(SD59x18 x) external whenBaseNotZero whenBaseNotUnit {
+    function testFuzz_Pow_ExponentZero(SD59x18 x) external pure whenBaseNotZero whenBaseNotUnit {
         vm.assume(x != ZERO && x != UNIT);
         SD59x18 y = ZERO;
         SD59x18 actual = pow(x, y);
@@ -43,7 +43,7 @@ contract Pow_Fuzz_Test is Base_Test {
         _;
     }
 
-    function testFuzz_Pow_ExponentUnit(SD59x18 x) external whenBaseNotZero whenBaseNotUnit whenExponentNotZero {
+    function testFuzz_Pow_ExponentUnit(SD59x18 x) external pure whenBaseNotZero whenBaseNotUnit whenExponentNotZero {
         vm.assume(x != ZERO && x != UNIT);
         SD59x18 y = UNIT;
         SD59x18 actual = pow(x, y);

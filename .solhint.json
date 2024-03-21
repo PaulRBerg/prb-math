@@ -7,6 +7,7 @@
     "contract-name-camelcase": "off",
     "func-name-mixedcase": "off",
     "func-visibility": ["error", { "ignoreConstructors": true }],
+    "gas-custom-errors": "off",
     "max-line-length": ["error", 132],
     "no-console": "off",
     "no-global-import": "off",

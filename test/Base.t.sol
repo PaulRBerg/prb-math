@@ -1,14 +1,15 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.19 <0.9.0;
 
-import { PRBTest } from "@prb/test/src/PRBTest.sol";
+import { StdAssertions } from "forge-std/src/StdAssertions.sol";
 import { StdCheats } from "forge-std/src/StdCheats.sol";
+import { Vm } from "forge-std/src/Vm.sol";
 
 import { PRBMathAssertions } from "./utils/Assertions.sol";
 import { PRBMathUtils } from "./utils/Utils.sol";
 
 /// @notice Base test contract with common logic needed by all tests.
-abstract contract Base_Test is PRBTest, StdCheats, PRBMathAssertions, PRBMathUtils {
+abstract contract Base_Test is StdAssertions, StdCheats, PRBMathAssertions, PRBMathUtils {
     /*//////////////////////////////////////////////////////////////////////////
                                        STRUCTS
     //////////////////////////////////////////////////////////////////////////*/
@@ -20,12 +21,23 @@ abstract contract Base_Test is PRBTest, StdCheats, PRBMathAssertions, PRBMathUti
     }
 
     /*//////////////////////////////////////////////////////////////////////////
+                                    CHEATCODES
+    //////////////////////////////////////////////////////////////////////////*/
+
+    /// @dev An instance of the Foundry VM, which contains cheatcodes for testing.
+    Vm internal constant vm = Vm(address(uint160(uint256(keccak256("hevm cheat code")))));
+
+    /*//////////////////////////////////////////////////////////////////////////
                                      CONSTANTS
     //////////////////////////////////////////////////////////////////////////*/
+
+    int256 internal constant MAX_INT256 = type(int256).max;
 
     uint128 internal constant MAX_UINT128 = type(uint128).max;
 
     uint128 internal constant MAX_UINT40 = type(uint40).max;
+
+    int256 internal constant MIN_INT256 = type(int256).min;
 
     /*//////////////////////////////////////////////////////////////////////////
                                      VARIABLES

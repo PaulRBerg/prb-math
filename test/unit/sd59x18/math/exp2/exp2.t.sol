@@ -13,7 +13,7 @@ contract Exp2_Unit_Test is SD59x18_Unit_Test {
     /// @dev Any input smaller than this makes the result zero.
     SD59x18 internal constant THRESHOLD = SD59x18.wrap(-59_794705707972522261);
 
-    function test_Exp2_Zero() external {
+    function test_Exp2_Zero() external pure {
         SD59x18 x = ZERO;
         SD59x18 actual = exp2(x);
         SD59x18 expected = UNIT;

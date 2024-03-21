@@ -10,7 +10,7 @@ import { SD59x18 } from "src/sd59x18/ValueType.sol";
 import { SD59x18_Unit_Test } from "../../SD59x18.t.sol";
 
 contract Ceil_Unit_Test is SD59x18_Unit_Test {
-    function test_Ceil_Zero() external {
+    function test_Ceil_Zero() external pure {
         SD59x18 x = ZERO;
         SD59x18 actual = ceil(x);
         SD59x18 expected = ZERO;

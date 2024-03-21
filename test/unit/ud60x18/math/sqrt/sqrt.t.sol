@@ -11,7 +11,7 @@ import { UD60x18_Unit_Test } from "../../UD60x18.t.sol";
 contract Sqrt_Unit_Test is UD60x18_Unit_Test {
     UD60x18 internal constant MAX_PERMITTED = UD60x18.wrap(115792089237316195423570985008687907853269_984665640564039457);
 
-    function test_Sqrt_Zero() external {
+    function test_Sqrt_Zero() external pure {
         UD60x18 x = ZERO;
         UD60x18 actual = sqrt(x);
         UD60x18 expected = ZERO;

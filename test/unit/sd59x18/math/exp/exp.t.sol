@@ -12,7 +12,7 @@ import { SD59x18_Unit_Test } from "../../SD59x18.t.sol";
 contract Exp_Unit_Test is SD59x18_Unit_Test {
     SD59x18 internal constant THRESHOLD = SD59x18.wrap(-41_446531673892822322);
 
-    function test_Exp_Zero() external {
+    function test_Exp_Zero() external pure {
         SD59x18 x = ZERO;
         SD59x18 actual = exp(x);
         SD59x18 expected = UNIT;

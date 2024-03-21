@@ -12,7 +12,7 @@ import { UD60x18_Unit_Test } from "../../UD60x18.t.sol";
 contract Exp2_Unit_Test is UD60x18_Unit_Test {
     UD60x18 internal constant MAX_PERMITTED = UD60x18.wrap(192e18 - 1);
 
-    function test_Exp2_Zero() external {
+    function test_Exp2_Zero() external pure {
         UD60x18 x = ZERO;
         UD60x18 actual = exp2(x);
         UD60x18 expected = UNIT;

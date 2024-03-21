@@ -8,7 +8,7 @@ import { UD60x18 } from "src/ud60x18/ValueType.sol";
 import { UD60x18_Unit_Test } from "../../UD60x18.t.sol";
 
 contract Pow_Unit_Test is UD60x18_Unit_Test {
-    function test_Pow_BaseZero_ExponentZero() external {
+    function test_Pow_BaseZero_ExponentZero() external pure {
         UD60x18 x = ZERO;
         UD60x18 y = ZERO;
         UD60x18 actual = pow(x, y);
@@ -16,7 +16,7 @@ contract Pow_Unit_Test is UD60x18_Unit_Test {
         assertEq(actual, expected, "UD60x18 pow");
     }
 
-    function test_Pow_BaseZero_ExponentNotZero() external {
+    function test_Pow_BaseZero_ExponentNotZero() external pure {
         UD60x18 x = ZERO;
         UD60x18 y = PI;
         UD60x18 actual = pow(x, y);
@@ -28,7 +28,7 @@ contract Pow_Unit_Test is UD60x18_Unit_Test {
         _;
     }
 
-    function test_Pow_BaseUnit() external whenBaseNotZero {
+    function test_Pow_BaseUnit() external pure whenBaseNotZero {
         UD60x18 x = UNIT;
         UD60x18 y = PI;
         UD60x18 actual = pow(x, y);
@@ -40,7 +40,7 @@ contract Pow_Unit_Test is UD60x18_Unit_Test {
         _;
     }
 
-    function test_Pow_ExponentZero() external whenBaseNotZero whenBaseNotUnit {
+    function test_Pow_ExponentZero() external pure whenBaseNotZero whenBaseNotUnit {
         UD60x18 x = PI;
         UD60x18 y = ZERO;
         UD60x18 actual = pow(x, y);
@@ -52,7 +52,7 @@ contract Pow_Unit_Test is UD60x18_Unit_Test {
         _;
     }
 
-    function test_Pow_ExponentUnit(UD60x18 x) external whenBaseNotZero whenBaseNotUnit whenExponentNotZero {
+    function test_Pow_ExponentUnit(UD60x18 x) external pure whenBaseNotZero whenBaseNotUnit whenExponentNotZero {
         vm.assume(x != ZERO && x != UNIT);
         UD60x18 y = UNIT;
         UD60x18 actual = pow(x, y);
