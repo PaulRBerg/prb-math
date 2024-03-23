@@ -28,7 +28,7 @@ contract UD60x18_Casting_Fuzz_Test is Base_Test {
         x.intoSD1x18();
     }
 
-    function testFuzz_intoSD1x18(UD60x18 x) external {
+    function testFuzz_intoSD1x18(UD60x18 x) external pure {
         x = _bound(x, 0, ud(uint64(uMAX_SD1x18)));
         SD1x18 actual = x.intoSD1x18();
         SD1x18 expected = SD1x18.wrap(int64(uint64(x.unwrap())));
@@ -41,7 +41,7 @@ contract UD60x18_Casting_Fuzz_Test is Base_Test {
         x.intoSD59x18();
     }
 
-    function testFuzz_intoSD59x18(UD60x18 x) external {
+    function testFuzz_intoSD59x18(UD60x18 x) external pure {
         x = _bound(x, 0, ud(uint256(uMAX_SD59x18)));
         SD59x18 actual = x.intoSD59x18();
         SD59x18 expected = SD59x18.wrap(int256(uint256(x.unwrap())));
@@ -54,7 +54,7 @@ contract UD60x18_Casting_Fuzz_Test is Base_Test {
         x.intoUD2x18();
     }
 
-    function testFuzz_intoUD2x18(UD60x18 x) external {
+    function testFuzz_intoUD2x18(UD60x18 x) external pure {
         x = _bound(x, 0, ud(uint256(uMAX_UD2x18)));
         UD2x18 actual = x.intoUD2x18();
         UD2x18 expected = UD2x18.wrap(uint64(x.unwrap()));
@@ -67,14 +67,14 @@ contract UD60x18_Casting_Fuzz_Test is Base_Test {
         x.intoUint128();
     }
 
-    function testFuzz_intoUint128(UD60x18 x) external {
+    function testFuzz_intoUint128(UD60x18 x) external pure {
         x = _bound(x, 0, ud(uint256(MAX_UINT128)));
         uint128 actual = x.intoUint128();
         uint128 expected = uint128(x.unwrap());
         assertEq(actual, expected, "UD60x18 intoUint128");
     }
 
-    function testFuzz_intoUint256(UD60x18 x) external {
+    function testFuzz_intoUint256(UD60x18 x) external pure {
         uint256 actual = x.intoUint256();
         uint256 expected = x.unwrap();
         assertEq(actual, expected, "UD60x18 intoUint256");
@@ -86,32 +86,32 @@ contract UD60x18_Casting_Fuzz_Test is Base_Test {
         x.intoUint40();
     }
 
-    function testFuzz_intoUint40(UD60x18 x) external {
+    function testFuzz_intoUint40(UD60x18 x) external pure {
         x = _bound(x, 0, ud(uint256(MAX_UINT40)));
         uint40 actual = uint40(x.intoUint40());
         uint40 expected = uint40(x.unwrap());
         assertEq(actual, expected, "UD60x18 intoUint40");
     }
 
-    function testFuzz_Ud(uint256 x) external {
+    function testFuzz_Ud(uint256 x) external pure {
         UD60x18 actual = ud(x);
         UD60x18 expected = UD60x18.wrap(x);
         assertEq(actual, expected, "ud");
     }
 
-    function testFuzz_UD60x18(uint256 x) external {
+    function testFuzz_UD60x18(uint256 x) external pure {
         UD60x18 actual = ud60x18(x);
         UD60x18 expected = UD60x18.wrap(x);
         assertEq(actual, expected, "ud60x18");
     }
 
-    function testFuzz_Unwrap(UD60x18 x) external {
+    function testFuzz_Unwrap(UD60x18 x) external pure {
         uint256 actual = x.unwrap();
         uint256 expected = UD60x18.unwrap(x);
         assertEq(actual, expected, "UD60x18 unwrap");
     }
 
-    function testFuzz_Wrap(uint256 x) external {
+    function testFuzz_Wrap(uint256 x) external pure {
         UD60x18 actual = wrap(x);
         UD60x18 expected = UD60x18.wrap(x);
         assertEq(actual, expected, "UD60x18 wrap");

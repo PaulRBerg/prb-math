@@ -10,7 +10,7 @@ import { UD60x18 } from "src/ud60x18/ValueType.sol";
 import { UD60x18_Unit_Test } from "../../UD60x18.t.sol";
 
 contract Powu_Unit_Test is UD60x18_Unit_Test {
-    function test_Powu_BaseAndExponentZero() external {
+    function test_Powu_BaseAndExponentZero() external pure {
         UD60x18 x = ZERO;
         uint256 y = 0;
         UD60x18 actual = powu(x, y);

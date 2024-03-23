@@ -8,7 +8,7 @@ import { UD60x18 } from "src/ud60x18/ValueType.sol";
 import { UD60x18_Unit_Test } from "../../UD60x18.t.sol";
 
 contract Avg_Unit_Test is UD60x18_Unit_Test {
-    function test_Avg_BothOperandsZero() external {
+    function test_Avg_BothOperandsZero() external pure {
         UD60x18 x = ZERO;
         UD60x18 y = ZERO;
         UD60x18 actual = avg(x, y);

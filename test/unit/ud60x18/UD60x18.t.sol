@@ -57,12 +57,12 @@ abstract contract UD60x18_Unit_Test is Base_Test {
                               CONSTANT HELPER FUNCTIONS
     //////////////////////////////////////////////////////////////////////////*/
 
-    function log(string memory p0, UD60x18 p1) internal pure {
-        console2.log(p0, p1.unwrap());
-    }
-
     function logUd(UD60x18 p0) internal pure {
         console2.logUint(p0.unwrap());
+    }
+
+    function logUd(string memory p0, UD60x18 p1) internal pure {
+        console2.log(p0, p1.unwrap());
     }
 
     function set(uint256 x) internal pure returns (Set memory) {

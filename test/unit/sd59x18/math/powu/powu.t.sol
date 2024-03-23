@@ -13,7 +13,7 @@ import { SD59x18 } from "src/sd59x18/ValueType.sol";
 import { SD59x18_Unit_Test } from "../../SD59x18.t.sol";
 
 contract Powu_Unit_Test is SD59x18_Unit_Test {
-    function test_Powu_BaseAndExponentZero() external {
+    function test_Powu_BaseAndExponentZero() external pure {
         SD59x18 x = ZERO;
         uint256 y = 0;
         SD59x18 actual = powu(x, y);

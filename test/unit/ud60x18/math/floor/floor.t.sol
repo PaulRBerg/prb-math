@@ -8,7 +8,7 @@ import { UD60x18 } from "src/ud60x18/ValueType.sol";
 import { UD60x18_Unit_Test } from "../../UD60x18.t.sol";
 
 contract Floor_Unit_Test is UD60x18_Unit_Test {
-    function test_Floor_Zero() external {
+    function test_Floor_Zero() external pure {
         UD60x18 x = ZERO;
         UD60x18 actual = floor(x);
         UD60x18 expected = ZERO;
