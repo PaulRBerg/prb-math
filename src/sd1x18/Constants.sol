@@ -19,4 +19,4 @@ SD1x18 constant PI = SD1x18.wrap(3_141592653589793238);
 
 /// @dev The unit number, which gives the decimal precision of SD1x18.
 SD1x18 constant UNIT = SD1x18.wrap(1e18);
-int256 constant uUNIT = 1e18;
+int64 constant uUNIT = 1e18;
