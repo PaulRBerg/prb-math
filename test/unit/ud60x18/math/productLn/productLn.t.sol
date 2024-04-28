@@ -7,8 +7,9 @@ import { productLn } from "src/ud60x18/Math.sol";
 import { UD60x18 } from "src/ud60x18/ValueType.sol";
 
 import { UD60x18_Unit_Test } from "../../UD60x18.t.sol";
+import { console2 } from "node_modules/forge-std/src/console2.sol";
 
-contract Product_Ln_Unit_Test is UD60x18_Unit_Test {
+contract ProductLn_Unit_Test is UD60x18_Unit_Test {
     function test_RevertWhen_GtMaxMinusUnit() external {
         UD60x18 x = MAX_UD60x18 - UNIT + UD60x18.wrap(1);
         vm.expectRevert(abi.encodeWithSelector(PRBMath_UD60x18_ProductLn_InputTooBig.selector, x));
@@ -49,5 +50,12 @@ contract Product_Ln_Unit_Test is UD60x18_Unit_Test {
     function test_ProductLn() external parameterizedTest(productLn_Sets()) {
         UD60x18 actual = productLn(s.x);
         assertEq(actual, s.expected, "UD60x18 productLn");
+    }
+
+    function test_ProductLn_Gas() external {
+        UD60x18 x = UD60x18.wrap(1e18);
+        uint256 preGas = gasleft();
+        productLn(x);
+        console2.log("Gas used: productLn ", preGas - gasleft());
     }
 }
