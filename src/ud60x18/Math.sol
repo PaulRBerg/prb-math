@@ -11,6 +11,7 @@ import {
     uLOG2_10,
     uLOG2_E,
     uMAX_UD60x18,
+    MAX_UD60x18,
     uMAX_WHOLE_UD60x18,
     UNIT,
     HALF_UNIT,
@@ -251,32 +252,39 @@ function ln(UD60x18 x) pure returns (UD60x18 result) {
     }
 }
 
-/// @notice Calculates the product logarithm of x, also known as the principal branch of the Lambert W function
-/// Where W(x) is the solution to x = W(x) * e^(W(x)).
+/// @notice Calculates the product logarithm of x, also known as the principal branch of the Lambert W function.
+/// The lambert-W function is defined as the inverse of the function f(x) = x * e^x, such that W(f(x)) = x.
 ///
 /// @dev this approximation uses an iterative approach defined for x > 0 in section 4.1 of the following paper:
-/// https://www.researchgate.net/publication/315904900_New_approximations_to_the_principal_real-valued_branch_of_the_Lambert_W-function
+/// https://www.researchgate.net/publication/315904900
 ///
 /// Notes:
 /// - This function depends on the {ln}, refer to notes there and in {log2}.
+/// - See https://mathworld.wolfram.com/LambertW-Function.html for information on the Lambert-W function.
 ///
 /// Requirements:
 /// - x must be greater than or equal to zero.
+/// - x must be less than `MAX_UD60x18 - UNIT`.
 ///
 /// @param x The UD60x18 number for which to calculate the product logarithm.
 /// @return w The product logarithm as a UD60x18 number.
 /// @custom:smtchecker abstract-function-nondet
 function productLn(UD60x18 x) pure returns (UD60x18 w) {
     // If x is zero, the result is zero.
-    if (x.unwrap() == 0) {
+    if (x == ZERO) {
         return ZERO;
+    }
+
+    // The approximation requires that UNIT can be added to x without overflowing
+    if (x > MAX_UD60x18 - UNIT) {
+        revert Errors.PRBMath_UD60x18_ProductLn_InputTooBig(x);
     }
 
     // Initial guess
     w = ln(UNIT + x / (UNIT + HALF_UNIT * ln(UNIT + x)));
 
     // Iterative approximation
-    // Four iterations should get us to 18 decimals of precision
+    // Four iterations gets us close to 18 decimals of precision
     for (uint256 i = 0; i < 4; i++) {
         w = w / (w + UNIT) * (UNIT + ln(x / w));
     }
