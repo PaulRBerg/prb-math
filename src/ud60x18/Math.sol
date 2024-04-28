@@ -13,6 +13,7 @@ import {
     uMAX_UD60x18,
     uMAX_WHOLE_UD60x18,
     UNIT,
+    HALF_UNIT,
     uUNIT,
     uUNIT_SQUARED,
     ZERO
@@ -247,6 +248,37 @@ function ln(UD60x18 x) pure returns (UD60x18 result) {
         // Inline the fixed-point multiplication to save gas. This is overflow-safe because the maximum value that
         // {log2} can return is ~196_205294292027477728.
         result = wrap(log2(x).unwrap() * uUNIT / uLOG2_E);
+    }
+}
+
+/// @notice Calculates the product logarithm of x, also known as the principal branch of the Lambert W function
+/// Where W(x) is the solution to x = W(x) * e^(W(x)).
+///
+/// @dev this approximation uses an iterative approach defined for x > 0 in section 4.1 of the following paper:
+/// https://www.researchgate.net/publication/315904900_New_approximations_to_the_principal_real-valued_branch_of_the_Lambert_W-function
+///
+/// Notes:
+/// - This function depends on the {ln}, refer to notes there and in {log2}.
+///
+/// Requirements:
+/// - x must be greater than or equal to zero.
+///
+/// @param x The UD60x18 number for which to calculate the product logarithm.
+/// @return w The product logarithm as a UD60x18 number.
+/// @custom:smtchecker abstract-function-nondet
+function productLn(UD60x18 x) pure returns (UD60x18 w) {
+    // If x is zero, the result is zero.
+    if (x.unwrap() == 0) {
+        return ZERO;
+    }
+
+    // Initial guess
+    w = ln(UNIT + x / (UNIT + HALF_UNIT * ln(UNIT + x)));
+
+    // Iterative approximation
+    // Four iterations should get us to 18 decimals of precision
+    for (uint256 i = 0; i < 4; i++) {
+        w = w / (w + UNIT) * (UNIT + ln(x / w));
     }
 }
 
