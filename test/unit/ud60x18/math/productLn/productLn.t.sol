@@ -52,7 +52,7 @@ contract ProductLn_Unit_Test is UD60x18_Unit_Test {
         assertEq(actual, s.expected, "UD60x18 productLn");
     }
 
-    function test_ProductLn_Gas() external {
+    function test_ProductLn_Gas() external view {
         UD60x18 x = UD60x18.wrap(1e18);
         uint256 preGas = gasleft();
         productLn(x);

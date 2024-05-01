@@ -45,7 +45,8 @@ using {
     Math.mul,
     Math.pow,
     Math.powu,
-    Math.sqrt
+    Math.sqrt,
+    Math.productLn
 } for UD60x18 global;
 
 /*//////////////////////////////////////////////////////////////////////////
