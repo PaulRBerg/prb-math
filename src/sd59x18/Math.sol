@@ -6,6 +6,7 @@ import "./Errors.sol" as Errors;
 import {
     uEXP_MAX_INPUT,
     uEXP2_MAX_INPUT,
+    uEXP2_MIN_THRESHOLD,
     uHALF_UNIT,
     uLOG2_10,
     uLOG2_E,
@@ -172,6 +173,9 @@ function exp(SD59x18 x) pure returns (SD59x18 result) {
     if (xInt > uEXP_MAX_INPUT) {
         revert Errors.PRBMath_SD59x18_Exp_InputTooBig(x);
     }
+    if (xInt < uEXP2_MIN_THRESHOLD) {
+        return ZERO;
+    }
 
     unchecked {
         // Inline the fixed-point multiplication to save gas.
@@ -202,7 +206,7 @@ function exp2(SD59x18 x) pure returns (SD59x18 result) {
     int256 xInt = x.unwrap();
     if (xInt < 0) {
         // The inverse of any number less than this is truncated to zero.
-        if (xInt < -59_794705707972522261) {
+        if (xInt < uEXP2_MIN_THRESHOLD) {
             return ZERO;
         }
 
