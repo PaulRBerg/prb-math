@@ -169,12 +169,14 @@ function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 function exp(SD59x18 x) pure returns (SD59x18 result) {
     int256 xInt = x.unwrap();
 
+    // TODO: add explanatory comment.
+    if (xInt < uEXP2_MIN_THRESHOLD) {
+        return ZERO;
+    }
+
     // This check prevents values greater than 192e18 from being passed to {exp2}.
     if (xInt > uEXP_MAX_INPUT) {
         revert Errors.PRBMath_SD59x18_Exp_InputTooBig(x);
-    }
-    if (xInt < uEXP2_MIN_THRESHOLD) {
-        return ZERO;
     }
 
     unchecked {
@@ -205,7 +207,7 @@ function exp(SD59x18 x) pure returns (SD59x18 result) {
 function exp2(SD59x18 x) pure returns (SD59x18 result) {
     int256 xInt = x.unwrap();
     if (xInt < 0) {
-        // The inverse of any number less than this is truncated to zero.
+        // The inverse of any number less than the threshold is truncated to zero.
         if (xInt < uEXP2_MIN_THRESHOLD) {
             return ZERO;
         }
