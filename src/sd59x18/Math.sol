@@ -6,6 +6,7 @@ import "./Errors.sol" as Errors;
 import {
     uEXP_MAX_INPUT,
     uEXP2_MAX_INPUT,
+    uEXP_MIN_THRESHOLD,
     uEXP2_MIN_THRESHOLD,
     uHALF_UNIT,
     uLOG2_10,
@@ -169,8 +170,9 @@ function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 function exp(SD59x18 x) pure returns (SD59x18 result) {
     int256 xInt = x.unwrap();
 
-    // TODO: add explanatory comment.
-    if (xInt < uEXP2_MIN_THRESHOLD) {
+    // Any input less than the threshold will result in exp returning 0
+    // This also prevents an overflow later in the function for very small numbers
+    if (xInt < uEXP_MIN_THRESHOLD) {
         return ZERO;
     }
 

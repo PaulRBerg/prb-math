@@ -2,7 +2,7 @@
 pragma solidity >=0.8.19 <0.9.0;
 
 import { sd } from "src/sd59x18/Casting.sol";
-import { E, EXP_MAX_INPUT, MIN_SD59x18, MIN_WHOLE_SD59x18, PI, UNIT, ZERO } from "src/sd59x18/Constants.sol";
+import { E, EXP_MAX_INPUT, EXP_MIN_THRESHOLD, MIN_SD59x18, MIN_WHOLE_SD59x18, PI, UNIT, ZERO } from "src/sd59x18/Constants.sol";
 import { PRBMath_SD59x18_Exp_InputTooBig } from "src/sd59x18/Errors.sol";
 import { exp } from "src/sd59x18/Math.sol";
 import { SD59x18 } from "src/sd59x18/ValueType.sol";
@@ -10,8 +10,6 @@ import { SD59x18 } from "src/sd59x18/ValueType.sol";
 import { SD59x18_Unit_Test } from "../../SD59x18.t.sol";
 
 contract Exp_Unit_Test is SD59x18_Unit_Test {
-    SD59x18 internal constant THRESHOLD = SD59x18.wrap(-41_446531673892822322);
-
     function test_Exp_Zero() external pure {
         SD59x18 x = ZERO;
         SD59x18 actual = exp(x);
@@ -27,7 +25,7 @@ contract Exp_Unit_Test is SD59x18_Unit_Test {
         delete sets;
         sets.push(set({ x: MIN_SD59x18 }));
         sets.push(set({ x: MIN_WHOLE_SD59x18 }));
-        sets.push(set({ x: THRESHOLD - sd(1) }));
+        sets.push(set({ x: EXP_MIN_THRESHOLD - sd(1) }));
         return sets;
     }
 
@@ -38,7 +36,9 @@ contract Exp_Unit_Test is SD59x18_Unit_Test {
 
     function negativeAndGteThreshold_Sets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: THRESHOLD, expected: 0.000000000000000001e18 }));
+        sets.push(set({ x: MIN_SD59x18, expected: 0 }));
+        sets.push(set({ x: EXP_MIN_THRESHOLD - sd(1), expected: 0 }));
+        sets.push(set({ x: EXP_MIN_THRESHOLD, expected: 0.000000000000000001e18 }));
         sets.push(set({ x: -33.333333e18, expected: 0.000000000000003338e18 }));
         sets.push(set({ x: -20.82e18, expected: 0.0000000009077973e18 }));
         sets.push(set({ x: -16e18, expected: 0.000000112535174719e18 }));

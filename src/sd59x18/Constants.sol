@@ -12,6 +12,10 @@ SD59x18 constant E = SD59x18.wrap(2_718281828459045235);
 int256 constant uEXP_MAX_INPUT = 133_084258667509499440;
 SD59x18 constant EXP_MAX_INPUT = SD59x18.wrap(uEXP_MAX_INPUT);
 
+/// @dev Any value less than this returns 0 in {exp}.
+int256 constant uEXP_MIN_THRESHOLD = -41_446531673892822322;
+SD59x18 constant EXP_MIN_THRESHOLD = SD59x18.wrap(uEXP_MIN_THRESHOLD);
+
 /// @dev The maximum input permitted in {exp2}.
 int256 constant uEXP2_MAX_INPUT = 192e18 - 1;
 SD59x18 constant EXP2_MAX_INPUT = SD59x18.wrap(uEXP2_MAX_INPUT);

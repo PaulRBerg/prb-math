@@ -2,17 +2,7 @@
 pragma solidity >=0.8.19 <0.9.0;
 
 import { sd } from "src/sd59x18/Casting.sol";
-import {
-    E,
-    EXP2_MAX_INPUT,
-    EXP2_MIN_THRESHOLD,
-    MIN_SD59x18,
-    MIN_WHOLE_SD59x18,
-    PI,
-    UNIT,
-    uEXP2_MIN_THRESHOLD,
-    ZERO
-} from "src/sd59x18/Constants.sol";
+import { E, EXP2_MAX_INPUT, EXP2_MIN_THRESHOLD, MIN_SD59x18, MIN_WHOLE_SD59x18, PI, UNIT, ZERO } from "src/sd59x18/Constants.sol";
 import { PRBMath_SD59x18_Exp2_InputTooBig } from "src/sd59x18/Errors.sol";
 import { exp2 } from "src/sd59x18/Math.sol";
 import { SD59x18 } from "src/sd59x18/ValueType.sol";
@@ -47,8 +37,8 @@ contract Exp2_Unit_Test is SD59x18_Unit_Test {
     function negativeAndGteMinPermitted_Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_SD59x18, expected: 0 }));
-        sets.push(set({ x: EXP2_MIN_THRESHOLD, expected: 0.000000000000000001e18 }));
         sets.push(set({ x: EXP2_MIN_THRESHOLD - sd(1), expected: 0 }));
+        sets.push(set({ x: EXP2_MIN_THRESHOLD, expected: 0.000000000000000001e18 }));
         sets.push(set({ x: -33.333333e18, expected: 0.000000000092398923e18 }));
         sets.push(set({ x: -20.82e18, expected: 0.000000540201132438e18 }));
         sets.push(set({ x: -16e18, expected: 0.0000152587890625e18 }));
