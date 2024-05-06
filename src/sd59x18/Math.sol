@@ -170,8 +170,8 @@ function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 function exp(SD59x18 x) pure returns (SD59x18 result) {
     int256 xInt = x.unwrap();
 
-    // Any input less than the threshold will result in exp returning 0
-    // This also prevents an overflow later in the function for very small numbers
+    // Any input less than the threshold returns zero.
+    // This check also prevents an overflow for very small numbers.
     if (xInt < uEXP_MIN_THRESHOLD) {
         return ZERO;
     }
