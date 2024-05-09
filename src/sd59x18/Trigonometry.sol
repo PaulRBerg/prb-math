@@ -5,7 +5,7 @@ import { SD59x18 } from "./ValueType.sol";
 import { uUNIT } from "./Constants.sol";
 
 // Pi / 2;
-int256 constant uPI2  = 1_570796326794896619;
+int256 constant uPI2 = 1_570796326794896619;
 
 // Cordic renormalisation factor
 int256 constant K = 607252935008881256;
@@ -75,11 +75,11 @@ int256 constant ATAN31 = 465661287;
 
 function cordic_step(int256 x, int256 y, int256 z, int256 f, int256 t) pure returns (int256 x2, int256 y2, int256 z2, int256 f2) {
     assembly {
-        let delta := sub(mul(sgt(z, 0), 2), 1)           // z > 0 ? 1 : -1
+        let delta := sub(mul(sgt(z, 0), 2), 1) // z > 0 ? 1 : -1
         x2 := sub(x, sdiv(mul(mul(delta, y), f), uUNIT)) // x - delta * y * f / uUNIT
         y2 := add(y, sdiv(mul(mul(delta, x), f), uUNIT)) // y + delta * x * f / uUNIT
-        z2 := sub(z, mul(delta, t))                      // z + delta * t
-        f2 := shr(1, f)                                  // f / 2
+        z2 := sub(z, mul(delta, t)) // z + delta * t
+        f2 := shr(1, f) // f / 2
     }
 }
 
@@ -124,10 +124,7 @@ function cordic(int256 t) pure returns (int256, int256) {
         (x, y, z, f) = cordic_step(x, y, z, f, ATAN31);
         x = x * K / uUNIT;
         y = y * K / uUNIT;
-       return (q == 0) ? (x, y) :
-              (q == 1) ? (-y, x) :
-              (q == 2) ? (-x, -y) :
-              (y, -x);
+        return (q == 0) ? (x, y) : (q == 1) ? (-y, x) : (q == 2) ? (-x, -y) : (y, -x);
     }
 }
 
