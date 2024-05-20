@@ -18,23 +18,23 @@ contract Cos_Unit_Test is SD59x18_Unit_Test {
         SD59x18 SD4 = sd(4 * uUNIT);
         SD59x18 SD5 = sd(5 * uUNIT);
         SD59x18 SD6 = sd(6 * uUNIT);
-        sets.push(set({ x: -PI,             expected: -SD1             })); // cos(-pi) = -1
+        sets.push(set({ x: -PI, expected: -SD1 })); // cos(-pi) = -1
         sets.push(set({ x: -PI * SD5 / SD6, expected: -sqrt(SD3) / SD2 })); // cos(-5*pi/6) = -sqrt(3)/2
         sets.push(set({ x: -PI * SD3 / SD4, expected: -sqrt(SD2) / SD2 })); // cos(-3*pi/4) = -sqrt(2)/2
-        sets.push(set({ x: -PI * SD2 / SD3, expected: -SD1 / SD2       })); // cos(-2*pi/3) = -1/2
-        sets.push(set({ x: -PI / SD2,       expected: ZERO             })); // cos(-pi/2) = 0
-        sets.push(set({ x: -PI / SD3,       expected: SD1 / SD2        })); // cos(-pi/3) = 1/2
-        sets.push(set({ x: -PI / SD4,       expected: sqrt(SD2) / SD2  })); // cos(-pi/4) = sqrt(2)/2
-        sets.push(set({ x: -PI / SD6,       expected: sqrt(SD3) / SD2  })); // cos(-pi/6) = sqrt(3)/2
-        sets.push(set({ x: ZERO,            expected: SD1              })); // cos(0) = 1
-        sets.push(set({ x: PI / SD6,        expected: sqrt(SD3) / SD2  })); // cos(pi/6) = sqrt(3)/2
-        sets.push(set({ x: PI / SD4,        expected: sqrt(SD2) / SD2  })); // cos(pi/4) = sqrt(2)/2
-        sets.push(set({ x: PI / SD3,        expected: SD1 / SD2        })); // cos(pi/3) = 1/2
-        sets.push(set({ x: PI / SD2,        expected: ZERO             })); // cos(pi/2) = 0
-        sets.push(set({ x: PI * SD2 / SD3,  expected: -SD1 / SD2       })); // cos(2*pi/3) = -1/2
-        sets.push(set({ x: PI * SD3 / SD4,  expected: -sqrt(SD2) / SD2 })); // cos(3*pi/4) = -sqrt(2)/2
-        sets.push(set({ x: PI * SD5 / SD6,  expected: -sqrt(SD3) / SD2 })); // cos(5*pi/6) = -sqrt(3)/2
-        sets.push(set({ x: PI,              expected: -SD1             })); // cos(pi) = -1
+        sets.push(set({ x: -PI * SD2 / SD3, expected: -SD1 / SD2 })); // cos(-2*pi/3) = -1/2
+        sets.push(set({ x: -PI / SD2, expected: ZERO })); // cos(-pi/2) = 0
+        sets.push(set({ x: -PI / SD3, expected: SD1 / SD2 })); // cos(-pi/3) = 1/2
+        sets.push(set({ x: -PI / SD4, expected: sqrt(SD2) / SD2 })); // cos(-pi/4) = sqrt(2)/2
+        sets.push(set({ x: -PI / SD6, expected: sqrt(SD3) / SD2 })); // cos(-pi/6) = sqrt(3)/2
+        sets.push(set({ x: ZERO, expected: SD1 })); // cos(0) = 1
+        sets.push(set({ x: PI / SD6, expected: sqrt(SD3) / SD2 })); // cos(pi/6) = sqrt(3)/2
+        sets.push(set({ x: PI / SD4, expected: sqrt(SD2) / SD2 })); // cos(pi/4) = sqrt(2)/2
+        sets.push(set({ x: PI / SD3, expected: SD1 / SD2 })); // cos(pi/3) = 1/2
+        sets.push(set({ x: PI / SD2, expected: ZERO })); // cos(pi/2) = 0
+        sets.push(set({ x: PI * SD2 / SD3, expected: -SD1 / SD2 })); // cos(2*pi/3) = -1/2
+        sets.push(set({ x: PI * SD3 / SD4, expected: -sqrt(SD2) / SD2 })); // cos(3*pi/4) = -sqrt(2)/2
+        sets.push(set({ x: PI * SD5 / SD6, expected: -sqrt(SD3) / SD2 })); // cos(5*pi/6) = -sqrt(3)/2
+        sets.push(set({ x: PI, expected: -SD1 })); // cos(pi) = -1
         return sets;
     }
 

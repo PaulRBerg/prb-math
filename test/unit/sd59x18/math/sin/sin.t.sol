@@ -18,23 +18,23 @@ contract Sin_Unit_Test is SD59x18_Unit_Test {
         SD59x18 SD4 = sd(4 * uUNIT);
         SD59x18 SD5 = sd(5 * uUNIT);
         SD59x18 SD6 = sd(6 * uUNIT);
-        sets.push(set({ x: -PI,             expected: ZERO             })); // sin(-pi) = 0
-        sets.push(set({ x: -PI * SD5 / SD6, expected: -SD1 / SD2       })); // sin(-5*pi/6) = -1/2
+        sets.push(set({ x: -PI, expected: ZERO })); // sin(-pi) = 0
+        sets.push(set({ x: -PI * SD5 / SD6, expected: -SD1 / SD2 })); // sin(-5*pi/6) = -1/2
         sets.push(set({ x: -PI * SD3 / SD4, expected: -sqrt(SD2) / SD2 })); // sin(-3*pi/4) = -sqrt(2)/2
         sets.push(set({ x: -PI * SD2 / SD3, expected: -sqrt(SD3) / SD2 })); // sin(-2*pi/3) = -sqrt(3)/2
-        sets.push(set({ x: -PI / SD2,       expected: -SD1             })); // sin(-pi/2) = -1
-        sets.push(set({ x: -PI / SD3,       expected: -sqrt(SD3) / SD2 })); // sin(-pi/3) = -sqrt(3)/2
-        sets.push(set({ x: -PI / SD4,       expected: -sqrt(SD2) / SD2 })); // sin(-pi/4) = -sqrt(2)/2
-        sets.push(set({ x: -PI / SD6,       expected: -SD1 / SD2       })); // sin(-pi/6) = -1/2
-        sets.push(set({ x: ZERO,            expected: ZERO             })); // sin(0) = 0
-        sets.push(set({ x: PI / SD6,        expected: SD1 / SD2        })); // sin(pi/6) = 1/2
-        sets.push(set({ x: PI / SD4,        expected: sqrt(SD2) / SD2  })); // sin(pi/4) = sqrt(2)/2
-        sets.push(set({ x: PI / SD3,        expected: sqrt(SD3) / SD2  })); // sin(pi/3) = sqrt(3)/2
-        sets.push(set({ x: PI / SD2,        expected: SD1              })); // sin(pi/2) = 1
-        sets.push(set({ x: PI * SD2 / SD3,  expected: sqrt(SD3) / SD2  })); // sin(2*pi/3) = sqrt(3)/2
-        sets.push(set({ x: PI * SD3 / SD4,  expected: sqrt(SD2) / SD2  })); // sin(3*pi/4) = sqrt(2)/2
-        sets.push(set({ x: PI * SD5 / SD6,  expected: SD1 / SD2        })); // sin(5*pi/6) = 1/2
-        sets.push(set({ x: PI,              expected: ZERO             })); // sin(pi) = 0
+        sets.push(set({ x: -PI / SD2, expected: -SD1 })); // sin(-pi/2) = -1
+        sets.push(set({ x: -PI / SD3, expected: -sqrt(SD3) / SD2 })); // sin(-pi/3) = -sqrt(3)/2
+        sets.push(set({ x: -PI / SD4, expected: -sqrt(SD2) / SD2 })); // sin(-pi/4) = -sqrt(2)/2
+        sets.push(set({ x: -PI / SD6, expected: -SD1 / SD2 })); // sin(-pi/6) = -1/2
+        sets.push(set({ x: ZERO, expected: ZERO })); // sin(0) = 0
+        sets.push(set({ x: PI / SD6, expected: SD1 / SD2 })); // sin(pi/6) = 1/2
+        sets.push(set({ x: PI / SD4, expected: sqrt(SD2) / SD2 })); // sin(pi/4) = sqrt(2)/2
+        sets.push(set({ x: PI / SD3, expected: sqrt(SD3) / SD2 })); // sin(pi/3) = sqrt(3)/2
+        sets.push(set({ x: PI / SD2, expected: SD1 })); // sin(pi/2) = 1
+        sets.push(set({ x: PI * SD2 / SD3, expected: sqrt(SD3) / SD2 })); // sin(2*pi/3) = sqrt(3)/2
+        sets.push(set({ x: PI * SD3 / SD4, expected: sqrt(SD2) / SD2 })); // sin(3*pi/4) = sqrt(2)/2
+        sets.push(set({ x: PI * SD5 / SD6, expected: SD1 / SD2 })); // sin(5*pi/6) = 1/2
+        sets.push(set({ x: PI, expected: ZERO })); // sin(pi) = 0
         return sets;
     }
 
