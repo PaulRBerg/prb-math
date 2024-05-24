@@ -281,12 +281,13 @@ function productLn(UD60x18 x) pure returns (UD60x18 w) {
     }
 
     // Initial guess
-    w = ln(UNIT + x / (UNIT + HALF_UNIT * ln(UNIT + x)));
+    w = ln(UNIT + (x / (UNIT + HALF_UNIT * ln(UNIT + x))));
 
     // Iterative approximation
     // Four iterations gets us close to 18 decimals of precision
     for (uint256 i = 0; i < 4; i++) {
-        w = w / (w + UNIT) * (UNIT + ln(x / w));
+        if (w == ZERO) break; // Avoid division by zero and return.
+        w = (w  * (UNIT + ln(x / w))) / (w + UNIT);
     }
 }
 
