@@ -287,7 +287,7 @@ function productLn(UD60x18 x) pure returns (UD60x18 w) {
     // Four iterations gets us close to 18 decimals of precision
     for (uint256 i = 0; i < 4; i++) {
         if (w == ZERO) break; // Avoid division by zero and return.
-        w = (w  * (UNIT + ln(x / w))) / (w + UNIT);
+        w = (w * (UNIT + ln(x / w))) / (w + UNIT);
     }
 }
 
