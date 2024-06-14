@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Common Changelog](https://common-changelog.org/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+[4.0.3]: https://github.com/PaulRBerg/prb-math/compare/v4.0.2...v4.0.3
 [4.0.2]: https://github.com/PaulRBerg/prb-math/compare/v4.0.1...v4.0.2
 [4.0.1]: https://github.com/PaulRBerg/prb-math/compare/v4.0.0...v4.0.1
 [4.0.0]: https://github.com/PaulRBerg/prb-math/compare/v3.3.2...v4.0.0
@@ -31,6 +32,22 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 [1.0.2]: https://github.com/PaulRBerg/prb-math/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/PaulRBerg/prb-math/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/PaulRBerg/prb-math/releases/tag/v1.0.0
+
+## [4.0.3] - 2024-06-14
+
+### Fixed
+
+- Fix types for `uUNIT` ([970aa90](https://github.com/PaulRBerg/prb-math/commit/970aa902098af46191d3b38f94bd30e7496078ae)) (@PaulRBerg)
+- Return zero for very small inputs passed to `exp` ([#229](https://github.com/PaulRBerg/prb-math/pull/229)) (@0x2me)
+
+### Changed
+
+- Change visibility of `bound` ([#216](https://github.com/PaulRBerg/prb-math/pull/216)) (@PaulRBerg)
+- Switch to Bun for dependency management ([#218](https://github.com/PaulRBerg/prb-math/pull/218)) (@PaulRBerg)
+
+### Removed
+
+- Remove dependency on `prb-test` ([#222](https://github.com/PaulRBerg/prb-math/pull/222)) (@smol-ninja)
 
 ## [4.0.2] - 2023-12-04
 
