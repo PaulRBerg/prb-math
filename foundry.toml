@@ -3,7 +3,7 @@
 [profile.default]
   auto_detect_solc = false
   bytecode_hash = "none"
-  evm_version = "paris"
+  evm_version = "shanghai"
   fuzz = { runs = 256 }
   optimizer = true
   optimizer_runs = 10_000
