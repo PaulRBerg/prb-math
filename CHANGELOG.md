@@ -35,11 +35,6 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 
 ## [4.0.3] - 2024-06-14
 
-### Fixed
-
-- Fix types for `uUNIT` ([970aa90](https://github.com/PaulRBerg/prb-math/commit/970aa902098af46191d3b38f94bd30e7496078ae)) (@PaulRBerg)
-- Return zero for very small inputs passed to `exp` ([#229](https://github.com/PaulRBerg/prb-math/pull/229)) (@0x2me)
-
 ### Changed
 
 - Change visibility of `bound` ([#216](https://github.com/PaulRBerg/prb-math/pull/216)) (@PaulRBerg)
@@ -48,6 +43,11 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 ### Removed
 
 - Remove dependency on `prb-test` ([#222](https://github.com/PaulRBerg/prb-math/pull/222)) (@smol-ninja)
+
+### Fixed
+
+- Fix types for `uUNIT` ([970aa90](https://github.com/PaulRBerg/prb-math/commit/970aa902098af46191d3b38f94bd30e7496078ae)) (@PaulRBerg)
+- Return zero for very small inputs passed to `exp` ([#229](https://github.com/PaulRBerg/prb-math/pull/229)) (@0x2me)
 
 ## [4.0.2] - 2023-12-04
 
