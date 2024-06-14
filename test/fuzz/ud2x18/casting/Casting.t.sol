@@ -28,13 +28,13 @@ contract UD2x18_Casting_Fuzz_Test is Base_Test {
         assertEq(actual, expected, "UD2x18 intoSD1x18");
     }
 
-    function testFuzz_IntoSD21x18(UD2x18 x) external {
+    function testFuzz_IntoSD21x18(UD2x18 x) external pure {
         SD21x18 actual = x.intoSD21x18();
         SD21x18 expected = SD21x18.wrap(int128(uint128(x.unwrap())));
         assertEq(actual, expected, "UD2x18 intoSD21x18");
     }
 
-    function testFuzz_IntoSD59x18(UD2x18 x) external {
+    function testFuzz_IntoSD59x18(UD2x18 x) external pure {
         SD59x18 actual = x.intoSD59x18();
         SD59x18 expected = SD59x18.wrap(int256(uint256(x.unwrap())));
         assertEq(actual, expected, "UD2x18 intoSD59x18");
