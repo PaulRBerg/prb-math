@@ -28,7 +28,7 @@ function intoSD1x18(UD60x18 x) pure returns (SD1x18 result) {
 
 /// @notice Casts a UD60x18 number into SD21x18.
 /// @dev Requirements:
-/// - x must be less than or equal to `uMAX_SD1x18`.
+/// - x must be less than or equal to `uMAX_SD21x18`.
 function intoSD21x18(UD60x18 x) pure returns (SD21x18 result) {
     uint256 xUint = UD60x18.unwrap(x);
     if (xUint > uint256(int256(uMAX_SD21x18))) {

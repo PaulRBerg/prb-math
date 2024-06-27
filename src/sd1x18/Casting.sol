@@ -53,17 +53,6 @@ function intoUD60x18(SD1x18 x) pure returns (UD60x18 result) {
     result = UD60x18.wrap(uint64(xInt));
 }
 
-/// @notice Casts an SD1x18 number into uint256.
-/// @dev Requirements:
-/// - x must be positive.
-function intoUint256(SD1x18 x) pure returns (uint256 result) {
-    int64 xInt = SD1x18.unwrap(x);
-    if (xInt < 0) {
-        revert CastingErrors.PRBMath_SD1x18_ToUint256_Underflow(x);
-    }
-    result = uint256(uint64(xInt));
-}
-
 /// @notice Casts an SD1x18 number into uint128.
 /// @dev Requirements:
 /// - x must be positive.
@@ -73,6 +62,17 @@ function intoUint128(SD1x18 x) pure returns (uint128 result) {
         revert CastingErrors.PRBMath_SD1x18_ToUint128_Underflow(x);
     }
     result = uint128(uint64(xInt));
+}
+
+/// @notice Casts an SD1x18 number into uint256.
+/// @dev Requirements:
+/// - x must be positive.
+function intoUint256(SD1x18 x) pure returns (uint256 result) {
+    int64 xInt = SD1x18.unwrap(x);
+    if (xInt < 0) {
+        revert CastingErrors.PRBMath_SD1x18_ToUint256_Underflow(x);
+    }
+    result = uint256(uint64(xInt));
 }
 
 /// @notice Casts an SD1x18 number into uint40.

@@ -3,6 +3,7 @@ pragma solidity >=0.8.19 <0.9.0;
 
 import { PRBMathCastingUint40 as CastingUint40 } from "src/casting/Uint40.sol";
 import { SD1x18 } from "src/sd1x18/ValueType.sol";
+import { SD21x18 } from "src/sd21x18/ValueType.sol";
 import { SD59x18 } from "src/sd59x18/ValueType.sol";
 import { UD2x18 } from "src/ud2x18/ValueType.sol";
 import { UD21x18 } from "src/ud21x18/ValueType.sol";
@@ -20,6 +21,12 @@ contract CastingUint40_Test is Base_Test {
         assertEq(actual, expected, "uint40 intoSD1x18");
     }
 
+    function testFuzz_intoSD21x18(uint40 x) external pure {
+        SD21x18 actual = x.intoSD21x18();
+        SD21x18 expected = SD21x18.wrap(int128(uint128(x)));
+        assertEq(actual, expected, "uint40 intoSD21x18");
+    }
+
     function testFuzz_intoSD59x18(uint40 x) external pure {
         SD59x18 actual = x.intoSD59x18();
         SD59x18 expected = SD59x18.wrap(int256(uint256(x)));
@@ -32,13 +39,13 @@ contract CastingUint40_Test is Base_Test {
         assertEq(actual, expected, "uint40 intoUD2x18");
     }
 
-    function testFuzz_intoUD21x18(uint40 x) external {
+    function testFuzz_intoUD21x18(uint40 x) external pure {
         UD21x18 actual = x.intoUD21x18();
         UD21x18 expected = UD21x18.wrap(uint128(x));
         assertEq(actual, expected, "uint40 intoUD21x18");
     }
 
-    function testFuzz_intoUD60x18(uint40 x) external {
+    function testFuzz_intoUD60x18(uint40 x) external pure {
         UD60x18 actual = x.intoUD60x18();
         UD60x18 expected = UD60x18.wrap(uint256(x));
         assertEq(actual, expected, "uint40 intoUD60x18");

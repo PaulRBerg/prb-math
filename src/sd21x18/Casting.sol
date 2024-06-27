@@ -6,6 +6,7 @@ import "./Errors.sol" as CastingErrors;
 import { SD1x18 } from "../sd1x18/ValueType.sol";
 import { uMAX_SD1x18, uMIN_SD1x18 } from "../sd1x18/Constants.sol";
 import { SD59x18 } from "../sd59x18/ValueType.sol";
+import { uMAX_UD2x18 } from "../ud2x18/Constants.sol";
 import { UD2x18 } from "../ud2x18/ValueType.sol";
 import { UD21x18 } from "../ud21x18/ValueType.sol";
 import { UD60x18 } from "../ud60x18/ValueType.sol";
@@ -34,10 +35,14 @@ function intoSD59x18(SD21x18 x) pure returns (SD59x18 result) {
 
 /// @notice Casts an SD21x18 number into UD2x18.
 /// - x must be positive.
+/// - x must be less than or equal to `uMAX_UD2x18`.
 function intoUD2x18(SD21x18 x) pure returns (UD2x18 result) {
     int128 xInt = SD21x18.unwrap(x);
     if (xInt < 0) {
         revert CastingErrors.PRBMath_SD21x18_ToUD2x18_Underflow(x);
+    }
+    if (xInt > int128(uint128(uMAX_UD2x18))) {
+        revert CastingErrors.PRBMath_SD21x18_ToUD2x18_Overflow(x);
     }
     result = UD2x18.wrap(uint64(uint128(xInt)));
 }
@@ -63,17 +68,6 @@ function intoUD60x18(SD21x18 x) pure returns (UD60x18 result) {
     result = UD60x18.wrap(uint128(xInt));
 }
 
-/// @notice Casts an SD21x18 number into uint256.
-/// @dev Requirements:
-/// - x must be positive.
-function intoUint256(SD21x18 x) pure returns (uint256 result) {
-    int128 xInt = SD21x18.unwrap(x);
-    if (xInt < 0) {
-        revert CastingErrors.PRBMath_SD21x18_ToUint256_Underflow(x);
-    }
-    result = uint256(uint128(xInt));
-}
-
 /// @notice Casts an SD21x18 number into uint128.
 /// @dev Requirements:
 /// - x must be positive.
@@ -85,19 +79,15 @@ function intoUint128(SD21x18 x) pure returns (uint128 result) {
     result = uint128(xInt);
 }
 
-/// @notice Casts an SD21x18 number into uint64.
+/// @notice Casts an SD21x18 number into uint256.
 /// @dev Requirements:
 /// - x must be positive.
-/// - x must be less than or equal to `MAX_UINT64`.
-function intoUint64(SD21x18 x) pure returns (uint64 result) {
+function intoUint256(SD21x18 x) pure returns (uint256 result) {
     int128 xInt = SD21x18.unwrap(x);
     if (xInt < 0) {
-        revert CastingErrors.PRBMath_SD21x18_ToUint64_Underflow(x);
+        revert CastingErrors.PRBMath_SD21x18_ToUint256_Underflow(x);
     }
-    if (xInt > int128(uint128(Common.MAX_UINT64))) {
-        revert CastingErrors.PRBMath_SD21x18_ToUint64_Overflow(x);
-    }
-    result = uint64(uint128(xInt));
+    result = uint256(uint128(xInt));
 }
 
 /// @notice Casts an SD21x18 number into uint40.
@@ -113,6 +103,21 @@ function intoUint40(SD21x18 x) pure returns (uint40 result) {
         revert CastingErrors.PRBMath_SD21x18_ToUint40_Overflow(x);
     }
     result = uint40(uint128(xInt));
+}
+
+/// @notice Casts an SD21x18 number into uint64.
+/// @dev Requirements:
+/// - x must be positive.
+/// - x must be less than or equal to `MAX_UINT64`.
+function intoUint64(SD21x18 x) pure returns (uint64 result) {
+    int128 xInt = SD21x18.unwrap(x);
+    if (xInt < 0) {
+        revert CastingErrors.PRBMath_SD21x18_ToUint64_Underflow(x);
+    }
+    if (xInt > int128(uint128(Common.MAX_UINT64))) {
+        revert CastingErrors.PRBMath_SD21x18_ToUint64_Overflow(x);
+    }
+    result = uint64(uint128(xInt));
 }
 
 /// @notice Alias for {wrap}.

@@ -19,8 +19,8 @@ using {
     Casting.intoUD2x18,
     Casting.intoUD21x18,
     Casting.intoUD60x18,
-    Casting.intoUint256,
     Casting.intoUint128,
+    Casting.intoUint256,
     Casting.intoUint40,
     Casting.unwrap
 } for SD1x18 global;

@@ -46,7 +46,7 @@ contract UD60x18_Casting_Fuzz_Test is Base_Test {
         x.intoSD21x18();
     }
 
-    function testFuzz_intoSD21x18(UD60x18 x) external {
+    function testFuzz_intoSD21x18(UD60x18 x) external pure {
         x = _bound(x, 0, ud(uint128(uMAX_SD21x18)));
         SD21x18 actual = x.intoSD21x18();
         SD21x18 expected = SD21x18.wrap(int128(uint128(x.unwrap())));
@@ -79,7 +79,7 @@ contract UD60x18_Casting_Fuzz_Test is Base_Test {
         assertEq(actual, expected, "UD60x18 intoUD2x18");
     }
 
-    function testFuzz_intoUD21x18(UD60x18 x) external {
+    function testFuzz_intoUD21x18(UD60x18 x) external pure {
         x = _bound(x, 0, ud(uint256(uMAX_UD21x18)));
         UD21x18 actual = x.intoUD21x18();
         UD21x18 expected = UD21x18.wrap(uint128(x.unwrap()));

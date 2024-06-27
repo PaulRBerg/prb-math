@@ -20,7 +20,7 @@ using {
     Casting.intoUD2x18,
     Casting.intoUD60x18,
     Casting.intoUint256,
-    Casting.intoUint64,
     Casting.intoUint40,
+    Casting.intoUint64,
     Casting.unwrap
 } for UD21x18 global;

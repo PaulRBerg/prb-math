@@ -9,10 +9,12 @@ import { SD21x18 } from "../sd21x18/ValueType.sol";
 import { uMAX_SD21x18 } from "../sd21x18/Constants.sol";
 import { SD59x18 } from "../sd59x18/ValueType.sol";
 import { UD60x18 } from "../ud60x18/ValueType.sol";
+import { uMAX_UD2x18 } from "../ud2x18/Constants.sol";
 import { UD2x18 } from "../ud2x18/ValueType.sol";
 import { UD21x18 } from "./ValueType.sol";
 
 /// @notice Casts a UD21x18 number into SD1x18.
+/// @dev Requirements:
 /// - x must be less than or equal to `uMAX_SD1x18`.
 function intoSD1x18(UD21x18 x) pure returns (SD1x18 result) {
     uint128 xUint = UD21x18.unwrap(x);
@@ -23,6 +25,7 @@ function intoSD1x18(UD21x18 x) pure returns (SD1x18 result) {
 }
 
 /// @notice Casts a UD21x18 number into SD21x18.
+/// @dev Requirements:
 /// - x must be less than or equal to `uMAX_SD21x18`.
 function intoSD21x18(UD21x18 x) pure returns (SD21x18 result) {
     uint128 xUint = UD21x18.unwrap(x);
@@ -39,10 +42,11 @@ function intoSD59x18(UD21x18 x) pure returns (SD59x18 result) {
 }
 
 /// @notice Casts a UD21x18 number into UD2x18.
-/// @dev There is no overflow check because the domain of UD21x18 is a subset of UD2x18.
+/// @dev Requirements:
+/// - x must be less than or equal to `uMAX_UD2x18`.
 function intoUD2x18(UD21x18 x) pure returns (UD2x18 result) {
     uint128 xUint = UD21x18.unwrap(x);
-    if (xUint > uint128(Common.MAX_UINT64)) {
+    if (xUint > uMAX_UD2x18) {
         revert Errors.PRBMath_UD21x18_IntoUD2x18_Overflow(x);
     }
     result = UD2x18.wrap(uint64(UD21x18.unwrap(x)));
