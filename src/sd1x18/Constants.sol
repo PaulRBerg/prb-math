@@ -10,7 +10,7 @@ SD1x18 constant E = SD1x18.wrap(2_718281828459045235);
 int64 constant uMAX_SD1x18 = 9_223372036854775807;
 SD1x18 constant MAX_SD1x18 = SD1x18.wrap(uMAX_SD1x18);
 
-/// @dev The maximum value an SD1x18 number can have.
+/// @dev The minimum value an SD1x18 number can have.
 int64 constant uMIN_SD1x18 = -9_223372036854775808;
 SD1x18 constant MIN_SD1x18 = SD1x18.wrap(uMIN_SD1x18);
 

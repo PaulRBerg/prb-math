@@ -3,14 +3,19 @@ pragma solidity >=0.8.19 <0.9.0;
 
 import { uMAX_SD1x18 } from "src/sd1x18/Constants.sol";
 import { SD1x18 } from "src/sd1x18/ValueType.sol";
+import { uMAX_SD21x18 } from "src/sd21x18/Constants.sol";
+import { SD21x18 } from "src/sd21x18/ValueType.sol";
 import { uMAX_SD59x18 } from "src/sd59x18/Constants.sol";
 import { SD59x18 } from "src/sd59x18/ValueType.sol";
 import { uMAX_UD2x18 } from "src/ud2x18/Constants.sol";
+import { uMAX_UD21x18 } from "src/ud21x18/Constants.sol";
 import { UD2x18 } from "src/ud2x18/ValueType.sol";
+import { UD21x18 } from "src/ud21x18/ValueType.sol";
 import { ud, ud60x18, wrap } from "src/ud60x18/Casting.sol";
 import { MAX_UD60x18 } from "src/ud60x18/Constants.sol";
 import {
     PRBMath_UD60x18_IntoSD1x18_Overflow,
+    PRBMath_UD60x18_IntoSD21x18_Overflow,
     PRBMath_UD60x18_IntoSD59x18_Overflow,
     PRBMath_UD60x18_IntoUD2x18_Overflow,
     PRBMath_UD60x18_IntoUint128_Overflow,
@@ -33,6 +38,19 @@ contract UD60x18_Casting_Fuzz_Test is Base_Test {
         SD1x18 actual = x.intoSD1x18();
         SD1x18 expected = SD1x18.wrap(int64(uint64(x.unwrap())));
         assertEq(actual, expected, "UD60x18 intoSD1x18");
+    }
+
+    function testFuzz_RevertWhen_OverflowSD21x18(UD60x18 x) external {
+        x = _bound(x, ud(uint128(uMAX_SD21x18) + 1), MAX_UD60x18);
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_UD60x18_IntoSD21x18_Overflow.selector, x));
+        x.intoSD21x18();
+    }
+
+    function testFuzz_intoSD21x18(UD60x18 x) external pure {
+        x = _bound(x, 0, ud(uint128(uMAX_SD21x18)));
+        SD21x18 actual = x.intoSD21x18();
+        SD21x18 expected = SD21x18.wrap(int128(uint128(x.unwrap())));
+        assertEq(actual, expected, "UD60x18 intoSD21x18");
     }
 
     function testFuzz_RevertWhen_OverflowSD59x18(UD60x18 x) external {
@@ -59,6 +77,13 @@ contract UD60x18_Casting_Fuzz_Test is Base_Test {
         UD2x18 actual = x.intoUD2x18();
         UD2x18 expected = UD2x18.wrap(uint64(x.unwrap()));
         assertEq(actual, expected, "UD60x18 intoUD2x18");
+    }
+
+    function testFuzz_intoUD21x18(UD60x18 x) external pure {
+        x = _bound(x, 0, ud(uint256(uMAX_UD21x18)));
+        UD21x18 actual = x.intoUD21x18();
+        UD21x18 expected = UD21x18.wrap(uint128(x.unwrap()));
+        assertEq(actual, expected, "UD60x18 intoUD21x18");
     }
 
     function testFuzz_RevertWhen_OverflowUint128(UD60x18 x) external {
