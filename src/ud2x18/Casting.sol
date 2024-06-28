@@ -33,7 +33,7 @@ function intoUint256(UD2x18 x) pure returns (uint256 result) {
 
 /// @notice Casts a UD2x18 number into uint40.
 /// @dev Requirements:
-/// - x must be less than or equal to `MAX_UINT40`.
+/// - x ≤ MAX_UINT40
 function intoUint40(UD2x18 x) pure returns (uint40 result) {
     uint64 xUint = UD2x18.unwrap(x);
     if (xUint > uint64(Common.MAX_UINT40)) {

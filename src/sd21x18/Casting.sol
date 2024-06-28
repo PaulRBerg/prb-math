@@ -15,7 +15,7 @@ function intoSD59x18(SD21x18 x) pure returns (SD59x18 result) {
 
 /// @notice Casts an SD21x18 number into UD60x18.
 /// @dev Requirements:
-/// - x must be positive.
+/// - x ≥ 0
 function intoUD60x18(SD21x18 x) pure returns (UD60x18 result) {
     int128 xInt = SD21x18.unwrap(x);
     if (xInt < 0) {
@@ -26,7 +26,7 @@ function intoUD60x18(SD21x18 x) pure returns (UD60x18 result) {
 
 /// @notice Casts an SD21x18 number into uint128.
 /// @dev Requirements:
-/// - x must be positive.
+/// - x ≥ 0
 function intoUint128(SD21x18 x) pure returns (uint128 result) {
     int128 xInt = SD21x18.unwrap(x);
     if (xInt < 0) {
@@ -37,7 +37,7 @@ function intoUint128(SD21x18 x) pure returns (uint128 result) {
 
 /// @notice Casts an SD21x18 number into uint256.
 /// @dev Requirements:
-/// - x must be positive.
+/// - x ≥ 0
 function intoUint256(SD21x18 x) pure returns (uint256 result) {
     int128 xInt = SD21x18.unwrap(x);
     if (xInt < 0) {
@@ -48,8 +48,8 @@ function intoUint256(SD21x18 x) pure returns (uint256 result) {
 
 /// @notice Casts an SD21x18 number into uint40.
 /// @dev Requirements:
-/// - x must be positive.
-/// - x must be less than or equal to `MAX_UINT40`.
+/// - x ≥ 0
+/// - x ≤ MAX_UINT40
 function intoUint40(SD21x18 x) pure returns (uint40 result) {
     int128 xInt = SD21x18.unwrap(x);
     if (xInt < 0) {

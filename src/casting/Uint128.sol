@@ -25,7 +25,7 @@ error PRBMath_IntoUD2x18_Overflow(uint128 x);
 library PRBMathCastingUint128 {
     /// @notice Casts a uint128 number to SD1x18.
     /// @dev Requirements:
-    /// - x must be less than or equal to `uMAX_SD1x18`.
+    /// - x ≤ uMAX_SD1x18
     function intoSD1x18(uint128 x) internal pure returns (SD1x18 result) {
         if (x > uint256(int256(uMAX_SD1x18))) {
             revert PRBMath_IntoSD1x18_Overflow(x);
@@ -35,7 +35,7 @@ library PRBMathCastingUint128 {
 
     /// @notice Casts a uint128 number to SD21x18.
     /// @dev Requirements:
-    /// - x must be less than or equal to `uMAX_SD21x18`.
+    /// - x ≤ uMAX_SD21x18
     function intoSD21x18(uint128 x) internal pure returns (SD21x18 result) {
         if (x > uint256(int256(uMAX_SD21x18))) {
             revert PRBMath_IntoSD21x18_Overflow(x);
@@ -51,7 +51,7 @@ library PRBMathCastingUint128 {
 
     /// @notice Casts a uint128 number to UD2x18.
     /// @dev Requirements:
-    /// - x must be less than or equal to `uMAX_UD2x18`.
+    /// - x ≤ uMAX_UD2x18
     function intoUD2x18(uint128 x) internal pure returns (UD2x18 result) {
         if (x > uint64(uMAX_UD2x18)) {
             revert PRBMath_IntoUD2x18_Overflow(x);

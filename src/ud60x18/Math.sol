@@ -59,7 +59,7 @@ function avg(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// counterparts. See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions.
 ///
 /// Requirements:
-/// - x must be less than or equal to `MAX_WHOLE_UD60x18`.
+/// - x ≤ MAX_WHOLE_UD60x18
 ///
 /// @param x The UD60x18 number to ceil.
 /// @param result The smallest whole number greater than or equal to x, as a UD60x18 number.
@@ -107,7 +107,7 @@ function div(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// $$
 ///
 /// @dev Requirements:
-/// - x must be less than 133_084258667509499441.
+/// - x ≤ 133_084258667509499440
 ///
 /// @param x The exponent as a UD60x18 number.
 /// @return result The result as a UD60x18 number.
@@ -132,7 +132,7 @@ function exp(UD60x18 x) pure returns (UD60x18 result) {
 /// @dev See https://ethereum.stackexchange.com/q/79903/24693
 ///
 /// Requirements:
-/// - x must be less than 192e18.
+/// - x < 192e18
 /// - The result must fit in UD60x18.
 ///
 /// @param x The exponent as a UD60x18 number.
@@ -384,7 +384,7 @@ function log10(UD60x18 x) pure returns (UD60x18 result) {
 /// - Due to the lossy precision of the iterative approximation, the results are not perfectly accurate to the last decimal.
 ///
 /// Requirements:
-/// - x must be greater than zero.
+/// - x ≥ UNIT
 ///
 /// @param x The UD60x18 number for which to calculate the binary logarithm.
 /// @return result The binary logarithm as a UD60x18 number.
@@ -500,11 +500,11 @@ function pow(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
         return x;
     }
 
-    // If x is greater than `UNIT`, use the standard formula.
+    // If x is > UNIT, use the standard formula.
     if (xUint > uUNIT) {
         result = exp2(mul(log2(x), y));
     }
-    // Conversely, if x is less than `UNIT`, use the equivalent formula.
+    // Conversely, if x < UNIT, use the equivalent formula.
     else {
         UD60x18 i = wrap(uUNIT_SQUARED / xUint);
         UD60x18 w = exp2(mul(log2(i), y));
@@ -553,7 +553,7 @@ function powu(UD60x18 x, uint256 y) pure returns (UD60x18 result) {
 /// - The result is rounded toward zero.
 ///
 /// Requirements:
-/// - x must be less than `MAX_UD60x18 / UNIT`.
+/// - x ≤ MAX_UD60x18 / UNIT
 ///
 /// @param x The UD60x18 number for which to calculate the square root.
 /// @return result The result as a UD60x18 number.
