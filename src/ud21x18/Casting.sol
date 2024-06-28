@@ -8,13 +8,13 @@ import { UD60x18 } from "../ud60x18/ValueType.sol";
 import { UD21x18 } from "./ValueType.sol";
 
 /// @notice Casts a UD21x18 number into SD59x18.
-/// @dev There is no overflow check because the domain of UD21x18 is a subset of SD59x18.
+/// @dev There is no overflow check because UD21x18 ⊆ SD59x18.
 function intoSD59x18(UD21x18 x) pure returns (SD59x18 result) {
     result = SD59x18.wrap(int256(uint256(UD21x18.unwrap(x))));
 }
 
 /// @notice Casts a UD21x18 number into UD60x18.
-/// @dev There is no overflow check because the domain of UD21x18 is a subset of UD60x18.
+/// @dev There is no overflow check because UD21x18 ⊆ UD60x18.
 function intoUD60x18(UD21x18 x) pure returns (UD60x18 result) {
     result = UD60x18.wrap(UD21x18.unwrap(x));
 }
@@ -26,7 +26,7 @@ function intoUint128(UD21x18 x) pure returns (uint128 result) {
 }
 
 /// @notice Casts a UD21x18 number into uint256.
-/// @dev There is no overflow check because the domain of UD21x18 is a subset of uint256.
+/// @dev There is no overflow check because UD21x18 ⊆ uint256.
 function intoUint256(UD21x18 x) pure returns (uint256 result) {
     result = uint256(UD21x18.unwrap(x));
 }

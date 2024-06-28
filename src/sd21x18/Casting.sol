@@ -8,7 +8,7 @@ import { UD60x18 } from "../ud60x18/ValueType.sol";
 import { SD21x18 } from "./ValueType.sol";
 
 /// @notice Casts an SD21x18 number into SD59x18.
-/// @dev There is no overflow check because the domain of SD21x18 is a subset of SD59x18.
+/// @dev There is no overflow check because SD21x18 ⊆ SD59x18.
 function intoSD59x18(SD21x18 x) pure returns (SD59x18 result) {
     result = SD59x18.wrap(int256(SD21x18.unwrap(x)));
 }
