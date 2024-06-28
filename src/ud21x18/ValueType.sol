@@ -14,13 +14,10 @@ type UD21x18 is uint128;
 //////////////////////////////////////////////////////////////////////////*/
 
 using {
-    Casting.intoSD1x18,
-    Casting.intoSD21x18,
     Casting.intoSD59x18,
-    Casting.intoUD2x18,
     Casting.intoUD60x18,
+    Casting.intoUint128,
     Casting.intoUint256,
     Casting.intoUint40,
-    Casting.intoUint64,
     Casting.unwrap
 } for UD21x18 global;
