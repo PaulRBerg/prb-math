@@ -17,7 +17,7 @@ import { UD60x18 } from "./ValueType.sol";
 
 /// @notice Casts a UD60x18 number into SD1x18.
 /// @dev Requirements:
-/// - x must be less than or equal to `uMAX_SD1x18`.
+/// - x ≤ uMAX_SD1x18
 function intoSD1x18(UD60x18 x) pure returns (SD1x18 result) {
     uint256 xUint = UD60x18.unwrap(x);
     if (xUint > uint256(int256(uMAX_SD1x18))) {
@@ -28,7 +28,7 @@ function intoSD1x18(UD60x18 x) pure returns (SD1x18 result) {
 
 /// @notice Casts a UD60x18 number into SD21x18.
 /// @dev Requirements:
-/// - x must be less than or equal to `uMAX_SD21x18`.
+/// - x ≤ uMAX_SD21x18
 function intoSD21x18(UD60x18 x) pure returns (SD21x18 result) {
     uint256 xUint = UD60x18.unwrap(x);
     if (xUint > uint256(int256(uMAX_SD21x18))) {
@@ -39,7 +39,7 @@ function intoSD21x18(UD60x18 x) pure returns (SD21x18 result) {
 
 /// @notice Casts a UD60x18 number into UD2x18.
 /// @dev Requirements:
-/// - x must be less than or equal to `uMAX_UD2x18`.
+/// - x ≤ uMAX_UD2x18
 function intoUD2x18(UD60x18 x) pure returns (UD2x18 result) {
     uint256 xUint = UD60x18.unwrap(x);
     if (xUint > uMAX_UD2x18) {
@@ -50,7 +50,7 @@ function intoUD2x18(UD60x18 x) pure returns (UD2x18 result) {
 
 /// @notice Casts a UD60x18 number into UD21x18.
 /// @dev Requirements:
-/// - x must be less than or equal to `uMAX_UD21x18`.
+/// - x ≤ uMAX_UD21x18
 function intoUD21x18(UD60x18 x) pure returns (UD21x18 result) {
     uint256 xUint = UD60x18.unwrap(x);
     if (xUint > uMAX_UD21x18) {
@@ -61,7 +61,7 @@ function intoUD21x18(UD60x18 x) pure returns (UD21x18 result) {
 
 /// @notice Casts a UD60x18 number into SD59x18.
 /// @dev Requirements:
-/// - x must be less than or equal to `uMAX_SD59x18`.
+/// - x ≤ uMAX_SD59x18
 function intoSD59x18(UD60x18 x) pure returns (SD59x18 result) {
     uint256 xUint = UD60x18.unwrap(x);
     if (xUint > uint256(uMAX_SD59x18)) {
@@ -78,7 +78,7 @@ function intoUint256(UD60x18 x) pure returns (uint256 result) {
 
 /// @notice Casts a UD60x18 number into uint128.
 /// @dev Requirements:
-/// - x must be less than or equal to `MAX_UINT128`.
+/// - x ≤ MAX_UINT128
 function intoUint128(UD60x18 x) pure returns (uint128 result) {
     uint256 xUint = UD60x18.unwrap(x);
     if (xUint > MAX_UINT128) {
@@ -89,7 +89,7 @@ function intoUint128(UD60x18 x) pure returns (uint128 result) {
 
 /// @notice Casts a UD60x18 number into uint40.
 /// @dev Requirements:
-/// - x must be less than or equal to `MAX_UINT40`.
+/// - x ≤ MAX_UINT40
 function intoUint40(UD60x18 x) pure returns (uint40 result) {
     uint256 xUint = UD60x18.unwrap(x);
     if (xUint > MAX_UINT40) {

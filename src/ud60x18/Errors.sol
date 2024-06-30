@@ -39,7 +39,7 @@ error PRBMath_UD60x18_IntoUint128_Overflow(UD60x18 x);
 /// @notice Thrown when trying to cast a UD60x18 number that doesn't fit in uint40.
 error PRBMath_UD60x18_IntoUint40_Overflow(UD60x18 x);
 
-/// @notice Thrown when taking the logarithm of a number less than 1.
+/// @notice Thrown when taking the logarithm of a number less than UNIT.
 error PRBMath_UD60x18_Log_InputTooSmall(UD60x18 x);
 
 /// @notice Thrown when calculating the square root overflows UD60x18.

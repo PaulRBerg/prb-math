@@ -8,8 +8,8 @@ import { SD59x18 } from "./ValueType.sol";
 /// @notice Converts a simple integer to SD59x18 by multiplying it by `UNIT`.
 ///
 /// @dev Requirements:
-/// - x must be greater than or equal to `MIN_SD59x18 / UNIT`.
-/// - x must be less than or equal to `MAX_SD59x18 / UNIT`.
+/// - x ≥ `MIN_SD59x18 / UNIT`
+/// - x ≤ `MAX_SD59x18 / UNIT`
 ///
 /// @param x The basic integer to convert.
 /// @param result The same number converted to SD59x18.

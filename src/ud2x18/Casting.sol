@@ -8,32 +8,32 @@ import { UD60x18 } from "../ud60x18/ValueType.sol";
 import { UD2x18 } from "./ValueType.sol";
 
 /// @notice Casts a UD2x18 number into SD59x18.
-/// @dev There is no overflow check because the domain of UD2x18 is a subset of SD59x18.
+/// @dev There is no overflow check because UD2x18 ⊆ SD59x18.
 function intoSD59x18(UD2x18 x) pure returns (SD59x18 result) {
     result = SD59x18.wrap(int256(uint256(UD2x18.unwrap(x))));
 }
 
 /// @notice Casts a UD2x18 number into UD60x18.
-/// @dev There is no overflow check because the domain of UD2x18 is a subset of UD60x18.
+/// @dev There is no overflow check because UD2x18 ⊆ UD60x18.
 function intoUD60x18(UD2x18 x) pure returns (UD60x18 result) {
     result = UD60x18.wrap(UD2x18.unwrap(x));
 }
 
 /// @notice Casts a UD2x18 number into uint128.
-/// @dev There is no overflow check because the domain of UD2x18 is a subset of uint128.
+/// @dev There is no overflow check because UD2x18 ⊆ uint128.
 function intoUint128(UD2x18 x) pure returns (uint128 result) {
     result = uint128(UD2x18.unwrap(x));
 }
 
 /// @notice Casts a UD2x18 number into uint256.
-/// @dev There is no overflow check because the domain of UD2x18 is a subset of uint256.
+/// @dev There is no overflow check because UD2x18 ⊆ uint256.
 function intoUint256(UD2x18 x) pure returns (uint256 result) {
     result = uint256(UD2x18.unwrap(x));
 }
 
 /// @notice Casts a UD2x18 number into uint40.
 /// @dev Requirements:
-/// - x must be less than or equal to `MAX_UINT40`.
+/// - x ≤ MAX_UINT40
 function intoUint40(UD2x18 x) pure returns (uint40 result) {
     uint64 xUint = UD2x18.unwrap(x);
     if (xUint > uint64(Common.MAX_UINT40)) {
