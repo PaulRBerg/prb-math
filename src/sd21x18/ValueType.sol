@@ -14,10 +14,7 @@ type SD21x18 is int128;
 //////////////////////////////////////////////////////////////////////////*/
 
 using {
-    Casting.intoSD1x18,
     Casting.intoSD59x18,
-    Casting.intoUD2x18,
-    Casting.intoUD21x18,
     Casting.intoUD60x18,
     Casting.intoUint128,
     Casting.intoUint256,
