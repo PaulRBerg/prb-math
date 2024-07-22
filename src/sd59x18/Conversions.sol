@@ -12,7 +12,7 @@ import { SD59x18 } from "./ValueType.sol";
 /// - x ≤ `MAX_SD59x18 / UNIT`
 ///
 /// @param x The basic integer to convert.
-/// @param result The same number converted to SD59x18.
+/// @return result The same number converted to SD59x18.
 function convert(int256 x) pure returns (SD59x18 result) {
     if (x < uMIN_SD59x18 / uUNIT) {
         revert PRBMath_SD59x18_Convert_Underflow(x);
