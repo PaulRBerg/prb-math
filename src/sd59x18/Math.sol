@@ -29,7 +29,7 @@ import { SD59x18 } from "./ValueType.sol";
 /// - x > MIN_SD59x18.
 ///
 /// @param x The SD59x18 number for which to calculate the absolute value.
-/// @param result The absolute value of x as an SD59x18 number.
+/// @return result The absolute value of x as an SD59x18 number.
 /// @custom:smtchecker abstract-function-nondet
 function abs(SD59x18 x) pure returns (SD59x18 result) {
     int256 xInt = x.unwrap();
@@ -78,7 +78,7 @@ function avg(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 /// - x ≤ MAX_WHOLE_SD59x18
 ///
 /// @param x The SD59x18 number to ceil.
-/// @param result The smallest whole number greater than or equal to x, as an SD59x18 number.
+/// @return result The smallest whole number greater than or equal to x, as an SD59x18 number.
 /// @custom:smtchecker abstract-function-nondet
 function ceil(SD59x18 x) pure returns (SD59x18 result) {
     int256 xInt = x.unwrap();
@@ -118,7 +118,7 @@ function ceil(SD59x18 x) pure returns (SD59x18 result) {
 ///
 /// @param x The numerator as an SD59x18 number.
 /// @param y The denominator as an SD59x18 number.
-/// @param result The quotient as an SD59x18 number.
+/// @return result The quotient as an SD59x18 number.
 /// @custom:smtchecker abstract-function-nondet
 function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     int256 xInt = x.unwrap();
@@ -243,7 +243,7 @@ function exp2(SD59x18 x) pure returns (SD59x18 result) {
 /// - x ≥ MIN_WHOLE_SD59x18
 ///
 /// @param x The SD59x18 number to floor.
-/// @param result The greatest whole number less than or equal to x, as an SD59x18 number.
+/// @return result The greatest whole number less than or equal to x, as an SD59x18 number.
 /// @custom:smtchecker abstract-function-nondet
 function floor(SD59x18 x) pure returns (SD59x18 result) {
     int256 xInt = x.unwrap();
@@ -270,7 +270,7 @@ function floor(SD59x18 x) pure returns (SD59x18 result) {
 /// of the radix point for negative numbers.
 /// @dev Based on the odd function definition. https://en.wikipedia.org/wiki/Fractional_part
 /// @param x The SD59x18 number to get the fractional part of.
-/// @param result The fractional part of x as an SD59x18 number.
+/// @return result The fractional part of x as an SD59x18 number.
 function frac(SD59x18 x) pure returns (SD59x18 result) {
     result = wrap(x.unwrap() % uUNIT);
 }

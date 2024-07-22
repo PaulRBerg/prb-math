@@ -62,7 +62,7 @@ function avg(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// - x ≤ MAX_WHOLE_UD60x18
 ///
 /// @param x The UD60x18 number to ceil.
-/// @param result The smallest whole number greater than or equal to x, as a UD60x18 number.
+/// @return result The smallest whole number greater than or equal to x, as a UD60x18 number.
 /// @custom:smtchecker abstract-function-nondet
 function ceil(UD60x18 x) pure returns (UD60x18 result) {
     uint256 xUint = x.unwrap();
@@ -94,7 +94,7 @@ function ceil(UD60x18 x) pure returns (UD60x18 result) {
 ///
 /// @param x The numerator as a UD60x18 number.
 /// @param y The denominator as a UD60x18 number.
-/// @param result The quotient as a UD60x18 number.
+/// @return result The quotient as a UD60x18 number.
 /// @custom:smtchecker abstract-function-nondet
 function div(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     result = wrap(Common.mulDiv(x.unwrap(), uUNIT, y.unwrap()));
@@ -157,7 +157,7 @@ function exp2(UD60x18 x) pure returns (UD60x18 result) {
 /// @dev Optimized for fractional value inputs, because every whole value has (1e18 - 1) fractional counterparts.
 /// See https://en.wikipedia.org/wiki/Floor_and_ceiling_functions.
 /// @param x The UD60x18 number to floor.
-/// @param result The greatest whole number less than or equal to x, as a UD60x18 number.
+/// @return result The greatest whole number less than or equal to x, as a UD60x18 number.
 /// @custom:smtchecker abstract-function-nondet
 function floor(UD60x18 x) pure returns (UD60x18 result) {
     assembly ("memory-safe") {
@@ -172,7 +172,7 @@ function floor(UD60x18 x) pure returns (UD60x18 result) {
 /// @notice Yields the excess beyond the floor of x using the odd function definition.
 /// @dev See https://en.wikipedia.org/wiki/Fractional_part.
 /// @param x The UD60x18 number to get the fractional part of.
-/// @param result The fractional part of x as a UD60x18 number.
+/// @return result The fractional part of x as a UD60x18 number.
 /// @custom:smtchecker abstract-function-nondet
 function frac(UD60x18 x) pure returns (UD60x18 result) {
     assembly ("memory-safe") {
