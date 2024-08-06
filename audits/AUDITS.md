@@ -1,6 +1,6 @@
-# Track Record of Security Reviews
+# Security Review History for PRBMath
 
-The PRBMath library was included in the Sablier codebase audited by the [Cantina](https://cantina.xyz/welcome) team during May-June of 2023. Likewise, the [Certora](https://medium.com/certora/problems-in-solidity-fixed-point-libraries-certora-bug-disclosure-987f504daca4) team identified a design flaw in July of 2023. Both issues were timely addressed and are now fixed.
+The PRBMath library was included in the Sablier codebase audited by the [Cantina](https://cantina.xyz/welcome) team during May-June of 2023. Likewise, the [Certora](https://medium.com/certora/problems-in-solidity-fixed-point-libraries-certora-bug-disclosure-987f504daca4) team identified a design flaw in April of 2023. Both issues were timely addressed and are now fixed.
 
 ## Cantina Review
 
