@@ -32,4 +32,5 @@ In April of 2023, the team reported a security bug in `prb-math@v4.0.0`, the dis
 - _PRBMath version_: [prb-math@v4.0.0](https://github.com/PaulRBerg/prb-math/tree/v4.0.0)
 - _Severity_: Not clear, potentially Critical/High
 - _Context_: [src/Common.sol#L387](https://github.com/PaulRBerg/prb-math/blob/7ce3009bbfa0d8e2d430b7a1a9ca46b6e706d90d/src/Common.sol#L387)
-- _Status_: `Fixed` with "Clarify rounding modes" in release https://github.com/PaulRBerg/prb-math/releases/tag/v4.0.1
+- _Status_: `Mitigated` with "Clarify rounding modes" in release https://github.com/PaulRBerg/prb-math/releases/tag/v4.0.1
+
