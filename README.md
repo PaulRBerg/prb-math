@@ -392,8 +392,7 @@ You will need the following VSCode extensions:
 
 ## Security
 
-While I set a high bar for code quality and test coverage, you should not assume that this project is completely safe to use. PRBMath has not yet been
-audited by a third-party security researcher.
+The codebase has undergone rigorous audits by leading security experts from Cantina and Certora. For a comprehensive list of all audits conducted, please click [here](https://github.com/PaulRBerg/prb-math/blob/main/audits/AUDITS.md).
 
 ### Caveat Emptor
 
