@@ -392,7 +392,7 @@ You will need the following VSCode extensions:
 
 ## Security
 
-The codebase has undergone rigorous audits by leading security experts from Cantina and Certora. For a comprehensive list of all audits conducted, please click [here](https://github.com/PaulRBerg/prb-math/blob/main/audits/AUDITS.md).
+The codebase has undergone rigorous audits by leading security experts from Cantina and Certora. For a comprehensive list of all audits conducted, please refer to [SECURITY](https://github.com/PaulRBerg/prb-math/blob/main/SECURITY.md).
 
 ### Caveat Emptor
 
