@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Common Changelog](https://common-changelog.org/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+[4.1.0]: https://github.com/PaulRBerg/prb-math/compare/v4.0.3...v4.1.0
 [4.0.3]: https://github.com/PaulRBerg/prb-math/compare/v4.0.2...v4.0.3
 [4.0.2]: https://github.com/PaulRBerg/prb-math/compare/v4.0.1...v4.0.2
 [4.0.1]: https://github.com/PaulRBerg/prb-math/compare/v4.0.0...v4.0.1
@@ -32,6 +33,22 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 [1.0.2]: https://github.com/PaulRBerg/prb-math/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/PaulRBerg/prb-math/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/PaulRBerg/prb-math/releases/tag/v1.0.0
+
+## [4.1.0] - 2024-10-21
+
+### Changed
+
+- Make domain bound specs more visually descriptive ([#239](https://github.com/PaulRBerg/prb-math/pull/239)) (@PaulRBerg)
+- Update requirement spec in `UD60x18.log2` ([#239](https://github.com/PaulRBerg/prb-math/pull/239)) (@PaulRBerg)
+- Use return instead of param for return parameter NatSpec documentation ([#241](https://github.com/PaulRBerg/prb-math/pull/241)) (@ericglau)
+
+### Added
+
+- Add UD21x18 and SD21x18 types ([#212](https://github.com/PaulRBerg/prb-math/pull/212)) (@andreivladbrg, @PaulRBerg)
+
+### Removed
+
+- Remove adjacent castings ([#237](https://github.com/PaulRBerg/prb-math/pull/237)) (@PaulRBerg)
 
 ## [4.0.3] - 2024-06-14
 
