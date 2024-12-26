@@ -1,0 +1,7 @@
+productLn.t.sol
+├── when x is zero
+│  └── it should return zero
+├── when x is greater than MaxUD60x18 - UNIT
+│  └── it should revert
+└── when x is greater than zero and less than or equal to MaxUD60x18 - UNIT
+   └── it should return the correct value
