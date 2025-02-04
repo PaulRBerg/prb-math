@@ -8,8 +8,8 @@
 [license-badge]: https://img.shields.io/badge/License-MIT-blue.svg
 
 **Solidity library for advanced fixed-point math** that operates with signed 59.18-decimal fixed-point and unsigned 60.18-decimal fixed-point numbers.
-The name of the number format is due to the integer part having up to 59/60 decimals and the fractional part having up to 18 decimals. The numbers are
-bound by the minimum and the maximum values permitted by the Solidity types int256 and uint256.
+The name of the number format comes from the integer part having up to 59 digits for signed numbers and 60 digits for unsigned numbers, while the
+fractional part has up to 18 decimals. The numbers are bound by the minimum and the maximum values permitted by the Solidity types int256 and uint256.
 
 - Operates with signed and unsigned denary fixed-point numbers, with 18 trailing decimals
 - Offers advanced math functions like logarithms, exponentials, powers and square roots
