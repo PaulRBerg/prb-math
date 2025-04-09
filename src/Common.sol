@@ -471,6 +471,25 @@ function mulDiv(uint256 x, uint256 y, uint256 denominator) pure returns (uint256
     }
 }
 
+/// @notice Calculates ceil(a×b÷denominator) with full precision. Throws if result overflows a uint256 or denominator == 0
+/// @param a The multiplicand
+/// @param b The multiplier
+/// @param denominator The divisor
+/// @return result The 256-bit result
+function mulDivUp(
+    uint256 a,
+    uint256 b,
+    uint256 denominator
+) pure returns (uint256 result) {
+    result = mulDiv(a, b, denominator);
+    unchecked {
+        if (mulmod(a, b, denominator) > 0) {
+            require(result < type(uint256).max);
+            result++;
+        }
+    }
+}
+
 /// @notice Calculates x*y÷1e18 with 512-bit precision.
 ///
 /// @dev A variant of {mulDiv} with constant folding, i.e. in which the denominator is hard coded to 1e18.
