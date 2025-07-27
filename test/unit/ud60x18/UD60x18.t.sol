@@ -44,12 +44,9 @@ abstract contract UD60x18_Unit_Test is Base_Test {
 
     modifier parameterizedTest(Set[] memory testSets) {
         uint256 length = testSets.length;
-        for (uint256 i = 0; i < length;) {
+        for (uint256 i = 0; i < length; ++i) {
             s = testSets[i];
             _;
-            unchecked {
-                i += 1;
-            }
         }
     }
 

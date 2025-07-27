@@ -1,15 +1,15 @@
-# Full reference https://github.com/foundry-rs/foundry/tree/master/config
+# Full reference: https://github.com/foundry-rs/foundry/tree/master/crates/config
 
 [profile.default]
   allow_internal_expect_revert = true
   auto_detect_solc = false
-  bytecode_hash = "none"
-  evm_version = "shanghai"
+  bytecode_hash = "ipfs"
+  evm_version = "shanghai"            # needed for greater coverage of EVM chains
   fuzz = { runs = 256 }
   optimizer = true
   optimizer_runs = 10_000
   out = "out"
-  solc = "0.8.26"
+  solc = "0.8.30"
   src = "src"
   test = "test"
 

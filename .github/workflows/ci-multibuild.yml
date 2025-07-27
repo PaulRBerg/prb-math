@@ -1,4 +1,4 @@
-name: "Multibuild"
+name: "CI Multibuild"
 
 on:
   workflow_dispatch:
@@ -13,7 +13,7 @@ jobs:
         uses: "actions/checkout@v4"
 
       - name: "Install Bun"
-        uses: "oven-sh/setup-bun@v1"
+        uses: "oven-sh/setup-bun@v2"
 
       - name: "Install the Node.js dependencies"
         run: "bun install"
@@ -22,5 +22,5 @@ jobs:
         uses: "PaulRBerg/foundry-multibuild@v1"
         with:
           min: "0.8.19"
-          max: "0.8.26"
+          max: "0.8.30"
           skip-test: "true"

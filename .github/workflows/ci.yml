@@ -16,7 +16,7 @@ on:
       - "staging"
 
 jobs:
-  lint:
+  check:
     runs-on: "ubuntu-latest"
     steps:
       - name: "Check out the repo"
@@ -26,17 +26,17 @@ jobs:
         uses: "foundry-rs/foundry-toolchain@v1"
 
       - name: "Install Bun"
-        uses: "oven-sh/setup-bun@v1"
+        uses: "oven-sh/setup-bun@v2"
 
       - name: "Install the Node.js dependencies"
         run: "bun install"
 
-      - name: "Lint the code"
-        run: "bun run lint"
+      - name: "Run the full checks"
+        run: "bun run full-check"
 
-      - name: "Add lint summary"
-        run: |
-          echo "## Lint result" >> $GITHUB_STEP_SUMMARY
+      - name: "Add check summary"
+        run: | # shell
+          echo "## Check result" >> $GITHUB_STEP_SUMMARY
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
 
   build:
@@ -46,7 +46,7 @@ jobs:
         uses: "actions/checkout@v4"
 
       - name: "Install Bun"
-        uses: "oven-sh/setup-bun@v1"
+        uses: "oven-sh/setup-bun@v2"
 
       - name: "Install the Node.js dependencies"
         run: "bun install"
@@ -58,12 +58,12 @@ jobs:
         run: "forge build"
 
       - name: "Add build summary"
-        run: |
+        run: | # shell
           echo "## Build result" >> $GITHUB_STEP_SUMMARY
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
 
   test:
-    needs: ["lint", "build"]
+    needs: ["check", "build"]
     runs-on: "ubuntu-latest"
     steps:
       - name: "Check out the repo"
@@ -73,7 +73,7 @@ jobs:
         uses: "foundry-rs/foundry-toolchain@v1"
 
       - name: "Install Bun"
-        uses: "oven-sh/setup-bun@v1"
+        uses: "oven-sh/setup-bun@v2"
 
       - name: "Install the Node.js dependencies"
         run: "bun install"
@@ -82,6 +82,6 @@ jobs:
         run: "forge test"
 
       - name: "Add test summary"
-        run: |
+        run: | # shell
           echo "## Tests result" >> $GITHUB_STEP_SUMMARY
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY

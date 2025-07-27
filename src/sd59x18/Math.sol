@@ -522,12 +522,12 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
 
         // Calculate the fractional part via the iterative approximation.
         // The `delta >>= 1` part is equivalent to `delta /= 2`, but shifting bits is more gas efficient.
-        int256 DOUBLE_UNIT = 2e18;
+        int256 doubleUnit = 2e18;
         for (int256 delta = uHALF_UNIT; delta > 0; delta >>= 1) {
             y = (y * y) / uUNIT;
 
             // Is y^2 >= 2e18 and so in the range [2e18, 4e18)?
-            if (y >= DOUBLE_UNIT) {
+            if (y >= doubleUnit) {
                 // Add the 2^{-m} factor to the logarithm.
                 resultInt = resultInt + delta;
 
