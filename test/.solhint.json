@@ -1,0 +1,8 @@
+{
+  "rules": {
+    "const-name-snakecase": "off",
+    "contract-name-capwords": "off",
+    "func-name-mixedcase": "off",
+    "no-console": "off"
+  }
+}

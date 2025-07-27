@@ -10,9 +10,9 @@
     "url": "https://github.com/PaulRBerg/prb-math/issues"
   },
   "devDependencies": {
-    "forge-std": "github:foundry-rs/forge-std#v1.8.2",
-    "prettier": "^3.3.2",
-    "solhint": "^5.0.1"
+    "forge-std": "github:foundry-rs/forge-std#v1.9.7",
+    "prettier": "^3.6.2",
+    "solhint": "^6.0.0"
   },
   "files": [
     "src",
@@ -35,14 +35,21 @@
   "publishConfig": {
     "access": "public"
   },
-  "repository": "github:PaulRBerg/prb-math",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PaulRBerg/prb-math.git"
+  },
   "scripts": {
     "build": "forge build",
-    "clean": "rm -rf cache out",
-    "lint": "bun run lint:sol && bun run prettier:check",
-    "lint:sol": "forge fmt --check && bun solhint \"{src,test}/**/*.sol\"",
-    "prettier:check": "prettier --check \"**/*.{json,md,yml}\"",
-    "prettier:write": "prettier --write \"**/*.{json,md,yml}\"",
+    "clean": "bunx del-cli cache out",
+    "forge-check": "forge fmt --check",
+    "forge-write": "forge fmt",
+    "full-check": "bun run prettier-check && bun run solhint-check && bun run forge-check",
+    "full-write": "bun run prettier-write && bun run solhint-write && bun run forge-write",
+    "prettier-check": "prettier --check \"**/*.{json,md,yml}\"",
+    "prettier-write": "prettier --write \"**/*.{json,md,yml}\"",
+    "solhint-check": "solhint \"{src,test}/**/*.sol\"",
+    "solhint-write": "solhint --fix \"{src,test}/**/*.sol\"",
     "test": "forge test"
   }
 }
