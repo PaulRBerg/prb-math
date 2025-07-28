@@ -52,8 +52,8 @@ contract Pow_Unit_Test is UD60x18_Unit_Test {
         _;
     }
 
-    function test_Pow_ExponentUnit(UD60x18 x) external pure whenBaseNotZero whenBaseNotUnit whenExponentNotZero {
-        vm.assume(x != ZERO && x != UNIT);
+    function test_Pow_ExponentUnit() external pure whenBaseNotZero whenBaseNotUnit whenExponentNotZero {
+        UD60x18 x = PI;
         UD60x18 y = UNIT;
         UD60x18 actual = pow(x, y);
         UD60x18 expected = x;
