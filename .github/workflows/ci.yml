@@ -1,87 +1,87 @@
-name: "CI"
+name: CI
 
 concurrency:
   cancel-in-progress: true
   group: ${{github.workflow}}-${{github.ref}}
 
 env:
-  FOUNDRY_PROFILE: "ci"
+  FOUNDRY_PROFILE: ci
 
 on:
   workflow_dispatch:
   pull_request:
   push:
     branches:
-      - "main"
-      - "staging"
+      - main
+      - staging
 
 jobs:
   check:
-    runs-on: "ubuntu-latest"
+    runs-on: ubuntu-latest
     steps:
-      - name: "Check out the repo"
-        uses: "actions/checkout@v4"
+      - name: Check out the repo
+        uses: actions/checkout@v5
 
-      - name: "Install Foundry"
-        uses: "foundry-rs/foundry-toolchain@v1"
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
 
-      - name: "Install Bun"
-        uses: "oven-sh/setup-bun@v2"
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
 
-      - name: "Install the Node.js dependencies"
-        run: "bun install"
+      - name: Install the Node.js dependencies
+        run: bun install
 
-      - name: "Run the full checks"
-        run: "bun run full-check"
+      - name: Run the full checks
+        run: bun run full-check
 
-      - name: "Add check summary"
+      - name: Add check summary
         run: | # shell
           echo "## Check result" >> $GITHUB_STEP_SUMMARY
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
 
   build:
-    runs-on: "ubuntu-latest"
+    runs-on: ubuntu-latest
     steps:
-      - name: "Check out the repo"
-        uses: "actions/checkout@v4"
+      - name: Check out the repo
+        uses: actions/checkout@v5
 
-      - name: "Install Bun"
-        uses: "oven-sh/setup-bun@v2"
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
 
-      - name: "Install the Node.js dependencies"
-        run: "bun install"
+      - name: Install the Node.js dependencies
+        run: bun install
 
-      - name: "Install Foundry"
-        uses: "foundry-rs/foundry-toolchain@v1"
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
 
-      - name: "Build the Solidity code"
-        run: "forge build"
+      - name: Build the Solidity code
+        run: forge build
 
-      - name: "Add build summary"
+      - name: Add build summary
         run: | # shell
           echo "## Build result" >> $GITHUB_STEP_SUMMARY
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
 
   test:
-    needs: ["check", "build"]
-    runs-on: "ubuntu-latest"
+    needs: [check, build]
+    runs-on: ubuntu-latest
     steps:
-      - name: "Check out the repo"
-        uses: "actions/checkout@v4"
+      - name: Check out the repo
+        uses: actions/checkout@v5
 
-      - name: "Install Foundry"
-        uses: "foundry-rs/foundry-toolchain@v1"
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
 
-      - name: "Install Bun"
-        uses: "oven-sh/setup-bun@v2"
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
 
-      - name: "Install the Node.js dependencies"
-        run: "bun install"
+      - name: Install the Node.js dependencies
+        run: bun install
 
-      - name: "Run the tests"
-        run: "forge test"
+      - name: Run the tests
+        run: forge test
 
-      - name: "Add test summary"
+      - name: Add test summary
         run: | # shell
           echo "## Tests result" >> $GITHUB_STEP_SUMMARY
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY

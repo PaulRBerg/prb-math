@@ -1,4 +1,5 @@
-name: "Release"
+# Creates GitHub releases automatically when version tags (e.g. v1.0.0) are pushed.
+name: Release
 
 on:
   push:
@@ -7,12 +8,12 @@ on:
 
 jobs:
   release:
-    runs-on: "ubuntu-latest"
+    runs-on: ubuntu-latest
     steps:
-      - name: "Check out the repo"
-        uses: "actions/checkout@v4"
+      - name: Check out the repo
+        uses: actions/checkout@v5
 
-      - name: "Release"
-        uses: "docker://antonyurchenko/git-release:v5"
+      - name: Release
+        uses: docker://antonyurchenko/git-release:v5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

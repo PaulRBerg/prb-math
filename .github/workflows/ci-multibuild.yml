@@ -1,4 +1,4 @@
-name: "CI Multibuild"
+name: CI Multibuild
 
 on:
   workflow_dispatch:
@@ -7,19 +7,19 @@ on:
 
 jobs:
   multibuild:
-    runs-on: "ubuntu-latest"
+    runs-on: ubuntu-latest
     steps:
-      - name: "Check out the repo"
-        uses: "actions/checkout@v4"
+      - name: Check out the repo
+        uses: actions/checkout@v5
 
-      - name: "Install Bun"
-        uses: "oven-sh/setup-bun@v2"
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
 
-      - name: "Install the Node.js dependencies"
-        run: "bun install"
+      - name: Install the Node.js dependencies
+        run: bun install
 
-      - name: "Check that PRBMath can be built with multiple Solidity versions"
-        uses: "PaulRBerg/foundry-multibuild@v1"
+      - name: Check that PRBMath can be built with multiple Solidity versions
+        uses: PaulRBerg/foundry-multibuild@v1
         with:
           min: "0.8.19"
           max: "0.8.30"
