@@ -298,7 +298,16 @@ function exp2(uint256 x) pure returns (uint256 result) {
 ///
 /// @dev See the note on "msb" in this Wikipedia article: https://en.wikipedia.org/wiki/Find_first_set
 ///
-/// Each step in this implementation is equivalent to this high-level code:
+/// The implementation satisfies these properties:
+///
+/// $$
+/// \begin{cases}
+///   x = 0 \implies \text{msb}(x) = 0 \\
+///   x > 0 \implies x \gg \text{msb}(x) = 1
+/// \end{cases}
+/// $$
+///
+/// Each step below is equivalent to this high-level code:
 ///
 /// ```solidity
 /// if (x >= 2 ** 128) {
@@ -307,15 +316,15 @@ function exp2(uint256 x) pure returns (uint256 result) {
 /// }
 /// ```
 ///
-/// Where 128 is replaced with each respective power of two factor. See the full high-level implementation here:
-/// https://gist.github.com/PaulRBerg/f932f8693f2733e30c4d479e8e980948
-///
-/// The Yul instructions used below are:
+/// Where 128 is replaced with each respective power of two factor. The Yul instructions used below are:
 ///
 /// - "gt" is "greater than"
 /// - "or" is the OR bitwise operator
 /// - "shl" is "shift left"
 /// - "shr" is "shift right"
+///
+/// See the full high-level implementation here:
+/// https://gist.github.com/PaulRBerg/f932f8693f2733e30c4d479e8e980948
 ///
 /// @param x The uint256 number for which to find the index of the most significant bit.
 /// @return result The index of the most significant bit as a uint256.
@@ -482,8 +491,8 @@ function mulDiv(uint256 x, uint256 y, uint256 denominator) pure returns (uint256
 ///
 /// $$
 /// \begin{cases}
-///     x * y = MAX\_UINT256 * UNIT \\
-///     (x * y) \% UNIT \geq \frac{UNIT}{2}
+///   x * y = {MAX\_UINT256} * {UNIT} \\
+///   (x * y) \% {UNIT} \geq \frac{UNIT}{2}
 /// \end{cases}
 /// $$
 ///
@@ -587,6 +596,15 @@ function mulDivSigned(int256 x, int256 y, int256 denominator) pure returns (int2
 /// @notice Calculates the square root of x using the Babylonian method.
 ///
 /// @dev See https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Babylonian_method.
+///
+/// The implementation satisfies these properties:
+///
+/// $$
+/// \begin{cases}
+///   \lfloor\sqrt{x}\rfloor \leq \sqrt{x} < \lfloor\sqrt{x}\rfloor + 1 \\[0.5em]
+///   \lfloor\sqrt{x}\rfloor^2 \leq x < (\lfloor\sqrt{x}\rfloor + 1)^2
+/// \end{cases}
+/// $$
 ///
 /// Notes:
 /// - If x is not a perfect square, the result is rounded down.
