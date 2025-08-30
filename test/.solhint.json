@@ -2,6 +2,7 @@
   "rules": {
     "const-name-snakecase": "off",
     "contract-name-capwords": "off",
+    "gas-small-strings": "off",
     "func-name-mixedcase": "off",
     "no-console": "off"
   }
