@@ -395,8 +395,8 @@ _This release was yanked because it was accidentally published with the wrong ve
 
 ### Added
 
-- Add new convertor functions `fromInt` and `toInt` in `PRBMathSD59x18.sol` (@PaulRBerg)
-- Add new convertor functions `fromUint` and `toUint` in `PRBMathUD60x18.sol` (@PaulRBerg)
+- Add new converter functions `fromInt` and `toInt` in `PRBMathSD59x18.sol` (@PaulRBerg)
+- Add new converter functions `fromUint` and `toUint` in `PRBMathUD60x18.sol` (@PaulRBerg)
 - Add new function `mulDivSigned` in `PRBMathCommon.sol` (@PaulRBerg)
 - Add new function `pow` in `PRBMathSD59x18.sol` and `PRBMathUD60x18.sol` (@PaulRBerg)
 
