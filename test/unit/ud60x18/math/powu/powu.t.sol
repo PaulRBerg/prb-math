@@ -86,9 +86,7 @@ contract Powu_Unit_Test is UD60x18_Unit_Test {
         );
         sets.push(
             set({
-                x: SQRT_MAX_UD60x18,
-                y: 2,
-                expected: 115792089237316195423570985008687907853269984664959999305615_707080986380425072
+                x: SQRT_MAX_UD60x18, y: 2, expected: 115792089237316195423570985008687907853269984664959999305615_707080986380425072
             })
         );
         sets.push(set({ x: MAX_WHOLE_UD60x18, y: 1, expected: MAX_WHOLE_UD60x18 }));

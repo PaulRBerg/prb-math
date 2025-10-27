@@ -4,7 +4,14 @@ pragma solidity >=0.8.19 <0.9.0;
 import { PRBMath_MulDiv18_Overflow } from "src/Common.sol";
 import { sd } from "src/sd59x18/Casting.sol";
 import {
-    E, MAX_SD59x18, MAX_WHOLE_SD59x18, MIN_SD59x18, MIN_WHOLE_SD59x18, PI, uMAX_SD59x18, ZERO
+    E,
+    MAX_SD59x18,
+    MAX_WHOLE_SD59x18,
+    MIN_SD59x18,
+    MIN_WHOLE_SD59x18,
+    PI,
+    uMAX_SD59x18,
+    ZERO
 } from "src/sd59x18/Constants.sol";
 import { PRBMath_SD59x18_Powu_Overflow } from "src/sd59x18/Errors.sol";
 import { powu } from "src/sd59x18/Math.sol";
@@ -81,12 +88,7 @@ contract Powu_Unit_Test is SD59x18_Unit_Test {
         powu(x, y);
     }
 
-    function test_RevertWhen_ResultOverflowSD59x18()
-        external
-        whenBaseNotZero
-        whenExponentNotZero
-        whenResultDoesNotOverflowUint256
-    {
+    function test_RevertWhen_ResultOverflowSD59x18() external whenBaseNotZero whenExponentNotZero whenResultDoesNotOverflowUint256 {
         SD59x18 x = SQRT_MAX_SD59x18 + sd(1);
         uint256 y = 2;
         vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Powu_Overflow.selector, x, y));
@@ -167,9 +169,7 @@ contract Powu_Unit_Test is SD59x18_Unit_Test {
         );
         sets.push(
             set({
-                x: SQRT_MAX_SD59x18,
-                y: 2,
-                expected: 57896044618658097711785492504343953926634992332789893003858_354368578996153260
+                x: SQRT_MAX_SD59x18, y: 2, expected: 57896044618658097711785492504343953926634992332789893003858_354368578996153260
             })
         );
         sets.push(set({ x: MAX_WHOLE_SD59x18, y: 1, expected: MAX_WHOLE_SD59x18 }));

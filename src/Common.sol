@@ -526,14 +526,13 @@ function mulDiv18(uint256 x, uint256 y) pure returns (uint256 result) {
     uint256 remainder;
     assembly ("memory-safe") {
         remainder := mulmod(x, y, UNIT)
-        result :=
-            mul(
-                or(
-                    div(sub(prod0, remainder), UNIT_LPOTD),
-                    mul(sub(prod1, gt(remainder, prod0)), add(div(sub(0, UNIT_LPOTD), UNIT_LPOTD), 1))
-                ),
-                UNIT_INVERSE
-            )
+        result := mul(
+            or(
+                div(sub(prod0, remainder), UNIT_LPOTD),
+                mul(sub(prod1, gt(remainder, prod0)), add(div(sub(0, UNIT_LPOTD), UNIT_LPOTD), 1))
+            ),
+            UNIT_INVERSE
+        )
     }
 }
 
