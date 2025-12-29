@@ -69,7 +69,7 @@ contract UD60x18_Helpers_Fuzz_Test is Base_Test {
     }
 
     function testFuzz_Lshift(uint256 x, uint256 y) external pure {
-        vm.assume(y <= 512);
+        y = _bound(y, 0, 512);
         UD60x18 expected = ud(x << y);
         assertEq(lshift(ud(x), y), expected, "UD60x18 lshift");
     }
@@ -112,7 +112,7 @@ contract UD60x18_Helpers_Fuzz_Test is Base_Test {
     }
 
     function testFuzz_Rshift(uint256 x, uint256 y) external pure {
-        vm.assume(y <= 512);
+        y = _bound(y, 0, 512);
         UD60x18 expected = ud(x >> y);
         assertEq(rshift(ud(x), y), expected, "UD60x18 rshift");
     }
