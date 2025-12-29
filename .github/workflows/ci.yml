@@ -31,8 +31,11 @@ jobs:
       - name: Install the Node.js dependencies
         run: bun install
 
+      - name: Install Just
+        uses: extractions/setup-just@v3
+
       - name: Run the full checks
-        run: bun run full-check
+        run: just full-check
 
       - name: Add check summary
         run: | # shell
@@ -79,7 +82,7 @@ jobs:
         run: bun install
 
       - name: Run the tests
-        run: forge test
+        run: forge test --summary
 
       - name: Add test summary
         run: | # shell

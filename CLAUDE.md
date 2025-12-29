@@ -58,14 +58,14 @@ Install dependencies: `bun install` or `bun install -d <pkg>` for dev deps.
 
 ## Fixed-Point Formats
 
-| Type     | Signed | Integer Digits | Decimals |
-| -------- | ------ | -------------- | -------- |
-| SD59x18  | Yes    | 59             | 18       |
-| UD60x18  | No     | 60             | 18       |
-| SD1x18   | Yes    | 1              | 18       |
-| UD2x18   | No     | 2              | 18       |
-| SD21x18  | Yes    | 21             | 18       |
-| UD21x18  | No     | 21             | 18       |
+| Type    | Signed | Integer Digits | Decimals |
+| ------- | ------ | -------------- | -------- |
+| SD59x18 | Yes    | 59             | 18       |
+| UD60x18 | No     | 60             | 18       |
+| SD1x18  | Yes    | 1              | 18       |
+| UD2x18  | No     | 2              | 18       |
+| SD21x18 | Yes    | 21             | 18       |
+| UD21x18 | No     | 21             | 18       |
 
 ## Testing
 
