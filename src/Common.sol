@@ -35,13 +35,13 @@ uint40 constant MAX_UINT40 = type(uint40).max;
 /// @dev The maximum value a uint64 number can have.
 uint64 constant MAX_UINT64 = type(uint64).max;
 
-/// @dev The unit number, which the decimal precision of the fixed-point types.
+/// @dev The unit number, which is the decimal precision of the fixed-point types.
 uint256 constant UNIT = 1e18;
 
 /// @dev The unit number inverted mod 2^256.
 uint256 constant UNIT_INVERSE = 78156646155174841979727994598816262306175212592076161876661_508869554232690281;
 
-/// @dev The the largest power of two that divides the decimal value of `UNIT`. The logarithm of this value is the least significant
+/// @dev The largest power of two that divides the decimal value of `UNIT`. The logarithm of this value is the least significant
 /// bit in the binary representation of `UNIT`.
 uint256 constant UNIT_LPOTD = 262144;
 
@@ -287,7 +287,7 @@ function exp2(uint256 x) pure returns (uint256 result) {
         // accounts for the initial guess of 0.5. This is achieved by subtracting from 191 instead of 192.
         // 2. The result is then converted to an unsigned 60.18-decimal fixed-point format.
         //
-        // The underlying logic is based on the relationship $2^{191-ip} = 2^{ip} / 2^{191}$, where $ip$ denotes the,
+        // The underlying logic is based on the relationship $2^{191-ip} = 2^{ip} / 2^{191}$, where $ip$ denotes the
         // integer part, $2^n$.
         result *= UNIT;
         result >>= (191 - (x >> 64));

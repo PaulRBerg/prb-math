@@ -144,14 +144,14 @@ pragma solidity >=0.8.19;
 import { UD60x18, ud } from "@prb/math/src/UD60x18.sol";
 
 contract UnsignedConsumer {
-  /// @notice Calculates 5% of the given signed number.
+  /// @notice Calculates 5% of the given unsigned number.
   /// @dev Try this with x = 400e18.
   function unsignedPercentage(UD60x18 x) external pure returns (UD60x18 result) {
     UD60x18 fivePercent = ud(0.05e18);
     result = x.mul(fivePercent);
   }
 
-  /// @notice Calculates the binary logarithm of the given signed number.
+  /// @notice Calculates the binary logarithm of the given unsigned number.
   /// @dev Try this with x = 128e18.
   function unsignedLog2(UD60x18 x) external pure returns (UD60x18 result) {
     result = x.log2();
