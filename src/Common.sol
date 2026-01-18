@@ -622,7 +622,7 @@ function sqrt(uint256 x) pure returns (uint256 result) {
     // We know that the "msb" (most significant bit) of x is a power of 2 such that we have:
     //
     // $$
-    // msb(x) <= x <= 2*msb(x)$
+    // msb(x) <= x <= 2*msb(x)
     // $$
     //
     // We write $msb(x)$ as $2^k$, and we get:
@@ -639,7 +639,7 @@ function sqrt(uint256 x) pure returns (uint256 result) {
     // 2^{k/2} <= sqrt(x) < 2^{(k+1)/2} <= 2^{(k/2)+1}
     // $$
     //
-    // Consequently, $2^{log_2(x) /2} is a good first approximation of sqrt(x) with at least one correct bit.
+    // Consequently, $2^{log_2(x) / 2}$ is a good first approximation of sqrt(x) with at least one correct bit.
     uint256 xAux = uint256(x);
     result = 1;
     if (xAux >= 2 ** 128) {
