@@ -1,5 +1,5 @@
 # Creates GitHub releases automatically when version tags (e.g. v1.0.0) are pushed.
-# Also, syncs the major version branch (e.g. v1) with the release tag.
+# Also syncs version branches (e.g. v4.2.0 -> v4 and release-v4).
 name: Release
 
 on:
@@ -19,17 +19,19 @@ jobs:
         with:
           generate_release_notes: true
 
-      - name: Sync major version branch with release tag
+      - name: Sync version branches with release tag
         run: | #shell
-          # Extract major version from tag (e.g., v1.2.3 -> v1)
+          # Extract major version from tag (e.g., v4.2.0 -> v4)
           TAG_NAME="${{ github.ref_name }}"
           MAJOR_VERSION=$(echo "$TAG_NAME" | cut -d. -f1)
-          MAJOR_BRANCH="$MAJOR_VERSION"
-
-          echo "Syncing branch '$MAJOR_BRANCH' with tag '$TAG_NAME'"
 
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git fetch origin "$MAJOR_BRANCH" || true
-          git checkout -B "$MAJOR_BRANCH"
-          git push origin "$MAJOR_BRANCH" --force
+
+          # Sync both branch patterns: v4 and release-v4
+          for BRANCH in "$MAJOR_VERSION" "release-$MAJOR_VERSION"; do
+            echo "Syncing branch '$BRANCH' with tag '$TAG_NAME'"
+            git fetch origin "$BRANCH" || true
+            git checkout -B "$BRANCH"
+            git push origin "$BRANCH" --force
+          done
