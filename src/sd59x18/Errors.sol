@@ -93,5 +93,5 @@ error PRBMath_SD59x18_Powu_Overflow(SD59x18 x, uint256 y);
 /// @notice Thrown when taking the square root of a negative number.
 error PRBMath_SD59x18_Sqrt_NegativeInput(SD59x18 x);
 
-/// @notice Thrown when the calculating the square root overflows SD59x18.
+/// @notice Thrown when calculating the square root overflows SD59x18.
 error PRBMath_SD59x18_Sqrt_Overflow(SD59x18 x);
