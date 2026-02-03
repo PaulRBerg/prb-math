@@ -199,7 +199,7 @@ PRBMath provides adjacent value types that serve as abstractions over other vani
 
 These are useful if you want to save gas by using a lower bit width integer, e.g., in a struct.
 
-Note that these types don't have any mathematical functionality. To do math with them, you will have to unwrap them into a simple integer and then to
+Note that these types don't have any mathematical functionality. To do math with them, you will have to unwrap them into a simple integer and then cast to
 the core types `SD59x18` and `UD60x18`.
 
 ### 🔄 Casting Functions
