@@ -400,7 +400,7 @@ function log2(UD60x18 x) pure returns (UD60x18 result) {
         // Calculate the integer part of the logarithm.
         uint256 n = Common.msb(xUint / uUNIT);
 
-        // This is the integer part of the logarithm as a UD60x18 number. The operation can't overflow because n
+        // This is the integer part of the logarithm as a UD60x18 number. The operation can't overflow because
         // n is at most 255 and UNIT is 1e18.
         uint256 resultUint = n * uUNIT;
 
