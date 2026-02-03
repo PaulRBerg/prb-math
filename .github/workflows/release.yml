@@ -14,10 +14,10 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v5
 
-      - name: Create Github release
-        uses: docker://antonyurchenko/git-release:v5
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
 
       - name: Sync major version branch with release tag
         run: | #shell
