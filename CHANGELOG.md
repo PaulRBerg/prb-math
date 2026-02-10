@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Common Changelog](https://common-changelog.org/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+[4.1.1]: https://github.com/PaulRBerg/prb-math/compare/v4.1.0...v4.1.1
 [4.1.0]: https://github.com/PaulRBerg/prb-math/compare/v4.0.3...v4.1.0
 [4.0.3]: https://github.com/PaulRBerg/prb-math/compare/v4.0.2...v4.0.3
 [4.0.2]: https://github.com/PaulRBerg/prb-math/compare/v4.0.1...v4.0.2
@@ -33,6 +34,18 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 [1.0.2]: https://github.com/PaulRBerg/prb-math/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/PaulRBerg/prb-math/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/PaulRBerg/prb-math/releases/tag/v1.0.0
+
+## [4.1.1] - 2026-02-11
+
+### Changed
+
+- Rename `DOUBLE_UNIT` local variable to `doubleUnit` in `SD59x18.log2` and `UD60x18.log2` ([#261](https://github.com/PaulRBerg/prb-math/pull/261))
+- Add LaTeX property specifications for `msb` and `sqrt` in `Common.sol` ([#267](https://github.com/PaulRBerg/prb-math/pull/267))
+
+### Fixed
+
+- Fix typos and grammar errors in NatSpec comments ([#270](https://github.com/PaulRBerg/prb-math/pull/270),
+  [#271](https://github.com/PaulRBerg/prb-math/pull/271), [#275](https://github.com/PaulRBerg/prb-math/pull/275))
 
 ## [4.1.0] - 2024-10-21
 
