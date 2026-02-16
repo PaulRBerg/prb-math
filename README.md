@@ -56,7 +56,7 @@ This installation method is not recommended, but it is available for those who p
 First, install the submodule using Forge:
 
 ```shell
-forge install --no-commit PaulRBerg/prb-math@release-v4
+forge install  PaulRBerg/prb-math@release-v4
 ```
 
 Your `.gitmodules` file should now contain the following entry:
