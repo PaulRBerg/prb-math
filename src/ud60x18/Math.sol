@@ -164,7 +164,7 @@ function floor(UD60x18 x) pure returns (UD60x18 result) {
         // Equivalent to `x % UNIT`.
         let remainder := mod(x, uUNIT)
 
-        // Equivalent to `x - remainder > 0 ? remainder : 0)`.
+        // Equivalent to `x - ((remainder > 0) ? remainder : 0)`.
         result := sub(x, mul(remainder, gt(remainder, 0)))
     }
 }
