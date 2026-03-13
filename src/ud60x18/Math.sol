@@ -450,6 +450,16 @@ function mul(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     result = wrap(Common.mulDiv18(x.unwrap(), y.unwrap()));
 }
 
+/// @notice Calculates the product of `x` and `y` divided by `denominator` maintaining full precision throughout the operation.
+/// @dev Yields the same result as computing `x.mul(y).div(denominator)`, but avoids overflow and maintains higher precision.
+/// @param x The multiplicand as a UD60x18 number.
+/// @param y The multiplier as a UD60x18 number.
+/// @param denominator The divisor as a UD60x18 number.
+/// @return result The result of the operation as a UD60x18 number.
+function mulDiv(UD60x18 x, UD60x18 y, UD60x18 denominator) pure returns (UD60x18 result) {
+    result = wrap(Common.mulDiv(x.unwrap(), y.unwrap(), denominator.unwrap()));
+}
+
 /// @notice Raises x to the power of y.
 ///
 /// For $1 \leq x \leq \infty$, the following standard formula is used:
