@@ -585,16 +585,6 @@ function mul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
     }
 }
 
-/// @notice Calculates the product of `x` and `y` divided by `denominator` maintaining full precision throughout the operation.
-/// @dev Yields the same result as computing `x.mul(y).div(denominator)`, but avoids overflow and maintains higher precision.
-/// @param x The multiplicand as an SD59x18 number.
-/// @param y The multiplier as an SD59x18 number.
-/// @param denominator The divisor as an SD59x18 number.
-/// @return result The result of the operation as an SD59x18 number.
-function mulDiv(SD59x18 x, SD59x18 y, SD59x18 denominator) pure returns (SD59x18 result) {
-    result = wrap(Common.mulDivSigned(x.unwrap(), y.unwrap(), denominator.unwrap()));
-}
-
 /// @notice Raises x to the power of y using the following formula:
 ///
 /// $$
