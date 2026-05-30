@@ -646,7 +646,7 @@ function pow(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 /// @return result The result as an SD59x18 number.
 /// @custom:smtchecker abstract-function-nondet
 function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
-  if (y == 0) return UNIT;
+    if (y == 0) return UNIT;
     uint256 xAbs = uint256(abs(x).unwrap());
 
     // Calculate the first iteration of the loop in advance.
