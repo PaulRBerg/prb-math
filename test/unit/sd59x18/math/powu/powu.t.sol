@@ -47,6 +47,7 @@ contract Powu_Unit_Test is SD59x18_Unit_Test {
 
     function exponentZero_Sets() internal returns (Set[] memory) {
         delete sets;
+        sets.push(set({ x: MIN_SD59x18, expected: 1e18 }));
         sets.push(set({ x: MIN_SD59x18 + sd(1), expected: 1e18 }));
         sets.push(set({ x: NEGATIVE_PI, expected: 1e18 }));
         sets.push(set({ x: -1e18, expected: 1e18 }));
