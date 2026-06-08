@@ -22,6 +22,7 @@ contract Common_Msb_Test is Base_Test {
     }
 
     function testFuzz_Msb_Shifts1ToLessThanOrEqualToX(uint256 x) external pure whenNotZero(x) {
+        // forge-lint: disable-next-line(incorrect-shift)
         assertLe(1 << msb(x), x, "2 ^ {msb(x)} not less than or equal to x");
     }
 
@@ -31,6 +32,7 @@ contract Common_Msb_Test is Base_Test {
     }
 
     function testFuzz_Msb_Shifts2ToMoreThanX(uint256 x) external pure whenShiftLeftDoesNotOverflow(x) {
+        // forge-lint: disable-next-line(incorrect-shift)
         assertGt(2 << msb(x), x, "2 ^ {msb(x)+1} not more than x");
     }
 }

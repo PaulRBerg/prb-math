@@ -18,7 +18,7 @@ contract Powu_Unit_Test is UD60x18_Unit_Test {
         assertEq(actual, expected, "UD60x18 powu");
     }
 
-    function baseZeroExponentNotZero_Sets() internal returns (Set[] memory) {
+    function baseZeroExponentNotZeroSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0, y: 1, expected: 0 }));
         sets.push(set({ x: 0, y: 2, expected: 0 }));
@@ -26,7 +26,7 @@ contract Powu_Unit_Test is UD60x18_Unit_Test {
         return sets;
     }
 
-    function test_Powu_BaseZeroExponentNotZero() external parameterizedTest(baseZeroExponentNotZero_Sets()) {
+    function test_Powu_BaseZeroExponentNotZero() external parameterizedTest(baseZeroExponentNotZeroSets()) {
         UD60x18 actual = powu(s.x, s.y.unwrap());
         assertEq(actual, s.expected, "UD60x18 powu");
     }
@@ -35,7 +35,7 @@ contract Powu_Unit_Test is UD60x18_Unit_Test {
         _;
     }
 
-    function exponentZero_Sets() internal returns (Set[] memory) {
+    function exponentZeroSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 1e18, expected: 1e18 }));
         sets.push(set({ x: PI, expected: 1e18 }));
@@ -43,7 +43,7 @@ contract Powu_Unit_Test is UD60x18_Unit_Test {
         return sets;
     }
 
-    function test_Powu_ExponentZero() external parameterizedTest(exponentZero_Sets()) whenBaseNotZero {
+    function test_Powu_ExponentZero() external parameterizedTest(exponentZeroSets()) whenBaseNotZero {
         UD60x18 actual = powu(s.x, s.y.unwrap());
         assertEq(actual, s.expected, "UD60x18 powu");
     }
@@ -59,11 +59,12 @@ contract Powu_Unit_Test is UD60x18_Unit_Test {
         powu(x, y);
     }
 
+    // forge-lint: disable-next-line(mixed-case-function)
     modifier whenResultDoesNotOverflowUD60x18() {
         _;
     }
 
-    function powu_Sets() internal returns (Set[] memory) {
+    function powuSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.001e18, y: 3, expected: 1e9 }));
         sets.push(set({ x: 0.1e18, y: 2, expected: 1e16 }));
@@ -96,7 +97,7 @@ contract Powu_Unit_Test is UD60x18_Unit_Test {
 
     function test_Powu()
         external
-        parameterizedTest(powu_Sets())
+        parameterizedTest(powuSets())
         whenBaseNotZero
         whenExponentNotZero
         whenResultDoesNotOverflowUD60x18

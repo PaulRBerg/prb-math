@@ -64,7 +64,7 @@ contract Pow_Unit_Test is UD60x18_Unit_Test {
         _;
     }
 
-    function baseGtUnit_Sets() internal returns (Set[] memory) {
+    function baseGtUnitSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 1e18 + 1, y: 2e18, expected: 1e18 }));
         sets.push(set({ x: 2e18, y: 1.5e18, expected: 2_828427124746190097 }));
@@ -91,7 +91,7 @@ contract Pow_Unit_Test is UD60x18_Unit_Test {
 
     function test_Pow_BaseGtUnit()
         external
-        parameterizedTest(baseGtUnit_Sets())
+        parameterizedTest(baseGtUnitSets())
         whenBaseNotZero
         whenBaseNotUnit
         whenExponentNotZero
@@ -101,7 +101,7 @@ contract Pow_Unit_Test is UD60x18_Unit_Test {
         assertEq(actual, s.expected);
     }
 
-    function baseLtUnit_Sets() internal returns (Set[] memory) {
+    function baseLtUnitSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.000000000000000001e18, y: 1.78e18, expected: 0 }));
         sets.push(set({ x: 0.01e18, y: E, expected: 0.000003659622955309e18 }));
@@ -120,7 +120,7 @@ contract Pow_Unit_Test is UD60x18_Unit_Test {
 
     function test_Pow_BaseLtUnit()
         external
-        parameterizedTest(baseLtUnit_Sets())
+        parameterizedTest(baseLtUnitSets())
         whenBaseNotZero
         whenBaseNotUnit
         whenExponentNotZero

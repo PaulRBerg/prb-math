@@ -19,7 +19,7 @@ contract Log10_Unit_Test is UD60x18_Unit_Test {
         _;
     }
 
-    function powerOfTen_Sets() internal returns (Set[] memory) {
+    function powerOfTenSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 1e18, expected: 0 }));
         sets.push(set({ x: 10e18, expected: 1e18 }));
@@ -31,12 +31,12 @@ contract Log10_Unit_Test is UD60x18_Unit_Test {
         return sets;
     }
 
-    function test_Log10_PowerOfTen() external parameterizedTest(powerOfTen_Sets()) whenGteUnit {
+    function test_Log10_PowerOfTen() external parameterizedTest(powerOfTenSets()) whenGteUnit {
         UD60x18 actual = log10(s.x);
         assertEq(actual, s.expected, "UD60x18 log10");
     }
 
-    function notPowerOfTen_Sets() internal returns (Set[] memory) {
+    function notPowerOfTenSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 1.00000000000001e18, expected: 0.000000000000004341e18 }));
         sets.push(set({ x: E, expected: 0.434294481903251823e18 }));
@@ -53,7 +53,7 @@ contract Log10_Unit_Test is UD60x18_Unit_Test {
         return sets;
     }
 
-    function test_Log10_NotPowerOfTen() external parameterizedTest(notPowerOfTen_Sets()) whenGteUnit {
+    function test_Log10_NotPowerOfTen() external parameterizedTest(notPowerOfTenSets()) whenGteUnit {
         UD60x18 actual = log10(s.x);
         assertEq(actual, s.expected, "UD60x18 log10");
     }

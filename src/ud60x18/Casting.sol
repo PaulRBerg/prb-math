@@ -18,6 +18,7 @@ import { UD60x18 } from "./ValueType.sol";
 /// @notice Casts a UD60x18 number into SD1x18.
 /// @dev Requirements:
 /// - x ≤ uMAX_SD1x18
+// forge-lint: disable-next-line(mixed-case-function)
 function intoSD1x18(UD60x18 x) pure returns (SD1x18 result) {
     uint256 xUint = UD60x18.unwrap(x);
     if (xUint > uint256(int256(uMAX_SD1x18))) {
@@ -29,6 +30,7 @@ function intoSD1x18(UD60x18 x) pure returns (SD1x18 result) {
 /// @notice Casts a UD60x18 number into SD21x18.
 /// @dev Requirements:
 /// - x ≤ uMAX_SD21x18
+// forge-lint: disable-next-line(mixed-case-function)
 function intoSD21x18(UD60x18 x) pure returns (SD21x18 result) {
     uint256 xUint = UD60x18.unwrap(x);
     if (xUint > uint256(int256(uMAX_SD21x18))) {
@@ -40,6 +42,7 @@ function intoSD21x18(UD60x18 x) pure returns (SD21x18 result) {
 /// @notice Casts a UD60x18 number into UD2x18.
 /// @dev Requirements:
 /// - x ≤ uMAX_UD2x18
+// forge-lint: disable-next-line(mixed-case-function)
 function intoUD2x18(UD60x18 x) pure returns (UD2x18 result) {
     uint256 xUint = UD60x18.unwrap(x);
     if (xUint > uMAX_UD2x18) {
@@ -51,6 +54,7 @@ function intoUD2x18(UD60x18 x) pure returns (UD2x18 result) {
 /// @notice Casts a UD60x18 number into UD21x18.
 /// @dev Requirements:
 /// - x ≤ uMAX_UD21x18
+// forge-lint: disable-next-line(mixed-case-function)
 function intoUD21x18(UD60x18 x) pure returns (UD21x18 result) {
     uint256 xUint = UD60x18.unwrap(x);
     if (xUint > uMAX_UD21x18) {
@@ -62,6 +66,7 @@ function intoUD21x18(UD60x18 x) pure returns (UD21x18 result) {
 /// @notice Casts a UD60x18 number into SD59x18.
 /// @dev Requirements:
 /// - x ≤ uMAX_SD59x18
+// forge-lint: disable-next-line(mixed-case-function)
 function intoSD59x18(UD60x18 x) pure returns (SD59x18 result) {
     uint256 xUint = UD60x18.unwrap(x);
     if (xUint > uint256(uMAX_SD59x18)) {

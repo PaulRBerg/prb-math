@@ -30,7 +30,7 @@ contract Log2_Unit_Test is SD59x18_Unit_Test {
         _;
     }
 
-    function powerOfTwo_Sets() internal returns (Set[] memory) {
+    function powerOfTwoSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.0625e18, expected: -4e18 }));
         sets.push(set({ x: 0.125e18, expected: -3e18 }));
@@ -45,12 +45,12 @@ contract Log2_Unit_Test is SD59x18_Unit_Test {
         return sets;
     }
 
-    function test_Log2_PowerOfTwo() external parameterizedTest(powerOfTwo_Sets()) whenNotZero whenPositive {
+    function test_Log2_PowerOfTwo() external parameterizedTest(powerOfTwoSets()) whenNotZero whenPositive {
         SD59x18 actual = log2(s.x);
         assertEq(actual, s.expected, "SD59x18 log2");
     }
 
-    function notPowerOfTwo_Sets() internal returns (Set[] memory) {
+    function notPowerOfTwoSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.0091e18, expected: -6_779917739350753112 }));
         sets.push(set({ x: 0.083e18, expected: -3_590744853315162277 }));
@@ -71,7 +71,7 @@ contract Log2_Unit_Test is SD59x18_Unit_Test {
         return sets;
     }
 
-    function test_Log2_NotPowerOfTwo() external parameterizedTest(notPowerOfTwo_Sets()) whenNotZero whenPositive {
+    function test_Log2_NotPowerOfTwo() external parameterizedTest(notPowerOfTwoSets()) whenNotZero whenPositive {
         SD59x18 actual = log2(s.x);
         assertEq(actual, s.expected, "SD59x18 log2");
     }

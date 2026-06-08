@@ -27,11 +27,12 @@ contract Abs_Unit_Test is SD59x18_Unit_Test {
         abs(x);
     }
 
+    // forge-lint: disable-next-line(mixed-case-function)
     modifier whenNotMinSD59x18() {
         _;
     }
 
-    function negative_Sets() internal returns (Set[] memory) {
+    function negativeSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_SD59x18 + sd(1), expected: MAX_SD59x18 }));
         sets.push(set({ x: MIN_WHOLE_SD59x18, expected: MAX_WHOLE_SD59x18 }));
@@ -46,12 +47,12 @@ contract Abs_Unit_Test is SD59x18_Unit_Test {
         return sets;
     }
 
-    function test_Abs_Negative() external parameterizedTest(negative_Sets()) whenNotZero whenNotMinSD59x18 {
+    function test_Abs_Negative() external parameterizedTest(negativeSets()) whenNotZero whenNotMinSD59x18 {
         SD59x18 actual = abs(s.x);
         assertEq(actual, s.expected, "SD59x18 abs");
     }
 
-    function positive_Sets() internal returns (Set[] memory) {
+    function positiveSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.1e18, expected: 0.1e18 }));
         sets.push(set({ x: 0.5e18, expected: 0.5e18 }));
@@ -66,7 +67,7 @@ contract Abs_Unit_Test is SD59x18_Unit_Test {
         return sets;
     }
 
-    function test_Abs() external parameterizedTest(positive_Sets()) whenNotZero whenNotMinSD59x18 {
+    function test_Abs() external parameterizedTest(positiveSets()) whenNotZero whenNotMinSD59x18 {
         SD59x18 actual = abs(s.x);
         assertEq(actual, s.expected, "SD59x18 abs");
     }

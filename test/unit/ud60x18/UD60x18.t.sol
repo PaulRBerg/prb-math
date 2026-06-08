@@ -14,7 +14,9 @@ abstract contract UD60x18_Unit_Test is Base_Test {
                                       CONSTANTS
     //////////////////////////////////////////////////////////////////////////*/
 
+    // forge-lint: disable-next-line(screaming-snake-case-const)
     UD60x18 internal constant MAX_SCALED_UD60x18 = UD60x18.wrap(115792089237316195423570985008687907853269_984665640564039457);
+    // forge-lint: disable-next-line(screaming-snake-case-const)
     UD60x18 internal constant SQRT_MAX_UD60x18 = UD60x18.wrap(340282366920938463463374607431_768211455999999999);
 
     /// @dev This is needed to be used as the `expected` parameter of {set}. Solidity functions cannot be overridden

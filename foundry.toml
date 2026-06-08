@@ -17,6 +17,9 @@
   fuzz = { runs = 10_000, max_test_rejects = 100_000 }
   verbosity = 3
 
+[lint]
+  exclude_lints = ["unsafe-typecast"]
+
 [fmt]
   bracket_spacing = true
   int_types = "long"

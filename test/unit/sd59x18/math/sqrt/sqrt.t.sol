@@ -41,7 +41,7 @@ contract Sqrt_Unit_Test is SD59x18_Unit_Test {
         _;
     }
 
-    function sqrt_Sets() internal returns (Set[] memory) {
+    function sqrtSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.000000000000000001e18, expected: 0.000000001e18 }));
         sets.push(set({ x: 0.000000000000001e18, expected: 0.000000031622776601e18 }));
@@ -61,7 +61,7 @@ contract Sqrt_Unit_Test is SD59x18_Unit_Test {
         return sets;
     }
 
-    function test_Sqrt() external parameterizedTest(sqrt_Sets()) whenNotZero whenPositive whenLteMaxPermitted {
+    function test_Sqrt() external parameterizedTest(sqrtSets()) whenNotZero whenPositive whenLteMaxPermitted {
         SD59x18 actual = sqrt(s.x);
         assertEq(actual, s.expected, "SD59x18 sqrt");
     }

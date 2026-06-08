@@ -20,7 +20,7 @@ contract Log2_Unit_Test is UD60x18_Unit_Test {
         _;
     }
 
-    function powerOfTwo_Sets() internal returns (Set[] memory) {
+    function powerOfTwoSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 1e18, expected: 0 }));
         sets.push(set({ x: 2e18, expected: 1e18 }));
@@ -31,12 +31,12 @@ contract Log2_Unit_Test is UD60x18_Unit_Test {
         return sets;
     }
 
-    function test_Log2_PowerOfTwo() external parameterizedTest(powerOfTwo_Sets()) whenGteUnit {
+    function test_Log2_PowerOfTwo() external parameterizedTest(powerOfTwoSets()) whenGteUnit {
         UD60x18 actual = log2(s.x);
         assertEq(actual, s.expected, "UD60x18 log2");
     }
 
-    function notPowerOfTwo_Sets() internal returns (Set[] memory) {
+    function notPowerOfTwoSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 1.125e18, expected: 0.169925001442312346e18 }));
         sets.push(set({ x: E, expected: 1_442695040888963394 }));
@@ -47,7 +47,7 @@ contract Log2_Unit_Test is UD60x18_Unit_Test {
         return sets;
     }
 
-    function test_Log2_NotPowerOfTwo() external parameterizedTest(notPowerOfTwo_Sets()) whenGteUnit {
+    function test_Log2_NotPowerOfTwo() external parameterizedTest(notPowerOfTwoSets()) whenGteUnit {
         UD60x18 actual = log2(s.x);
         assertEq(actual, s.expected, "UD60x18 log2");
     }

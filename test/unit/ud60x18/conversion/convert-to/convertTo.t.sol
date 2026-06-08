@@ -19,7 +19,7 @@ contract ConvertTo_Unit_Test is UD60x18_Unit_Test {
         _;
     }
 
-    function convertTo_Sets() internal returns (Set[] memory) {
+    function convertToSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.000000000000000001e18, expected: 1e18 }));
         sets.push(set({ x: 0.000000000000000002e18, expected: 2e18 }));
@@ -32,7 +32,7 @@ contract ConvertTo_Unit_Test is UD60x18_Unit_Test {
         return sets;
     }
 
-    function test_ConvertTo() external parameterizedTest(convertTo_Sets()) whenLteMaxPermitted {
+    function test_ConvertTo() external parameterizedTest(convertToSets()) whenLteMaxPermitted {
         UD60x18 x = convert(s.x.unwrap());
         assertEq(x, s.expected, "UD60x18 convertTo");
     }

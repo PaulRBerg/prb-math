@@ -25,6 +25,7 @@ abstract contract Base_Test is StdAssertions, StdCheats, PRBMathAssertions, PRBM
     //////////////////////////////////////////////////////////////////////////*/
 
     /// @dev An instance of the Foundry VM, which contains cheatcodes for testing.
+    // forge-lint: disable-next-line(screaming-snake-case-const)
     Vm internal constant vm = Vm(address(uint160(uint256(keccak256("hevm cheat code")))));
 
     /*//////////////////////////////////////////////////////////////////////////

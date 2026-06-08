@@ -20,7 +20,7 @@ contract Inv_Unit_Test is UD60x18_Unit_Test {
         _;
     }
 
-    function inv_Sets() internal returns (Set[] memory) {
+    function invSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.000000000000000001e18, expected: 1e36 }));
         sets.push(set({ x: 0.00001e18, expected: 100_000e18 }));
@@ -41,7 +41,7 @@ contract Inv_Unit_Test is UD60x18_Unit_Test {
         return sets;
     }
 
-    function test_Inv() external parameterizedTest(inv_Sets()) whenNotZero {
+    function test_Inv() external parameterizedTest(invSets()) whenNotZero {
         UD60x18 actual = inv(s.x);
         assertEq(actual, s.expected, "UD60x18 inv");
     }
