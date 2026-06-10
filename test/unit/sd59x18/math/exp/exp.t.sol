@@ -21,7 +21,7 @@ contract Exp_Unit_Test is SD59x18_Unit_Test {
         _;
     }
 
-    function ltThreshold_Sets() internal returns (Set[] memory) {
+    function ltThresholdSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_SD59x18 }));
         sets.push(set({ x: MIN_WHOLE_SD59x18 }));
@@ -29,12 +29,12 @@ contract Exp_Unit_Test is SD59x18_Unit_Test {
         return sets;
     }
 
-    function test_Exp_Negative_LtThreshold() external parameterizedTest(ltThreshold_Sets()) whenNotZero {
+    function test_Exp_Negative_LtThreshold() external parameterizedTest(ltThresholdSets()) whenNotZero {
         SD59x18 actual = exp(s.x);
         assertEq(actual, s.expected, "SD59x18 exp");
     }
 
-    function negativeAndGteThreshold_Sets() internal returns (Set[] memory) {
+    function negativeAndGteThresholdSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_SD59x18, expected: 0 }));
         sets.push(set({ x: EXP_MIN_THRESHOLD - sd(1), expected: 0 }));
@@ -54,7 +54,7 @@ contract Exp_Unit_Test is SD59x18_Unit_Test {
         return sets;
     }
 
-    function test_Exp_Negative_GteMinPermitted() external parameterizedTest(negativeAndGteThreshold_Sets()) whenNotZero {
+    function test_Exp_Negative_GteMinPermitted() external parameterizedTest(negativeAndGteThresholdSets()) whenNotZero {
         SD59x18 actual = exp(s.x);
         assertEq(actual, s.expected, "SD59x18 exp");
     }
@@ -65,7 +65,7 @@ contract Exp_Unit_Test is SD59x18_Unit_Test {
         exp(x);
     }
 
-    function positiveAndLteMaxPermitted_Sets() internal returns (Set[] memory) {
+    function positiveAndLteMaxPermittedSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.000000000000000001e18, expected: 1e18 }));
         sets.push(set({ x: 0.000000000000001e18, expected: 1.000000000000000999e18 }));
@@ -86,7 +86,7 @@ contract Exp_Unit_Test is SD59x18_Unit_Test {
         return sets;
     }
 
-    function test_Exp_Positive_LteMaxPermitted() external parameterizedTest(positiveAndLteMaxPermitted_Sets()) whenNotZero {
+    function test_Exp_Positive_LteMaxPermitted() external parameterizedTest(positiveAndLteMaxPermittedSets()) whenNotZero {
         SD59x18 actual = exp(s.x);
         assertEq(actual, s.expected, "SD59x18 exp");
     }

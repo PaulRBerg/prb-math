@@ -27,7 +27,7 @@ contract Floor_Unit_Test is SD59x18_Unit_Test {
         floor(x);
     }
 
-    function negativeAndGteMinPermitted_Sets() internal returns (Set[] memory) {
+    function negativeAndGteMinPermittedSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_WHOLE_SD59x18, expected: MIN_WHOLE_SD59x18 }));
         sets.push(set({ x: -1e24, expected: -1e24 }));
@@ -40,12 +40,12 @@ contract Floor_Unit_Test is SD59x18_Unit_Test {
         return sets;
     }
 
-    function test_Floor_Negative_GteMinPermitted() external parameterizedTest(negativeAndGteMinPermitted_Sets()) whenNotZero {
+    function test_Floor_Negative_GteMinPermitted() external parameterizedTest(negativeAndGteMinPermittedSets()) whenNotZero {
         SD59x18 actual = floor(s.x);
         assertEq(actual, s.expected, "SD59x18 floor");
     }
 
-    function positive_Sets() internal returns (Set[] memory) {
+    function positiveSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.1e18, expected: 0 }));
         sets.push(set({ x: 0.5e18, expected: 0 }));
@@ -60,7 +60,7 @@ contract Floor_Unit_Test is SD59x18_Unit_Test {
         return sets;
     }
 
-    function test_Floor_Positive() external parameterizedTest(positive_Sets()) whenNotZero {
+    function test_Floor_Positive() external parameterizedTest(positiveSets()) whenNotZero {
         SD59x18 actual = floor(s.x);
         assertEq(actual, s.expected, "SD59x18 floor");
     }

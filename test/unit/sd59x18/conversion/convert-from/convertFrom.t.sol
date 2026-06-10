@@ -7,7 +7,7 @@ import { convert } from "src/sd59x18/Conversions.sol";
 import { SD59x18_Unit_Test } from "../../SD59x18.t.sol";
 
 contract ConvertFrom_Unit_Test is SD59x18_Unit_Test {
-    function ltAbsoluteUnit_Sets() internal returns (Set[] memory) {
+    function ltAbsoluteUnitSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: -1e18 + 1 }));
         sets.push(set({ x: -1 }));
@@ -17,7 +17,7 @@ contract ConvertFrom_Unit_Test is SD59x18_Unit_Test {
         return sets;
     }
 
-    function test_ConvertFrom_LtAbsoluteUnit() external parameterizedTest(ltAbsoluteUnit_Sets()) {
+    function test_ConvertFrom_LtAbsoluteUnit() external parameterizedTest(ltAbsoluteUnitSets()) {
         int256 actual = convert(s.x);
         int256 expected = 0;
         assertEq(actual, expected, "SD59x18 convertFrom");
@@ -27,7 +27,7 @@ contract ConvertFrom_Unit_Test is SD59x18_Unit_Test {
         _;
     }
 
-    function gteAbsoluteUnit_Sets() internal returns (Set[] memory) {
+    function gteAbsoluteUnitSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_SD59x18, expected: MIN_SCALED_SD59x18 }));
         sets.push(set({ x: MIN_WHOLE_SD59x18, expected: MIN_SCALED_SD59x18 }));
@@ -53,7 +53,7 @@ contract ConvertFrom_Unit_Test is SD59x18_Unit_Test {
         return sets;
     }
 
-    function test_ConvertFrom() external parameterizedTest(gteAbsoluteUnit_Sets()) whenGteAbsoluteUnit {
+    function test_ConvertFrom() external parameterizedTest(gteAbsoluteUnitSets()) whenGteAbsoluteUnit {
         int256 actual = convert(s.x);
         int256 expected = s.expected.unwrap();
         assertEq(actual, expected, "SD59x18 convertFrom");

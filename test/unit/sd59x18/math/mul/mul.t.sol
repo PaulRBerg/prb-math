@@ -11,7 +11,7 @@ import { SD59x18 } from "src/sd59x18/ValueType.sol";
 import { SD59x18_Unit_Test } from "../../SD59x18.t.sol";
 
 contract Mul_Unit_Test is SD59x18_Unit_Test {
-    function oneOperandZero_Sets() internal returns (Set[] memory) {
+    function oneOperandZeroSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_SD59x18 + sd(1), y: 0, expected: 0 }));
         sets.push(set({ x: 0, y: MIN_SD59x18 + sd(1), expected: 0 }));
@@ -20,7 +20,7 @@ contract Mul_Unit_Test is SD59x18_Unit_Test {
         return sets;
     }
 
-    function test_Mul_OneOperandZero() external parameterizedTest(oneOperandZero_Sets()) {
+    function test_Mul_OneOperandZero() external parameterizedTest(oneOperandZeroSets()) {
         assertEq(mul(s.x, s.y), s.expected, "SD59x18 mul");
         assertEq(s.x * s.y, s.expected, "SD59x18 *");
     }
@@ -65,7 +65,7 @@ contract Mul_Unit_Test is SD59x18_Unit_Test {
         _;
     }
 
-    function resultOverflowUint256_Sets() internal returns (Set[] memory) {
+    function resultOverflowUint256Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_SD59x18 + sd(1), y: MIN_SD59x18 + sd(1), expected: NIL }));
         sets.push(set({ x: MIN_WHOLE_SD59x18, y: MIN_WHOLE_SD59x18, expected: NIL }));
@@ -78,7 +78,7 @@ contract Mul_Unit_Test is SD59x18_Unit_Test {
 
     function test_RevertWhen_ResultOverflowUint256()
         external
-        parameterizedTest(resultOverflowUint256_Sets())
+        parameterizedTest(resultOverflowUint256Sets())
         whenNeitherOperandZero
         whenNeitherOperandMinSD59x18
         whenResultDoesNotOverflowSD59x18
@@ -97,7 +97,7 @@ contract Mul_Unit_Test is SD59x18_Unit_Test {
         _;
     }
 
-    function operandsSameSign_Sets() internal returns (Set[] memory) {
+    function operandsSameSignSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_SD59x18 + sd(0.5e18 + 1), y: -0.000000000000000001e18, expected: MAX_SCALED_SD59x18 }));
         sets.push(set({ x: MIN_WHOLE_SD59x18 + sd(0.5e18), y: -0.000000000000000001e18, expected: MAX_SCALED_SD59x18 - sd(1) }));
@@ -136,7 +136,7 @@ contract Mul_Unit_Test is SD59x18_Unit_Test {
 
     function test_Mul_OperandsSameSign()
         external
-        parameterizedTest(operandsSameSign_Sets())
+        parameterizedTest(operandsSameSignSets())
         whenNeitherOperandZero
         whenNeitherOperandMinSD59x18
         whenResultDoesNotOverflowSD59x18
@@ -146,7 +146,7 @@ contract Mul_Unit_Test is SD59x18_Unit_Test {
         assertEq(s.x * s.y, s.expected, "SD59x18 *");
     }
 
-    function operandsDifferentSigns_Sets() internal returns (Set[] memory) {
+    function operandsDifferentSignsSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_SD59x18 + sd(0.5e18 + 1), y: 0.000000000000000001e18, expected: MIN_SCALED_SD59x18 }));
         sets.push(set({ x: MIN_WHOLE_SD59x18 + sd(0.5e18), y: 0.000000000000000001e18, expected: MIN_SCALED_SD59x18 + sd(1) }));
@@ -185,7 +185,7 @@ contract Mul_Unit_Test is SD59x18_Unit_Test {
 
     function test_Mul_OperandsDifferentSign()
         external
-        parameterizedTest(operandsDifferentSigns_Sets())
+        parameterizedTest(operandsDifferentSignsSets())
         whenNeitherOperandZero
         whenNeitherOperandMinSD59x18
         whenResultDoesNotOverflowSD59x18

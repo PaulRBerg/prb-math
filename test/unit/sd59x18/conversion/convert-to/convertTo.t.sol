@@ -29,7 +29,7 @@ contract ConvertTo_Unit_Test is SD59x18_Unit_Test {
         _;
     }
 
-    function convertTo_Sets() internal returns (Set[] memory) {
+    function convertToSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_SCALED_SD59x18, expected: MIN_WHOLE_SD59x18 }));
         sets.push(set({ x: -3.1415e42, expected: -3.1415e60 }));
@@ -51,7 +51,7 @@ contract ConvertTo_Unit_Test is SD59x18_Unit_Test {
         return sets;
     }
 
-    function test_ConvertTo() external parameterizedTest(convertTo_Sets()) whenGteMinPermitted whenLteMaxPermitted {
+    function test_ConvertTo() external parameterizedTest(convertToSets()) whenGteMinPermitted whenLteMaxPermitted {
         SD59x18 x = convert(s.x.unwrap());
         assertEq(x, s.expected, "SD59x18 convert to");
     }

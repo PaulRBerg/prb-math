@@ -33,7 +33,7 @@ contract Exp2_Unit_Test is UD60x18_Unit_Test {
         _;
     }
 
-    function exp2_Sets() internal returns (Set[] memory) {
+    function exp2Sets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.000000000000000001e18, expected: 1e18 }));
         sets.push(set({ x: 1e3, expected: 1_000000000000000693 }));
@@ -58,7 +58,7 @@ contract Exp2_Unit_Test is UD60x18_Unit_Test {
         return sets;
     }
 
-    function test_Exp2() external parameterizedTest(exp2_Sets()) whenNotZero whenLteMaxPermitted {
+    function test_Exp2() external parameterizedTest(exp2Sets()) whenNotZero whenLteMaxPermitted {
         UD60x18 actual = exp2(s.x);
         assertEq(actual, s.expected, "UD60x18 exp2");
     }

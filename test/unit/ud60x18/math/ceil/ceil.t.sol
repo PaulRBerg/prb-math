@@ -31,7 +31,7 @@ contract CeilTest is UD60x18_Unit_Test {
         _;
     }
 
-    function ceil_Sets() internal returns (Set[] memory) {
+    function ceilSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.1e18, expected: 1e18 }));
         sets.push(set({ x: 0.5e18, expected: 1e18 }));
@@ -45,7 +45,7 @@ contract CeilTest is UD60x18_Unit_Test {
         return sets;
     }
 
-    function test_Ceil() external parameterizedTest(ceil_Sets()) whenNotZero whenLteMaxWholeUD60x18 {
+    function test_Ceil() external parameterizedTest(ceilSets()) whenNotZero whenLteMaxWholeUD60x18 {
         UD60x18 actual = ceil(s.x);
         assertEq(actual, s.expected, "UD60x18 ceil");
     }

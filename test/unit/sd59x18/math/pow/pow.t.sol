@@ -64,7 +64,7 @@ contract Pow_Unit_Test is SD59x18_Unit_Test {
         _;
     }
 
-    function negativeExponent_Sets() internal returns (Set[] memory) {
+    function negativeExponentSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.000000000000000001e18, y: -0.000000000000000001e18, expected: 1e18 + 40 }));
         sets.push(set({ x: 0.000000000001e18, y: -4.4e9, expected: 1_000000121576500300 }));
@@ -90,7 +90,7 @@ contract Pow_Unit_Test is SD59x18_Unit_Test {
 
     function test_Pow_NegativeExponent()
         external
-        parameterizedTest(negativeExponent_Sets())
+        parameterizedTest(negativeExponentSets())
         whenBaseNotZero
         whenBaseNotUnit
         whenExponentNotZero
@@ -100,7 +100,7 @@ contract Pow_Unit_Test is SD59x18_Unit_Test {
         assertEq(actual, s.expected, "SD59x18 pow");
     }
 
-    function positiveExponent_Sets() internal returns (Set[] memory) {
+    function positiveExponentSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.000000000000000001e18, y: 0.000000000000000001e18, expected: 0.99999999999999996e18 }));
         sets.push(set({ x: 1e6, y: 4.4e9, expected: 0.99999987842351448e18 }));
@@ -134,7 +134,7 @@ contract Pow_Unit_Test is SD59x18_Unit_Test {
 
     function test_Pow_PositiveExponent()
         external
-        parameterizedTest(positiveExponent_Sets())
+        parameterizedTest(positiveExponentSets())
         whenBaseNotZero
         whenBaseNotUnit
         whenExponentNotZero

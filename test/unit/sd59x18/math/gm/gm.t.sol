@@ -15,14 +15,14 @@ contract Gm_Unit_Test is SD59x18_Unit_Test {
     /// @dev Smallest number whose non-fixed-point square fits within int256
     SD59x18 internal constant NEGATIVE_SQRT_MAX_INT256 = SD59x18.wrap(-240615969168004511545033772477625056927);
 
-    function oneOperandZero_Sets() internal returns (Set[] memory) {
+    function oneOperandZeroSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0, y: PI, expected: 0 }));
         sets.push(set({ x: PI, y: 0, expected: 0 }));
         return sets;
     }
 
-    function test_Gm_OneOperandZero() external parameterizedTest(oneOperandZero_Sets()) {
+    function test_Gm_OneOperandZero() external parameterizedTest(oneOperandZeroSets()) {
         SD59x18 actual = gm(s.x, s.y);
         assertEq(actual, s.expected, "SD59x18 gm");
     }
@@ -81,7 +81,7 @@ contract Gm_Unit_Test is SD59x18_Unit_Test {
         _;
     }
 
-    function gm_Sets() internal returns (Set[] memory) {
+    function gmSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_WHOLE_SD59x18, y: -0.000000000000000001e18, expected: SQRT_MAX_INT256 }));
         sets.push(set({ x: NEGATIVE_SQRT_MAX_INT256, y: NEGATIVE_SQRT_MAX_INT256, expected: SQRT_MAX_INT256 }));
@@ -105,7 +105,7 @@ contract Gm_Unit_Test is SD59x18_Unit_Test {
         return sets;
     }
 
-    function test_Gm() external parameterizedTest(gm_Sets()) whenOperandsNotZero whenProductPositive whenProductDoesNotOverflow {
+    function test_Gm() external parameterizedTest(gmSets()) whenOperandsNotZero whenProductPositive whenProductDoesNotOverflow {
         SD59x18 actual = gm(s.x, s.y);
         assertEq(actual, s.expected, "SD59x18 gm");
     }

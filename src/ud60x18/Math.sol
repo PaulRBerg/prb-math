@@ -147,10 +147,10 @@ function exp2(UD60x18 x) pure returns (UD60x18 result) {
     }
 
     // Convert x to the 192.64-bit fixed-point format.
-    uint256 x_192x64 = (xUint << 64) / uUNIT;
+    uint256 x192x64 = (xUint << 64) / uUNIT;
 
     // Pass x to the {Common.exp2} function, which uses the 192.64-bit fixed-point number representation.
-    result = wrap(Common.exp2(x_192x64));
+    result = wrap(Common.exp2(x192x64));
 }
 
 /// @notice Yields the greatest whole number less than or equal to x.

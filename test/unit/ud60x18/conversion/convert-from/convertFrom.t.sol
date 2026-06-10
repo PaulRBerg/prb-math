@@ -7,7 +7,7 @@ import { convert } from "src/ud60x18/Conversions.sol";
 import { UD60x18_Unit_Test } from "../../UD60x18.t.sol";
 
 contract ConvertFrom_Unit_Test is UD60x18_Unit_Test {
-    function ltUnit_Sets() internal returns (Set[] memory) {
+    function ltUnitSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0 }));
         sets.push(set({ x: 1 }));
@@ -15,7 +15,7 @@ contract ConvertFrom_Unit_Test is UD60x18_Unit_Test {
         return sets;
     }
 
-    function test_ConvertFrom_LtUnit() external parameterizedTest(ltUnit_Sets()) {
+    function test_ConvertFrom_LtUnit() external parameterizedTest(ltUnitSets()) {
         uint256 actual = convert(s.x);
         uint256 expected = 0;
         assertEq(actual, expected, "UD60x18 convertFrom");
@@ -25,7 +25,7 @@ contract ConvertFrom_Unit_Test is UD60x18_Unit_Test {
         _;
     }
 
-    function gteUnit_Sets() internal returns (Set[] memory) {
+    function gteUnitSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 1e18, expected: 0.000000000000000001e18 }));
         sets.push(set({ x: 1e18 + 1, expected: 0.000000000000000001e18 }));
@@ -41,7 +41,7 @@ contract ConvertFrom_Unit_Test is UD60x18_Unit_Test {
         return sets;
     }
 
-    function test_ConvertFrom() external parameterizedTest(gteUnit_Sets()) whenGteUnit {
+    function test_ConvertFrom() external parameterizedTest(gteUnitSets()) whenGteUnit {
         uint256 actual = convert(s.x);
         uint256 expected = s.expected.unwrap();
         assertEq(actual, expected, "UD60x18 convertFrom");

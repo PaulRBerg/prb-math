@@ -12,14 +12,14 @@ contract Gm_Unit_Test is UD60x18_Unit_Test {
     // Biggest number whose non-fixed-point square fits in uint256
     uint256 internal constant SQRT_MAX_UINT256 = 340282366920938463463374607431768211455;
 
-    function oneOperandZero_Sets() internal returns (Set[] memory) {
+    function oneOperandZeroSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0, y: PI, expected: 0 }));
         sets.push(set({ x: PI, y: 0, expected: 0 }));
         return sets;
     }
 
-    function test_Gm_OneOperandZero() external parameterizedTest(oneOperandZero_Sets()) {
+    function test_Gm_OneOperandZero() external parameterizedTest(oneOperandZeroSets()) {
         UD60x18 actual = gm(s.x, s.y);
         assertEq(actual, s.expected, "UD60x18 gm");
     }
@@ -39,7 +39,7 @@ contract Gm_Unit_Test is UD60x18_Unit_Test {
         _;
     }
 
-    function gm_Sets() internal returns (Set[] memory) {
+    function gmSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 1e18, y: 1e18, expected: 1e18 }));
         sets.push(set({ x: 1e18, y: 4e18, expected: 2e18 }));
@@ -54,7 +54,7 @@ contract Gm_Unit_Test is UD60x18_Unit_Test {
         return sets;
     }
 
-    function test_Gm() external parameterizedTest(gm_Sets()) whenOperandsNotZero whenProductDoesNotOverflow {
+    function test_Gm() external parameterizedTest(gmSets()) whenOperandsNotZero whenProductDoesNotOverflow {
         UD60x18 actual = gm(s.x, s.y);
         assertEq(actual, s.expected, "UD60x18 gm");
     }

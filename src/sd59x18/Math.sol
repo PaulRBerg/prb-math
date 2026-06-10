@@ -226,10 +226,10 @@ function exp2(SD59x18 x) pure returns (SD59x18 result) {
 
         unchecked {
             // Convert x to the 192.64-bit fixed-point format.
-            uint256 x_192x64 = uint256((xInt << 64) / uUNIT);
+            uint256 x192x64 = uint256((xInt << 64) / uUNIT);
 
             // It is safe to cast the result to int256 due to the checks above.
-            result = wrap(int256(Common.exp2(x_192x64)));
+            result = wrap(int256(Common.exp2(x192x64)));
         }
     }
 }

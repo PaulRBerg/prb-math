@@ -19,7 +19,7 @@ contract Frac_Unit_Test is UD60x18_Unit_Test {
         _;
     }
 
-    function frac_Sets() internal returns (Set[] memory) {
+    function fracSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.1e18, expected: 0.1e18 }));
         sets.push(set({ x: 0.5e18, expected: 0.5e18 }));
@@ -34,7 +34,7 @@ contract Frac_Unit_Test is UD60x18_Unit_Test {
         return sets;
     }
 
-    function test_Frac() external parameterizedTest(frac_Sets()) whenNotZero {
+    function test_Frac() external parameterizedTest(fracSets()) whenNotZero {
         UD60x18 actual = frac(s.x);
         assertEq(actual, s.expected, "UD60x18 frac");
     }

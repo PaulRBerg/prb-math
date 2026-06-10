@@ -48,7 +48,7 @@ contract Div_Unit_Test is SD59x18_Unit_Test {
         _;
     }
 
-    function numeratorZero_Sets() internal returns (Set[] memory) {
+    function numeratorZeroSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0, y: NEGATIVE_PI, expected: 0 }));
         sets.push(set({ x: 0, y: -1e24, expected: 0 }));
@@ -63,7 +63,7 @@ contract Div_Unit_Test is SD59x18_Unit_Test {
 
     function test_Div_NumeratorZero()
         external
-        parameterizedTest(numeratorZero_Sets())
+        parameterizedTest(numeratorZeroSets())
         whenDenominatorNotZero
         whenDenominatorNotMinSD59x18
     {
@@ -133,7 +133,7 @@ contract Div_Unit_Test is SD59x18_Unit_Test {
         _;
     }
 
-    function numeratorDenominatorSameSign_Sets() internal returns (Set[] memory) {
+    function numeratorDenominatorSameSignSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_SCALED_SD59x18, y: -0.000000000000000001e18, expected: MAX_WHOLE_SD59x18 }));
         sets.push(set({ x: -1e24, y: -1e18, expected: 1e24 }));
@@ -172,7 +172,7 @@ contract Div_Unit_Test is SD59x18_Unit_Test {
 
     function test_Div_NumeratorDenominatorSameSign()
         external
-        parameterizedTest(numeratorDenominatorSameSign_Sets())
+        parameterizedTest(numeratorDenominatorSameSignSets())
         whenDenominatorNotZero
         whenDenominatorNotMinSD59x18
         whenNumeratorNotZero
@@ -183,7 +183,7 @@ contract Div_Unit_Test is SD59x18_Unit_Test {
         assertEq(s.x / s.y, s.expected, "SD59x18 /");
     }
 
-    function numeratorDenominatorDifferentSign_Sets() internal returns (Set[] memory) {
+    function numeratorDenominatorDifferentSignSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_SCALED_SD59x18, y: 0.000000000000000001e18, expected: MIN_WHOLE_SD59x18 }));
         sets.push(set({ x: -1e24, y: 1e18, expected: -1e24 }));
@@ -222,7 +222,7 @@ contract Div_Unit_Test is SD59x18_Unit_Test {
 
     function test_Div_NumeratorDenominatorDifferentSign()
         external
-        parameterizedTest(numeratorDenominatorDifferentSign_Sets())
+        parameterizedTest(numeratorDenominatorDifferentSignSets())
         whenDenominatorNotZero
         whenDenominatorNotMinSD59x18
         whenNumeratorNotZero

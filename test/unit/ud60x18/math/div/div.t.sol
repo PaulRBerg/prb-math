@@ -29,7 +29,7 @@ contract Div_Unit_Test is UD60x18_Unit_Test {
         _;
     }
 
-    function numeratorZero_Sets() internal returns (Set[] memory) {
+    function numeratorZeroSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0, y: 0.000000000000000001e18, expected: 0 }));
         sets.push(set({ x: 0, y: 1e18, expected: 0 }));
@@ -38,7 +38,7 @@ contract Div_Unit_Test is UD60x18_Unit_Test {
         return sets;
     }
 
-    function test_Div_NumeratorZero() external parameterizedTest(numeratorZero_Sets()) whenDenominatorNotZero {
+    function test_Div_NumeratorZero() external parameterizedTest(numeratorZeroSets()) whenDenominatorNotZero {
         assertEq(div(s.x, s.y), s.expected, "UD60x18 div");
         assertEq(s.x / s.y, s.expected, "UD60x18 /");
     }
@@ -61,7 +61,7 @@ contract Div_Unit_Test is UD60x18_Unit_Test {
         _;
     }
 
-    function div_Sets() internal returns (Set[] memory) {
+    function divSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.000000000000000001e18, y: MAX_UD60x18, expected: 0 }));
         sets.push(set({ x: 0.000000000000000001e18, y: 1.000000000000000001e18, expected: 0 }));
@@ -82,7 +82,7 @@ contract Div_Unit_Test is UD60x18_Unit_Test {
         return sets;
     }
 
-    function test_Div() external parameterizedTest(div_Sets()) whenDenominatorNotZero whenResultDoesNotOverflowUD60x18 {
+    function test_Div() external parameterizedTest(divSets()) whenDenominatorNotZero whenResultDoesNotOverflowUD60x18 {
         assertEq(div(s.x, s.y), s.expected, "UD60x18 div");
         assertEq(s.x / s.y, s.expected, "UD60x18 /");
     }

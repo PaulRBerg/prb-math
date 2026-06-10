@@ -16,14 +16,14 @@ contract Avg_Unit_Test is UD60x18_Unit_Test {
         assertEq(actual, expected, "UD60x18 avg");
     }
 
-    function onlyOneOperandZero_Sets() internal returns (Set[] memory) {
+    function onlyOneOperandZeroSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0, y: 3e18, expected: 1.5e18 }));
         sets.push(set({ x: 3e18, y: 0, expected: 1.5e18 }));
         return sets;
     }
 
-    function test_Avg_OnlyOneOperandZero() external parameterizedTest(onlyOneOperandZero_Sets()) {
+    function test_Avg_OnlyOneOperandZero() external parameterizedTest(onlyOneOperandZeroSets()) {
         UD60x18 actual = avg(s.x, s.y);
         assertEq(actual, s.expected, "UD60x18 avg");
     }
@@ -32,7 +32,7 @@ contract Avg_Unit_Test is UD60x18_Unit_Test {
         _;
     }
 
-    function bothOperandsEven_Sets() internal returns (Set[] memory) {
+    function bothOperandsEvenSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 2, y: 4, expected: 3 }));
         sets.push(set({ x: 2e18, y: 2e18, expected: 2e18 }));
@@ -44,14 +44,14 @@ contract Avg_Unit_Test is UD60x18_Unit_Test {
 
     function test_Avg_NeitherOperandZero_BothOperandsEven()
         external
-        parameterizedTest(bothOperandsEven_Sets())
+        parameterizedTest(bothOperandsEvenSets())
         whenNeitherOperandZero
     {
         UD60x18 actual = avg(s.x, s.y);
         assertEq(actual, s.expected, "UD60x18 avg");
     }
 
-    function bothOperandsOdd_Sets() internal returns (Set[] memory) {
+    function bothOperandsOddSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 1, y: 3, expected: 2 }));
         sets.push(set({ x: 1e18 + 1, y: 1e18 + 1, expected: 1e18 + 1 }));
@@ -64,14 +64,14 @@ contract Avg_Unit_Test is UD60x18_Unit_Test {
 
     function test_Avg_NeitherOperandZero_BothOperandsOdd()
         external
-        parameterizedTest(bothOperandsOdd_Sets())
+        parameterizedTest(bothOperandsOddSets())
         whenNeitherOperandZero
     {
         UD60x18 actual = avg(s.x, s.y);
         assertEq(actual, s.expected, "UD60x18 avg");
     }
 
-    function oneOperandEvenTheOtherOdd_Sets() internal returns (Set[] memory) {
+    function oneOperandEvenTheOtherOddSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 1, y: 2, expected: 1 }));
         sets.push(set({ x: 1e18 + 1, y: 2e18, expected: 1.5e18 }));
@@ -90,7 +90,7 @@ contract Avg_Unit_Test is UD60x18_Unit_Test {
 
     function test_Avg_NeitherOperandZero_OneOperandEvenTheOtherOdd()
         external
-        parameterizedTest(oneOperandEvenTheOtherOdd_Sets())
+        parameterizedTest(oneOperandEvenTheOtherOddSets())
         whenNeitherOperandZero
     {
         UD60x18 actual = avg(s.x, s.y);

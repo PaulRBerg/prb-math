@@ -9,14 +9,14 @@ import { UD60x18 } from "src/ud60x18/ValueType.sol";
 import { UD60x18_Unit_Test } from "../../UD60x18.t.sol";
 
 contract Mul_Unit_Test is UD60x18_Unit_Test {
-    function oneOperandZero_Sets() internal returns (Set[] memory) {
+    function oneOperandZeroSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0, y: MAX_UD60x18, expected: 0 }));
         sets.push(set({ x: MAX_UD60x18, y: 0, expected: 0 }));
         return sets;
     }
 
-    function test_Mul_OneOperandZero() external parameterizedTest(oneOperandZero_Sets()) {
+    function test_Mul_OneOperandZero() external parameterizedTest(oneOperandZeroSets()) {
         assertEq(mul(s.x, s.y), s.expected, "UD60x18 mul");
         assertEq(s.x * s.y, s.expected, "UD60x18 *");
     }
@@ -43,7 +43,7 @@ contract Mul_Unit_Test is UD60x18_Unit_Test {
         _;
     }
 
-    function mul_Sets() internal returns (Set[] memory) {
+    function mulSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.000000000000000001e18, y: 0.000000000000000001e18, expected: 0 }));
         sets.push(set({ x: 0.000000000000000006e18, y: 0.1e18, expected: 0 }));
@@ -71,7 +71,7 @@ contract Mul_Unit_Test is UD60x18_Unit_Test {
         return sets;
     }
 
-    function test_Mul() external parameterizedTest(mul_Sets()) whenNeitherOperandZero whenResultDoesNotOverflowUD60x18 {
+    function test_Mul() external parameterizedTest(mulSets()) whenNeitherOperandZero whenResultDoesNotOverflowUD60x18 {
         assertEq(mul(s.x, s.y), s.expected, "UD60x18 mul");
         assertEq(s.x * s.y, s.expected, "UD60x18 *");
     }

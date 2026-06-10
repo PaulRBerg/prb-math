@@ -19,7 +19,7 @@ contract Frac_Unit_Test is SD59x18_Unit_Test {
         _;
     }
 
-    function negative_Sets() internal returns (Set[] memory) {
+    function negativeSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_SD59x18, expected: -0.792003956564819968e18 }));
         sets.push(set({ x: MIN_WHOLE_SD59x18, expected: 0 }));
@@ -34,12 +34,12 @@ contract Frac_Unit_Test is SD59x18_Unit_Test {
         return sets;
     }
 
-    function test_Frac_Negative() external parameterizedTest(negative_Sets()) whenNotZero {
+    function test_Frac_Negative() external parameterizedTest(negativeSets()) whenNotZero {
         SD59x18 actual = frac(s.x);
         assertEq(actual, s.expected, "SD59x18 frac");
     }
 
-    function positive_Sets() internal returns (Set[] memory) {
+    function positiveSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.1e18, expected: 0.1e18 }));
         sets.push(set({ x: 0.5e18, expected: 0.5e18 }));
@@ -54,7 +54,7 @@ contract Frac_Unit_Test is SD59x18_Unit_Test {
         return sets;
     }
 
-    function test_Frac() external parameterizedTest(positive_Sets()) whenNotZero {
+    function test_Frac() external parameterizedTest(positiveSets()) whenNotZero {
         SD59x18 actual = frac(s.x);
         assertEq(actual, s.expected, "SD59x18 frac");
     }

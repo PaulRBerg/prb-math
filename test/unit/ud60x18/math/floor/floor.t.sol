@@ -19,7 +19,7 @@ contract Floor_Unit_Test is UD60x18_Unit_Test {
         _;
     }
 
-    function floor_Sets() internal returns (Set[] memory) {
+    function floorSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: 0.1e18, expected: 0 }));
         sets.push(set({ x: 0.5e18, expected: 0 }));
@@ -34,7 +34,7 @@ contract Floor_Unit_Test is UD60x18_Unit_Test {
         return sets;
     }
 
-    function test_Floor_Positive() external parameterizedTest(floor_Sets()) whenNotZero {
+    function test_Floor_Positive() external parameterizedTest(floorSets()) whenNotZero {
         UD60x18 actual = floor(s.x);
         assertEq(actual, s.expected, "UD60x18 floor");
     }
