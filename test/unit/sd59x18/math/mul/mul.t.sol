@@ -43,7 +43,6 @@ contract Mul_Unit_Test is SD59x18_Unit_Test {
         x * y;
     }
 
-    // forge-lint: disable-next-line(mixed-case-function)
     modifier whenNeitherOperandMinSD59x18() {
         _;
     }
@@ -62,7 +61,6 @@ contract Mul_Unit_Test is SD59x18_Unit_Test {
         mul(x, y);
     }
 
-    // forge-lint: disable-next-line(mixed-case-function)
     modifier whenResultDoesNotOverflowSD59x18() {
         _;
     }

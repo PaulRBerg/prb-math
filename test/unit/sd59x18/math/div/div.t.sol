@@ -44,7 +44,6 @@ contract Div_Unit_Test is SD59x18_Unit_Test {
         x / y;
     }
 
-    // forge-lint: disable-next-line(mixed-case-function)
     modifier whenDenominatorNotMinSD59x18() {
         _;
     }
@@ -100,7 +99,6 @@ contract Div_Unit_Test is SD59x18_Unit_Test {
         x / y;
     }
 
-    // forge-lint: disable-next-line(mixed-case-function)
     modifier whenNumeratorNotMinSD59x18() {
         _;
     }
@@ -131,7 +129,6 @@ contract Div_Unit_Test is SD59x18_Unit_Test {
         x / y;
     }
 
-    // forge-lint: disable-next-line(mixed-case-function)
     modifier whenResultDoesNotOverflowSD59x18() {
         _;
     }

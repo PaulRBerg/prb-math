@@ -27,7 +27,6 @@ contract CeilTest is UD60x18_Unit_Test {
         ceil(x);
     }
 
-    // forge-lint: disable-next-line(mixed-case-function)
     modifier whenLteMaxWholeUD60x18() {
         _;
     }

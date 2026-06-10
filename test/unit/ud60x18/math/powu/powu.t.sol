@@ -59,7 +59,6 @@ contract Powu_Unit_Test is UD60x18_Unit_Test {
         powu(x, y);
     }
 
-    // forge-lint: disable-next-line(mixed-case-function)
     modifier whenResultDoesNotOverflowUD60x18() {
         _;
     }

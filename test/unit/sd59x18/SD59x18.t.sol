@@ -14,19 +14,13 @@ abstract contract SD59x18_Unit_Test is Base_Test {
                                       CONSTANTS
     //////////////////////////////////////////////////////////////////////////*/
 
-    // forge-lint: disable-next-line(screaming-snake-case-const)
     SD59x18 internal constant MAX_SCALED_SD59x18 = SD59x18.wrap(57896044618658097711785492504343953926634_992332820282019728);
-    // forge-lint: disable-next-line(screaming-snake-case-const)
     SD59x18 internal constant MIN_SCALED_SD59x18 = SD59x18.wrap(-57896044618658097711785492504343953926634_992332820282019728);
     SD59x18 internal constant NEGATIVE_E = SD59x18.wrap(-2_718281828459045235);
     SD59x18 internal constant NEGATIVE_PI = SD59x18.wrap(-3_141592653589793238);
-    // forge-lint: disable-next-line(screaming-snake-case-const)
     SD59x18 internal constant SQRT_MAX_SD59x18 = SD59x18.wrap(240615969168004511545033772477_625056927114980741);
-    // forge-lint: disable-next-line(screaming-snake-case-const)
     SD59x18 internal constant SQRT_MAX_UD60x18 = SD59x18.wrap(340282366920938463463374607431_768211455999999999);
-    // forge-lint: disable-next-line(screaming-snake-case-const)
     SD59x18 internal constant NEGATIVE_SQRT_MAX_SD59x18 = SD59x18.wrap(-240615969168004511545033772477_625056927114980741);
-    // forge-lint: disable-next-line(screaming-snake-case-const)
     SD59x18 internal constant NEGATIVE_SQRT_MAX_UD60x18 = SD59x18.wrap(-340282366920938463463374607431_768211455999999999);
 
     /// @dev This is needed to be passed as the "expected" argument. The "set" function cannot be overridden

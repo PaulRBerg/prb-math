@@ -27,7 +27,6 @@ contract Abs_Unit_Test is SD59x18_Unit_Test {
         abs(x);
     }
 
-    // forge-lint: disable-next-line(mixed-case-function)
     modifier whenNotMinSD59x18() {
         _;
     }

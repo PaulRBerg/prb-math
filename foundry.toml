@@ -18,7 +18,7 @@
   verbosity = 3
 
 [lint]
-  exclude_lints = ["unsafe-typecast"]
+  exclude_lints = ["mixed-case-function", "screaming-snake-case-const", "unsafe-typecast"]
 
 [fmt]
   bracket_spacing = true

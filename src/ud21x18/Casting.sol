@@ -9,14 +9,12 @@ import { UD21x18 } from "./ValueType.sol";
 
 /// @notice Casts a UD21x18 number into SD59x18.
 /// @dev There is no overflow check because UD21x18 ⊆ SD59x18.
-// forge-lint: disable-next-line(mixed-case-function)
 function intoSD59x18(UD21x18 x) pure returns (SD59x18 result) {
     result = SD59x18.wrap(int256(uint256(UD21x18.unwrap(x))));
 }
 
 /// @notice Casts a UD21x18 number into UD60x18.
 /// @dev There is no overflow check because UD21x18 ⊆ UD60x18.
-// forge-lint: disable-next-line(mixed-case-function)
 function intoUD60x18(UD21x18 x) pure returns (UD60x18 result) {
     result = UD60x18.wrap(UD21x18.unwrap(x));
 }

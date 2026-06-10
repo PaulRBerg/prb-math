@@ -24,7 +24,6 @@ function intoInt256(SD59x18 x) pure returns (int256 result) {
 /// @dev Requirements:
 /// - x ≥ uMIN_SD1x18
 /// - x ≤ uMAX_SD1x18
-// forge-lint: disable-next-line(mixed-case-function)
 function intoSD1x18(SD59x18 x) pure returns (SD1x18 result) {
     int256 xInt = SD59x18.unwrap(x);
     if (xInt < uMIN_SD1x18) {
@@ -40,7 +39,6 @@ function intoSD1x18(SD59x18 x) pure returns (SD1x18 result) {
 /// @dev Requirements:
 /// - x ≥ uMIN_SD21x18
 /// - x ≤ uMAX_SD21x18
-// forge-lint: disable-next-line(mixed-case-function)
 function intoSD21x18(SD59x18 x) pure returns (SD21x18 result) {
     int256 xInt = SD59x18.unwrap(x);
     if (xInt < uMIN_SD21x18) {
@@ -56,7 +54,6 @@ function intoSD21x18(SD59x18 x) pure returns (SD21x18 result) {
 /// @dev Requirements:
 /// - x ≥ 0
 /// - x ≤ uMAX_UD2x18
-// forge-lint: disable-next-line(mixed-case-function)
 function intoUD2x18(SD59x18 x) pure returns (UD2x18 result) {
     int256 xInt = SD59x18.unwrap(x);
     if (xInt < 0) {
@@ -72,7 +69,6 @@ function intoUD2x18(SD59x18 x) pure returns (UD2x18 result) {
 /// @dev Requirements:
 /// - x ≥ 0
 /// - x ≤ uMAX_UD21x18
-// forge-lint: disable-next-line(mixed-case-function)
 function intoUD21x18(SD59x18 x) pure returns (UD21x18 result) {
     int256 xInt = SD59x18.unwrap(x);
     if (xInt < 0) {
@@ -87,7 +83,6 @@ function intoUD21x18(SD59x18 x) pure returns (UD21x18 result) {
 /// @notice Casts an SD59x18 number into UD60x18.
 /// @dev Requirements:
 /// - x ≥ 0
-// forge-lint: disable-next-line(mixed-case-function)
 function intoUD60x18(SD59x18 x) pure returns (UD60x18 result) {
     int256 xInt = SD59x18.unwrap(x);
     if (xInt < 0) {
