@@ -26,3 +26,4 @@ import "./sd59x18/Errors.sol";
 import "./sd59x18/Helpers.sol";
 import "./sd59x18/Math.sol";
 import "./sd59x18/ValueType.sol";
+import { cos, sin } from "./sd59x18/Trigonometry.sol";
