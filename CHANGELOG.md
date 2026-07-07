@@ -175,11 +175,21 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 
 ## [3.3.1] - 2023-03-17
 
+### Security
+
+- **`exp2` bug**: This version contains a bug in `Common.exp2` due to duplicated bitmasks. Upgrade to v3.3.2 or later. See
+  [#178](https://github.com/PaulRBerg/prb-math/issues/178).
+
 ### Changed
 
 - Bump submodules (@PaulRBerg)
 
 ## [3.3.0] - 2023-02-06
+
+### Security
+
+- **`exp2` bug**: This version contains a bug in `Common.exp2` due to duplicated bitmasks. Upgrade to v3.3.2 or later. See
+  [#178](https://github.com/PaulRBerg/prb-math/issues/178).
 
 ### Changed
 
@@ -202,6 +212,11 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 
 ## [3.2.0] - 2022-12-13
 
+### Security
+
+- **`exp2` bug**: This version contains a bug in `Common.exp2` due to duplicated bitmasks. Upgrade to v3.3.2 or later. See
+  [#178](https://github.com/PaulRBerg/prb-math/issues/178).
+
 ### Added
 
 - Add assertions for array comparisons (@PaulRBerg)
@@ -216,6 +231,11 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 
 ## [3.1.0] - 2022-12-13
 
+### Security
+
+- **`exp2` bug**: This version contains a bug in `Common.exp2` due to duplicated bitmasks. Upgrade to v3.3.2 or later. See
+  [#178](https://github.com/PaulRBerg/prb-math/issues/178).
+
 ### Added
 
 - Add value types `SD1x18` and `UD2x18` (@PaulRBerg)
@@ -224,6 +244,11 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 
 [1b82ea]: https://github.com/PaulRBerg/prb-math/commit/1b82ea
 [a69b4b]: https://github.com/PaulRBerg/prb-math/commit/a69b4b
+
+### Security
+
+- **`exp2` bug**: This version contains a bug in `Common.exp2` due to duplicated bitmasks. Upgrade to v3.3.2 or later. See
+  [#178](https://github.com/PaulRBerg/prb-math/issues/178).
 
 ### Changed
 
