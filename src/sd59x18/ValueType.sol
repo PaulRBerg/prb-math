@@ -8,6 +8,9 @@ import "./Math.sol" as Math;
 /// @notice The signed 59.18-decimal fixed-point number representation, which can have up to 59 digits and up to 18
 /// decimals. The values of this are bound by the minimum and the maximum values permitted by the underlying Solidity
 /// type int256.
+/// @dev The underlying int256 stores the value scaled by 1e18, so 1e18 represents 1.0. Unlike the narrower UDVTs
+/// in this library, SD59x18 exposes full arithmetic via the attached Math and Helpers functions and the global
+/// operator overloads.
 type SD59x18 is int256;
 
 /*//////////////////////////////////////////////////////////////////////////
