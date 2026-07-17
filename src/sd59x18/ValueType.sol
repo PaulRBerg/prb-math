@@ -48,6 +48,7 @@ using {
     Math.mul,
     Math.pow,
     Math.powu,
+    Math.sign,
     Math.sqrt
 } for SD59x18 global;
 

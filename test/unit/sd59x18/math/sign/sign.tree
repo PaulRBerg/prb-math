@@ -1,0 +1,7 @@
+sign.t.sol
+├── when x is zero
+│  └── it should return zero
+├── when x is negative
+│  └── it should return minus one
+└── when x is positive
+   └── it should return one
