@@ -31,17 +31,17 @@ test/
 
 ## Commands
 
-- `bun run build` - Build with Forge
-- `bun run test` - Run tests (`forge test`)
-- `bun run full-check` - Prettier + Solhint + Forge format check
-- `bun run full-write` - Auto-fix all formatting issues
+- `just build` - Build with Forge
+- `just test` - Run tests (`forge test`)
+- `just full-check` - Prettier + Solhint + Forge format check
+- `just full-write` - Auto-fix all formatting issues
 
 ## Development
 
 After generating or updating code:
 
-1. Run `bun run full-check` to verify
-2. If errors, run `bun run full-write` to auto-fix
+1. Run `just full-check` to verify
+2. If errors, run `just full-write` to auto-fix
 3. Fix remaining issues manually
 
 Install dependencies: `bun install` or `bun install -d <pkg>` for dev deps.
