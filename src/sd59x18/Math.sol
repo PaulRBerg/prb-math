@@ -496,11 +496,11 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
     }
 
     unchecked {
-        int256 sign;
+        int256 signFactor;
         if (xInt >= uUNIT) {
-            sign = 1;
+            signFactor = 1;
         } else {
-            sign = -1;
+            signFactor = -1;
             // Inline the fixed-point inversion to save gas.
             xInt = uUNIT_SQUARED / xInt;
         }
@@ -517,7 +517,7 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
 
         // If y is the unit number, the fractional part is zero.
         if (y == uUNIT) {
-            return wrap(resultInt * sign);
+            return wrap(resultInt * signFactor);
         }
 
         // Calculate the fractional part via the iterative approximation.
@@ -535,7 +535,7 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
                 y >>= 1;
             }
         }
-        resultInt *= sign;
+        resultInt *= signFactor;
         result = wrap(resultInt);
     }
 }
@@ -692,11 +692,12 @@ function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
 function sign(SD59x18 x) pure returns (SD59x18 result) {
     int256 xInt = x.unwrap();
     if (xInt > 0) {
-        result = wrap(uUNIT);
-    } else if (xInt < 0) {
-        result = wrap(-uUNIT);
+        return UNIT;
     }
-    // When x is zero, the result defaults to ZERO.
+    if (xInt < 0) {
+        return wrap(-uUNIT);
+    }
+    return ZERO;
 }
 
 /// @notice Calculates the square root of x using the Babylonian method.

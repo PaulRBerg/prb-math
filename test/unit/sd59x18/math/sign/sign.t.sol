@@ -8,7 +8,7 @@ import { SD59x18 } from "src/sd59x18/ValueType.sol";
 import { SD59x18_Unit_Test } from "../../SD59x18.t.sol";
 
 contract Sign_Unit_Test is SD59x18_Unit_Test {
-    function test_Sign_Zero() external {
+    function test_Sign_Zero() external pure {
         SD59x18 x = ZERO;
         SD59x18 actual = sign(x);
         assertEq(actual, ZERO, "SD59x18 sign zero");
