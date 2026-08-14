@@ -10,7 +10,7 @@
     "url": "https://github.com/PaulRBerg/prb-math/issues"
   },
   "devDependencies": {
-    "forge-std": "github:foundry-rs/forge-std#v1.9.7",
+    "forge-std": "github:foundry-rs/forge-std#v1.16.2",
     "prettier": "^3.7.4",
     "solhint": "^6.0.2"
   },
