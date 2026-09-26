@@ -45,6 +45,7 @@ using {
     Math.log10,
     Math.log2,
     Math.mul,
+    Math.mulDiv,
     Math.pow,
     Math.powu,
     Math.sqrt
