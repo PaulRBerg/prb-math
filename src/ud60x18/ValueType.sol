@@ -7,7 +7,9 @@ import "./Math.sol" as Math;
 
 /// @notice The unsigned 60.18-decimal fixed-point number representation, which can have up to 60 digits and up to 18
 /// decimals. The values of this are bound by the minimum and the maximum values permitted by the Solidity type uint256.
-/// @dev The value type is defined here so it can be imported in all other files.
+/// @dev The underlying uint256 stores the value scaled by 1e18, so 1e18 represents 1.0. Like SD59x18, UD60x18 exposes
+/// full arithmetic via the attached Math and Helpers functions and the global operator overloads. The value type is
+/// defined here so it can be imported in all other files.
 type UD60x18 is uint256;
 
 /*//////////////////////////////////////////////////////////////////////////
