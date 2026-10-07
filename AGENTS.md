@@ -33,6 +33,16 @@ test/
 - `just full-check` - Prettier + Solhint + Forge format check
 - `just full-write` - Auto-fix all formatting issues
 
+## Releases
+
+- npm publishing runs only in `.github/workflows/release.yml` through npm trusted publishing in staged mode. Never run `npm publish`,
+  `npm stage approve`, or `npm stage reject` locally.
+- To ship: bump the version and changelog, commit, create the annotated tag `vX.Y.Z` (prerelease: `vX.Y.Z-beta.N`), push the commit, then run
+  `git push origin <tag>`.
+- CI stages the version. It stays unpublished until the maintainer approves it with 2FA on npmjs.com (Staged Packages) or
+  `npm stage approve <stage-id>`. Prereleases use their identifier as the dist-tag.
+- Setup, once: `npm trust github @prb/math --repo PaulRBerg/prb-math --file release.yml --allow-stage-publish -y`
+
 ## Development
 
 After generating or updating code:

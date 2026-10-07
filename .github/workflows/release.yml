@@ -1,14 +1,18 @@
 # Creates GitHub releases automatically when version tags (e.g. v1.0.0) are pushed.
 # Also syncs version branches (e.g. v4.2.0 -> v4 and release-v4).
+# Stages the npm package through trusted publishing (OIDC). It publishes only after maintainer approval.
+# Prerelease tags (e.g. v1.0.0-beta.1) skip the GitHub release and branch sync.
 name: Release
 
 on:
   push:
     tags:
       - "v[0-9]+.[0-9]+.[0-9]+"
+      - "v[0-9]+.[0-9]+.[0-9]+-*"
 
 jobs:
   release:
+    if: ${{ !contains(github.ref_name, '-') }}
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
@@ -35,3 +39,45 @@ jobs:
             git checkout -B "$BRANCH"
             git push origin "$BRANCH" --force
           done
+
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          package-manager-cache: false
+
+      - name: Install npm with staged publishing support
+        run: npm install --global npm@11.20.0
+
+      - name: Check the tag and derive the dist-tag
+        env:
+          TAG_NAME: ${{ github.ref_name }}
+        run: | #shell
+          VERSION=$(node -p "require('./package.json').version")
+          if [[ "$TAG_NAME" != "v$VERSION" ]]; then
+            echo "::error::Tag '$TAG_NAME' does not match package.json version '$VERSION'"
+            exit 1
+          fi
+
+          # Prerelease identifier is the dist-tag (e.g., 1.0.0-beta.3 -> beta). Stable versions omit --tag, so npm
+          # refuses to move `latest` back to an older version.
+          DIST_TAG=""
+          if [[ "$VERSION" == *-* ]]; then
+            PRERELEASE="${VERSION#*-}"
+            DIST_TAG="${PRERELEASE%%.*}"
+          fi
+          echo "DIST_TAG=$DIST_TAG" >> "$GITHUB_ENV"
+
+      - name: Stage the package for approval
+        run: npm stage publish ${DIST_TAG:+--tag "$DIST_TAG"}
