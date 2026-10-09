@@ -44,3 +44,6 @@ error PRBMath_UD60x18_Log_InputTooSmall(UD60x18 x);
 
 /// @notice Thrown when calculating the square root overflows UD60x18.
 error PRBMath_UD60x18_Sqrt_Overflow(UD60x18 x);
+
+/// @notice Thrown when taking the product logarithm of a number greater than MAX_UD60x18 - UNIT.
+error PRBMath_UD60x18_ProductLn_InputTooBig(UD60x18 x);
