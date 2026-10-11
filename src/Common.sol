@@ -568,12 +568,6 @@ function mulDivSigned(int256 x, int256 y, int256 denominator) pure returns (int2
         dAbs = denominator < 0 ? uint256(-denominator) : uint256(denominator);
     }
 
-    // Compute the absolute value of x*y÷denominator. The result must fit in int256.
-    uint256 resultAbs = mulDiv(xAbs, yAbs, dAbs);
-    if (resultAbs > uint256(type(int256).max)) {
-        revert PRBMath_MulDivSigned_Overflow(x, y);
-    }
-
     // Get the signs of x, y and the denominator.
     uint256 sx;
     uint256 sy;
@@ -587,8 +581,21 @@ function mulDivSigned(int256 x, int256 y, int256 denominator) pure returns (int2
 
     // XOR over sx, sy and sd. What this does is to check whether there are 1 or 3 negative signs in the inputs.
     // If there are, the result should be negative. Otherwise, it should be positive.
+    bool isNegative = sx ^ sy ^ sd == 0;
+
+    // Compute the absolute value of x*y÷denominator. The result must fit in int256.
+    uint256 resultAbs = mulDiv(xAbs, yAbs, dAbs);
+    uint256 maxResultAbs = uint256(type(int256).max) + (isNegative ? 1 : 0);
+    if (resultAbs > maxResultAbs) {
+        revert PRBMath_MulDivSigned_Overflow(x, y);
+    }
+
+    if (isNegative && resultAbs == uint256(type(int256).max) + 1) {
+        return type(int256).min;
+    }
+
     unchecked {
-        result = sx ^ sy ^ sd == 0 ? -int256(resultAbs) : int256(resultAbs);
+        result = isNegative ? -int256(resultAbs) : int256(resultAbs);
     }
 }
 

@@ -135,15 +135,20 @@ function div(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
         yAbs = yInt < 0 ? uint256(-yInt) : uint256(yInt);
     }
 
-    // Compute the absolute value (x*UNIT÷y). The resulting value must fit in SD59x18.
-    uint256 resultAbs = Common.mulDiv(xAbs, uint256(uUNIT), yAbs);
-    if (resultAbs > uint256(uMAX_SD59x18)) {
-        revert Errors.PRBMath_SD59x18_Div_Overflow(x, y);
-    }
-
     // Check if x and y have the same sign using two's complement representation. The left-most bit represents the sign (1 for
     // negative, 0 for positive or zero).
     bool sameSign = (xInt ^ yInt) > -1;
+
+    // Compute the absolute value (x*UNIT÷y). The resulting value must fit in SD59x18.
+    uint256 resultAbs = Common.mulDiv(xAbs, uint256(uUNIT), yAbs);
+    uint256 maxResultAbs = uint256(uMAX_SD59x18) + (sameSign ? 0 : 1);
+    if (resultAbs > maxResultAbs) {
+        revert Errors.PRBMath_SD59x18_Div_Overflow(x, y);
+    }
+
+    if (!sameSign && resultAbs == uint256(uMAX_SD59x18) + 1) {
+        return wrap(type(int256).min);
+    }
 
     // If the inputs have the same sign, the result should be positive. Otherwise, it should be negative.
     unchecked {
@@ -569,15 +574,20 @@ function mul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
         yAbs = yInt < 0 ? uint256(-yInt) : uint256(yInt);
     }
 
-    // Compute the absolute value (x*y÷UNIT). The resulting value must fit in SD59x18.
-    uint256 resultAbs = Common.mulDiv18(xAbs, yAbs);
-    if (resultAbs > uint256(uMAX_SD59x18)) {
-        revert Errors.PRBMath_SD59x18_Mul_Overflow(x, y);
-    }
-
     // Check if x and y have the same sign using two's complement representation. The left-most bit represents the sign (1 for
     // negative, 0 for positive or zero).
     bool sameSign = (xInt ^ yInt) > -1;
+
+    // Compute the absolute value (x*y÷UNIT). The resulting value must fit in SD59x18.
+    uint256 resultAbs = Common.mulDiv18(xAbs, yAbs);
+    uint256 maxResultAbs = uint256(uMAX_SD59x18) + (sameSign ? 0 : 1);
+    if (resultAbs > maxResultAbs) {
+        revert Errors.PRBMath_SD59x18_Mul_Overflow(x, y);
+    }
+
+    if (!sameSign && resultAbs == uint256(uMAX_SD59x18) + 1) {
+        return wrap(type(int256).min);
+    }
 
     // If the inputs have the same sign, the result should be positive. Otherwise, it should be negative.
     unchecked {
@@ -663,15 +673,21 @@ function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
         }
     }
 
+    // Is the base negative and the exponent odd? If yes, the result should be negative.
+    bool isNegative = x.unwrap() < 0 && y & 1 == 1;
+
     // The result must fit in SD59x18.
-    if (resultAbs > uint256(uMAX_SD59x18)) {
+    uint256 maxResultAbs = uint256(uMAX_SD59x18) + (isNegative ? 1 : 0);
+    if (resultAbs > maxResultAbs) {
         revert Errors.PRBMath_SD59x18_Powu_Overflow(x, y);
     }
 
+    if (isNegative && resultAbs == uint256(uMAX_SD59x18) + 1) {
+        return wrap(type(int256).min);
+    }
+
     unchecked {
-        // Is the base negative and the exponent odd? If yes, the result should be negative.
         int256 resultInt = int256(resultAbs);
-        bool isNegative = x.unwrap() < 0 && y & 1 == 1;
         if (isNegative) {
             resultInt = -resultInt;
         }
