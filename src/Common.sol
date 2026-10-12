@@ -585,15 +585,12 @@ function mulDivSigned(int256 x, int256 y, int256 denominator) pure returns (int2
 
     // Compute the absolute value of x*y÷denominator. The result must fit in int256.
     uint256 resultAbs = mulDiv(xAbs, yAbs, dAbs);
-    uint256 maxResultAbs = uint256(type(int256).max) + (isNegative ? 1 : 0);
+    uint256 maxResultAbs = isNegative ? uint256(type(int256).max) + 1 : uint256(type(int256).max);
     if (resultAbs > maxResultAbs) {
         revert PRBMath_MulDivSigned_Overflow(x, y);
     }
 
-    if (isNegative && resultAbs == uint256(type(int256).max) + 1) {
-        return type(int256).min;
-    }
-
+    // Unchecked negation also handles the minimum signed result, whose magnitude is 2^255.
     unchecked {
         result = isNegative ? -int256(resultAbs) : int256(resultAbs);
     }

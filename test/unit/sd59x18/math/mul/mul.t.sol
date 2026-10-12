@@ -11,6 +11,33 @@ import { SD59x18 } from "src/sd59x18/ValueType.sol";
 import { SD59x18_Unit_Test } from "../../SD59x18.t.sol";
 
 contract Mul_Unit_Test is SD59x18_Unit_Test {
+    function test_Mul_ResultMinSD59x18() external pure {
+        SD59x18 x = sd(MIN_INT256 / 2);
+        SD59x18 y = sd(2e18);
+        assertEq(mul(x, y), MIN_SD59x18);
+        assertEq(x * y, MIN_SD59x18);
+        assertEq(mul(-x, -y), MIN_SD59x18);
+        assertEq(-x * -y, MIN_SD59x18);
+    }
+
+    function test_RevertWhen_Mul_ResultMaxPlusOne() external {
+        SD59x18 x = sd(-(MIN_INT256 / 2));
+        SD59x18 y = sd(2e18);
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Mul_Overflow.selector, x, y));
+        mul(x, y);
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Mul_Overflow.selector, -x, -y));
+        -x * -y;
+    }
+
+    function test_RevertWhen_Mul_ResultBelowMin() external {
+        SD59x18 x = sd(MIN_INT256 / 2 - 1);
+        SD59x18 y = sd(2e18);
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Mul_Overflow.selector, x, y));
+        mul(x, y);
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Mul_Overflow.selector, -x, -y));
+        -x * -y;
+    }
+
     function oneOperandZeroSets() internal returns (Set[] memory) {
         delete sets;
         sets.push(set({ x: MIN_SD59x18 + sd(1), y: 0, expected: 0 }));
