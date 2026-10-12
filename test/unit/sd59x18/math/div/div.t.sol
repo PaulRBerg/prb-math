@@ -12,6 +12,33 @@ import { SD59x18 } from "src/sd59x18/ValueType.sol";
 import { SD59x18_Unit_Test } from "../../SD59x18.t.sol";
 
 contract Div_Unit_Test is SD59x18_Unit_Test {
+    function test_Div_ResultMinSD59x18() external pure {
+        SD59x18 x = sd(MIN_INT256 / 2);
+        SD59x18 y = sd(0.5e18);
+        assertEq(div(x, y), MIN_SD59x18);
+        assertEq(x / y, MIN_SD59x18);
+        assertEq(div(-x, -y), MIN_SD59x18);
+        assertEq(-x / -y, MIN_SD59x18);
+    }
+
+    function test_RevertWhen_Div_ResultMaxPlusOne() external {
+        SD59x18 x = sd(-(MIN_INT256 / 2));
+        SD59x18 y = sd(0.5e18);
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Div_Overflow.selector, x, y));
+        div(x, y);
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Div_Overflow.selector, -x, -y));
+        -x / -y;
+    }
+
+    function test_RevertWhen_Div_ResultBelowMin() external {
+        SD59x18 x = sd(MIN_INT256 / 2 - 1);
+        SD59x18 y = sd(0.5e18);
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Div_Overflow.selector, x, y));
+        div(x, y);
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Div_Overflow.selector, -x, -y));
+        -x / -y;
+    }
+
     function test_RevertWhen_DenominatorZero_Function() external {
         SD59x18 x = sd(1e18);
         SD59x18 y = ZERO;

@@ -20,6 +20,24 @@ import { SD59x18 } from "src/sd59x18/ValueType.sol";
 import { SD59x18_Unit_Test } from "../../SD59x18.t.sol";
 
 contract Powu_Unit_Test is SD59x18_Unit_Test {
+    function test_Powu_ResultMinSD59x18() external pure {
+        // Cubing this raw base and dividing by UNIT twice yields exactly -2^255.
+        SD59x18 x = sd(-int256(2 ** 85) * 1e12);
+        assertEq(powu(x, 3), MIN_SD59x18);
+    }
+
+    function test_RevertWhen_Powu_ResultMaxPlusOne() external {
+        SD59x18 x = sd(int256(2 ** 85) * 1e12);
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Powu_Overflow.selector, x, 3));
+        powu(x, 3);
+    }
+
+    function test_RevertWhen_Powu_ResultBelowMin() external {
+        SD59x18 x = sd(-int256(2 ** 85) * 1e12 - 1);
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Powu_Overflow.selector, x, 3));
+        powu(x, 3);
+    }
+
     function test_Powu_BaseAndExponentZero() external pure {
         SD59x18 x = ZERO;
         uint256 y = 0;
