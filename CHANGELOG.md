@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Common Changelog](https://common-changelog.org/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+[4.2.1]: https://github.com/PaulRBerg/prb-math/compare/v4.2.0...v4.2.1
 [4.2.0]: https://github.com/PaulRBerg/prb-math/compare/v4.1.2...v4.2.0
 [4.1.2]: https://github.com/PaulRBerg/prb-math/compare/v4.1.1...v4.1.2
 [4.1.1]: https://github.com/PaulRBerg/prb-math/compare/v4.1.0...v4.1.1
@@ -36,6 +37,13 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 [1.0.2]: https://github.com/PaulRBerg/prb-math/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/PaulRBerg/prb-math/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/PaulRBerg/prb-math/releases/tag/v1.0.0
+
+## [4.2.1] - 2026-10-12
+
+### Fixed
+
+- Allow `Common.mulDivSigned`, `SD59x18.mul`, `SD59x18.div`, and `SD59x18.powu` to return the minimum signed value instead of reverting with a false
+  overflow when the result is exactly `-2^255` ([#290](https://github.com/PaulRBerg/prb-math/pull/290)) (@zerozebrazone)
 
 ## [4.2.0] - 2026-08-03
 
