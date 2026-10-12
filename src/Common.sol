@@ -542,6 +542,7 @@ function mulDiv18(uint256 x, uint256 y) pure returns (uint256 result) {
 ///
 /// Notes:
 /// - The result is rounded toward zero.
+/// - The result can be `type(int256).min`, which is not a valid input to this function.
 ///
 /// Requirements:
 /// - Refer to the requirements in {mulDiv}.

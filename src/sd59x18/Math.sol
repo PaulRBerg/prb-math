@@ -109,6 +109,7 @@ function ceil(SD59x18 x) pure returns (SD59x18 result) {
 /// Notes:
 /// - Refer to the notes in {Common.mulDiv}.
 /// - The result is rounded toward zero.
+/// - The result can be `MIN_SD59x18`, which is not a valid input to {abs}, {div}, {mul}, or {powu}.
 ///
 /// Requirements:
 /// - Refer to the requirements in {Common.mulDiv}.
@@ -546,6 +547,7 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
 ///
 /// @dev Notes:
 /// - Refer to the notes in {Common.mulDiv18}.
+/// - The result can be `MIN_SD59x18`, which is not a valid input to {abs}, {div}, {mul}, or {powu}.
 ///
 /// Requirements:
 /// - Refer to the requirements in {Common.mulDiv18}.
@@ -640,6 +642,7 @@ function pow(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 /// Notes:
 /// - Refer to the notes in {Common.mulDiv18}.
 /// - Returns `UNIT` for 0^0.
+/// - The result can be `MIN_SD59x18`, which is not a valid input to {abs}, {div}, {mul}, or {powu}.
 ///
 /// Requirements:
 /// - If y is greater than zero, refer to the requirements in {abs} and {Common.mulDiv18}.
