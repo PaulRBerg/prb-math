@@ -450,6 +450,27 @@ function mul(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
     result = wrap(Common.mulDiv18(x.unwrap(), y.unwrap()));
 }
 
+/// @notice Calculates the product of x and y, divided by the denominator.
+///
+/// @dev Uses {Common.mulDiv} to enable overflow-safe multiplication and division.
+///
+/// Notes:
+/// - Refer to the notes in {Common.mulDiv}.
+/// - The result is correctly scaled to UD60x18: since x, y, and the denominator are each scaled by 1e18, computing
+/// `x * y / denominator` on the raw integers already yields a value scaled by 1e18.
+///
+/// Requirements:
+/// - Refer to the requirements in {Common.mulDiv}.
+///
+/// @param x The first multiplicand as a UD60x18 number.
+/// @param y The second multiplicand as a UD60x18 number.
+/// @param denominator The denominator as a UD60x18 number.
+/// @return result The quotient as a UD60x18 number.
+/// @custom:smtchecker abstract-function-nondet
+function mulDiv(UD60x18 x, UD60x18 y, UD60x18 denominator) pure returns (UD60x18 result) {
+    result = wrap(Common.mulDiv(x.unwrap(), y.unwrap(), denominator.unwrap()));
+}
+
 /// @notice Raises x to the power of y.
 ///
 /// For $1 \leq x \leq \infty$, the following standard formula is used:
