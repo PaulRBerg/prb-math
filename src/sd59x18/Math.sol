@@ -109,7 +109,8 @@ function ceil(SD59x18 x) pure returns (SD59x18 result) {
 /// Notes:
 /// - Refer to the notes in {Common.mulDiv}.
 /// - The result is rounded toward zero.
-/// - The result can be `MIN_SD59x18`, which is not a valid input to {abs}, {div}, {mul}, or {powu}.
+/// - The result can be `MIN_SD59x18`, which is not a valid input to {abs}, {div}, or {mul}, and can only be used as a base
+///   in {powu} when the exponent is zero or one.
 ///
 /// Requirements:
 /// - Refer to the requirements in {Common.mulDiv}.
@@ -547,7 +548,8 @@ function log2(SD59x18 x) pure returns (SD59x18 result) {
 ///
 /// @dev Notes:
 /// - Refer to the notes in {Common.mulDiv18}.
-/// - The result can be `MIN_SD59x18`, which is not a valid input to {abs}, {div}, {mul}, or {powu}.
+/// - The result can be `MIN_SD59x18`, which is not a valid input to {abs}, {div}, or {mul}, and can only be used as a base
+///   in {powu} when the exponent is zero or one.
 ///
 /// Requirements:
 /// - Refer to the requirements in {Common.mulDiv18}.
@@ -642,10 +644,11 @@ function pow(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 /// Notes:
 /// - Refer to the notes in {Common.mulDiv18}.
 /// - Returns `UNIT` for 0^0.
-/// - The result can be `MIN_SD59x18`, which is not a valid input to {abs}, {div}, {mul}, or {powu}.
+/// - The result can be `MIN_SD59x18`, which is not a valid input to {abs}, {div}, or {mul}, and can only be used as a base
+///   in {powu} when the exponent is zero or one.
 ///
 /// Requirements:
-/// - If y is greater than zero, refer to the requirements in {abs} and {Common.mulDiv18}.
+/// - If y is greater than one, refer to the requirements in {abs} and {Common.mulDiv18}.
 /// - The result must fit in SD59x18.
 ///
 /// @param x The base as an SD59x18 number.
@@ -654,6 +657,7 @@ function pow(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 /// @custom:smtchecker abstract-function-nondet
 function powu(SD59x18 x, uint256 y) pure returns (SD59x18 result) {
     if (y == 0) return UNIT;
+    if (y == 1) return x;
     uint256 xAbs = uint256(abs(x).unwrap());
 
     // Calculate the first iteration of the loop in advance.
