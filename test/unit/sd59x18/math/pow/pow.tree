@@ -9,7 +9,7 @@ pow.t.sol
    │  └── it should return the unit number
    └── when the base is not the unit number
       ├── when the exponent is zero
-      │  └── it should return the base
+      │  └── it should return the unit number
       └── when the exponent is not zero
          ├── when the exponent is the unit number
          │  └── it should return the base
@@ -18,3 +18,17 @@ pow.t.sol
             │  └── it should return the correct value
             └── when the exponent is positive
                └── it should return the correct value
+
+Additional exponent boundary cases
+├── a base above or below one with an exponent immediately above one
+│  └── it should preserve ordering with the base
+├── the immediate neighbors of base one
+│  └── it should clamp logarithm plateaus at the base when needed
+└── exponents immediately below and above one
+   └── it should bracket the exact exponent-one result in the correct direction
+
+Negative bases
+├── an exponent of zero or one
+│  └── it should preserve the existing exact early return
+└── a general exponent
+   └── it should preserve the logarithm domain revert

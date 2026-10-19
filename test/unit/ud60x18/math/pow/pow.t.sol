@@ -66,7 +66,7 @@ contract Pow_Unit_Test is UD60x18_Unit_Test {
 
     function baseGtUnitSets() internal returns (Set[] memory) {
         delete sets;
-        sets.push(set({ x: 1e18 + 1, y: 2e18, expected: 1e18 }));
+        sets.push(set({ x: 1e18 + 1, y: 2e18, expected: 1e18 + 1 }));
         sets.push(set({ x: 2e18, y: 1.5e18, expected: 2_828427124746190097 }));
         sets.push(set({ x: E, y: 1.66976e18, expected: 5_310893029888037560 }));
         sets.push(set({ x: E, y: E, expected: 15_154262241479263793 }));
@@ -128,5 +128,42 @@ contract Pow_Unit_Test is UD60x18_Unit_Test {
     {
         UD60x18 actual = pow(s.x, s.y);
         assertEq(actual, s.expected);
+    }
+
+    function test_Pow_AboveUnitBase_ExponentAboveUnit() external pure {
+        assertEq(pow(UD60x18.wrap(10e18), UD60x18.wrap(1e18 + 1)), UD60x18.wrap(10e18));
+    }
+
+    function test_Pow_BelowUnitBase_ExponentAboveUnit() external pure {
+        assertEq(pow(UD60x18.wrap(0.9e18), UD60x18.wrap(1e18 + 1)), UD60x18.wrap(0.9e18));
+    }
+
+    function test_Pow_BaseUnitNeighbors() external pure {
+        assertEq(pow(UD60x18.wrap(1e18 + 1), UD60x18.wrap(1e18 + 1)), UD60x18.wrap(1e18 + 1));
+        assertEq(pow(UD60x18.wrap(1e18 + 1), UD60x18.wrap(1e18 - 1)), UNIT);
+        assertEq(pow(UD60x18.wrap(1e18 - 1), UD60x18.wrap(1e18 + 1)), UD60x18.wrap(1e18 - 1));
+        assertEq(pow(UD60x18.wrap(1e18 - 1), UD60x18.wrap(1e18 - 1)), UNIT);
+    }
+
+    function test_Pow_ExponentUnitNeighbors() external pure {
+        assertExponentUnitNeighbors(1);
+        assertExponentUnitNeighbors(1e9);
+        assertExponentUnitNeighbors(0.9e18);
+        assertExponentUnitNeighbors(10e18);
+        assertExponentUnitNeighbors(1e36);
+    }
+
+    function assertExponentUnitNeighbors(uint256 raw) internal pure {
+        UD60x18 x = UD60x18.wrap(raw);
+        uint256 below = pow(x, UD60x18.wrap(1e18 - 1)).unwrap();
+        uint256 above = pow(x, UD60x18.wrap(1e18 + 1)).unwrap();
+        assertEq(pow(x, UNIT), x);
+        if (raw > 1e18) {
+            assertLe(below, raw);
+            assertGe(above, raw);
+        } else {
+            assertGe(below, raw);
+            assertLe(above, raw);
+        }
     }
 }

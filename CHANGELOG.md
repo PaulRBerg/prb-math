@@ -38,6 +38,13 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 [1.0.1]: https://github.com/PaulRBerg/prb-math/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/PaulRBerg/prb-math/releases/tag/v1.0.0
 
+## Unreleased
+
+### Fixed
+
+- Preserve ordering around exact powers of ten in `log10` and around exponent one in `pow`, for both `SD59x18` and `UD60x18`
+  ([#291](https://github.com/PaulRBerg/prb-math/issues/291))
+
 ## [4.2.1] - 2026-10-12
 
 ### Fixed

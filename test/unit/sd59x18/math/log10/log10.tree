@@ -9,3 +9,11 @@ log10.t.sol
       │  └── it should return the correct value
       └── when x is not a power of ten
          └── it should return the correct value
+
+Additional decimal boundary cases
+├── all representable exact powers and their valid immediate neighbors
+│  └── it should preserve exact values and stay within the neighboring decade bounds
+├── immediately above ten
+│  └── it should return the exact decade lower bound
+└── the maximum input
+   └── it should stay within the final representable decade

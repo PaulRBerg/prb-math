@@ -50,4 +50,32 @@ contract Pow_Fuzz_Test is Base_Test {
         SD59x18 expected = x;
         assertEq(actual, expected, "SD59x18 pow");
     }
+
+    function testFuzz_Pow_ExponentUnitNeighbors(int256 raw) external pure {
+        raw = bound(raw, 1, 1e36);
+        SD59x18 x = SD59x18.wrap(raw);
+        int256 below = pow(x, SD59x18.wrap(1e18 - 1)).unwrap();
+        int256 above = pow(x, SD59x18.wrap(1e18 + 1)).unwrap();
+        if (raw > 1e18) {
+            assertLe(below, raw);
+            assertGe(above, raw);
+        } else {
+            assertGe(below, raw);
+            assertLe(above, raw);
+        }
+    }
+
+    function testFuzz_Pow_OrderingWithBase(int256 raw, int256 exponent) external pure {
+        // This range keeps both positive and negative exponents inside exp2's domain.
+        raw = bound(raw, 1e9, 1e27);
+        exponent = bound(exponent, -2e18, 2e18);
+        int256 actual = pow(SD59x18.wrap(raw), SD59x18.wrap(exponent)).unwrap();
+        if (raw == 1e18 || exponent == 1e18) {
+            assertEq(actual, raw);
+        } else if ((raw > 1e18) == (exponent > 1e18)) {
+            assertGe(actual, raw);
+        } else {
+            assertLe(actual, raw);
+        }
+    }
 }

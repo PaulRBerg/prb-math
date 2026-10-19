@@ -260,6 +260,8 @@ function ln(UD60x18 x) pure returns (UD60x18 result) {
 ///
 /// @dev Notes:
 /// - Refer to the notes in {log2}.
+/// - Results are approximate except for exact powers of ten.
+/// - Bounds at the surrounding integer logarithms preserve ordering around exact powers of ten.
 ///
 /// Requirements:
 /// - Refer to the requirements in {log2}.
@@ -361,7 +363,18 @@ function log10(UD60x18 x) pure returns (UD60x18 result) {
     if (result.unwrap() == uMAX_UD60x18) {
         unchecked {
             // Inline the fixed-point division to save gas.
-            result = wrap(log2(x).unwrap() * uUNIT / uLOG2_10);
+            uint256 resultUint = log2(x).unwrap() * uUNIT / uLOG2_10;
+
+            // Keep the approximation within the exact integer logarithm bounds.
+            uint256 k = Common.log10(xUint) - 18;
+            uint256 lower = k * uUNIT;
+            uint256 upper = (k + 1) * uUNIT;
+            if (resultUint < lower) {
+                resultUint = lower;
+            } else if (resultUint > upper) {
+                resultUint = upper;
+            }
+            result = wrap(resultUint);
         }
     }
 }
@@ -470,6 +483,7 @@ function mul(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
 /// - Refer to the notes in {log2} and {mul}.
 /// - Returns `UNIT` for 0^0.
 /// - It may not perform well with very small values of x. Consider using SD59x18 as an alternative.
+/// - Special cases are exact. Other results are approximate and clamped to preserve ordering with x at y = 1.
 ///
 /// Requirements:
 /// - Refer to the requirements in {exp2}, {log2}, and {mul}.
@@ -509,6 +523,15 @@ function pow(UD60x18 x, UD60x18 y) pure returns (UD60x18 result) {
         UD60x18 i = wrap(uUNIT_SQUARED / xUint);
         UD60x18 w = exp2(mul(log2(i), y));
         result = wrap(uUNIT_SQUARED / w.unwrap());
+    }
+
+    // Keep the approximation on the correct side of x around y = 1.
+    if ((xUint > uUNIT) == (yUint > uUNIT)) {
+        if (result.unwrap() < xUint) {
+            result = x;
+        }
+    } else if (result.unwrap() > xUint) {
+        result = x;
     }
 }
 
