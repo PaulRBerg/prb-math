@@ -294,6 +294,44 @@ function exp2(uint256 x) pure returns (uint256 result) {
     }
 }
 
+/// @notice Calculates the integer common logarithm of x, rounded down.
+/// @dev This function operates on integers, not fixed-point numbers. Returns zero when x is zero.
+/// @param x The uint256 number for which to calculate the integer common logarithm.
+/// @return result The integer common logarithm as a uint256.
+/// @custom:smtchecker abstract-function-nondet
+function log10(uint256 x) pure returns (uint256 result) {
+    // The result is at most 77, so the additions cannot overflow.
+    unchecked {
+        if (x >= 1e64) {
+            x /= 1e64;
+            result += 64;
+        }
+        if (x >= 1e32) {
+            x /= 1e32;
+            result += 32;
+        }
+        if (x >= 1e16) {
+            x /= 1e16;
+            result += 16;
+        }
+        if (x >= 1e8) {
+            x /= 1e8;
+            result += 8;
+        }
+        if (x >= 1e4) {
+            x /= 1e4;
+            result += 4;
+        }
+        if (x >= 1e2) {
+            x /= 1e2;
+            result += 2;
+        }
+        if (x >= 1e1) {
+            ++result;
+        }
+    }
+}
+
 /// @notice Finds the zero-based index of the first 1 in the binary representation of x.
 ///
 /// @dev See the note on "msb" in this Wikipedia article: https://en.wikipedia.org/wiki/Find_first_set

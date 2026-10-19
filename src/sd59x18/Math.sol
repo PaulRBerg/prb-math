@@ -364,6 +364,8 @@ function ln(SD59x18 x) pure returns (SD59x18 result) {
 ///
 /// @dev Notes:
 /// - Refer to the notes in {log2}.
+/// - Results are approximate except for exact powers of ten.
+/// - Bounds at the surrounding integer logarithms preserve ordering around exact powers of ten.
 ///
 /// Requirements:
 /// - Refer to the requirements in {log2}.
@@ -464,7 +466,18 @@ function log10(SD59x18 x) pure returns (SD59x18 result) {
     if (result.unwrap() == uMAX_SD59x18) {
         unchecked {
             // Inline the fixed-point division to save gas.
-            result = wrap(log2(x).unwrap() * uUNIT / uLOG2_10);
+            int256 resultInt = log2(x).unwrap() * uUNIT / uLOG2_10;
+
+            // Keep the approximation within the exact integer logarithm bounds.
+            int256 k = int256(Common.log10(uint256(xInt))) - 18;
+            int256 lower = k * uUNIT;
+            int256 upper = (k + 1) * uUNIT;
+            if (resultInt < lower) {
+                resultInt = lower;
+            } else if (resultInt > upper) {
+                resultInt = upper;
+            }
+            result = wrap(resultInt);
         }
     }
 }
@@ -600,6 +613,7 @@ function mul(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 /// @dev Notes:
 /// - Refer to the notes in {exp2}, {log2}, and {mul}.
 /// - Returns `UNIT` for 0^0.
+/// - Special cases are exact. Other results are approximate and clamped to preserve ordering with x at y = 1.
 ///
 /// Requirements:
 /// - Refer to the requirements in {exp2}, {log2}, and {mul}.
@@ -632,6 +646,15 @@ function pow(SD59x18 x, SD59x18 y) pure returns (SD59x18 result) {
 
     // Calculate the result using the formula.
     result = exp2(mul(log2(x), y));
+
+    // Keep the approximation on the correct side of x around y = 1.
+    if ((xInt > uUNIT) == (yInt > uUNIT)) {
+        if (result.unwrap() < xInt) {
+            result = x;
+        }
+    } else if (result.unwrap() > xInt) {
+        result = x;
+    }
 }
 
 /// @notice Raises x (an SD59x18 number) to the power y (an unsigned basic integer) using the well-known

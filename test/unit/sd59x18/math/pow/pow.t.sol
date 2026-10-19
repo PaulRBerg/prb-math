@@ -2,6 +2,7 @@
 pragma solidity >=0.8.19 <0.9.0;
 
 import { E, PI, UNIT, ZERO } from "src/sd59x18/Constants.sol";
+import { PRBMath_SD59x18_Log_InputTooSmall } from "src/sd59x18/Errors.sol";
 import { pow } from "src/sd59x18/Math.sol";
 import { SD59x18 } from "src/sd59x18/ValueType.sol";
 
@@ -142,5 +143,57 @@ contract Pow_Unit_Test is SD59x18_Unit_Test {
     {
         SD59x18 actual = pow(s.x, s.y);
         assertEq(actual, s.expected, "SD59x18 pow");
+    }
+
+    function test_Pow_AboveUnitBase_ExponentAboveUnit() external pure {
+        assertEq(pow(SD59x18.wrap(10e18), SD59x18.wrap(1e18 + 1)), SD59x18.wrap(10e18));
+    }
+
+    function test_Pow_BelowUnitBase_ExponentAboveUnit() external pure {
+        assertEq(pow(SD59x18.wrap(0.9e18), SD59x18.wrap(1e18 + 1)), SD59x18.wrap(0.9e18));
+    }
+
+    function test_Pow_BaseUnitNeighbors() external pure {
+        assertEq(pow(SD59x18.wrap(1e18 + 1), SD59x18.wrap(1e18 + 1)), SD59x18.wrap(1e18 + 1));
+        assertEq(pow(SD59x18.wrap(1e18 + 1), SD59x18.wrap(1e18 - 1)), UNIT);
+        assertEq(pow(SD59x18.wrap(1e18 - 1), SD59x18.wrap(1e18 + 1)), SD59x18.wrap(1e18 - 1));
+        assertEq(pow(SD59x18.wrap(1e18 - 1), SD59x18.wrap(1e18 - 1)), UNIT);
+    }
+
+    function test_Pow_ExponentUnitNeighbors() external pure {
+        assertExponentUnitNeighbors(1);
+        assertExponentUnitNeighbors(1e9);
+        assertExponentUnitNeighbors(0.9e18);
+        assertExponentUnitNeighbors(10e18);
+        assertExponentUnitNeighbors(1e36);
+    }
+
+    function assertExponentUnitNeighbors(int256 raw) internal pure {
+        SD59x18 x = SD59x18.wrap(raw);
+        int256 below = pow(x, SD59x18.wrap(1e18 - 1)).unwrap();
+        int256 above = pow(x, SD59x18.wrap(1e18 + 1)).unwrap();
+        assertEq(pow(x, UNIT), x);
+        if (raw > 1e18) {
+            assertLe(below, raw);
+            assertGe(above, raw);
+        } else {
+            assertGe(below, raw);
+            assertLe(above, raw);
+        }
+    }
+
+    function test_Pow_NegativeBase_EarlyReturns() external pure {
+        SD59x18 x = SD59x18.wrap(-1);
+        assertEq(pow(x, ZERO), UNIT);
+        assertEq(pow(x, UNIT), x);
+        x = SD59x18.wrap(type(int256).min);
+        assertEq(pow(x, ZERO), UNIT);
+        assertEq(pow(x, UNIT), x);
+    }
+
+    function test_RevertWhen_Pow_NegativeBase_GeneralExponent() external {
+        SD59x18 x = SD59x18.wrap(-1);
+        vm.expectRevert(abi.encodeWithSelector(PRBMath_SD59x18_Log_InputTooSmall.selector, x));
+        pow(x, SD59x18.wrap(2e18));
     }
 }

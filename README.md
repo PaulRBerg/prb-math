@@ -187,6 +187,10 @@ the source code, which is well-documented with NatSpec comments.
 | `sign`  | N/A      | Sign of the number                               |
 | `sqrt`  | N/A      | Square root                                      |
 
+`log10` and `pow` use approximations and do not guarantee correctly rounded results. `log10` returns exact values at powers of ten and bounds other
+results to the surrounding integer logarithms. For positive bases, `pow` bounds its approximation to the mathematically correct side of the base,
+preserving ordering with the exact exponent-one result. Adjacent inputs can produce equal outputs.
+
 ### 🔗 Adjacent Value Types
 
 PRBMath provides adjacent value types that serve as abstractions over other vanilla types:
