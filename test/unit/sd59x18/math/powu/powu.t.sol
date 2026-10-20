@@ -120,6 +120,7 @@ contract Powu_Unit_Test is SD59x18_Unit_Test {
 
     function negativeBaseSets() internal returns (Set[] memory) {
         delete sets;
+        sets.push(set({ x: MIN_SD59x18, y: 1, expected: MIN_SD59x18 }));
         sets.push(set({ x: MIN_SD59x18 + sd(1), y: 1, expected: MIN_SD59x18 + sd(1) }));
         sets.push(set({ x: MIN_WHOLE_SD59x18, y: 1, expected: MIN_WHOLE_SD59x18 }));
         sets.push(
