@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Common Changelog](https://common-changelog.org/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+[4.2.3]: https://github.com/PaulRBerg/prb-math/compare/v4.2.2...v4.2.3
 [4.2.2]: https://github.com/PaulRBerg/prb-math/compare/v4.2.1...v4.2.2
 [4.2.1]: https://github.com/PaulRBerg/prb-math/compare/v4.2.0...v4.2.1
 [4.2.0]: https://github.com/PaulRBerg/prb-math/compare/v4.1.2...v4.2.0
@@ -38,6 +39,13 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 [1.0.2]: https://github.com/PaulRBerg/prb-math/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/PaulRBerg/prb-math/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/PaulRBerg/prb-math/releases/tag/v1.0.0
+
+## [4.2.3] - 2026-10-20
+
+### Fixed
+
+- Check `y == 1` before `abs(x)` in `SD59x18.powu` so that `MIN_SD59x18 ** 1` returns `MIN_SD59x18` instead of reverting
+  ([#292](https://github.com/PaulRBerg/prb-math/pull/292)) (@clippytool)
 
 ## [4.2.2] - 2026-10-19
 
