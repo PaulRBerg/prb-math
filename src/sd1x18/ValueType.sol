@@ -7,6 +7,8 @@ import "./Casting.sol" as Casting;
 /// decimals. The values of this are bound by the minimum and the maximum values permitted by the underlying Solidity
 /// type int64. This is useful when end users want to use int64 to save gas, e.g. with tight variable packing in contract
 /// storage.
+/// @dev The underlying int64 stores the value scaled by 1e18, so 1e18 represents 1.0. This type only exposes
+/// casting functions; to perform arithmetic, convert to UD60x18 or SD59x18 first.
 type SD1x18 is int64;
 
 /*//////////////////////////////////////////////////////////////////////////
