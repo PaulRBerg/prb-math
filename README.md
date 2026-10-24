@@ -380,6 +380,7 @@ You will need the following software on your machine:
 - [Foundry](https://github.com/foundry-rs/foundry)
 - [Node.Js](https://nodejs.org/en/download/)
 - [Bun](https://bun.sh)
+- [Just](https://github.com/casey/just), the command runner used by the repository's build, test, and formatting recipes
 
 In addition, familiarity with [Solidity](https://soliditylang.org/) is requisite.
 
