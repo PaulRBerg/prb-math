@@ -1,0 +1,13 @@
+convertToDecimals.t.sol
+├── when decimals is greater than 95
+│  └── it should revert
+├── when scaling up overflows UD60x18
+│  └── it should revert
+├── when decimals is 0
+│  └── it should match convert(uint256)
+├── when decimals is 18
+│  └── it should wrap the integer
+├── when decimals is less than 18
+│  └── it should scale up to 18 decimals
+└── when decimals is greater than 18
+   └── it should scale down and round toward zero

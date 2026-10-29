@@ -40,6 +40,13 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 [1.0.1]: https://github.com/PaulRBerg/prb-math/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/PaulRBerg/prb-math/releases/tag/v1.0.0
 
+## [Unreleased]
+
+### Added
+
+- `convert(uint256,uint8)` and `convert(UD60x18,uint8)`, to move integers with an arbitrary number of decimal places to and from `UD60x18`
+  ([#252](https://github.com/PaulRBerg/prb-math/issues/252))
+
 ## [4.2.3] - 2026-10-20
 
 ### Fixed

@@ -235,12 +235,17 @@ All PRBMath types have casting functions to and from all other types, including 
 The difference between "conversion" and "casting" is that conversion functions multiply or divide the inputs, whereas casting functions simply cast
 them.
 
-| Name               | Description                                                           |
-| ------------------ | --------------------------------------------------------------------- |
-| `convert(SD59x18)` | Converts an SD59x18 number to a simple integer by dividing it by 1e18 |
-| `convert(UD60x18)` | Converts a UD60x18 number to a simple integer by dividing it by 1e18  |
-| `convert(int256)`  | Converts a simple integer to SD59x18 by multiplying it by 1e18        |
-| `convert(uint256)` | Converts a simple integer to UD60x18 type by multiplying it by 1e18   |
+| Name                     | Description                                                               |
+| ------------------------ | ------------------------------------------------------------------------- |
+| `convert(SD59x18)`       | Converts an SD59x18 number to a simple integer by dividing it by 1e18     |
+| `convert(UD60x18)`       | Converts a UD60x18 number to a simple integer by dividing it by 1e18      |
+| `convert(UD60x18,uint8)` | Converts a UD60x18 number to an integer with the given number of decimals |
+| `convert(int256)`        | Converts a simple integer to SD59x18 by multiplying it by 1e18            |
+| `convert(uint256)`       | Converts a simple integer to UD60x18 type by multiplying it by 1e18       |
+| `convert(uint256,uint8)` | Converts an integer with the given number of decimals to UD60x18          |
+
+`decimals` is the scale of the plain integer (6 for USDC, 18 for a wad). The `uint8` overloads scale by the distance from 18 and round toward zero.
+`decimals` must be at most 95, because `10^77` is the largest power of ten that fits in `uint256`.
 
 ### 🛠️ Helper Functions
 

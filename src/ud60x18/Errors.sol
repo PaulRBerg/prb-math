@@ -6,6 +6,13 @@ import { UD60x18 } from "./ValueType.sol";
 /// @notice Thrown when ceiling a number overflows UD60x18.
 error PRBMath_UD60x18_Ceil_Overflow(UD60x18 x);
 
+/// @notice Thrown when converting a UD60x18 number to a finer decimal scale overflows uint256.
+error PRBMath_UD60x18_ConvertFrom_Overflow(UD60x18 x);
+
+/// @notice Thrown when a decimal scale is too far from 18 for the power of ten to fit in uint256.
+/// @dev The largest power of ten that fits in uint256 is 10^77, so `decimals` must be less than or equal to 95.
+error PRBMath_UD60x18_Convert_DecimalsTooHigh(uint8 decimals);
+
 /// @notice Thrown when converting a basic integer to the fixed-point format overflows UD60x18.
 error PRBMath_UD60x18_Convert_Overflow(uint256 x);
 
