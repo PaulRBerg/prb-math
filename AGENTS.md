@@ -76,6 +76,9 @@ Install dependencies: `bun install` or `bun install -d <pkg>` for dev deps.
 
 ## Testing
 
+Use a separate test function for each expected internal revert. With `allow_internal_expect_revert = true`, the first internal revert ends test
+execution, so subsequent assertions are skipped.
+
 ```bash
 forge test                           # Run all tests
 forge test --match-test testFoo      # Run specific test

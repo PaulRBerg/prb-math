@@ -18,11 +18,21 @@ contract Div_Unit_Test is UD60x18_Unit_Test {
         div(x, y);
     }
 
+    function test_RevertWhen_DenominatorZero_MaxNumerator_Function() external {
+        vm.expectRevert(stdError.divisionError);
+        div(MAX_UD60x18, ZERO);
+    }
+
     function test_RevertWhen_DenominatorZero_Operator() external {
         UD60x18 x = ud(1e18);
         UD60x18 y = ZERO;
         vm.expectRevert(stdError.divisionError);
         x / y;
+    }
+
+    function test_RevertWhen_DenominatorZero_MaxNumerator_Operator() external {
+        vm.expectRevert(stdError.divisionError);
+        MAX_UD60x18 / ZERO;
     }
 
     modifier whenDenominatorNotZero() {

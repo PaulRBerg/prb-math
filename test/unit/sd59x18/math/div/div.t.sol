@@ -46,11 +46,41 @@ contract Div_Unit_Test is SD59x18_Unit_Test {
         div(x, y);
     }
 
+    function test_RevertWhen_DenominatorZero_MaxNumerator_Function() external {
+        vm.expectRevert(stdError.divisionError);
+        div(MAX_SD59x18, ZERO);
+    }
+
+    function test_RevertWhen_DenominatorZero_NegativeMaxNumerator_Function() external {
+        vm.expectRevert(stdError.divisionError);
+        div(-MAX_SD59x18, ZERO);
+    }
+
     function test_RevertWhen_DenominatorZero_Operator() external {
         SD59x18 x = sd(1e18);
         SD59x18 y = ZERO;
         vm.expectRevert(stdError.divisionError);
         x / y;
+    }
+
+    function test_RevertWhen_DenominatorZero_MaxNumerator_Operator() external {
+        vm.expectRevert(stdError.divisionError);
+        MAX_SD59x18 / ZERO;
+    }
+
+    function test_RevertWhen_DenominatorZero_NegativeMaxNumerator_Operator() external {
+        vm.expectRevert(stdError.divisionError);
+        -MAX_SD59x18 / ZERO;
+    }
+
+    function test_RevertWhen_Div_MinNumeratorAndDenominatorZero_Function() external {
+        vm.expectRevert(PRBMath_SD59x18_Div_InputTooSmall.selector);
+        div(MIN_SD59x18, ZERO);
+    }
+
+    function test_RevertWhen_Div_MinNumeratorAndDenominatorZero_Operator() external {
+        vm.expectRevert(PRBMath_SD59x18_Div_InputTooSmall.selector);
+        MIN_SD59x18 / ZERO;
     }
 
     modifier whenDenominatorNotZero() {
