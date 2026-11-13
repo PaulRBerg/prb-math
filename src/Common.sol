@@ -426,7 +426,7 @@ function msb(uint256 x) pure returns (uint256 result) {
 /// - The result is rounded toward zero.
 ///
 /// Requirements:
-/// - The denominator must not be zero.
+/// - The denominator must not be zero, otherwise the function reverts with a panic error (0x12).
 /// - The result must fit in uint256.
 ///
 /// @param x The multiplicand as a uint256.
@@ -446,14 +446,14 @@ function mulDiv(uint256 x, uint256 y, uint256 denominator) pure returns (uint256
         prod1 := sub(sub(mm, prod0), lt(mm, prod0))
     }
 
-    // Handle non-overflow cases, 256 by 256 division.
-    if (prod1 == 0) {
+    // Handle 256 by 256 division and preserve Solidity's division-by-zero panic for all products.
+    if (prod1 == 0 || denominator == 0) {
         unchecked {
             return prod0 / denominator;
         }
     }
 
-    // Make sure the result is less than 2^256. Also prevents denominator == 0.
+    // Make sure the result is less than 2^256. The denominator cannot be zero at this point.
     if (prod1 >= denominator) {
         revert PRBMath_MulDiv_Overflow(x, y, denominator);
     }

@@ -87,12 +87,28 @@ contract Common_MulDivSigned_Unit_Test is Base_Test {
         mulDivSigned(1, 1, MIN_INT256);
     }
 
+    function test_RevertWhen_MulDivSigned_MinXAndDenominatorZero() external {
+        vm.expectRevert(PRBMath_MulDivSigned_InputTooSmall.selector);
+        mulDivSigned(MIN_INT256, 1, 0);
+    }
+
+    function test_RevertWhen_MulDivSigned_MinYAndDenominatorZero() external {
+        vm.expectRevert(PRBMath_MulDivSigned_InputTooSmall.selector);
+        mulDivSigned(1, MIN_INT256, 0);
+    }
+
     function test_RevertWhen_MulDivSigned_DenominatorZero() external {
         vm.expectRevert(stdError.divisionError);
         mulDivSigned(1, -1, 0);
+    }
+
+    function test_RevertWhen_MulDivSigned_DenominatorZero_ZeroProduct() external {
         vm.expectRevert(stdError.divisionError);
         mulDivSigned(0, 0, 0);
-        vm.expectRevert(abi.encodeWithSelector(PRBMath_MulDiv_Overflow.selector, uint256(-HALF_MIN), 4, 0));
+    }
+
+    function test_RevertWhen_MulDivSigned_DenominatorZero_512BitProduct() external {
+        vm.expectRevert(stdError.divisionError);
         mulDivSigned(HALF_MIN, 4, 0);
     }
 
