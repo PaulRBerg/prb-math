@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Common Changelog](https://common-changelog.org/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+[4.2.4]: https://github.com/PaulRBerg/prb-math/compare/v4.2.3...v4.2.4
 [4.2.3]: https://github.com/PaulRBerg/prb-math/compare/v4.2.2...v4.2.3
 [4.2.2]: https://github.com/PaulRBerg/prb-math/compare/v4.2.1...v4.2.2
 [4.2.1]: https://github.com/PaulRBerg/prb-math/compare/v4.2.0...v4.2.1
@@ -39,6 +40,13 @@ The format is based on [Common Changelog](https://common-changelog.org/), and th
 [1.0.2]: https://github.com/PaulRBerg/prb-math/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/PaulRBerg/prb-math/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/PaulRBerg/prb-math/releases/tag/v1.0.0
+
+## [4.2.4] - 2026-11-13
+
+### Fixed
+
+- Revert `mulDiv` with Solidity's division-by-zero panic (`0x12`) for a zero denominator regardless of the product, instead of
+  `PRBMath_MulDiv_Overflow` ([#296](https://github.com/PaulRBerg/prb-math/pull/296))
 
 ## [4.2.3] - 2026-10-20
 
