@@ -7,6 +7,8 @@ import "./Casting.sol" as Casting;
 /// decimals. The values of this are bound by the minimum and the maximum values permitted by the underlying Solidity
 /// type uint128. This is useful when end users want to use uint128 to save gas, e.g. with tight variable packing in contract
 /// storage.
+/// @dev The underlying uint128 stores the value scaled by 1e18, so 1e18 represents 1.0. This type only exposes
+/// casting functions; to perform arithmetic, convert to UD60x18 or SD59x18 first.
 type UD21x18 is uint128;
 
 /*//////////////////////////////////////////////////////////////////////////
